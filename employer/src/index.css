@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* config css toastify */
+  --toastify-color-success: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+  --toastify-color-warning: linear-gradient(15deg, #cff10f 0%, #f3cc0a 100%);
+  --toastify-color-error: linear-gradient(15deg, #f43b47 0%, #453a94 100%);
+  --toastify-icon-color-success: #035450;
+  --toastify-icon-color-warning: #cff10f;
+  --toastify-icon-color-error: #d0011b;
+}
+/* 
+body {
+    font-family: "Nunito", sans-serif !important;
+    font-size: 16px;
+  } */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+html:hover *::-webkit-scrollbar {
+  display: block;
+}
