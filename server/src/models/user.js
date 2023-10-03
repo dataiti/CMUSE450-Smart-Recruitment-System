@@ -30,14 +30,14 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
-    filename: {
+    publicId: {
       type: String,
       default: "CDIO2-project/dedault_jd3qnu",
     },
     permission: {
       type: String,
       default: "user",
-      enum: ["user", "candidate", "employer", "adminstractor"],
+      enum: ["user", "admin"],
     },
     facebookId: {
       type: String,
@@ -61,10 +61,22 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Employer",
     },
+    followingIds: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Employer",
+        },
+      ],
+      default: [],
+    },
     status: {
       type: String,
       default: "Active",
       enum: ["Active", "Locked"],
+    },
+    socketId: {
+      type: String,
     },
   },
   { timestamps: true }

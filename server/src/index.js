@@ -3,6 +3,8 @@ const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const Message = require("../src/models/message");
+const Employer = require("../src/models/employer");
+const User = require("../src/models/user");
 require("dotenv").config();
 
 const router = require("./routes");
@@ -120,5 +122,56 @@ io.on("connection", async (socket) => {
       conversationId,
       message: newMessage,
     });
+  });
+
+  io.on("follow_employer", async (data) => {
+    const { userId, employerId } = data;
+
+    try {
+      const user = await User.findById(userId);
+
+      const employer = await Employer.findById(employerId);
+
+      if (!user || !employer) return;
+
+      if (employer.followerIds.includes(userId)) return;
+
+      employer.followerIds.push(userId);
+      await employer.save();
+
+      user.employersFollowing.push(employerId);
+      await user.save();
+
+      io.to(employer.ownerId.socketId).emit("new_follower", { userId });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  io.on("unfollow_employer", async (data) => {
+    const { userId, employerId } = data;
+    try {
+      const user = await User.findById(userId);
+
+      const employer = await Employer.findById(employerId);
+
+      if (!user || !employer) return;
+
+      if (!employer.followerIds.includes(userId)) return;
+
+      employer.followerIds = employer.followerIds.filter(
+        (follower) => follower.toString() !== userId
+      );
+      await employer.save();
+
+      user.employersFollowing = user.employersFollowing.filter(
+        (employer) => employer.toString() !== employerId
+      );
+      await user.save();
+
+      io.to(employer.ownerId.socketId).emit("unfollowed", { userId });
+    } catch (error) {
+      console.error(error);
+    }
   });
 });

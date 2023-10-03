@@ -2,13 +2,25 @@ const mongoose = require("mongoose");
 
 const feedbackSchema = new mongoose.Schema(
   {
-    candidate: {
+    candidateId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Candidate",
+      ref: "User",
     },
-    job: {
+    jobId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Job",
+    },
+    employerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employer",
+    },
+    images: {
+      type: Array,
+      default: [],
+    },
+    publicIds: {
+      type: Array,
+      default: [],
     },
     feedbackText: {
       type: String,

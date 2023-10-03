@@ -31,7 +31,7 @@ const getEmployerDetail = asyncHandler(async (req, res) => {
 
 const registerEmployer = asyncHandler(async (req, res) => {
   const companyLogo = req.file.path;
-  const filenameLogo = req.file.filename;
+  const publicId = req.file.filename;
 
   const {
     fullName,
@@ -55,7 +55,7 @@ const registerEmployer = asyncHandler(async (req, res) => {
     sex,
     workLocation,
     companyLogo,
-    filenameLogo,
+    publicId,
     companyName,
     companyEmail,
     companyPhoneNumber,

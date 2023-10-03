@@ -26,7 +26,7 @@ const employerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    filenameLogo: {
+    publicId: {
       type: String,
     },
     companyName: {
@@ -61,10 +61,24 @@ const employerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    followerIds: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      default: [],
+    },
     status: {
       type: String,
       default: "Active",
       enum: ["Active", "Locked"],
+    },
+    rating: {
+      type: Number,
+      min: 1,
+      max: 5,
     },
   },
   { timestamps: true }

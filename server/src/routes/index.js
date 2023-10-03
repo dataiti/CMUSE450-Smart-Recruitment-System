@@ -4,6 +4,8 @@ const employerRouter = require("./employer");
 const jobRouter = require("./job");
 const addressRouter = require("./address");
 const categoryRouter = require("./category");
+const analyticRouter = require("./analytic");
+const feedbackRouter = require("./feedback");
 
 const router = (app) => {
   app.use("/api/v1/auth", authRouter);
@@ -12,6 +14,8 @@ const router = (app) => {
   app.use("/api/v1/job", jobRouter);
   app.use("/api/v1/address", addressRouter);
   app.use("/api/v1/category", categoryRouter);
+  app.use("/api/v1/analytic", analyticRouter);
+  app.use("/api/v1/feedback", feedbackRouter);
 };
 
 module.exports = router;

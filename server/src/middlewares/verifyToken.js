@@ -28,9 +28,9 @@ const isEmployer = async (req, res, next) => {
   try {
     if (
       req.user.permissions === "employer" ||
-      req.user._id !== req.store.ownerId
+      req.user._id !== req.employer.ownerId
     ) {
-      throw new Error("You are not the owner of this store");
+      throw new Error("You are not the owner of this employer");
     } else {
       next();
     }
@@ -44,7 +44,7 @@ const isEmployer = async (req, res, next) => {
 
 const isAdminSystem = async (req, res, next) => {
   try {
-    if (req.user.permissions !== "administrator") {
+    if (req.user.permissions !== "admin") {
       throw new Error("You are not the admin of this system");
     } else {
       next();
