@@ -53,11 +53,10 @@ const EditProfilePage = () => {
   return (
     <div className="h-[620px] w-full bg-white shadow-md rounded -md flex items-center justify-center">
       <form
-        ref={conponentPDF}
         onSubmit={handleSubmit(handleSubmitChangePassword)}
         className="flex items-center flex-col gap-4"
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4" ref={conponentPDF}>
           <InputController
             control={control}
             name="email"

@@ -100,67 +100,63 @@ const updateRatingForJob = asyncHandler(async (req, res) => {
 
   if (ratingJobExisting !== -1) {
     await findJob.updateOne({ $set: { rating } });
-    return;
-  }
-
-  if (ratingEmployerExisting !== -1) {
+  } else if (ratingEmployerExisting !== -1) {
     await findEmployer.updateOne({ $set: { rating } });
-    return;
-  }
-
-  const feedbackJobs = await Feedback.aggregate([
-    {
-      $group: {
-        _id: "$jobId",
-        rating: {
-          $sum: "$rating",
-        },
-        count: { $sum: 1 },
-      },
-    },
-  ]);
-
-  if (!feedbackJobs) {
-    throw new Error("Update Rating is failed");
   } else {
-    const findJob = feedbackJobs.find((r) => r._id.equals(jobId));
-    const rating =
-      findJob &&
-      parseFloat(findJob.rating) / parseFloat(findJob.count).toFixed(1);
-    await Job.findOneAndUpdate(
-      { _id: jobId },
-      { $set: { rating } },
-      { new: true }
-    );
-  }
-
-  const feedbackEmployers = await Review.aggregate([
-    {
-      $group: {
-        _id: "$employerId",
-        rating: {
-          $sum: "$rating",
+    const feedbackJobs = await Feedback.aggregate([
+      {
+        $group: {
+          _id: "$jobId",
+          rating: {
+            $sum: "$rating",
+          },
+          count: { $sum: 1 },
         },
-        count: { $sum: 1 },
       },
-    },
-  ]);
+    ]);
 
-  if (!feedbackEmployers) {
-    throw new Error("Update Rating is failed");
-  } else {
-    const findEmployer = feedbackEmployers.find((r) =>
-      r._id.equals(employerId)
-    );
-    const rating =
-      findEmployer &&
-      parseFloat(findEmployer.rating) /
-        parseFloat(findEmployer.count).toFixed(1);
-    await Employer.findOneAndUpdate(
-      { _id: employerId },
-      { $set: { rating } },
-      { new: true }
-    );
+    if (!feedbackJobs) {
+      throw new Error("Update Rating is failed");
+    } else {
+      const findJob = feedbackJobs.find((r) => r._id.equals(jobId));
+      const rating =
+        findJob &&
+        parseFloat(findJob.rating) / parseFloat(findJob.count).toFixed(1);
+      await Job.findOneAndUpdate(
+        { _id: jobId },
+        { $set: { rating } },
+        { new: true }
+      );
+    }
+
+    const feedbackEmployers = await Review.aggregate([
+      {
+        $group: {
+          _id: "$employerId",
+          rating: {
+            $sum: "$rating",
+          },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    if (!feedbackEmployers) {
+      throw new Error("Update Rating is failed");
+    } else {
+      const findEmployer = feedbackEmployers.find((r) =>
+        r._id.equals(employerId)
+      );
+      const rating =
+        findEmployer &&
+        parseFloat(findEmployer.rating) /
+          parseFloat(findEmployer.count).toFixed(1);
+      await Employer.findOneAndUpdate(
+        { _id: employerId },
+        { $set: { rating } },
+        { new: true }
+      );
+    }
   }
 });
 
@@ -168,6 +164,7 @@ const getListOfFeedbackByJob = asyncHandler(async (req, res) => {
   const findEmployers = await Employer.find();
   const finJobs = await Job.find();
 
+  // test
   return res.json({
     data: {
       findEmployers,
