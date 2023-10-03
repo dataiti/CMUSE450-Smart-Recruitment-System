@@ -10,7 +10,7 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  allowedFormats: ["jpg", "png", "webp"],
+  allowedFormats: ["jpg", "png", "webp", "pdf", "jfif"],
   params: {
     folder: "Capstone1-project",
   },

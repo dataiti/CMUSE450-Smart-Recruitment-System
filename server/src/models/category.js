@@ -10,18 +10,18 @@ const categorySchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
+    publicId: {
+      type: String,
+      // required: true,
+    },
     description: {
       type: String,
     },
-    // value: {
-    //   type: [
-    //     {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: "SubCategory",
-    //     },
-    //   ],
-    //   default: [],
-    // },
+    subcategories: [
+      {
+        name: String,
+      },
+    ],
   },
   { timestamps: true }
 );

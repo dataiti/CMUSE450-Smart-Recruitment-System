@@ -3,7 +3,6 @@ const {
   employerById,
   getEmployerDetail,
   registerEmployer,
-  editEmployer,
   deleteEmployer,
   getListOfEmployerForEmployer,
   getListOfEmployerForAdmin,
