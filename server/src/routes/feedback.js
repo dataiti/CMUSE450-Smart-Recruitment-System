@@ -15,7 +15,7 @@ const uploadCloud = require("../configs/cloudinaryConfig");
 
 const router = express.Router();
 
-router.get("/get-list-feedbacks/:jobId/:employerId", getListOfFeedbackByJob);
+router.get("/get-list-feedbacks/:employerId/:jobId", getListOfFeedbackByJob);
 router.post(
   "/create-feedback/:userId",
   uploadCloud.array("images"),

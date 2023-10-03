@@ -31,7 +31,7 @@ const getFeedbackDetail = asyncHandler(async (req, res) => {
   });
 });
 
-const createFeedback = asyncHandler(async (req, res) => {
+const createFeedback = asyncHandler(async (req, res, next) => {
   const { candidateId, jobId, employerId, feedbackText, rating } = req.body;
   const images =
     req.files &&
@@ -72,6 +72,7 @@ const createFeedback = asyncHandler(async (req, res) => {
     throw new Error("Create feedvback is fail");
   }
 
+  req.feedback = saveFeedback;
   next();
   return res.status(200).json({
     success: true,
@@ -90,79 +91,65 @@ const updateRatingForJob = asyncHandler(async (req, res) => {
   if (!jobId || !employerId)
     throw new Error("JobId and EmployerId are required");
 
-  const findJob = await Job.findOne({ _id: jobId });
-  const findEmployer = await Job.findOne({ _id: employerId });
+  const feedbackJobs = await Feedback.aggregate([
+    {
+      $group: {
+        _id: "$jobId",
+        rating: {
+          $sum: "$rating",
+        },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
 
-  const ratingJobExisting = findJob.rating ? Number(findJob.rating) : -1;
-  const ratingEmployerExisting = findEmployer.rating
-    ? Number(findEmployer.rating)
-    : -1;
-
-  if (ratingJobExisting !== -1) {
-    await findJob.updateOne({ $set: { rating } });
-  } else if (ratingEmployerExisting !== -1) {
-    await findEmployer.updateOne({ $set: { rating } });
+  if (!feedbackJobs) {
+    throw new Error("Update Rating is failed");
   } else {
-    const feedbackJobs = await Feedback.aggregate([
-      {
-        $group: {
-          _id: "$jobId",
-          rating: {
-            $sum: "$rating",
-          },
-          count: { $sum: 1 },
+    const findJob = feedbackJobs.find((r) => r._id.equals(jobId));
+    const rating =
+      findJob &&
+      parseFloat(findJob.rating) / parseFloat(findJob.count).toFixed(1);
+    await Job.findOneAndUpdate(
+      { _id: jobId },
+      { $set: { rating } },
+      { new: true }
+    );
+  }
+
+  const feedbackEmployers = await Feedback.aggregate([
+    {
+      $group: {
+        _id: "$employerId",
+        rating: {
+          $sum: "$rating",
         },
+        count: { $sum: 1 },
       },
-    ]);
+    },
+  ]);
 
-    if (!feedbackJobs) {
-      throw new Error("Update Rating is failed");
-    } else {
-      const findJob = feedbackJobs.find((r) => r._id.equals(jobId));
-      const rating =
-        findJob &&
-        parseFloat(findJob.rating) / parseFloat(findJob.count).toFixed(1);
-      await Job.findOneAndUpdate(
-        { _id: jobId },
-        { $set: { rating } },
-        { new: true }
-      );
-    }
-
-    const feedbackEmployers = await Review.aggregate([
-      {
-        $group: {
-          _id: "$employerId",
-          rating: {
-            $sum: "$rating",
-          },
-          count: { $sum: 1 },
-        },
-      },
-    ]);
-
-    if (!feedbackEmployers) {
-      throw new Error("Update Rating is failed");
-    } else {
-      const findEmployer = feedbackEmployers.find((r) =>
-        r._id.equals(employerId)
-      );
-      const rating =
-        findEmployer &&
-        parseFloat(findEmployer.rating) /
-          parseFloat(findEmployer.count).toFixed(1);
-      await Employer.findOneAndUpdate(
-        { _id: employerId },
-        { $set: { rating } },
-        { new: true }
-      );
-    }
+  if (!feedbackEmployers) {
+    throw new Error("Update Rating is failed");
+  } else {
+    const findEmployer = feedbackEmployers.find((r) =>
+      r._id.equals(employerId)
+    );
+    const rating =
+      findEmployer &&
+      parseFloat(findEmployer.rating) /
+        parseFloat(findEmployer.count).toFixed(1);
+    await Employer.findOneAndUpdate(
+      { _id: employerId },
+      { $set: { rating } },
+      { new: true }
+    );
   }
 });
 
 const getListOfFeedbackByJob = asyncHandler(async (req, res) => {
-  const findEmployers = await Employer.find();
-  const finJobs = await Job.find();
+  const findEmployers = await Employer.findOne({ _id: req.params.employerId });
+  const finJobs = await Job.findOne({ _id: req.params.jobId });
 
   // test
   return res.json({
