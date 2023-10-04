@@ -138,8 +138,6 @@ const deleteEmployer = asyncHandler(async (req, res) => {
   });
 });
 
-const getListOfEmployerForEmployer = asyncHandler(async (req, res) => {});
-
 const getListOfEmployerForAdmin = asyncHandler(async (req, res) => {});
 
 module.exports = {
@@ -148,6 +146,5 @@ module.exports = {
   registerEmployer,
   editEmployer,
   deleteEmployer,
-  getListOfEmployerForEmployer,
   getListOfEmployerForAdmin,
 };
