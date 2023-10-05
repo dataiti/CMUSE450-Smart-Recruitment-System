@@ -108,12 +108,10 @@ const ListJobsPage = () => {
   };
 
   const handleSelectedExperience = (e) => {
-    console.log(e);
     setExperienceSelected(e);
   };
 
   const handleSelectedStatusJob = (e) => {
-    console.log(e);
     setStatusJobSelected(e);
   };
 

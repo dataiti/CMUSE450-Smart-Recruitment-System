@@ -179,6 +179,25 @@ export const tableHeadJob = [
   { id: 9, name: "Hành động" },
 ];
 
+export const typeTimeChartOptions = [
+  { id: 1, text: "Hôm nay", value: "day" },
+  { id: 2, text: "Tuần nay", value: "week" },
+  { id: 3, text: "Tháng nay", value: "month" },
+  { id: 4, text: "Năm nay", value: "year" },
+];
+
+export const typeChartRowOptions = [
+  { id: 1, text: "Theo ứng tuyển", value: "applicated" },
+  { id: 2, text: "Theo công việc", value: "job" },
+];
+
+export const typeChartPercentOptions = [
+  { id: 1, text: "Theo ngành nghề", value: "industry" },
+  { id: 2, text: "Theo danh mục việc làm", value: "category" },
+  { id: 2, text: "Theo Tỉnh/Thành phố", value: "workRegion" },
+  { id: 2, text: "Theo loại công việc", value: "jobType" },
+];
+
 export const recruitmentChatData = [
   {
     type: "text",
@@ -260,4 +279,12 @@ export const fakeChatListData = [
     lastMessage: "Tôi đã xem xét hồ sơ của bạn.",
     lastMessageTime: "2 ngày trước",
   },
+];
+
+export const thongsodata = [
+  { id: 1, value: 0, name: "Số công việc" },
+  { id: 2, value: 0, name: "Số CV ứng tuyển" },
+  { id: 3, value: 0, name: "Số CV mới" },
+  { id: 4, value: 0, name: "Người theo dõi" },
+  { id: 5, value: 0, name: "DCMMM" },
 ];

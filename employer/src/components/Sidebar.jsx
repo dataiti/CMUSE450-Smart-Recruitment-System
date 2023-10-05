@@ -52,8 +52,6 @@ const Sidebar = () => {
     }
   };
 
-  console.log(user);
-
   return (
     <Card className="h-screen w-full shadow-none rounded-none border-r border-blue-gray-100 ">
       <div className="flex items-center gap-2 p-[6px] bg-light-blue-50 mx-4 my-2 rounded-md">
