@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import ListConversations from "../components/ListConversations";
-import { fakeDataMessage } from "../utils/constants";
+import ListConversations from "../../components/ListConversations";
+import { fakeDataMessage } from "../../utils/constants";
 import {
   MediaMessage,
   ReplyMessage,
   TextMessage,
-} from "../components/TypeMessage";
+} from "../../components/TypeMessage";
 import { IconButton, Input } from "@material-tailwind/react";
-import { icons } from "../utils/icons";
+import { icons } from "../../utils/icons";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 

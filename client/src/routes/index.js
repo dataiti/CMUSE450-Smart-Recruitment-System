@@ -1,13 +1,15 @@
+import { MainLayout, MessengerLayout, ProfileLayout } from "../layouts";
+import {
+  HomePage,
+  CategoriesPage,
+  MessagePage,
+  ChangePasswordPage,
+  EditProfilePage,
+  MyCalendarPage,
+  RegisterCandidatePage,
+  ResumeOnlinePage,
+} from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
-import { MainLayout } from "../layouts";
-import MessengerLayout from "../layouts/MessengerLayout";
-import ProfileLayout from "../layouts/ProfileLayout";
-import { CategoriesPage, ResumeOnlinePage, HomePage } from "../pages";
-import ChangePasswordPage from "../pages/ChangePasswordPage";
-import EditProfilePage from "../pages/EditProfilePage";
-import MessagePage from "../pages/MessagePage";
-import MyCalendarPage from "../pages/MyCalendarPage";
-import RegisterCandidatePage from "../pages/RegisterCandidatePage";
 
 const routers = [
   {
@@ -28,7 +30,7 @@ const routers = [
         element: <ProtectedRoutes />,
         children: [
           {
-            path: "/categories",
+            path: "/categories-job",
             element: <CategoriesPage />,
           },
           {

@@ -1,8 +1,10 @@
+import { Typography } from "@material-tailwind/react";
 import React from "react";
 import { Controller } from "react-hook-form";
-import { Textarea, Typography } from "@material-tailwind/react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-const TextareaController = ({
+const TextEditorController = ({
   name,
   control,
   label,
@@ -19,14 +21,17 @@ const TextareaController = ({
             <label className="col-span-1 text-sm font-medium whitespace-no-wrap">
               {label}
             </label>
-            <div className="w-[500px]">
-              <Textarea
-                label={label}
+            <div className="col-span-2 w-full">
+              <ReactQuill
                 {...field}
-                error={!!error}
-                className="col-span-3 bg-white w-full"
-                disabled={isDisabled}
+                value={field.value || ""}
+                theme="snow"
+                modules={{}}
+                className={`w-full ${!!error ? "border-red-500" : ""}`}
+                readOnly={isDisabled}
+                style={{ borderRadius: "10px" }}
               />
+
               {!!error && (
                 <Typography color="red" className="absolute -bottom-5 text-xs">
                   {error?.message}
@@ -40,4 +45,4 @@ const TextareaController = ({
   );
 };
 
-export default TextareaController;
+export default TextEditorController;

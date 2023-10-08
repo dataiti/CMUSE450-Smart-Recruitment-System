@@ -1,3 +1,5 @@
 import MainLayout from "./MainLayout";
+import MessengerLayout from "./MessengerLayout";
+import ProfileLayout from "./ProfileLayout";
 
-export { MainLayout };
+export { MainLayout, MessengerLayout, ProfileLayout };

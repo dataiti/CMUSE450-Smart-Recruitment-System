@@ -25,7 +25,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const authSelect = (state) => state.persistedReducer.auth;
+export const authSelect = (state) => state.auth;
 
 export const { setCredentials, logOut } = authSlice.actions;
 

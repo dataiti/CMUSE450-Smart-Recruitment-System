@@ -9,16 +9,16 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import { icons } from "../utils/icons";
+import { icons } from "../../utils/icons";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import InputController from "../components/InputController";
-import SelectController from "../components/SelectController";
-import TextareaController from "../components/TextareaController";
-import RadioController from "../components/RadioController";
-import { desiredSalarys, experiens } from "../utils/constants";
-import axiosClient from "../configs/axiosConfig";
+import InputController from "../../components/InputController";
+import SelectController from "../../components/SelectController";
+import TextareaController from "../../components/TextareaController";
+import RadioController from "../../components/RadioController";
+import { desiredSalarys, experiens } from "../../utils/constants";
+import axiosClient from "../../configs/axiosConfig";
 
 const schema = yup.object().shape({
   currentPassword: yup.string().required("Mật khẩu không được bỏ trống"),

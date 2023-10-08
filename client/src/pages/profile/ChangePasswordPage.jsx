@@ -3,9 +3,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { authSelect } from "../redux/features/slices/authSlice";
+import { authSelect } from "../../redux/features/slices/authSlice";
 import { useSelector } from "react-redux";
-import InputController from "../components/InputController";
+import InputController from "../../components/InputController";
 
 const schema = yup.object().shape({
   currentPassword: yup

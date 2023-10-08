@@ -3,8 +3,98 @@
 @tailwind utilities;
 
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
+:root {
+  /* config css toastify */
+  --toastify-color-success: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+  --toastify-color-warning: linear-gradient(15deg, #cff10f 0%, #f3cc0a 100%);
+  --toastify-color-error: linear-gradient(15deg, #f43b47 0%, #453a94 100%);
+  --toastify-icon-color-success: #035450;
+  --toastify-icon-color-warning: #cff10f;
+  --toastify-icon-color-error: #d0011b;
+}
+
+* {
+  font-family: "Nunito", sans-serif !important;
+  font-size: 16px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+html:hover *::-webkit-scrollbar {
+  display: block;
+}
+
+input[type="checkbox"] {
+  position: relative;
+  width: 20px !important;
+  height: 20px !important;
+  margin: 5px;
+  border-radius: 2px;
+  appearance: none;
+  text-align: center;
+  line-height: 1em;
+  border: 2px solid #134e4a;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked:after {
+  content: "✔";
+  position: absolute;
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 2px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #134e4a;
+  font-size: 18px;
+  color: #fff;
+  background: #134e4a;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  min-height: 20px;
+}
+
+.name-3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  min-height: 30px;
+}

@@ -12,9 +12,7 @@ import {
 } from "redux-persist";
 
 const store = configureStore({
-  reducer: {
-    persistedReducer,
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
