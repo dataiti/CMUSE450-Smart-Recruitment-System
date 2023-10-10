@@ -33,6 +33,7 @@ import {
   Step,
 } from "@material-tailwind/react";
 import { addJob } from "../../redux/features/slices/jobSlice";
+import InputTagsController from "../../components/InputTagsController";
 
 const schema = yup.object().shape({
   recruitmentCampaignName: yup
@@ -127,6 +128,7 @@ const CreateRecruitmentJobPage = () => {
       currencyType: "",
       salaryType: "",
       jobDescription: "",
+      skills: [],
       candidateRequirements: "",
       candidateBenefits: "",
       applicationDeadline: "",
@@ -200,13 +202,17 @@ const CreateRecruitmentJobPage = () => {
         if (formatData.hasOwnProperty(key)) {
           const value = formatData[key];
 
-          try {
-            const parsedValue = JSON.parse(value);
+          if (key === "skills") {
+            formatData[key] = JSON.stringify(value);
+          } else {
+            try {
+              const parsedValue = JSON.parse(value);
 
-            if (parsedValue.hasOwnProperty("value")) {
-              formatData[key] = parsedValue.value;
-            }
-          } catch (error) {}
+              if (parsedValue.hasOwnProperty("value")) {
+                formatData[key] = parsedValue.value;
+              }
+            } catch (error) {}
+          }
         }
       }
       const response = await createJob({
@@ -543,6 +549,12 @@ const CreateRecruitmentJobPage = () => {
                     control={control}
                     name="candidateRequirements"
                     label="Mô tả yêu cầu ứng viên"
+                    error={errors?.candidateRequirements}
+                  />
+                  <InputTagsController
+                    control={control}
+                    name="skills"
+                    label="Kỹ năng"
                     error={errors?.candidateRequirements}
                   />
                 </div>

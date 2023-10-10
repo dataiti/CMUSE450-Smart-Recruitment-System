@@ -17,11 +17,11 @@
   --toastify-icon-color-warning: #cff10f;
   --toastify-icon-color-error: #d0011b;
 }
-/* 
-body {
-    font-family: "Nunito", sans-serif !important;
-    font-size: 16px;
-  } */
+
+* {
+  font-family: "Nunito", sans-serif !important;
+  font-size: 16px;
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

@@ -45,10 +45,12 @@ import {
   AiOutlineItalic,
   AiFillDollarCircle,
   AiFillClockCircle,
+  AiFillCloseCircle,
 } from "react-icons/ai";
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 
 const icons = {
+  AiFillCloseCircle,
   AiFillClockCircle,
   AiFillDollarCircle,
   HiLocationMarker,

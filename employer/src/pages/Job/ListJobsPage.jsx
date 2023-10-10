@@ -219,7 +219,7 @@ const ListJobsPage = () => {
                       <td className="px-2 text-sm py-3 text-blue-gray-800 whitespace-nowrap">
                         ... {job?._id.slice(-4)}
                       </td>
-                      <td className="px-2 text-sm py-3 text-blue-gray-800">
+                      <td className="px-2 text-sm py-3 text-blue-gray-800 min-w-[100px]">
                         {job?.recruitmentCampaignName}
                       </td>
                       <td className="px-2 text-sm py-3 text-blue-gray-800">
@@ -231,21 +231,21 @@ const ListJobsPage = () => {
                       <td className="px-2 text-sm py-3 text-center text-blue-gray-800">
                         {job?.appliedIds?.length}
                       </td>
-                      <td className="px-2 text-[10px] py-3 text-center text-blue-gray-800">
+                      <td className="px-2  py-3 text-center text-blue-gray-800">
                         {job.status === "pending" ? (
-                          <div className="p-2 rounded-md bg-blue-50 text-blue-500">
+                          <div className="p-2 rounded-md text-[10px] bg-blue-50 text-blue-500">
                             Chờ phê duyệt
                           </div>
                         ) : job.status === "active" ? (
-                          <div className="p-2 rounded-md bg-green-50 text-green-500">
+                          <div className="p-2 rounded-md text-[10px] bg-green-50 text-green-500">
                             Đang hoạt động
                           </div>
                         ) : job.status === "expired" ? (
-                          <div className="p-2 rounded-md bg-yellow-50 text-yellow-500">
+                          <div className="p-2 rounded-md text-[10px] bg-yellow-50 text-yellow-500">
                             Đã hết hạn
                           </div>
                         ) : (
-                          <div className="p-2 rounded-md bg-red-50 text-red-500">
+                          <div className="p-2 rounded-md text-[10px] bg-red-50 text-red-500">
                             Bị từ chối
                           </div>
                         )}
