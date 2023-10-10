@@ -7,6 +7,7 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { menuItems } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelect, logOut } from "../redux/features/slices/authSlice";
@@ -15,7 +16,7 @@ import { icons } from "../utils/icons";
 
 const SidebarProfile = () => {
   const dispatch = useDispatch();
-  const { isLoggedIn, user, refreshToken } = useSelector(authSelect);
+  const { user, refreshToken } = useSelector(authSelect);
 
   const [logout] = useLogOutMutation();
 
@@ -24,6 +25,7 @@ const SidebarProfile = () => {
       const response = await logout({ refreshToken });
       if (response && response.data && response.data.success) {
         dispatch(logOut());
+        toast.success("Đăng xuất thành công !");
       }
     } catch (error) {
       console.log(error);

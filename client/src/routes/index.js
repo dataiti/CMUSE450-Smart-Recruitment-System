@@ -8,6 +8,8 @@ import {
   MyCalendarPage,
   RegisterCandidatePage,
   ResumeOnlinePage,
+  JobDetailPage,
+  WishListPage,
 } from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
 
@@ -34,8 +36,16 @@ const routers = [
             element: <CategoriesPage />,
           },
           {
+            path: "/job-detail/:jobId",
+            element: <JobDetailPage />,
+          },
+          {
             path: "/resume-online",
             element: <ResumeOnlinePage />,
+          },
+          {
+            path: "/wishlist",
+            element: <WishListPage />,
           },
         ],
       },

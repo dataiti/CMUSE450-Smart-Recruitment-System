@@ -6,7 +6,7 @@ export const TextMessage = ({ el }) => {
     <div className={`flex ${el.incoming ? "justify-start" : "justify-end"} `}>
       <div
         className={`${
-          el.incoming ? "bg-gray-400" : "bg-black text-white"
+          el.incoming ? "bg-gray-400" : "bg-[#212f3f] text-white"
         } px-4 py-3 rounded-2xl`}
       >
         <Typography>{el.message}</Typography>

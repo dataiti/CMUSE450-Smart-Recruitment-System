@@ -11,6 +11,7 @@ import {
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { icons } from "../utils/icons";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
@@ -18,6 +19,7 @@ import { authSelect, logOut } from "../redux/features/slices/authSlice";
 import { images } from "../assets/images";
 import { menuItems, navbarItems } from "../utils/constants";
 import { useLogOutMutation } from "../redux/features/apis/authApi";
+import ButtonCustom from "./ButtonCustom";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -37,6 +39,7 @@ const Header = () => {
       const response = await logout({ refreshToken });
       if (response && response.data && response.data.success) {
         dispatch(logOut());
+        toast.success("Đăng xuất thành công !");
       }
     } catch (error) {
       console.log(error);
@@ -65,36 +68,40 @@ const Header = () => {
         {!isLoggedIn ? (
           <div className="flex-1 flex items-center gap-3 justify-end">
             <>
-              <Button onClick={handleOpenRegisterForm} variant="outlined">
+              <ButtonCustom onClick={handleOpenRegisterForm}>
                 Đăng ký
-              </Button>
+              </ButtonCustom>
               <RegisterForm
                 open={openRegisterForm}
                 handleOpen={handleOpenRegisterForm}
               />
-              <Button variant="filled" onClick={handleOpenLoginForm}>
+              <ButtonCustom onClick={handleOpenLoginForm}>
                 Đăng nhập
-              </Button>
+              </ButtonCustom>
               <LoginForm
                 open={openLoginForm}
                 handleOpen={handleOpenLoginForm}
               />
-              <Button variant="filled">Kênh nhà tuyển dụng</Button>
+              <ButtonCustom className="bg-teal-800 hover:bg-teal-700">
+                Kênh nhà tuyển dụng
+              </ButtonCustom>
             </>
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <IconButton className="shadow-none p-3 rounded-full bg-green-50 text-green-900 ">
+            <IconButton className="shadow-none p-3 rounded-full bg-white text-[#0891b2]">
               <icons.PiBellRingingFill size={20} />
             </IconButton>
             <Link to="/messenger">
-              <IconButton className="shadow-none p-3 rounded-full bg-green-50 text-green-900">
+              <IconButton className="shadow-none p-3 rounded-full bg-white text-[#0891b2]">
                 <icons.BsMessenger size={20} />
               </IconButton>
             </Link>
-            <IconButton className="shadow-none p-3 rounded-full bg-green-50 text-green-900">
-              <icons.IoBookmark size={20} />
-            </IconButton>
+            <Link to="/wishlist">
+              <IconButton className="shadow-none p-3 rounded-full bg-white text-[#0891b2]">
+                <icons.IoBookmark size={20} />
+              </IconButton>
+            </Link>
             <Menu>
               <MenuHandler>
                 <Button

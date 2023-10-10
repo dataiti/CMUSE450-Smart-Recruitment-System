@@ -3,9 +3,9 @@ import { rootApi } from "../../../configs/rootApi";
 const jobApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     getJobDetail: builder.query({
-      query: ({ userId, jobId }) => {
+      query: ({ jobId }) => {
         return {
-          url: `/job/get-job-detail/${userId}/${jobId}`,
+          url: `/job/get-job-detail/${jobId}`,
           method: "GET",
         };
       },

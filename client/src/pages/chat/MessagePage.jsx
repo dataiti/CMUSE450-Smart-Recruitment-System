@@ -19,11 +19,11 @@ const MessagePage = () => {
 
   return (
     <div className="w-full flex">
-      <div className="w-[400px] h-screen border-r border-gray-300">
+      <div className="w-[400px] h-screen border-r border-gray-500">
         <ListConversations />
       </div>
       <div className="h-screen w-full">
-        <div className="h-[80px] bg-gray-100 border-b border-gray-300"></div>
+        <div className="h-[80px] bg-[#e8edf2] border-b border-gray-500"></div>
         <div className="h-[calc(100vh-160px)] overflow-auto flex flex-col gap-3 p-4">
           {fakeDataMessage.map((el, index) => {
             switch (el.type) {
@@ -36,7 +36,7 @@ const MessagePage = () => {
             }
           })}
         </div>
-        <div className="h-[80px] flex items-center gap-2 justify-center px-8 bg-gray-100 border-t border-gray-300">
+        <div className="h-[80px] flex items-center gap-2 justify-center px-8 bg-[#e8edf2] border-t border-gray-500">
           <Input
             label="Nhập tin nhắn"
             icon={

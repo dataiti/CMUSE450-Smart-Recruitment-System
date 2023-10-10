@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useLogInMutation } from "../redux/features/apis/authApi";
 import { setCredentials } from "../redux/features/slices/authSlice";
@@ -35,6 +36,7 @@ const LoginForm = ({ open, handleOpen }) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -57,6 +59,8 @@ const LoginForm = ({ open, handleOpen }) => {
               refreshToken: response?.data?.refreshToken,
             })
           );
+          toast.success("Đăng nhập thành công !");
+          reset();
         }
       }
     } catch (error) {

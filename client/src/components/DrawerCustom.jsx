@@ -10,7 +10,7 @@ const DrawerCustom = ({ open, closeDrawer, children }) => {
       placement="right"
       transition={{ type: "spring", duration: 0.5 }}
       overlay={false}
-      className="h-screen overflow-y-hidden hover:overflow-y-scroll p-8 "
+      className="h-screen overflow-y-hidden hover:overflow-y-scroll p-8 !shadow-2xl"
     >
       {children}
     </Drawer>

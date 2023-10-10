@@ -145,7 +145,7 @@ const CategoryBar = ({
                           </ListItemPrefix>
                           <label
                             htmlFor={`checkbox-${itemChild.value}`}
-                            className="w-full cursor-pointer"
+                            className="w-full cursor-pointer text-black font-medium"
                           >
                             {itemChild.value}
                           </label>

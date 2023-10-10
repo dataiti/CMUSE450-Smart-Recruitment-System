@@ -40,6 +40,8 @@ const CategoriesPage = () => {
   const [salaryTo, setSalaryTo] = useState("_id");
   const [openDrawer, setOpenDrawer] = useState(false);
   const [jobDetailData, setJobDetailData] = useState({});
+  const [isColumnCard, setIsColumnCard] = useState(true);
+  const [isSticky, setIsSticky] = useState(false);
 
   const searchDebouceValue = useDebounce(search, 800);
 
@@ -74,6 +76,18 @@ const CategoriesPage = () => {
       );
     }
   }, [dispatch, listJobsData]);
+
+  useEffect(() => {
+    setLimit(!isColumnCard ? 5 : 10);
+  }, [isColumnCard]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 90 ? true : false);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const closeDrawer = () => setOpenDrawer(false);
 
@@ -134,23 +148,14 @@ const CategoriesPage = () => {
     }
   };
 
-  console.log({
-    industryFilter,
-    ratingFilter,
-    genderFilter,
-    typeJobFilter,
-    levelFilter,
-    experienceFilter,
-  });
-
   return (
     <div className="px-[110px] py-[20px] flex flex-col gap-2">
       {isFetching && <Loading />}
       <Breadcrumbs fullWidth className="bg-white">
-        <Link to="/" className="text-light-blue-500 text-sm font-medium">
+        <Link to="/" className="text-light-blue-500 text-sm font-bold">
           Trang chủ
         </Link>
-        <Link to="/category" className="font-bold text-sm">
+        <Link to="/categorycategories-job" className="font-bold text-sm">
           Danh mục việc làm
         </Link>
       </Breadcrumbs>
@@ -169,7 +174,11 @@ const CategoriesPage = () => {
           />
         </div>
         <div className="w-[76%] flex flex-col gap-2">
-          <div className="grid grid-cols-4 gap-2 bg-white rounded-md p-3">
+          <div
+            className={`grid grid-cols-4 gap-2 bg-white rounded-md p-3 sticky z-20 top-[80px] ${
+              isSticky ? "shadow-lg" : "shadow-none"
+            }`}
+          >
             <div className="col-span-2">
               <Input
                 label="Nhập công việc tìm kiếm"
@@ -202,24 +211,45 @@ const CategoriesPage = () => {
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <Typography className="flex items-center gap-2 font-medium ">
+            <Typography className="flex items-center gap-2 font-bold text-light-blue-600">
               <icons.FiSearch size={18} /> Tìm thấy {count} công việc
             </Typography>
-            <div className="bg-white p-1 rounded-md">
-              <ReactPaginate
-                pageCount={totalPage}
-                onPageChange={handlePageChange}
-                forcePage={page - 1}
-                containerClassName={"pagination"}
-                nextLabel={<icons.IoArrowRedoCircleOutline size={36} />}
-                previousLabel={<icons.IoArrowUndoCircleOutline size={36} />}
-                activeClassName="!bg-[#212f3f] text-white text-gray-700 py-1 px-3 rounded-sm"
-                pageClassName="bg-gray-200 text-gray-700 py-1 px-3 rounded-sm"
-                className="flex items-center gap-2 text-gray-700"
-              />
+            <div className="flex items-center gap-2">
+              {isColumnCard ? (
+                <IconButton
+                  className="shadow-none bg-white text-[#212f3f] !p-5 !rounded-md"
+                  onClick={() => setIsColumnCard(false)}
+                >
+                  <icons.FaBars size={24} />
+                </IconButton>
+              ) : (
+                <IconButton
+                  className="shadow-none bg-white text-[#212f3f] !p-5 !rounded-md"
+                  onClick={() => setIsColumnCard(true)}
+                >
+                  <icons.FaGripVertical size={24} />
+                </IconButton>
+              )}
+              <div className="bg-white p-1 rounded-md ">
+                <ReactPaginate
+                  pageCount={totalPage}
+                  onPageChange={handlePageChange}
+                  forcePage={page - 1}
+                  containerClassName={"pagination"}
+                  nextLabel={<icons.IoArrowRedoCircleOutline size={36} />}
+                  previousLabel={<icons.IoArrowUndoCircleOutline size={36} />}
+                  activeClassName="!bg-[#212f3f] text-white text-gray-700 py-1 px-3 rounded-sm"
+                  pageClassName="bg-gray-200 text-gray-700 py-1 px-3 rounded-sm"
+                  className="flex items-center gap-2 text-gray-700"
+                />
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div
+            className={`${
+              isColumnCard ? "grid grid-cols-2" : "flex flex-col"
+            } gap-2`}
+          >
             {listJobs?.length &&
               listJobs?.map((jobItem) => {
                 return (
@@ -228,6 +258,7 @@ const CategoriesPage = () => {
                     openDrawer={openDrawer}
                     setOpenDrawer={setOpenDrawer}
                     handleViewJobDetail={handleViewJobDetail}
+                    key={jobItem?._id}
                   />
                 );
               })}

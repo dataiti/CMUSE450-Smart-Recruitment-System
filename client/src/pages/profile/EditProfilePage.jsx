@@ -6,7 +6,7 @@ import { Button } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useReactToPrint } from "react-to-print";
+// import { useReactToPrint } from "react-to-print";
 
 const schema = Yup.object().shape({
   firstName: Yup.string().required("Tên không được để trống"),
@@ -44,11 +44,11 @@ const EditProfilePage = () => {
     }
   };
 
-  const generatePDF = useReactToPrint({
-    content: () => conponentPDF.current,
-    documentTitle: "Userdata",
-    onAfterPrint: () => alert("Data saved in PDF"),
-  });
+  // const generatePDF = useReactToPrint({
+  //   content: () => conponentPDF.current,
+  //   documentTitle: "Userdata",
+  //   onAfterPrint: () => alert("Data saved in PDF"),
+  // });
 
   return (
     <div className="h-[620px] w-full bg-white shadow-md rounded -md flex items-center justify-center">
@@ -84,9 +84,9 @@ const EditProfilePage = () => {
           />
         </div>
         <Button>Lưu</Button>
-        <Button className="" onClick={generatePDF}>
+        {/* <Button className="" onClick={generatePDF}>
           PDF
-        </Button>
+        </Button> */}
       </form>
     </div>
   );

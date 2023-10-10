@@ -10,7 +10,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputController from "../../components/InputController";
@@ -89,7 +89,7 @@ const RegisterCandidatePage = () => {
             <TimelineIcon className="p-2">
               <icons.IoBriefcase />
             </TimelineIcon>
-            <Typography variant="h5" color="blue-gray">
+            <Typography variant="h5" className="text-teal-800 font-bold">
               Thông tin làm việc cơ bản
             </Typography>
           </TimelineHeader>

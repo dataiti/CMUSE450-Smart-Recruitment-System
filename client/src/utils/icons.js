@@ -14,12 +14,14 @@ import {
   IoSettingsSharp,
   IoArrowRedoCircleOutline,
   IoArrowUndoCircleOutline,
+  IoLocationSharp,
 } from "react-icons/io5";
 import {
   MdFontDownload,
   MdEmail,
   MdKeyboardArrowRight,
   MdKeyboardArrowUp,
+  MdPhoneInTalk,
 } from "react-icons/md";
 import {
   BsFillImageFill,
@@ -29,8 +31,18 @@ import {
   BsBarChartLineFill,
   BsCameraFill,
 } from "react-icons/bs";
-import { FaUserAlt, FaUserCircle } from "react-icons/fa";
-import { BiSolidPhoneCall, BiLoaderCircle } from "react-icons/bi";
+import {
+  FaUserAlt,
+  FaUserCircle,
+  FaGripVertical,
+  FaBars,
+  FaUserFriends,
+} from "react-icons/fa";
+import {
+  BiSolidPhoneCall,
+  BiLoaderCircle,
+  BiSolidBuildingHouse,
+} from "react-icons/bi";
 import { HiLocationMarker } from "react-icons/hi";
 import {
   FaCircleChevronUp,
@@ -50,8 +62,22 @@ import {
 
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 import { HiFilter } from "react-icons/hi";
+import { GrReactjs, GrNode } from "react-icons/gr";
+import { SiTailwindcss, SiExpress } from "react-icons/si";
+import { DiMongodb } from "react-icons/di";
 
 const icons = {
+  FaUserFriends,
+  IoLocationSharp,
+  MdPhoneInTalk,
+  BiSolidBuildingHouse,
+  SiTailwindcss,
+  SiExpress,
+  DiMongodb,
+  FaBars,
+  GrReactjs,
+  GrNode,
+  FaGripVertical,
   BiLoaderCircle,
   FaStar,
   HiFilter,
