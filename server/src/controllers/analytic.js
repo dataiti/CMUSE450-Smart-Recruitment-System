@@ -1,5 +1,6 @@
 const Job = require("../models/job");
 const Candidate = require("../models/candidate");
+const Address = require("../models/address");
 const Employer = require("../models/employer");
 const asyncHandler = require("express-async-handler");
 const moment = require("moment");
@@ -17,10 +18,10 @@ const getOveviewStatistics = asyncHandler(async (req, res) => {
 });
 
 const generateTimeBasedLineChart = asyncHandler(async (req, res) => {
-  const { startDay, endDay, type, typeTime } = req.body;
+  const { startDay, endDay, type, typeTime } = req.query;
   let chartData, startTime, endTime;
   const typeChart = type ? type : "applicated";
-  const typeTimeChart = typeTime ? typeTime : "month";
+  const typeTimeChart = typeTime ? typeTime : "year";
 
   if (typeTimeChart === "day") {
     startTime = moment().startOf("day").toDate();
@@ -71,8 +72,8 @@ const generateTimeBasedLineChart = asyncHandler(async (req, res) => {
             },
           },
         },
-        total: {
-          $sum: typeChart === "applicated" ? 1 : { $size: "$appliedIds" },
+        value: {
+          $sum: typeChart !== "applicated" ? 1 : { $size: "$appliedIds" },
         },
       },
     },
@@ -88,7 +89,7 @@ const generateTimeBasedLineChart = asyncHandler(async (req, res) => {
       typeTimeChart !== "year"
         ? currentDate.format("DD-MM")
         : currentDate.format("MM");
-    dateRange.push({ _id: date, total: 0 });
+    dateRange.push({ _id: date, value: 0 });
     currentDate =
       typeTimeChart !== "year"
         ? currentDate.add(1, "day")
@@ -98,7 +99,7 @@ const generateTimeBasedLineChart = asyncHandler(async (req, res) => {
   chartData = dateRange.map((date) => {
     const matching = chartData.find((item) => item._id === date._id);
     if (matching) {
-      return { ...date, total: matching.total };
+      return { ...date, value: matching.value };
     }
     return date;
   });
@@ -110,19 +111,90 @@ const generateTimeBasedLineChart = asyncHandler(async (req, res) => {
   });
 });
 
-const generateTimeBasedPieChartByCategory = asyncHandler(
-  async (req, res) => {}
-);
+const generateTimeBasedPieChart = asyncHandler(async (req, res) => {
+  const typeChart = req.query.type ? req.query.type : "category";
+  let chartData;
 
-const generateTimeBasedPieChartByLocation = asyncHandler(
-  async (req, res) => {}
-);
+  const groupField =
+    typeChart === "category"
+      ? "$categoryId"
+      : typeChart === "industry"
+      ? "$industry"
+      : "$jobType";
+
+  if (typeChart === "workRegion") {
+    chartData = await Job.aggregate([
+      {
+        $match: {
+          status: "active",
+          employerId: req.employer._id,
+        },
+      },
+      {
+        $lookup: {
+          from: "addresses",
+          localField: "workRegion",
+          foreignField: "_id",
+          as: "addressData",
+        },
+      },
+      {
+        $unwind: "$addressData",
+      },
+      {
+        $project: {
+          "addressData.province": 1,
+        },
+      },
+      {
+        $group: {
+          _id: "$addressData.province",
+          value: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $sort: { value: -1 },
+      },
+    ]);
+  } else {
+    chartData = await Job.aggregate([
+      {
+        $match: {
+          status: "active",
+          employerId: req.employer._id,
+        },
+      },
+      {
+        $group: {
+          _id: groupField,
+          value: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $sort: { value: -1 },
+      },
+    ]);
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Get data pie chart is successfully",
+    data: chartData,
+  });
+});
+
+const generateRankJob = asyncHandler(async (req, res) => {});
 
 const getSchedule = asyncHandler(async (req, res) => {});
 
 module.exports = {
   getOveviewStatistics,
   generateTimeBasedLineChart,
-  generateTimeBasedPieChartByCategory,
-  generateTimeBasedPieChartByLocation,
+  generateTimeBasedPieChart,
+  generateRankJob,
+  getSchedule,
 };

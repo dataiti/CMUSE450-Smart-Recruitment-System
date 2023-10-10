@@ -94,9 +94,13 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    skills: {
+      type: Array,
+      default: [],
+    },
     status: {
       type: String,
-      default: "pending",
+      default: "active",
       enum: ["pending", "active", "expired", "reject"],
     },
     isHiring: {

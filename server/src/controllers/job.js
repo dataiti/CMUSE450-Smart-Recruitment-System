@@ -3,6 +3,7 @@ const Address = require("../models/address");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const job = require("../models/job");
+const { parseArrayQueryParam } = require("../utils/fn");
 
 const jobById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -14,7 +15,7 @@ const jobById = asyncHandler(async (req, res, next, id) => {
     });
   }
 
-  const job = await Job.findById(id);
+  const job = await Job.findById(id).populate('employerId').populate("workRegion");
 
   if (!job) throw new Error("Job is not find");
 
@@ -63,6 +64,7 @@ const createJob = asyncHandler(async (req, res) => {
     salaryTo: req.body.salaryTo && Number(req.body.salaryTo),
     jobDescription: req.body.jobDescription,
     candidateRequirements: req.body.candidateRequirements,
+    skills: JSON.parse(req.body.skills),
     candidateBenefits: req.body.candidateBenefits,
     applicationDeadline: applicationDeadline,
     receiverFullName: req.body.receiverFullName,
@@ -172,25 +174,99 @@ const toggleHiringStatusJob = asyncHandler(async (req, res) => {
   });
 });
 
-const getListJobForCandidate = asyncHandler(async (req, res) => {});
-
-const getListJobForEmployer = asyncHandler(async (req, res) => {
-  const search = req.query.search ? req.query.search : "";
+const getListJobs = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const search = query.search || "";
   const regex = search
     .split(" ")
     .filter((q) => q)
     .join("|");
-  const sortBy = req.query.sortBy ? req.query.sortBy : "-_id";
-  const orderBy =
-    req.query.orderBy &&
-    (req.query.orderBy == "asc" || req.query.orderBy == "desc")
-      ? req.query.orderBy
-      : "asc";
-  const limit =
-    req.query.limit && req.query.limit > 0 ? Number(req.query.limit) : 6;
-  const page =
-    req.query.page && req.query.page > 0 ? Number(req.query.page) : 1;
-  let skip = (page - 1) * limit;
+  const sortBy = query.sortBy || "-_id";
+  const orderBy = ["asc", "desc"].includes(query.orderBy)
+    ? query.orderBy
+    : "asc";
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+  const page = query.page > 0 ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
+
+  const industryArr = parseArrayQueryParam("industry", query);
+  const jobTypeArr = parseArrayQueryParam("jobType", query);
+  const genderArr = parseArrayQueryParam("gender", query);
+  const levelArr = parseArrayQueryParam("level", query);
+  const experienceArr = parseArrayQueryParam("experience", query);
+  const rating =
+    query.rating && query.rating > 0 && query.rating < 6
+      ? Number(query.rating)
+      : -1;
+  const salaryFrom =
+    query.salaryFrom && query.salaryFrom > 0 ? Number(query.salaryFrom) : -1;
+  const salaryTo =
+    query.salaryTo && query.salaryTo > 0 ? Number(query.salaryTo) : -1;
+
+  const filterArgs = {
+    $or: [
+      { recruitmentCampaignName: { $regex: regex, $options: "i" } },
+      { industry: { $regex: regex, $options: "i" } },
+      { recruitmentTitle: { $regex: regex, $options: "i" } },
+      { jobDescription: { $regex: regex, $options: "i" } },
+      { candidateRequirements: { $regex: regex, $options: "i" } },
+      { candidateBenefits: { $regex: regex, $options: "i" } },
+    ],
+    status: "active",
+  };
+
+  if (industryArr !== -1) filterArgs.industry = { $in: industryArr };
+  if (jobTypeArr !== -1) filterArgs.jobType = { $in: jobTypeArr };
+  if (genderArr !== -1) filterArgs.gender = { $in: genderArr };
+  if (levelArr !== -1) filterArgs.level = { $in: levelArr };
+  if (experienceArr !== -1) filterArgs.experience = { $in: experienceArr };
+  if (typeof rating !== "undefined" && rating !== -1) {
+    filterArgs.rating = { $gte: rating };
+  }
+  if (typeof salaryFrom !== "undefined" && salaryFrom !== -1) {
+    filterArgs.salaryFrom = { $gte: salaryFrom };
+  }
+
+  if (typeof salaryTo !== "undefined" && salaryTo !== -1) {
+    filterArgs.salaryTo = { $lte: salaryTo };
+  }
+
+  const countJobs = await Job.countDocuments(filterArgs);
+
+  const totalPage = Math.ceil(countJobs / limit);
+
+  const listJobs = await Job.find(filterArgs)
+    .sort({ [sortBy]: orderBy, _id: -1 })
+    .skip(skip)
+    .limit(limit)
+    .populate("workRegion")
+    // .populate("categoryId", "name")
+    .populate("employerId");
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list jobs are successfully",
+    totalPage,
+    currentPage: page,
+    count: countJobs,
+    data: listJobs,
+  });
+});
+
+const getListJobForEmployer = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const search = query.search || "";
+  const regex = search
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
+  const sortBy = query.sortBy || "-_id";
+  const orderBy = ["asc", "desc"].includes(query.orderBy)
+    ? query.orderBy
+    : "asc";
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+  const page = query.page > 0 ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
 
   const status = req.query.status ? req.query.status : -1;
   const experience = req.query.experience ? req.query.experience : -1;
@@ -210,15 +286,9 @@ const getListJobForEmployer = asyncHandler(async (req, res) => {
 
   const filterArgs = {
     $or: [
-      {
-        recruitmentCampaignName: { $regex: regex, $options: "i" },
-      },
-      {
-        industry: { $regex: regex, $options: "i" },
-      },
-      {
-        recruitmentTitle: { $regex: regex, $options: "i" },
-      },
+      { recruitmentCampaignName: { $regex: regex, $options: "i" } },
+      { industry: { $regex: regex, $options: "i" } },
+      { recruitmentTitle: { $regex: regex, $options: "i" } },
     ],
     employerId: req.employer._id,
   };
@@ -267,7 +337,7 @@ module.exports = {
   editJob,
   deleteJob,
   toggleHiringStatusJob,
-  getListJobForCandidate,
+  getListJobs,
   getListJobForEmployer,
   getListJobForAdmin,
 };

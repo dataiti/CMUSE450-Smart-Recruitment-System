@@ -6,7 +6,7 @@ const {
   editJob,
   deleteJob,
   toggleHiringStatusJob,
-  getListJobForCandidate,
+  getListJobs,
   getListJobForEmployer,
   getListJobForAdmin,
 } = require("../controllers/job");
@@ -16,11 +16,12 @@ const { employerById } = require("../controllers/employer");
 
 const router = express.Router();
 
+router.get("/get-list-jobs", getListJobs);
 router.get(
   "/get-list-jobs/employer/:userId/:employerId",
   getListJobForEmployer
 );
-router.get("/get-job-detail/:userId/:jobId", getJobDetail);
+router.get("/get-job-detail/:jobId", getJobDetail);
 router.post("/create-job/:userId/:employerId", createJob);
 // router.put("/edit-user/:userId", editUser);
 router.delete("/delete-job/:userId/:employerId/:jobId/:addressId", deleteJob);
