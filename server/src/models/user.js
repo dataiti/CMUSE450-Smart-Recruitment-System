@@ -70,6 +70,15 @@ const userSchema = new mongoose.Schema(
       ],
       default: [],
     },
+    wishlistIds: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Job",
+        },
+      ],
+      default: [],
+    },
     status: {
       type: String,
       default: "Active",
