@@ -1,4 +1,8 @@
-import { IoMdSend } from "react-icons/io";
+import {
+  IoMdSend,
+  IoIosArrowDroprightCircle,
+  IoIosArrowDropleftCircle,
+} from "react-icons/io";
 import { PiBellRingingFill } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
 import { FiSearch, FiChevronDown, FiEdit } from "react-icons/fi";
@@ -15,6 +19,7 @@ import {
   IoArrowRedoCircleOutline,
   IoArrowUndoCircleOutline,
   IoLocationSharp,
+  IoCloseCircleSharp,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -30,6 +35,7 @@ import {
   BsCalendar3,
   BsBarChartLineFill,
   BsCameraFill,
+  BsFacebook,
 } from "react-icons/bs";
 import {
   FaUserAlt,
@@ -37,6 +43,8 @@ import {
   FaGripVertical,
   FaBars,
   FaUserFriends,
+  FaHeadphonesAlt,
+  FaBriefcase,
 } from "react-icons/fa";
 import {
   BiSolidPhoneCall,
@@ -51,6 +59,9 @@ import {
   FaCircleXmark,
   FaFaceSmile,
   FaStar,
+  FaCircleInfo,
+  FaLock,
+  FaDollarSign,
 } from "react-icons/fa6";
 import {
   AiOutlineBold,
@@ -67,6 +78,15 @@ import { SiTailwindcss, SiExpress } from "react-icons/si";
 import { DiMongodb } from "react-icons/di";
 
 const icons = {
+  BsFacebook,
+  FaHeadphonesAlt,
+  FaDollarSign,
+  FaLock,
+  FaBriefcase,
+  IoCloseCircleSharp,
+  IoIosArrowDroprightCircle,
+  IoIosArrowDropleftCircle,
+  FaCircleInfo,
   FaUserFriends,
   IoLocationSharp,
   MdPhoneInTalk,

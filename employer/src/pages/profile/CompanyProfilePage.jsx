@@ -8,7 +8,7 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import InputController from "../../components/InputController";
 import { useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ import InputFileController from "../../components/InputFileController";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetEmployerDetailQuery } from "../../redux/features/apis/employerApi";
 import { authSelect } from "../../redux/features/slices/authSlice";
+import { setTitle } from "../../redux/features/slices/titleSlice";
 
 const schema = yup.object().shape({
   companyLogo: yup.string().required("Logo công ty là trường bắt buộc"),
@@ -89,6 +90,10 @@ const CompanyProfilePage = () => {
     },
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    dispatch(setTitle("Thông tin công ty"));
+  }, [dispatch]);
 
   const handleSubmitRegisterEmployer = async (data) => {
     try {

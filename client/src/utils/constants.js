@@ -1,27 +1,31 @@
 import { icons } from "../utils/icons";
-import { images } from "../assets/images";
-import { Rating, rating } from "@material-tailwind/react";
+import { Rating } from "@material-tailwind/react";
 
-export const CVTemplates = [
+export const loyaltyProgramItem = [
   {
-    id: 1,
-    name: "Cascade",
-    path: images.cascade,
+    display: "Cơ hội việc làm",
+    subDisplay: "Đa dạng vị trí công việc IT",
+    icon: <icons.FaBriefcase size={24} />,
   },
   {
-    id: 2,
-    name: "Decker",
-    path: images.decker,
+    display: "Thương hiệu uy tín",
+    subDisplay: "Lựa chọn từ các công ty hàng đầu",
+    icon: <icons.FaStar size={24} />,
   },
   {
-    id: 3,
-    name: "Iconic",
-    path: images.iconic,
+    display: "Hỗ trợ 24/7",
+    subDisplay: "Luôn sẵn sàng giúp đỡ",
+    icon: <icons.FaHeadphonesAlt size={24} />,
   },
   {
-    id: 4,
-    name: "Simple",
-    path: images.simple,
+    display: "Lương cạnh tranh",
+    subDisplay: "Thanh toán hấp dẫn",
+    icon: <icons.FaDollarSign size={24} />,
+  },
+  {
+    display: "Bảo mật thông tin",
+    subDisplay: "Bảo vệ thông tin cá nhân",
+    icon: <icons.FaLock size={24} />,
   },
 ];
 
@@ -34,7 +38,7 @@ export const sidebarItems = [
   },
   {
     id: 2,
-    path: "/categories",
+    path: "/categories-job",
     icon: <icons.IoBriefcase size={20} />,
     name: "Việc làm",
   },

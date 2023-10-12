@@ -3,6 +3,8 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
+moment.locale("vi");
+
 const localizer = momentLocalizer(moment);
 
 function MyCalendarPage() {
@@ -16,19 +18,19 @@ function MyCalendarPage() {
     {
       title:
         "Phòng 111 - Phỏng vấn ở công ty A - Vị trí lập trình viên Frontend ReactJS",
-      start: new Date(2023, 8, 17, 8, 0),
-      end: new Date(2023, 8, 17, 11, 0),
+      start: new Date(2023, 9, 11, 8, 0),
+      end: new Date(2023, 9, 11, 11, 0),
     },
     {
       title:
         "Phòng 345 - Phỏng vấn ở công ty A - Vị trí lập trình viên Backtend NodeJS",
-      start: new Date(2023, 8, 19, 14, 0),
-      end: new Date(2023, 8, 19, 19, 0),
+      start: new Date(2023, 9, 19, 14, 0),
+      end: new Date(2023, 9, 19, 19, 0),
     },
     {
       title: "Phòng 213 - Phỏng vấn ở công ty A - Phò",
-      start: new Date(2023, 8, 21, 13, 0),
-      end: new Date(2023, 8, 21, 16, 0),
+      start: new Date(2023, 9, 21, 13, 0),
+      end: new Date(2023, 9, 21, 16, 0),
     },
   ];
 

@@ -17,7 +17,7 @@ const SelectController = ({
         control={control}
         render={({ field }) => (
           <div className="grid grid-cols-4">
-            <label className="col-span-1 text-sm font-medium whitespace-no-wrap">
+            <label className="col-span-1 text-base font-bold whitespace-no-wrap text-teal-800">
               {label}
             </label>
             <div className="col-span-2 w-full">

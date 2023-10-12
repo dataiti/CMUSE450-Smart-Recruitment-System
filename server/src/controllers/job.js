@@ -15,7 +15,9 @@ const jobById = asyncHandler(async (req, res, next, id) => {
     });
   }
 
-  const job = await Job.findById(id).populate('employerId').populate("workRegion");
+  const job = await Job.findById(id)
+    .populate("employerId")
+    .populate("workRegion");
 
   if (!job) throw new Error("Job is not find");
 
@@ -174,6 +176,44 @@ const toggleHiringStatusJob = asyncHandler(async (req, res) => {
   });
 });
 
+const getListSearchJobs = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const search = query.search ? query.search : null;
+  const regex = search
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
+  const limit = query.limit > 0 ? Number(query.limit) : 8;
+
+  const filterArgs = {
+    $or: [
+      { recruitmentCampaignName: { $regex: regex, $options: "i" } },
+      { industry: { $regex: regex, $options: "i" } },
+      { recruitmentTitle: { $regex: regex, $options: "i" } },
+    ],
+    isHiring: true,
+    status: "active",
+  };
+
+  const countJobs = await Job.countDocuments(filterArgs);
+
+  const totalPage = Math.ceil(countJobs / limit);
+
+  const listJobs = await Job.find(filterArgs)
+    .limit(limit)
+    .populate("workRegion")
+    // .populate("categoryId", "name")
+    .populate("employerId");
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list search jobs are successfully",
+    totalPage,
+    count: countJobs,
+    data: listJobs,
+  });
+});
+
 const getListJobs = asyncHandler(async (req, res) => {
   const { query } = req;
   const search = query.search || "";
@@ -212,6 +252,7 @@ const getListJobs = asyncHandler(async (req, res) => {
       { candidateRequirements: { $regex: regex, $options: "i" } },
       { candidateBenefits: { $regex: regex, $options: "i" } },
     ],
+    isHiring: true,
     status: "active",
   };
 
@@ -337,6 +378,7 @@ module.exports = {
   editJob,
   deleteJob,
   toggleHiringStatusJob,
+  getListSearchJobs,
   getListJobs,
   getListJobForEmployer,
   getListJobForAdmin,

@@ -2,6 +2,14 @@ import { rootApi } from "../../../configs/rootApi";
 
 const jobApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
+    getListSearchJobs: builder.query({
+      query: ({ search }) => {
+        return {
+          url: `/job/get-list-search-jobs?search=${search}`,
+          method: "GET",
+        };
+      },
+    }),
     getJobDetail: builder.query({
       query: ({ jobId }) => {
         return {
@@ -35,4 +43,8 @@ const jobApi = rootApi.injectEndpoints({
   }),
 });
 
-export const { useGetJobDetailQuery, useGetListOfJobsQuery } = jobApi;
+export const {
+  useGetListSearchJobsQuery,
+  useGetJobDetailQuery,
+  useGetListOfJobsQuery,
+} = jobApi;

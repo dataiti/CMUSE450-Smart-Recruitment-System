@@ -1,13 +1,13 @@
 import React from "react";
 import { icons } from "../utils/icons";
-import logo from "../assets/images/logo.jpg";
+import { images } from "../assets/images";
 
 const Footer = () => {
   return (
     <footer>
       <div className="w-full bg-black py-5 ">
         <div className="py-5 flex flex-col gap-2 items-center justify-center">
-          <img src={logo} alt="" className="w-20 " />
+          <img src={images.logo} alt="" className="w-16" />
           <span className="text-[20px] font-extrabold text-white">
             SMART RECRUITMENT SYSTEM
           </span>

@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  Button,
   Dialog,
   CardBody,
   CardFooter,
@@ -16,6 +15,8 @@ import { useDispatch } from "react-redux";
 import { useLogInMutation } from "../redux/features/apis/authApi";
 import { setCredentials } from "../redux/features/slices/authSlice";
 import Loading from "./Loading";
+import ButtonCustom from "./ButtonCustom";
+import SocialLoginForm from "./SocialLoginForm";
 
 const schema = yup.object().shape({
   email: yup
@@ -32,6 +33,7 @@ const LoginForm = ({ open, handleOpen }) => {
   const dispatch = useDispatch();
 
   const [login, { isLoading }] = useLogInMutation();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     control,
@@ -61,6 +63,8 @@ const LoginForm = ({ open, handleOpen }) => {
           );
           toast.success("Đăng nhập thành công !");
           reset();
+        } else if (response && response.data && !response.data.success) {
+          setErrorMessage("Email hoặc mật khẩu không chính xác");
         }
       }
     } catch (error) {
@@ -79,10 +83,13 @@ const LoginForm = ({ open, handleOpen }) => {
         aria-labelledby="customized-dialog-title"
       >
         <form
-          className="bg-white py-8 rounded-3xl mx-auto w-full max-w-[24rem]"
+          className="bg-white py-8 rounded-3xl mx-auto w-full max-w-[22rem]"
           onSubmit={handleSubmit(onSubmitLogin)}
         >
-          <Typography variant="h3" color="black" className="text-center">
+          <Typography
+            color="black"
+            className="text-center uppercase text-xl font-bold"
+          >
             Đăng Nhập
           </Typography>
           <CardBody className="flex flex-col gap-6">
@@ -91,11 +98,19 @@ const LoginForm = ({ open, handleOpen }) => {
                 name="email"
                 control={control}
                 render={({ field }) => (
-                  <Input label="Email" {...field} error={!!errors.email} />
+                  <Input
+                    label="Email"
+                    {...field}
+                    error={!!errors.email}
+                    spellCheck={false}
+                  />
                 )}
               />
               {!!errors.email && (
-                <Typography color="red" className="absolute -bottom-6 text-sm">
+                <Typography
+                  color="red"
+                  className="absolute -bottom-4 text-xs font-bold"
+                >
                   {errors.email?.message}
                 </Typography>
               )}
@@ -114,33 +129,54 @@ const LoginForm = ({ open, handleOpen }) => {
                 )}
               />
               {!!errors.password && (
-                <Typography color="red" className="absolute -bottom-6 text-sm">
+                <Typography
+                  color="red"
+                  className="absolute -bottom-4 text-xs font-bold"
+                >
                   {errors.password?.message}
                 </Typography>
               )}
             </div>
-            <Typography className="text-right text-sm text-black font-bold">
+          </CardBody>
+          <CardFooter className="!py-0">
+            <Typography className="pb-2 text-right text-xs font-medium text-black">
               Quên mật khẩu
             </Typography>
-          </CardBody>
-          <CardFooter className="pt-0">
-            <Button type="submit" variant="gradient" fullWidth>
-              Đăng nhập
-            </Button>
-            <Typography variant="small" className="mt-6 flex justify-center">
+            <div className="relative">
+              <ButtonCustom
+                type="submit"
+                fullWidth
+                className="text-[#0891b2] !bg-[#212f3f] rounded-full"
+              >
+                Đăng nhập
+              </ButtonCustom>
+              {errorMessage && (
+                <Typography
+                  className="w-full absolute -bottom-5 text-xs font-bold"
+                  color="red"
+                >
+                  {errorMessage}
+                </Typography>
+              )}
+            </div>
+            <Typography
+              variant="small"
+              className="mt-6 flex justify-center font-medium"
+            >
               Bạn chưa đã có tài khoản?
               <Link
                 variant="small"
-                className="ml-1 font-bold text-blue-500"
+                className="ml-1 text-sm font-bold text-blue-500"
                 onClick={handleOpen}
               >
                 Đăng ký ngay
               </Link>
             </Typography>
+            <Typography className="text-center text-sm text-black font-bold">
+              Hoặc đăng nhập bằng
+            </Typography>
+            <SocialLoginForm />
           </CardFooter>
-          <Typography className="text-center text-sm text-black font-bold">
-            Hoặc đăng nhập bằng
-          </Typography>
         </form>
       </Dialog>
     </>

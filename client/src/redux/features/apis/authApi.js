@@ -16,6 +16,13 @@ const authApi = rootApi.injectEndpoints({
         body: { ...data },
       }),
     }),
+    sociallogIn: builder.mutation({
+      query: (data) => ({
+        url: "/auth/social-login",
+        method: "POST",
+        body: { ...data },
+      }),
+    }),
     logOut: builder.mutation({
       query: (data) => {
         console.log(data);
@@ -45,6 +52,7 @@ const authApi = rootApi.injectEndpoints({
 
 export const {
   useLogInMutation,
+  useSociallogInMutation,
   useRegisterMutation,
   useForgotPasswordMutation,
   useLogOutMutation,

@@ -73,7 +73,7 @@ const Sidebar = () => {
         </div>
       </div>
       <hr className=" border-blue-gray-100" />
-      <List className="p-4 text-sm">
+      <List className="p-4 text-sm font-bold">
         <Link to="/dashboard">
           <ListItem>
             <ListItemPrefix>
@@ -102,7 +102,7 @@ const Sidebar = () => {
               <ListItemPrefix>
                 <icons.IoBriefcase size={20} />
               </ListItemPrefix>
-              <Typography className="mr-auto text-sm">
+              <Typography className="mr-auto text-sm font-bold">
                 Chiến dịch tuyển dụng
               </Typography>
             </AccordionHeader>
@@ -110,7 +110,7 @@ const Sidebar = () => {
           <AccordionBody className="py-1">
             <List className="p-0">
               <Link to="/list-jobs">
-                <ListItem className="text-sm">
+                <ListItem className="text-sm font-bold">
                   <ListItemPrefix>
                     <icons.MdKeyboardArrowRight size={20} />
                   </ListItemPrefix>
@@ -118,7 +118,7 @@ const Sidebar = () => {
                 </ListItem>
               </Link>
               <Link to="/create-recruitment-job">
-                <ListItem className="text-sm">
+                <ListItem className="text-sm font-bold">
                   <ListItemPrefix>
                     <icons.MdKeyboardArrowRight size={20} />
                   </ListItemPrefix>
@@ -147,19 +147,21 @@ const Sidebar = () => {
               <ListItemPrefix>
                 <icons.HiDocumentText size={20} />
               </ListItemPrefix>
-              <Typography className="mr-auto text-sm">
+              <Typography className="mr-auto text-sm font-bold">
                 Hồ sơ & CV ứng tuyển
               </Typography>
             </AccordionHeader>
           </ListItem>
           <AccordionBody className="py-1">
             <List className="p-0">
-              <ListItem className="text-sm">
-                <ListItemPrefix>
-                  <icons.MdKeyboardArrowRight size={20} />
-                </ListItemPrefix>
-                Quản lý CV
-              </ListItem>
+              <Link to="/list-resumes">
+                <ListItem className="text-sm font-bold">
+                  <ListItemPrefix>
+                    <icons.MdKeyboardArrowRight size={20} />
+                  </ListItemPrefix>
+                  Quản lý CV
+                </ListItem>
+              </Link>
             </List>
           </AccordionBody>
         </Accordion>
@@ -191,7 +193,7 @@ const Sidebar = () => {
               <ListItemPrefix>
                 <icons.IoSettingsSharp size={20} />
               </ListItemPrefix>
-              <Typography className="mr-auto text-sm">
+              <Typography className="mr-auto text-sm font-bold">
                 Cài đặt tài khoản
               </Typography>
             </AccordionHeader>
@@ -199,7 +201,7 @@ const Sidebar = () => {
           <AccordionBody className="py-1">
             <List className="p-0">
               <Link to="/user-profile">
-                <ListItem className="text-sm">
+                <ListItem className="text-sm font-bold">
                   <ListItemPrefix>
                     <icons.MdKeyboardArrowRight size={20} />
                   </ListItemPrefix>
@@ -207,7 +209,7 @@ const Sidebar = () => {
                 </ListItem>
               </Link>
               <Link to="/company-profile">
-                <ListItem className="text-sm">
+                <ListItem className="text-sm font-bold">
                   <ListItemPrefix>
                     <icons.MdKeyboardArrowRight size={20} />
                   </ListItemPrefix>

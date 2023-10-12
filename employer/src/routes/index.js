@@ -12,6 +12,7 @@ import {
   UserProfilePage,
 } from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
+import ListResumes from "../pages/resume/ListResumes";
 
 const routers = [
   {
@@ -51,6 +52,10 @@ const routers = [
           {
             path: "/list-jobs",
             element: <ListJobsPage />,
+          },
+          {
+            path: "/list-resumes",
+            element: <ListResumes />,
           },
           {
             path: "/create-recruitment-job",

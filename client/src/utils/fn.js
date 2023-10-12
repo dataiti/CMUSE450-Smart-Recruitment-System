@@ -1,4 +1,4 @@
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
 import numeral from "numeral";
 
@@ -12,6 +12,30 @@ export const formattedAmount = (amount) => {
     return numeral(amount / 100).format("0") + " Trăm";
   } else return numeral(amount).format("0.0");
 };
+
+export const formatRemainingTime = (deadline) => {
+  if (!deadline) return "Không có hạn cuối";
+
+  if (!isValidDate(deadline)) return "Hạn cuối không hợp lệ";
+
+  const currentDate = new Date();
+  const targetDate = parseISO(deadline);
+  const differenceInMilliseconds = targetDate - currentDate;
+
+  if (differenceInMilliseconds <= 0) return "Hết hạn";
+
+  const remainingTime = formatDistanceToNow(targetDate, {
+    addSuffix: true,
+    locale: vi,
+  });
+
+  return remainingTime;
+};
+
+function isValidDate(dateString) {
+  const date = parseISO(dateString);
+  return !isNaN(date.getTime());
+}
 
 export const formattedProvinceNames = (inputString) => {
   const modifiedString = inputString.replace(/(Tỉnh|Thành phố)\s/g, "");

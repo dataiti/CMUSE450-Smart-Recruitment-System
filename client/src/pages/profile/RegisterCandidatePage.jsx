@@ -7,7 +7,6 @@ import {
   TimelineIcon,
   TimelineBody,
   Typography,
-  Button,
 } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
 import { useForm } from "react-hook-form";
@@ -19,6 +18,8 @@ import TextareaController from "../../components/TextareaController";
 import RadioController from "../../components/RadioController";
 import { desiredSalarys, experiens } from "../../utils/constants";
 import axiosClient from "../../configs/axiosConfig";
+import IconButtonCustom from "../../components/IconButtonCustom";
+import ButtonCustom from "../../components/ButtonCustom";
 
 const schema = yup.object().shape({
   currentPassword: yup.string().required("Mật khẩu không được bỏ trống"),
@@ -75,8 +76,6 @@ const RegisterCandidatePage = () => {
     }
   };
 
-  console.log(workLocationsValue);
-
   return (
     <form
       className="bg-white p-4 rounded-md w-full shadow-md"
@@ -86,8 +85,10 @@ const RegisterCandidatePage = () => {
         <TimelineItem>
           <TimelineConnector />
           <TimelineHeader>
-            <TimelineIcon className="p-2">
-              <icons.IoBriefcase />
+            <TimelineIcon className="!p-0">
+              <IconButtonCustom>
+                <icons.IoBriefcase />
+              </IconButtonCustom>
             </TimelineIcon>
             <Typography variant="h5" className="text-teal-800 font-bold">
               Thông tin làm việc cơ bản
@@ -158,8 +159,10 @@ const RegisterCandidatePage = () => {
         <TimelineItem>
           <TimelineConnector />
           <TimelineHeader>
-            <TimelineIcon className="p-2">
-              <icons.IoAddCircle />
+            <TimelineIcon className="!p-0">
+              <IconButtonCustom>
+                <icons.IoAddCircle />
+              </IconButtonCustom>
             </TimelineIcon>
             <Typography variant="h5" color="blue-gray">
               Thông tin thêm (không bắt buộc)
@@ -190,18 +193,18 @@ const RegisterCandidatePage = () => {
         </TimelineItem>
         <TimelineItem>
           <TimelineHeader>
-            <TimelineIcon className="p-2">
-              <icons.BsCheckCircleFill />
+            <TimelineIcon className="!p-0">
+              <IconButtonCustom>
+                <icons.BsCheckCircleFill />
+              </IconButtonCustom>
             </TimelineIcon>
             <Typography variant="h5" color="blue-gray">
               Hoàn thành
             </Typography>
-          </TimelineHeader>
-          <TimelineBody>
             <div className="flex items-center justify-center">
-              <Button>Đăng ký ứng viên</Button>
+              <ButtonCustom>Đăng ký ứng viên</ButtonCustom>
             </div>
-          </TimelineBody>
+          </TimelineHeader>
         </TimelineItem>
       </Timeline>
     </form>

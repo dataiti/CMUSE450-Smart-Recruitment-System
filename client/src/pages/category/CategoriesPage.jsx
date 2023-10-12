@@ -250,7 +250,7 @@ const CategoriesPage = () => {
               isColumnCard ? "grid grid-cols-2" : "flex flex-col"
             } gap-2`}
           >
-            {listJobs?.length &&
+            {listJobs?.length > 0 &&
               listJobs?.map((jobItem) => {
                 return (
                   <JobCard

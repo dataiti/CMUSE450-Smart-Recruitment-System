@@ -34,6 +34,8 @@ import {
 } from "@material-tailwind/react";
 import { addJob } from "../../redux/features/slices/jobSlice";
 import InputTagsController from "../../components/InputTagsController";
+import IconButtonCustom from "../../components/IconButtonCustom";
+import { setTitle } from "../../redux/features/slices/titleSlice";
 
 const schema = yup.object().shape({
   recruitmentCampaignName: yup
@@ -151,6 +153,10 @@ const CreateRecruitmentJobPage = () => {
         : 4
     );
   }, [salaryType]);
+
+  useEffect(() => {
+    dispatch(setTitle("Thêm tin tuyển dụng"));
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchWorkLocationsApi = async () => {
@@ -284,12 +290,14 @@ const CreateRecruitmentJobPage = () => {
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
-                <TimelineIcon className="p-2 bg-[#212f3f]">
-                  <icons.IoBriefcase />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Thông tin chiến dịch
                 </Typography>
@@ -314,12 +322,14 @@ const CreateRecruitmentJobPage = () => {
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
-                <TimelineIcon className="p-2 bg-[#212f3f]">
-                  <icons.IoBriefcase />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Khu vực làm việc
                 </Typography>
@@ -359,12 +369,14 @@ const CreateRecruitmentJobPage = () => {
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
-                <TimelineIcon className="p-2">
-                  <icons.IoAddCircle />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Tiêu đề tin tuyển dụng
                 </Typography>
@@ -383,12 +395,14 @@ const CreateRecruitmentJobPage = () => {
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
-                <TimelineIcon className="p-2">
-                  <icons.IoAddCircle />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Ngành nghề & Lĩnh vực
                 </Typography>
@@ -408,12 +422,14 @@ const CreateRecruitmentJobPage = () => {
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
-                <TimelineIcon className="p-2">
-                  <icons.IoAddCircle />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Thông tin chung
                 </Typography>
@@ -509,12 +525,14 @@ const CreateRecruitmentJobPage = () => {
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
-                <TimelineIcon className="p-2">
-                  <icons.IoAddCircle />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Nội dung tuyển chi tiết
                 </Typography>
@@ -533,12 +551,14 @@ const CreateRecruitmentJobPage = () => {
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
-                <TimelineIcon className="p-2">
-                  <icons.IoAddCircle />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Yêu cầu ứng viên
                 </Typography>
@@ -563,12 +583,14 @@ const CreateRecruitmentJobPage = () => {
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
-                <TimelineIcon className="p-2">
-                  <icons.IoAddCircle />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Quyền lợi ứng viên
                 </Typography>
@@ -587,12 +609,14 @@ const CreateRecruitmentJobPage = () => {
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
-                <TimelineIcon className="p-2">
-                  <icons.IoAddCircle />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Thông tin nhận CV
                 </Typography>
@@ -629,12 +653,14 @@ const CreateRecruitmentJobPage = () => {
             </TimelineItem>
             <TimelineItem>
               <TimelineHeader>
-                <TimelineIcon className="p-2">
-                  <icons.BsCheckCircleFill />
+                <TimelineIcon className="!p-0">
+                  <IconButtonCustom>
+                    <icons.BsCheckCircleFill />
+                  </IconButtonCustom>
                 </TimelineIcon>
                 <Typography
                   variant="h5"
-                  className="text-base font-bold text-teal-800"
+                  className="text-base font-bold text-light-blue-600 uppercase"
                 >
                   Hoàn thành
                 </Typography>

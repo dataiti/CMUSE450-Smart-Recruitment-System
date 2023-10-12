@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useGenerateTimeBasedLineChartQuery,
   useGenerateTimeBasedPieChartByIndustryQuery,
 } from "../../redux/features/apis/analyticApi";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LineChart from "../../components/LineChart";
 import PieChart from "../../components/PieChart";
 import { Input, Typography } from "@material-tailwind/react";
@@ -18,12 +18,15 @@ import {
 import SelectCustom from "../../components/SelectCustom";
 import { icons } from "../../utils/icons";
 import MyCalendar from "../../components/MyCalendar";
+import { setTitle } from "../../redux/features/slices/titleSlice";
 
 const DashboardPage = () => {
+  const dispatch = useDispatch();
+
   const [startDay, setStartDay] = useState("");
   const [endDay, setEndDay] = useState("");
   const [type, setType] = useState("job");
-  const [typeTime, setTypeTime] = useState("week");
+  const [typeTime, setTypeTime] = useState("month");
   const [typePieChart, setTypePieChart] = useState("industry");
 
   const { user } = useSelector(authSelect);
@@ -52,6 +55,10 @@ const DashboardPage = () => {
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  useEffect(() => {
+    dispatch(setTitle("Dashboard"));
+  }, [dispatch]);
 
   const handleSelectedTypeTimeChart = (e) => {
     setTypeTime(e);
@@ -82,13 +89,13 @@ const DashboardPage = () => {
               className="bg-white shadow-sm p-2 rounded-md h-24 flex flex-col items-center"
               key={item.id}
             >
-              <Typography className="uppercase text-sm flex items-center gap-2 font-bold text-blue-gray-900">
+              <Typography className="uppercase text-sm flex items-center gap-2 font-extrabold text-blue-gray-900">
                 <div className="p-2 bg-green-50 text-green-900 rounded-full">
                   <icons.IoBriefcase size={20} />
                 </div>
                 {item.name}
               </Typography>
-              <Typography className="text-3xl font-bold text-green-700 ">
+              <Typography className="text-3xl font-extrabold text-green-900 ">
                 {item.value}
               </Typography>
             </div>

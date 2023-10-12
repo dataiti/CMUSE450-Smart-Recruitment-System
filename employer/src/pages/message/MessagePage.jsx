@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ListConversations from "../../components/ListConversations";
 import { fakeDataMessage, recruitmentChatData } from "../../utils/constants";
 import {
@@ -15,10 +15,18 @@ import {
 import { icons } from "../../utils/icons";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
+import { setTitle } from "../../redux/features/slices/titleSlice";
+import { useDispatch } from "react-redux";
 
 const MessagePage = () => {
+  const dispatch = useDispatch();
+
   const [openPicker, setOpenPicker] = useState(false);
   const [inputValue, setInputValue] = useState(false);
+
+  useEffect(() => {
+    dispatch(setTitle("Tin nhắn"));
+  }, [dispatch]);
 
   const handleClickEmoji = () => {};
 

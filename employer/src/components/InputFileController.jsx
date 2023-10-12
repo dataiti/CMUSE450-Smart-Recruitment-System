@@ -21,7 +21,7 @@ const InputController = ({ name, control, label, error, imgUrlPreview }) => {
           <div className="grid grid-cols-4">
             <label
               htmlFor={name}
-              className="col-span-1 text-sm font-medium whitespace-no-wrap"
+              className="col-span-1 text-base font-bold whitespace-no-wrap text-teal-800"
             >
               {label}
             </label>
@@ -55,7 +55,10 @@ const InputController = ({ name, control, label, error, imgUrlPreview }) => {
                 }}
               />
               {!!error && (
-                <Typography color="red" className="absolute -bottom-6 text-sm">
+                <Typography
+                  color="red"
+                  className="absolute -bottom-6 text-sm font-medium"
+                >
                   {error?.message}
                 </Typography>
               )}

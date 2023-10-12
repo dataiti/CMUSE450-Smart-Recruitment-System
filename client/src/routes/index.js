@@ -10,6 +10,7 @@ import {
   ResumeOnlinePage,
   JobDetailPage,
   WishListPage,
+  CompanyProfile,
 } from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
 
@@ -22,6 +23,14 @@ const routers = [
         element: <HomePage />,
         index: true,
       },
+      {
+        path: "/categories-job",
+        element: <CategoriesPage />,
+      },
+      {
+        path: "/job-detail/:jobId",
+        element: <JobDetailPage />,
+      },
     ],
   },
   {
@@ -32,20 +41,16 @@ const routers = [
         element: <ProtectedRoutes />,
         children: [
           {
-            path: "/categories-job",
-            element: <CategoriesPage />,
-          },
-          {
-            path: "/job-detail/:jobId",
-            element: <JobDetailPage />,
-          },
-          {
             path: "/resume-online",
             element: <ResumeOnlinePage />,
           },
           {
             path: "/wishlist",
             element: <WishListPage />,
+          },
+          {
+            path: "/company-profile/:companyId",
+            element: <CompanyProfile />,
           },
         ],
       },

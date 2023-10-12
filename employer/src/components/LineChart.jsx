@@ -7,7 +7,7 @@ const LineChart = ({ data = [], className = "", type = "week" }) => {
     type === "week"
       ? 0.2
       : type === "month"
-      ? 0.8
+      ? 0.7
       : type === "year"
       ? 0.3
       : 0.1;

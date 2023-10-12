@@ -35,6 +35,7 @@ import { useDebounce } from "../../hooks";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { icons } from "../../utils/icons";
+import { setTitle } from "../../redux/features/slices/titleSlice";
 
 const ListJobsPage = () => {
   const dispatch = useDispatch();
@@ -87,6 +88,10 @@ const ListJobsPage = () => {
       );
     }
   }, [dispatch, listJobsData]);
+
+  useEffect(() => {
+    dispatch(setTitle("quản lý tin tuyển dụng"));
+  }, [dispatch]);
 
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
@@ -183,7 +188,7 @@ const ListJobsPage = () => {
           </Link>
         </div>
         <div className="">
-          <table className="w-full text-sm text-left cursor-pointer border border-blue-gray-100 !rounded-md">
+          <table className="w-full text-sm font-bold text-left cursor-pointer border border-blue-gray-100 !rounded-md">
             <thead className="text-xs  text-[#212f3f] bg-blue-gray-100 uppercase border-b border-blue-gray-100">
               <tr>
                 {tableHeadJob.map(({ id, name }) => {
@@ -207,7 +212,7 @@ const ListJobsPage = () => {
                       className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                       key={job?._id || index}
                     >
-                      <td className="px-2 text-sm py-3 text-blue-gray-800">
+                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
                         <SwitchCustom
                           _id={job?._id}
                           isChecked={job?.isHiring}
@@ -216,22 +221,25 @@ const ListJobsPage = () => {
                           }
                         />
                       </td>
-                      <td className="px-2 text-sm py-3 text-blue-gray-800 whitespace-nowrap">
+                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800 whitespace-nowrap">
                         ... {job?._id.slice(-4)}
                       </td>
-                      <td className="px-2 text-sm py-3 text-blue-gray-800 min-w-[100px]">
+                      <td
+                        colSpan={1}
+                        className="px-2 text-sm font-bold py-3 text-blue-gray-800"
+                      >
                         {job?.recruitmentCampaignName}
                       </td>
-                      <td className="px-2 text-sm py-3 text-blue-gray-800">
+                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
                         {job?.recruitmentTitle.slice(0, 25)}
                       </td>
-                      <td className="px-2 text-sm py-3 text-blue-gray-800">
+                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
                         {job?.industry}
                       </td>
-                      <td className="px-2 text-sm py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
                         {job?.appliedIds?.length}
                       </td>
-                      <td className="px-2  py-3 text-center text-blue-gray-800">
+                      <td className="py-3 text-center text-blue-gray-800">
                         {job.status === "pending" ? (
                           <div className="p-2 rounded-md text-[10px] bg-blue-50 text-blue-500">
                             Chờ phê duyệt
@@ -250,15 +258,14 @@ const ListJobsPage = () => {
                           </div>
                         )}
                       </td>
-                      <td className="px-2 text-sm py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
                         {covertToDate(job?.createdAt)}
                       </td>
-                      <td className="px-1 text-sm py-3 text-blue-gray-800">
+                      <td className="px-1 text-sm font-bold py-3 text-blue-gray-800">
                         <Button
                           variant="filled"
-                          // onClick={openDrawer}
                           onClick={() => handleViewJobDetail({ _id: job?._id })}
-                          className="text-xs capitalize font-normal rounded-full !px-4 !py-3"
+                          className="text-xs capitalize font-bold rounded-full !px-4 !py-3 bg-blue-gray-900 text-light-blue-600"
                         >
                           Xem thêm
                         </Button>
@@ -311,9 +318,7 @@ const ListJobsPage = () => {
               Đóng
             </Button>
           </div>
-          {/* <hr className="w-full my-2 border-blue-gray-100" /> */}
         </div>
-
         <div className="flex flex-col gap-1 mt-[70px]">
           <div className="flex flex-col gap-4 bg-white p-4 rounded-md ">
             <Typography className="uppercase text-[#212f3f] font-bold text-lg">
@@ -325,7 +330,9 @@ const ListJobsPage = () => {
                   <icons.AiFillDollarCircle size={30} />
                 </IconButton>
                 <div className="flex flex-col gap-2">
-                  <Typography className="text-sm">Mức lương</Typography>
+                  <Typography className="text-sm font-bold">
+                    Mức lương
+                  </Typography>
                   <Typography className="text-xs">
                     {jobDetailData?.experience}
                   </Typography>
@@ -356,30 +363,30 @@ const ListJobsPage = () => {
             </div>
           </div>
           <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] font-bold uppercase text-sm pb-1">
+            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
               Mô tả công việc
             </Typography>
-            <div className="text-sm py-2">
+            <div className="text-sm font-bold py-2">
               {(jobDetailData.jobDescription &&
                 parse(jobDetailData.jobDescription)) ||
                 ""}
             </div>
           </div>
           <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] font-bold uppercase text-sm pb-1">
+            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
               Yêu cầu ứng viên
             </Typography>
-            <div className="text-sm py-2">
+            <div className="text-sm font-bold py-2">
               {(jobDetailData.candidateRequirements &&
                 parse(jobDetailData.candidateRequirements)) ||
                 ""}
             </div>
           </div>
           <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] font-bold uppercase text-sm pb-1">
+            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
               Phúc lợi ứng viên
             </Typography>
-            <div className="text-sm py-2">
+            <div className="text-sm font-bold py-2">
               {(jobDetailData.candidateBenefits &&
                 parse(jobDetailData.candidateBenefits)) ||
                 ""}

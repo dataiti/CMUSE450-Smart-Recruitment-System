@@ -4,16 +4,13 @@ const titleSlice = createSlice({
   name: "title",
   initialState: {
     name: "Dashboard",
-    path: "/dashboard",
   },
   reducers: {
     setTitle: (state, action) => {
-      state.name = action.payload.name;
-      state.path = action.payload.path;
+      state.name = action.payload;
     },
     clearTitle: (state) => {
       state.name = "Dashboard";
-      state.path = "/dashboard";
     },
   },
   extraReducers: (builder) => {},
