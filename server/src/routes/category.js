@@ -8,7 +8,7 @@ const {
   getListOfCategories,
 } = require("../controllers/category");
 const { userById } = require("../controllers/user");
-const uploadCloud = require("../configs/cloudinaryConfig");
+const { uploadCloud } = require("../configs/cloudinaryConfig");
 
 const router = express.Router();
 

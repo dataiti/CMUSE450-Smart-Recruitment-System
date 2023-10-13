@@ -8,6 +8,7 @@ const categoryRouter = require("./category");
 const analyticRouter = require("./analytic");
 const feedbackRouter = require("./feedback");
 const chatbotRouter = require("./chatbot");
+const applyJobRouter = require("./applyJob");
 
 const router = (app) => {
   app.use("/api/v1/auth", authRouter);
@@ -20,6 +21,7 @@ const router = (app) => {
   app.use("/api/v1/analytic", analyticRouter);
   app.use("/api/v1/feedback", feedbackRouter);
   app.use("/api/v1/chatbot", chatbotRouter);
+  app.use("/api/v1/applyJob", applyJobRouter);
 };
 
 module.exports = router;

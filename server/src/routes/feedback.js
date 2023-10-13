@@ -11,7 +11,7 @@ const {
 const { jobById } = require("../controllers/job");
 const { userById } = require("../controllers/user");
 const { employerById } = require("../controllers/employer");
-const uploadCloud = require("../configs/cloudinaryConfig");
+const { uploadCloud } = require("../configs/cloudinaryConfig");
 
 const router = express.Router();
 

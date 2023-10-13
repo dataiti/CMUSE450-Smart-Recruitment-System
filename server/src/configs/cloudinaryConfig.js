@@ -16,6 +16,10 @@ const storage = new CloudinaryStorage({
   },
 });
 
+const storageMemo = multer.memoryStorage(); // Lưu trữ tệp trong bộ nhớ
+
+const uploadMemo = multer({ storage: storageMemo });
+
 const uploadCloud = multer({ storage });
 
-module.exports = uploadCloud;
+module.exports = { uploadMemo, uploadCloud };

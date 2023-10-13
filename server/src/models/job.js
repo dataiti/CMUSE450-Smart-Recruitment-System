@@ -111,7 +111,7 @@ const jobSchema = new mongoose.Schema(
       type: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Candiate",
+          ref: "ApplyJob",
         },
       ],
       default: [],
