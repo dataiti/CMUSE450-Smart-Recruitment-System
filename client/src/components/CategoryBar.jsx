@@ -13,19 +13,18 @@ import {
 
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { icons } from "../utils/icons";
-import { Link } from "react-router-dom";
 import { categoriesBarItems } from "../utils/constants";
 import SelectCustom from "./SelectCustom";
 import axiosClient from "../configs/axiosConfig";
 
 const CategoryBar = ({
   industryFilter,
-  ratingFilter,
+  rating,
   typeJobFilter,
   genderFilter,
   levelFilter,
   handleCheckboxChangeByType,
-  setRatingFilter,
+  setRating,
   clearFilters,
   experienceFilter,
 }) => {
@@ -107,10 +106,16 @@ const CategoryBar = ({
                 </AccordionHeader>
               </ListItem>
               {item.type === "rating" ? (
-                <Rating
-                  value={ratingFilter}
-                  onChange={(value) => setRatingFilter(value)}
-                />
+                <div className="flex items-center gap-2 px-3">
+                  <Rating
+                    value={rating}
+                    onChange={(value) => setRating(value)}
+                    pa
+                  />
+                  <Typography className="font-medium text-xs">
+                    {rating} sao
+                  </Typography>
+                </div>
               ) : (
                 item.childrens.map((itemChild) => {
                   return (

@@ -26,7 +26,7 @@ const CategoriesPage = () => {
   const { listJobs, totalPage, count } = useSelector(jobSelect);
 
   const [industryFilter, setIndustryFilter] = useState([]);
-  const [ratingFilter, setRatingFilter] = useState([]);
+  const [rating, setRating] = useState(0);
   const [genderFilter, setGenderFilter] = useState([]);
   const [typeJobFilter, setTypeJobFilter] = useState([]);
   const [levelFilter, setLevelFilter] = useState([]);
@@ -57,7 +57,7 @@ const CategoriesPage = () => {
       jobType: JSON.stringify(typeJobFilter),
       gender: JSON.stringify(genderFilter),
       level: JSON.stringify(levelFilter),
-      rating: ratingFilter,
+      rating: rating,
       salaryFrom,
       salaryTo,
     },
@@ -93,7 +93,7 @@ const CategoriesPage = () => {
 
   const clearFilters = () => {
     setIndustryFilter([]);
-    setRatingFilter([]);
+    setRating(0);
     setGenderFilter([]);
     setTypeJobFilter([]);
     setLevelFilter([]);
@@ -163,12 +163,12 @@ const CategoriesPage = () => {
         <div className="w-[24%] bg-white rounded-md">
           <CategoryBar
             industryFilter={industryFilter}
-            ratingFilter={ratingFilter}
+            rating={rating}
             typeJobFilter={typeJobFilter}
             genderFilter={genderFilter}
             levelFilter={levelFilter}
             handleCheckboxChangeByType={handleCheckboxChangeByType}
-            setRatingFilter={setRatingFilter}
+            setRating={setRating}
             clearFilters={clearFilters}
             experienceFilter={experienceFilter}
           />

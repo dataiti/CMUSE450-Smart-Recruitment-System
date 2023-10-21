@@ -36,6 +36,7 @@ import { addJob } from "../../redux/features/slices/jobSlice";
 import InputTagsController from "../../components/InputTagsController";
 import IconButtonCustom from "../../components/IconButtonCustom";
 import { setTitle } from "../../redux/features/slices/titleSlice";
+import Loading from "../../components/Loading";
 
 const schema = yup.object().shape({
   recruitmentCampaignName: yup
@@ -237,6 +238,7 @@ const CreateRecruitmentJobPage = () => {
 
   return (
     <div className="flex flex-col gap-2 px-[100px] py-5 w-full">
+      {isLoading && <Loading />}
       <div className="w-full px-10 pt-4 pb-8 rounded-md shadow-sm bg-white">
         <Stepper
           activeStep={activeStep}

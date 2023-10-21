@@ -30,6 +30,8 @@ const getEmployerDetail = asyncHandler(async (req, res) => {
 });
 
 const registerEmployer = asyncHandler(async (req, res) => {
+  console.log(req.file);
+
   const companyLogo = req.file.path;
   const publicId = req.file.filename;
 
@@ -69,12 +71,6 @@ const registerEmployer = asyncHandler(async (req, res) => {
   await newEmployer.save();
 
   if (!newEmployer) throw new Error("Register employer is fail");
-
-  const findUser = await User.findOneAndUpdate(
-    { _id: req.user._id },
-    { $set: { permission: "employer", ownerEmployerId: newEmployer._id } },
-    { new: true }
-  );
 
   return res.status(200).json({
     success: true,

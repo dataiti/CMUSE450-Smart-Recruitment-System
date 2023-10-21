@@ -132,8 +132,8 @@ export const companyIndustryOptions = [
   { id: 1, value: "Phát triển phần mềm" },
   { id: 2, value: "An ninh mạng" },
   { id: 3, value: "Quản trị hệ thống" },
-  { id: 4, value: "Thiết kế giao diện người dùng (UI/UX)" },
-  { id: 5, value: "Học máy và Trí tuệ nhân tạo (AI/ML)" },
+  { id: 4, value: "Thiết kế giao diện người dùng" },
+  { id: 5, value: "Học máy và Trí tuệ nhân tạo" },
   { id: 6, value: "Quản lý dự án phần mềm" },
   { id: 7, value: "Lập trình di động" },
 ];
@@ -177,6 +177,24 @@ export const tableHeadJob = [
   { id: 7, name: "Ngày đăng" },
   { id: 8, name: "Trạng thái" },
   { id: 9, name: "Hành động" },
+];
+
+export const tableHeadApplyJob = [
+  { id: 1, name: "ID" },
+  { id: 2, name: "Thông tin ứng cử viên" },
+  { id: 3, name: "Tên chiến dịch" },
+  { id: 4, name: "Tên CV" },
+  { id: 5, name: "Ngày đăng" },
+  { id: 6, name: "Trạng thái" },
+  { id: 7, name: "Hành động" },
+];
+
+export const tableHeadApplyJobDashboard = [
+  { id: 1, name: "ID" },
+  { id: 2, name: "Thông tin ứng cử viên" },
+  { id: 3, name: "Tên chiến dịch" },
+  { id: 4, name: "Tên CV" },
+  { id: 6, name: "Trạng thái" },
 ];
 
 export const typeTimeChartOptions = [

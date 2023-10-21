@@ -36,6 +36,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { icons } from "../../utils/icons";
 import { setTitle } from "../../redux/features/slices/titleSlice";
+import Loading from "../../components/Loading";
 
 const ListJobsPage = () => {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const ListJobsPage = () => {
 
   const [open, setOpen] = useState(false);
 
-  const { data: listJobsData } = useGetListOfJobsForEmployerQuery(
+  const { data: listJobsData, isFetching } = useGetListOfJobsForEmployerQuery(
     {
       userId: user?._id,
       employerId: user?.ownerEmployerId?._id
@@ -157,6 +158,7 @@ const ListJobsPage = () => {
 
   return (
     <div className="mx-[30px] my-[30px]">
+      {isFetching && <Loading />}
       <div className="flex flex-col gap-2 bg-white p-2 rounded-md">
         <div className="flex items-center gap-3">
           <SelectCustom label="Sắp xếp theo" options={desiredSalaryOptions} />

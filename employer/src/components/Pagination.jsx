@@ -11,7 +11,7 @@ const Pagination = ({
   className = "",
 }) => {
   return (
-    <div className={`py-1 px-2 flex items-center justify-between ${className}`}>
+    <div className={`p-1 flex items-center justify-between ${className}`}>
       <ReactPaginate
         pageCount={totalPage}
         onPageChange={handlePageChange}
@@ -19,7 +19,7 @@ const Pagination = ({
         containerClassName={"pagination"}
         nextLabel={<icons.IoArrowRedoCircleOutline size={36} />}
         previousLabel={<icons.IoArrowUndoCircleOutline size={36} />}
-        activeClassName="!bg-[#212f3f] text-white text-gray-700 py-1 px-3 rounded-sm"
+        activeClassName="!bg-[#212f3f] text-white text-gray-700 py-1 rounded-sm"
         pageClassName="bg-gray-200 text-gray-700 py-1 px-3 rounded-sm"
         className="flex items-center gap-2 text-gray-700"
       />

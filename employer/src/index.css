@@ -41,12 +41,12 @@ html *::-webkit-scrollbar {
 
 html *::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: transparent;
 }
 
 html *::-webkit-scrollbar-track {
   border-radius: 0;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
 }
 
 html:hover *::-webkit-scrollbar {

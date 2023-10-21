@@ -10,7 +10,7 @@ const DashboardLayout = () => {
         <Header />
       </div>
       <div className="flex w-full">
-        <div className="w-[270px] fixed z-20 pt-[60px]">
+        <div className="w-[270px] fixed max-h-[calc(100vh-80px)] flex-none pt-[60px]">
           <Sidebar />
         </div>
         <div className="pl-[270px] min-h-screen w-full bg-[#e8edf2] pt-[60px]">

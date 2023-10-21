@@ -30,9 +30,13 @@ const getCategoryDetail = asyncHandler(async (req, res) => {
 });
 
 const createCategory = asyncHandler(async (req, res) => {
-  const { name, description, subcategories } = req.body;
+  const { name, description } = req.body;
   const image = req.file.path;
   const publicId = req.file.filename;
+
+  const subcategories = req.body.subcategories
+    ? JSON.parse(req.body.subcategories)
+    : [];
 
   if (!name) {
     await cloudinary.uploader.destroy(publicId);
@@ -44,7 +48,7 @@ const createCategory = asyncHandler(async (req, res) => {
     description,
     image,
     publicId,
-    subcategories: JSON.parse(subcategories),
+    subcategories,
   });
 
   const savedCategory = await newCategory.save();
@@ -111,11 +115,23 @@ const deleteCategory = asyncHandler(async (req, res) => {
 });
 
 const getListOfCategories = asyncHandler(async (req, res) => {
-  const search = req.query.search ? req.query.search : "";
-  const regex = search
-    .split(" ")
-    .filter((q) => q)
-    .join("|");
+  const listCategories = await Category.find();
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list categories are successfully",
+    data: listCategories,
+  });
+});
+
+const getListOfCategoriesForAdmin = asyncHandler(async (req, res) => {
+  const search = req.query.search ? req.query.search : null;
+  const regex =
+    search &&
+    search
+      .split(" ")
+      .filter((q) => q)
+      .join("|");
   const sortBy = req.query.sortBy ? req.query.sortBy : "-_id";
   const orderBy =
     req.query.orderBy &&

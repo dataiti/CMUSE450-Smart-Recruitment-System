@@ -17,7 +17,7 @@ const InputController = ({ name, control, label, error, imgUrlPreview }) => {
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange } }) => (
+        render={({ field }) => (
           <div className="grid grid-cols-4">
             <label
               htmlFor={name}
@@ -50,8 +50,9 @@ const InputController = ({ name, control, label, error, imgUrlPreview }) => {
                 hidden
                 onChange={(e) => {
                   const file = e.target.files[0];
+                  console.log(file);
+                  field.onChange(file);
                   setImagePreview(URL.createObjectURL(file));
-                  return onChange(e.target.files[0]);
                 }}
               />
               {!!error && (

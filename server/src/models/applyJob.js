@@ -12,7 +12,7 @@ const applyJobSchema = new mongoose.Schema(
       ref: "Job",
       required: true,
     },
-    jobId: {
+    employerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Employer",
       required: true,

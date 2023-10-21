@@ -10,6 +10,7 @@ import {
   RegisterEmployerPage,
   RegisterPage,
   UserProfilePage,
+  ResumeDetail,
 } from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
 import ListResumes from "../pages/resume/ListResumes";
@@ -56,6 +57,10 @@ const routers = [
           {
             path: "/list-resumes",
             element: <ListResumes />,
+          },
+          {
+            path: "/list-resumes/:applyJobId",
+            element: <ResumeDetail />,
           },
           {
             path: "/create-recruitment-job",

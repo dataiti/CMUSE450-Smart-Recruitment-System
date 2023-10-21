@@ -5,6 +5,7 @@ import authReducer from "./features/slices/authSlice";
 import employerReducer from "./features/slices/employerSlice";
 import jobReducer from "./features/slices/jobSlice";
 import titleReducer from "./features/slices/titleSlice";
+import applyJobReducer from "./features/slices/applyJobSlice";
 import { rootApi } from "../configs/rootApi";
 
 const rootPersistConfig = {
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   employer: employerReducer,
   job: jobReducer,
   title: titleReducer,
+  applyJob: applyJobReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

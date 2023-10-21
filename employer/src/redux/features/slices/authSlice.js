@@ -22,7 +22,7 @@ const authSlice = createSlice({
       state.refreshToken = null;
     },
     updateUser: (state, action) => {
-      state.user.ownerEmployerId = action.payload.employerId;
+      state.user.ownerEmployerId = action.payload.data;
     },
   },
   extraReducers: (builder) => {},

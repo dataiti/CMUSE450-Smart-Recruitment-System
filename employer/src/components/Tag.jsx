@@ -4,10 +4,12 @@ import React from "react";
 const Tag = ({ children, icon, className }) => {
   return (
     <div
-      className={`flex items-center flex-wrap gap-1 px-4 py-1 rounded-full ${className}`}
+      className={`flex items-center gap-1 px-4 py-1 rounded-full flex-nowrap ${className}`}
     >
       {icon && icon}
-      <Typography className="!text-xs font-bold">{children}</Typography>
+      <Typography className="!text-xs font-bold whitespace-nowrap">
+        {children}
+      </Typography>
     </div>
   );
 };

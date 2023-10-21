@@ -5,7 +5,6 @@ const getPlaceMapApi = async ({ workRegion }) => {
     `https://api.mapbox.com/geocoding/v5/mapbox.places/${workRegion?.exactAddress}, ${workRegion?.district}, ${workRegion?.ward}, ${workRegion?.province}.json?access_token=${process.env.REACT_APP_MAPBOX_KEY}`
   );
 
-  console.log(res);
   if (res && res.data) {
     return res.data;
   }

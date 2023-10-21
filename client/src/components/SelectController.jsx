@@ -17,7 +17,7 @@ const SelectController = ({
         control={control}
         render={({ field }) => (
           <div className="grid grid-cols-4">
-            <label className="col-span-1 text-sm font-medium whitespace-no-wrap">
+            <label className="col-span-1 text-base font-bold whitespace-no-wrap text-teal-800">
               {label}
             </label>
             <div className="col-span-2 w-full">
@@ -34,7 +34,11 @@ const SelectController = ({
               >
                 {options?.map(({ value, id }) => {
                   return (
-                    <Option key={id} value={JSON.stringify({ id, value })}>
+                    <Option
+                      key={id}
+                      value={JSON.stringify({ id, value })}
+                      className="font-bold text-sm"
+                    >
                       {value}
                     </Option>
                   );
@@ -42,7 +46,10 @@ const SelectController = ({
               </Select>
 
               {!!error && (
-                <Typography color="red" className="absolute -bottom-5 text-xs">
+                <Typography
+                  color="red"
+                  className="absolute -bottom-5 text-xs font-medium"
+                >
                   {error?.message}
                 </Typography>
               )}

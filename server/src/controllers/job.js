@@ -179,10 +179,12 @@ const toggleHiringStatusJob = asyncHandler(async (req, res) => {
 const getListSearchJobs = asyncHandler(async (req, res) => {
   const { query } = req;
   const search = query.search ? query.search : null;
-  const regex = search
-    .split(" ")
-    .filter((q) => q)
-    .join("|");
+  const regex =
+    search &&
+    search
+      .split(" ")
+      .filter((q) => q)
+      .join("|");
   const limit = query.limit > 0 ? Number(query.limit) : 8;
 
   const filterArgs = {

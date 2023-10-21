@@ -1,12 +1,12 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import InputController from "../../components/InputController";
-import { Button } from "@material-tailwind/react";
+import { Button, Breadcrumbs } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { useReactToPrint } from "react-to-print";
+import { Link } from "react-router-dom";
 
 const schema = Yup.object().shape({
   firstName: Yup.string().required("Tên không được để trống"),
@@ -20,7 +20,6 @@ const schema = Yup.object().shape({
 const EditProfilePage = () => {
   const { user } = useSelector(authSelect);
 
-  const conponentPDF = useRef();
   const {
     control,
     handleSubmit,
@@ -44,19 +43,21 @@ const EditProfilePage = () => {
     }
   };
 
-  // const generatePDF = useReactToPrint({
-  //   content: () => conponentPDF.current,
-  //   documentTitle: "Userdata",
-  //   onAfterPrint: () => alert("Data saved in PDF"),
-  // });
-
   return (
-    <div className="h-[620px] w-full bg-white shadow-md rounded -md flex items-center justify-center">
+    <div className="w-full flex flex-col gap-2">
+      <Breadcrumbs fullWidth className="!bg-white">
+        <Link to="/" className="text-light-blue-500 text-sm font-bold">
+          Trang chủ
+        </Link>
+        <Link to="/profile" className="font-bold text-sm">
+          Cài đặt thông tin cá nhân
+        </Link>
+      </Breadcrumbs>
       <form
         onSubmit={handleSubmit(handleSubmitChangePassword)}
-        className="flex items-center flex-col gap-4"
+        className="flex items-center justify-center flex-col gap-4 bg-white rounded-md min-h-[calc(100vh-156px)]"
       >
-        <div className="flex flex-col gap-4" ref={conponentPDF}>
+        <div className="flex flex-col gap-4">
           <InputController
             control={control}
             name="email"
@@ -67,13 +68,13 @@ const EditProfilePage = () => {
           <InputController
             control={control}
             name="firstName"
-            label="Tên"
+            label="Họ"
             error={errors?.firstName}
           />
           <InputController
             control={control}
             name="lastName"
-            label="Họ"
+            label="Tên"
             error={errors?.lastName}
           />
           <InputController
@@ -84,9 +85,6 @@ const EditProfilePage = () => {
           />
         </div>
         <Button>Lưu</Button>
-        {/* <Button className="" onClick={generatePDF}>
-          PDF
-        </Button> */}
       </form>
     </div>
   );

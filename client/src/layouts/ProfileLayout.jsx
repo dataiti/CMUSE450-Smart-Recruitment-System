@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { Header } from "../components";
 import SidebarProfile from "../components/SidebarProfile";
+import Footer from "../components/Footer";
 
 const ProfileLayout = () => {
   return (
@@ -18,6 +19,9 @@ const ProfileLayout = () => {
             <Outlet />
           </div>
         </div>
+      </div>
+      <div className="w-full">
+        <Footer />
       </div>
     </div>
   );

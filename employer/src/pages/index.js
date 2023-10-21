@@ -7,6 +7,7 @@ import ListJobsPage from "./Job/ListJobsPage";
 import CompanyProfilePage from "./profile/CompanyProfilePage";
 import UserProfilePage from "./profile/UserProfilePage";
 import MessagePage from "./message/MessagePage";
+import ResumeDetail from "./resume/ResumeDetail";
 
 export {
   LoginPage,
@@ -18,4 +19,5 @@ export {
   CompanyProfilePage,
   UserProfilePage,
   MessagePage,
+  ResumeDetail,
 };

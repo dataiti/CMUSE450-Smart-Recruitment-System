@@ -70,7 +70,7 @@ const SidebarProfile = () => {
                     {icon}
                     <Typography
                       color="blue-gray"
-                      className="mb-1 text-sm font-medium"
+                      className="mb-1 text-sm font-bold"
                     >
                       {title}
                     </Typography>
@@ -85,7 +85,7 @@ const SidebarProfile = () => {
                 <icons.IoLogOutOutline size={24} />
                 <Typography
                   color="blue-gray"
-                  className="mb-1 text-sm font-medium"
+                  className="mb-1 text-sm font-bold"
                 >
                   Đăng xuất
                 </Typography>

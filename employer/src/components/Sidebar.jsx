@@ -17,6 +17,7 @@ import { useLogOutMutation } from "../redux/features/apis/authApi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { authSelect, logOut } from "../redux/features/slices/authSlice";
+import Loading from "./Loading";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -53,36 +54,37 @@ const Sidebar = () => {
   };
 
   return (
-    <Card className="h-screen w-full shadow-none rounded-none border-r border-blue-gray-100 ">
+    <div className="h-[calc(100vh-60px)] overflow-y-auto w-full shadow-none rounded-none border-r border-blue-gray-100 bg-white">
+      {isLoading && <Loading />}
       <div className="flex items-center gap-2 p-[6px] bg-light-blue-50 mx-4 my-2 rounded-md">
         <img
           src={user?.ownerEmployerId?.companyLogo}
           alt={user?.ownerEmployerId?.companyName}
-          className="h-11 w-18 object-cover rounded-md"
+          className="h-12 w-18 object-cover rounded-md"
         />
         <div className="">
-          <Typography className="text-xs font-medium text-black">
+          <Typography className="text-xs font-bold text-black">
             {user?.ownerEmployerId?.companyName}
           </Typography>
-          <Typography className="text-xs font-medium text-black">
+          <Typography className="text-xs font-bold text-black">
             {user?.ownerEmployerId?.companyEmail}
           </Typography>
-          <Typography className="text-xs font-medium text-black">
+          <Typography className="text-xs font-bold text-black">
             84+ {user?.ownerEmployerId?.companyPhoneNumber}
           </Typography>
         </div>
       </div>
       <hr className=" border-blue-gray-100" />
-      <List className="p-4 text-sm font-bold">
+      <List className="p-3 text-sm font-bold ">
         <Link to="/dashboard">
-          <ListItem>
+          <ListItem className="text-sm">
             <ListItemPrefix>
               <icons.BsBarChartLineFill size={20} />
             </ListItemPrefix>
             Dashboard
           </ListItem>
         </Link>
-        <hr className="my-2 border-blue-gray-100" />
+        <hr className="my-1 border-blue-gray-100" />
         <Accordion
           open={openJobMenu}
           icon={
@@ -167,13 +169,30 @@ const Sidebar = () => {
         </Accordion>
         <hr className="my-2 border-blue-gray-100" />
         <Link to="/message">
-          <ListItem>
+          <ListItem className="text-sm">
             <ListItemPrefix>
               <icons.BsMessenger size={20} />
             </ListItemPrefix>
             Tin nhắn
           </ListItem>
         </Link>
+        <Link to="/decoration">
+          <ListItem className="text-sm">
+            <ListItemPrefix>
+              <icons.MdImagesearchRoller size={20} />
+            </ListItemPrefix>
+            Trang trí trang
+          </ListItem>
+        </Link>
+        <Link to="/payment">
+          <ListItem className="text-sm">
+            <ListItemPrefix>
+              <icons.MdPayment size={20} />
+            </ListItemPrefix>
+            Nâng cấp gói
+          </ListItem>
+        </Link>
+        <hr className="py-1 border-blue-gray-100" />
         <Accordion
           open={openSettingMenu}
           icon={
@@ -219,14 +238,14 @@ const Sidebar = () => {
             </List>
           </AccordionBody>
         </Accordion>
-        <ListItem onClick={handleLogoutEmployer}>
+        <ListItem onClick={handleLogoutEmployer} className="text-sm">
           <ListItemPrefix>
-            <icons.IoLogOutOutline size={20} />
+            <icons.FaSignOutAlt size={20} />
           </ListItemPrefix>
           Đăng xuất
         </ListItem>
       </List>
-    </Card>
+    </div>
   );
 };
 

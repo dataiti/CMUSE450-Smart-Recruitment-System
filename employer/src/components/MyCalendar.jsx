@@ -50,7 +50,7 @@ const MyCalendar = () => {
       events={events}
       startAccessor="start"
       endAccessor="end"
-      style={{ height: 380, backgroundColor: "white" }}
+      style={{ height: 340, backgroundColor: "white" }}
       eventPropGetter={eventPropGetter}
       dayPropGetter={(date) => ({
         style: {
@@ -63,7 +63,7 @@ const MyCalendar = () => {
       min={minTime}
       max={maxTime}
       components={{
-        toolbar: CustomToolbar,
+        toolbar: () => null,
       }}
     />
   );

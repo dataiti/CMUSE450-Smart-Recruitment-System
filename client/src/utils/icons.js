@@ -27,6 +27,7 @@ import {
   MdKeyboardArrowRight,
   MdKeyboardArrowUp,
   MdPhoneInTalk,
+  MdColorLens,
 } from "react-icons/md";
 import {
   BsFillImageFill,
@@ -36,6 +37,8 @@ import {
   BsBarChartLineFill,
   BsCameraFill,
   BsFacebook,
+  BsFileEarmarkArrowDownFill,
+  BsFiletypePdf,
 } from "react-icons/bs";
 import {
   FaUserAlt,
@@ -62,6 +65,7 @@ import {
   FaCircleInfo,
   FaLock,
   FaDollarSign,
+  FaFont,
 } from "react-icons/fa6";
 import {
   AiOutlineBold,
@@ -69,6 +73,7 @@ import {
   AiOutlineItalic,
   AiFillDollarCircle,
   AiFillClockCircle,
+  AiFillCloseCircle,
 } from "react-icons/ai";
 
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
@@ -76,8 +81,18 @@ import { HiFilter } from "react-icons/hi";
 import { GrReactjs, GrNode } from "react-icons/gr";
 import { SiTailwindcss, SiExpress } from "react-icons/si";
 import { DiMongodb } from "react-icons/di";
+import { LiaSearchPlusSolid, LiaSearchMinusSolid } from "react-icons/lia";
+import { ImTable2 } from "react-icons/im";
 
 const icons = {
+  ImTable2,
+  AiFillCloseCircle,
+  BsFiletypePdf,
+  FaFont,
+  MdColorLens,
+  BsFileEarmarkArrowDownFill,
+  LiaSearchPlusSolid,
+  LiaSearchMinusSolid,
   BsFacebook,
   FaHeadphonesAlt,
   FaDollarSign,

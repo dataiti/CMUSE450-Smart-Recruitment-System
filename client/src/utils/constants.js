@@ -1,5 +1,4 @@
 import { icons } from "../utils/icons";
-import { Rating } from "@material-tailwind/react";
 
 export const loyaltyProgramItem = [
   {
@@ -43,16 +42,44 @@ export const sidebarItems = [
     name: "Việc làm",
   },
   {
-    id: 1,
+    id: 3,
     path: "/resume-online",
     icon: <icons.HiDocumentText size={20} />,
     name: "CV",
   },
   {
-    id: 1,
+    id: 4,
     path: "/company",
     icon: <icons.HiHome size={20} />,
     name: "Công ty",
+  },
+];
+
+export const menuCVItems = [
+  {
+    id: 1,
+    icon: <icons.HiDocumentText size={20} />,
+    name: "Mẫu CV",
+  },
+  {
+    id: 2,
+    icon: <icons.FaFont size={20} />,
+    name: "Phông chữ",
+  },
+  {
+    id: 3,
+    icon: <icons.MdColorLens size={20} />,
+    name: "Màu sắc",
+  },
+  {
+    id: 4,
+    icon: <icons.LiaSearchPlusSolid size={20} />,
+    name: "Phóng to",
+  },
+  {
+    id: 5,
+    icon: <icons.LiaSearchMinusSolid size={20} />,
+    name: "Thu nhỏ",
   },
 ];
 
@@ -87,6 +114,12 @@ export const menuItems = [
     title: "Đổi mật khẩu",
     icon: <icons.IoKeyOutline size={24} />,
   },
+  {
+    id: 6,
+    path: "/manage-jobapply",
+    title: "Quản lý ứng tuyển",
+    icon: <icons.ImTable2 size={20} />,
+  },
 ];
 
 export const navbarItems = [
@@ -119,6 +152,12 @@ export const navbarItems = [
 export const categoriesBarItems = [
   {
     id: 1,
+    display: "Xếp hạng",
+    type: "rating",
+    icon: <icons.IoBriefcaseOutline size={20} />,
+  },
+  {
+    id: 2,
     display: "Ngành nghề",
     type: "industry",
     icon: <icons.IoBriefcaseOutline size={20} />,
@@ -130,19 +169,6 @@ export const categoriesBarItems = [
       { id: 5, value: "Học máy và Trí tuệ nhân tạo" },
       { id: 6, value: "Quản lý dự án phần mềm" },
       { id: 7, value: "Lập trình di động" },
-    ],
-  },
-  {
-    id: 2,
-    display: "Xếp hạng",
-    type: "rating",
-    icon: <icons.IoBriefcaseOutline size={20} />,
-    childrens: [
-      { id: 1, value: <Rating value={5} /> },
-      { id: 2, value: <Rating value={4} /> },
-      { id: 3, value: <Rating value={3} /> },
-      { id: 4, value: <Rating value={2} /> },
-      { id: 5, value: <Rating value={1} /> },
     ],
   },
   {
@@ -199,6 +225,12 @@ export const categoriesBarItems = [
       { id: 8, value: "Trên 5 năm" },
     ],
   },
+];
+
+export const sexOptions = [
+  { id: 1, value: "Nam" },
+  { id: 2, value: "Nữ" },
+  { id: 3, value: "Không xác định" },
 ];
 
 export const sortByOptions = [

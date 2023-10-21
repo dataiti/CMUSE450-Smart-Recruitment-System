@@ -9,7 +9,7 @@ const SelectCustom = ({ label = "", options = [], onChange, value }) => {
       onChange={onChange}
       className=" bg-white w-full col-span-1 text-sm font-bold"
       labelProps={{
-        className: "w-full text-xs font-bold",
+        className: "w-full text-sm font-bold",
       }}
     >
       {options?.map(({ value, text, id }) => {

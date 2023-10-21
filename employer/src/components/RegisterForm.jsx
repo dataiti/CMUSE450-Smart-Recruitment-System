@@ -6,7 +6,7 @@ import {
   Typography,
   Input,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,6 +29,7 @@ const schema = yup.object().shape({
 
 const RegisterForm = ({ open, handleOpen }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [register, { isLoading }] = useRegisterMutation();
 
@@ -52,13 +53,7 @@ const RegisterForm = ({ open, handleOpen }) => {
       if (data) {
         const response = await register(data);
         if (response && response.data && response.data.success) {
-          dispatch(
-            setCredentials({
-              user: response?.data?.data,
-              accessToken: response?.data?.accessToken,
-              refreshToken: response?.data?.refreshToken,
-            })
-          );
+          navigate("/login");
         }
       }
     } catch (error) {

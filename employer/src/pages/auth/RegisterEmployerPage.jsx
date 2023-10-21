@@ -29,7 +29,9 @@ import axiosClient from "../../configs/axiosConfig";
 import InputFileController from "../../components/InputFileController";
 import { useDispatch, useSelector } from "react-redux";
 import { useRegisterEmployerMutation } from "../../redux/features/apis/employerApi";
-import { authSelect } from "../../redux/features/slices/authSlice";
+import { authSelect, updateUser } from "../../redux/features/slices/authSlice";
+import { setTitle } from "../../redux/features/slices/titleSlice";
+import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
   fullName: yup
@@ -49,7 +51,6 @@ const schema = yup.object().shape({
     .string()
     .required("Địa điểm làm việc là trường bắt buộc")
     .max(100, "Địa điểm làm việc không được quá 100 ký tự"),
-  companyLogo: yup.string().required("Logo công ty là trường bắt buộc"),
   companyName: yup
     .string()
     .required("Tên công ty là trường bắt buộc")
@@ -115,6 +116,10 @@ const RegisterPage = () => {
   });
 
   useEffect(() => {
+    dispatch(setTitle("Thêm tin tuyển dụng"));
+  }, [dispatch]);
+
+  useEffect(() => {
     const fetchWorkLocationsApi = async () => {
       try {
         const response = await axiosClient.get("/province");
@@ -132,15 +137,32 @@ const RegisterPage = () => {
 
   const handleSubmitRegisterEmployer = async (data) => {
     try {
-      let formData = new FormData();
-      for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-          formData.append(key, data[key]);
+      let formatData = { ...data };
+      for (const key in formatData) {
+        if (formatData.hasOwnProperty(key)) {
+          const value = formatData[key];
+
+          try {
+            const parsedValue = JSON.parse(value);
+
+            if (parsedValue.hasOwnProperty("value")) {
+              formatData[key] = parsedValue.value;
+            }
+          } catch (error) {}
         }
       }
+
+      let formData = new FormData();
+      for (const key in formatData) {
+        if (formatData.hasOwnProperty(key)) {
+          formData.append(key, formatData[key]);
+        }
+      }
+
       const response = await registerEmployer({ formData, userId: user._id });
-      console.log(response.data.results);
       if (response && response.data && response.data.success) {
+        dispatch(updateUser({ data: response.data.data }));
+        toast.success("Đăng ký nhà tuyển dụng thành công");
         navigate("/dashboard");
       }
     } catch (error) {}
@@ -148,11 +170,15 @@ const RegisterPage = () => {
 
   return (
     <div className="flex flex-col gap-4 py-4">
-      <Breadcrumbs className="bg-white shadow-sm">
-        <Link className="opacity-60" to="http://localhost:3000">
+      <Breadcrumbs fullWidth className="!bg-white">
+        <Link
+          to="http://localhost:3000"
+          target="_blank"
+          className="text-light-blue-500 text-sm font-bold"
+        >
           Trang chủ
         </Link>
-        <Link to="/register-employer" className="">
+        <Link to="/change-password" className="font-bold text-sm">
           Đăng ký nhà tuyển dụng
         </Link>
       </Breadcrumbs>

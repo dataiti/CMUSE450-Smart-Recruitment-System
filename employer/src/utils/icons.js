@@ -20,6 +20,8 @@ import {
   MdEmail,
   MdKeyboardArrowRight,
   MdKeyboardArrowUp,
+  MdImagesearchRoller,
+  MdPayment,
 } from "react-icons/md";
 import {
   BsFillImageFill,
@@ -29,7 +31,7 @@ import {
   BsBarChartLineFill,
   BsCameraFill,
 } from "react-icons/bs";
-import { FaUserAlt, FaUserCircle } from "react-icons/fa";
+import { FaUserAlt, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import { HiLocationMarker } from "react-icons/hi";
 import {
@@ -50,6 +52,9 @@ import {
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 
 const icons = {
+  MdPayment,
+  FaSignOutAlt,
+  MdImagesearchRoller,
   AiFillCloseCircle,
   AiFillClockCircle,
   AiFillDollarCircle,

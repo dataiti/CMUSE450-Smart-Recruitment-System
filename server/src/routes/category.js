@@ -15,7 +15,7 @@ const router = express.Router();
 router.get("/get-list-categories", getListOfCategories);
 router.get("/get-category-detail/:categoryId", getCategoryDetail);
 router.post(
-  "/create-category/admin/:userId",
+  "/create-category/admin",
   uploadCloud.single("image"),
   createCategory
 );

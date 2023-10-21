@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useLogInMutation } from "../redux/features/apis/authApi";
 import { authSelect, setCredentials } from "../redux/features/slices/authSlice";
+import Loading from "./Loading";
 
 const schema = yup.object().shape({
   email: yup
@@ -34,7 +35,7 @@ const LoginForm = ({ handleOpen }) => {
 
   const { user } = useSelector(authSelect);
 
-  const [login] = useLogInMutation();
+  const [login, { isLoading }] = useLogInMutation();
 
   const {
     control,
@@ -77,80 +78,83 @@ const LoginForm = ({ handleOpen }) => {
   else if (user && user.ownerEmployerId) navigate("/dashboard");
 
   return (
-    <form
-      className="bg-white py-8 rounded-3xl mx-auto w-full max-w-[22rem]"
-      onSubmit={handleSubmit(onSubmitLogin)}
-    >
-      <Typography variant="h3" color="black" className="text-center">
-        Đăng Nhập
-      </Typography>
-      <CardBody className="flex flex-col gap-5">
-        <div className="flex flex-col relative">
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              <Input label="Email" {...field} error={!!errors.email} />
-            )}
-          />
-          {!!errors.email && (
-            <Typography color="red" className="absolute -bottom-5 text-xs">
-              {errors.email?.message}
-            </Typography>
-          )}
-        </div>
-        <div className="flex flex-col relative">
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => (
-              <Input
-                type="password"
-                label="Mật khẩu"
-                {...field}
-                error={!!errors.password}
-              />
-            )}
-          />
-          {!!errors.password && (
-            <Typography color="red" className="absolute -bottom-5 text-xs">
-              {errors.password?.message}
-            </Typography>
-          )}
-        </div>
-      </CardBody>
-      <CardFooter className="pt-0">
-        <Typography className="pb-2 text-right text-xs text-black">
-          Quên mật khẩu
+    <div>
+      {isLoading && <Loading />}
+      <form
+        className="bg-white py-8 rounded-3xl mx-auto w-full max-w-[22rem]"
+        onSubmit={handleSubmit(onSubmitLogin)}
+      >
+        <Typography variant="h3" color="black" className="text-center">
+          Đăng Nhập
         </Typography>
-        <div className="relative">
-          <Button type="submit" variant="gradient" fullWidth>
-            Đăng nhập
-          </Button>
-          {errorMessage && (
-            <Typography
-              className="w-full absolute -bottom-5 text-xs"
-              color="red"
+        <CardBody className="flex flex-col gap-5">
+          <div className="flex flex-col relative">
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <Input label="Email" {...field} error={!!errors.email} />
+              )}
+            />
+            {!!errors.email && (
+              <Typography color="red" className="absolute -bottom-5 text-xs">
+                {errors.email?.message}
+              </Typography>
+            )}
+          </div>
+          <div className="flex flex-col relative">
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type="password"
+                  label="Mật khẩu"
+                  {...field}
+                  error={!!errors.password}
+                />
+              )}
+            />
+            {!!errors.password && (
+              <Typography color="red" className="absolute -bottom-5 text-xs">
+                {errors.password?.message}
+              </Typography>
+            )}
+          </div>
+        </CardBody>
+        <CardFooter className="pt-0">
+          <Typography className="pb-2 text-right text-xs text-black">
+            Quên mật khẩu
+          </Typography>
+          <div className="relative">
+            <Button type="submit" variant="gradient" fullWidth>
+              Đăng nhập
+            </Button>
+            {errorMessage && (
+              <Typography
+                className="w-full absolute -bottom-5 text-xs"
+                color="red"
+              >
+                {errorMessage}
+              </Typography>
+            )}
+          </div>
+          <Typography variant="small" className="mt-6 flex justify-center">
+            Bạn chưa đã có tài khoản?
+            <Link
+              variant="small"
+              className="ml-1 font-bold text-blue-500"
+              onClick={handleOpen}
             >
-              {errorMessage}
-            </Typography>
-          )}
-        </div>
-        <Typography variant="small" className="mt-6 flex justify-center">
-          Bạn chưa đã có tài khoản?
-          <Link
-            variant="small"
-            className="ml-1 font-bold text-blue-500"
-            onClick={handleOpen}
-          >
-            Đăng ký ngay
-          </Link>
+              Đăng ký ngay
+            </Link>
+          </Typography>
+        </CardFooter>
+        <Typography className="text-center text-sm text-black font-bold">
+          Hoặc đăng nhập bằng
         </Typography>
-      </CardFooter>
-      <Typography className="text-center text-sm text-black font-bold">
-        Hoặc đăng nhập bằng
-      </Typography>
-    </form>
+      </form>
+    </div>
   );
 };
 

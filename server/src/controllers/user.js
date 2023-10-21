@@ -7,14 +7,18 @@ const userById = asyncHandler(async (req, res, next, id) => {
 
   if (!isValidId) {
     return res.status(400).json({
-      success: true,
+      success: false,
       message: "User Id is invalid",
     });
   }
 
-  const user = await User.findById(id).select("-password");
+  const user = await User.findById(id);
 
-  if (!user) throw new Error("User is not find");
+  if (!user)
+    return res.status(400).json({
+      success: false,
+      message: "User is not find",
+    });
 
   req.user = user;
   next();
@@ -77,7 +81,6 @@ const replacePassword = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
     message: "Replace password is successfully",
-    data: cleanUserMore(user),
   });
 });
 

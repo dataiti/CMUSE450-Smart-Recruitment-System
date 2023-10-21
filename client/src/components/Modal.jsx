@@ -10,6 +10,7 @@ const Modal = ({ children, open, handleOpen }) => {
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0.8, y: -100 },
       }}
+      className="!z-40"
     >
       {children}
     </Dialog>
