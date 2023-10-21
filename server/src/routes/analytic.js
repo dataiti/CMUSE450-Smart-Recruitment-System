@@ -9,7 +9,7 @@ const { employerById } = require("../controllers/employer");
 
 const router = express.Router();
 
-router.get("/get-oveview-statistics/admin/:userId", getOveviewStatistics);
+router.get("/get-oveview-statistics/:userId/:employerId", getOveviewStatistics);
 router.get(
   "/generate-time-based-line-chart/:userId/:employerId",
   generateTimeBasedLineChart
