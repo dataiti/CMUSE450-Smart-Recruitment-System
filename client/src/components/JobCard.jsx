@@ -148,7 +148,10 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
             <div className="flex items-center gap-1">
               {jobItem?.skills &&
                 jobItem?.skills.map((skill, index) => (
-                  <Tag className="text-indigo-700 bg-indigo-50" key={index}>
+                  <Tag
+                    className="text-indigo-700 bg-indigo-50 name"
+                    key={index}
+                  >
                     {skill}
                   </Tag>
                 ))}

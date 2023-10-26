@@ -87,22 +87,20 @@ const replacePassword = asyncHandler(async (req, res) => {
 const followCompany = asyncHandler(async (req, res) => {});
 
 const getListUserForAdmin = asyncHandler(async (req, res) => {
-  const status = req.query.status ? req.query.status : "";
-  const search = req.query.search ? req.query.search : "";
+  const { query } = req;
+  const status = query.status ? query.status : "";
+  const search = query.search || "";
   const regex = search
     .split(" ")
-    .filter((s) => s)
+    .filter((q) => q)
     .join("|");
-  const sortBy = req.query.sortBy ? req.query.sortBy : "-_id";
-  const orderBy =
-    req.query.orderBy &&
-    (req.query.orderBy == "asc" || req.query.orderBy == "desc")
-      ? req.query.orderBy
-      : "asc";
-  const limit = req.query.limit ? Number(req.query.limit) : 8;
-  const page =
-    req.query.page && req.query.page > 0 ? Number(req.query.page) : 1;
-  let skip = (page - 1) * limit;
+  const sortBy = query.sortBy || "-_id";
+  const orderBy = ["asc", "desc"].includes(query.orderBy)
+    ? query.orderBy
+    : "asc";
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+  const page = query.page > 0 ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
 
   const filterArgs = {
     $or: [
@@ -111,7 +109,7 @@ const getListUserForAdmin = asyncHandler(async (req, res) => {
       { email: { $regex: regex, $options: "i" } },
       { phoneNumber: { $regex: regex, $options: "i" } },
     ],
-    permission: { $ne: "adminstractor" },
+    permission: { $ne: "admin" },
   };
 
   if (status) filterArgs.status = status;
@@ -128,7 +126,8 @@ const getListUserForAdmin = asyncHandler(async (req, res) => {
     .select("-password")
     .sort({ [sortBy]: orderBy, _id: -1 })
     .skip(skip)
-    .limit(limit);
+    .limit(limit)
+    .populate("ownerEmployerId");
 
   return res.status(200).json({
     success: true,

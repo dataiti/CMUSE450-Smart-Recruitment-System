@@ -30,16 +30,10 @@ const getEmployerDetail = asyncHandler(async (req, res) => {
 });
 
 const registerEmployer = asyncHandler(async (req, res) => {
-  console.log(req.file);
-
   const companyLogo = req.file.path;
   const publicId = req.file.filename;
 
   const {
-    fullName,
-    phoneNumber,
-    sex,
-    workLocation,
     companyName,
     companyEmail,
     companyPhoneNumber,
@@ -52,10 +46,6 @@ const registerEmployer = asyncHandler(async (req, res) => {
 
   const newEmployer = new Employer({
     ownerId: req.user._id,
-    fullName,
-    phoneNumber,
-    sex,
-    workLocation,
     companyLogo,
     publicId,
     companyName,
@@ -79,47 +69,7 @@ const registerEmployer = asyncHandler(async (req, res) => {
   });
 });
 
-const editEmployer = asyncHandler(async (req, res) => {
-  const {
-    fullName,
-    yearOfBirth,
-    sex,
-    careers,
-    experience,
-    workLocation,
-    desiredSalary,
-    yourCV,
-    skills,
-    introduceYourself,
-  } = req.body;
-
-  const updateCandiate = await Employer.findOneAndUpdate(
-    { _id: req.candidate.candidateId },
-    {
-      $set: {
-        fullName,
-        yearOfBirth,
-        sex,
-        careers,
-        experience,
-        workLocation,
-        desiredSalary,
-        yourCV,
-        skills,
-        introduceYourself,
-      },
-    },
-    { new: true }
-  );
-
-  if (!updateCandiate) throw new Error("Edit candidate is fail");
-
-  return res.status(200).json({
-    success: true,
-    message: "Edit candidate is successfully",
-    data: updateCandiate,
-  });
-});
+const editEmployer = asyncHandler(async (req, res) => {});
 
 const deleteEmployer = asyncHandler(async (req, res) => {
   const deleteCandidate = await Candidate.findOneAndDelete({
@@ -134,7 +84,62 @@ const deleteEmployer = asyncHandler(async (req, res) => {
   });
 });
 
-const getListOfEmployerForAdmin = asyncHandler(async (req, res) => {});
+const getListOfEmployerForAdmin = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const status = query.status ? query.status : "";
+  const search = query.search || "";
+  const regex = search
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
+  const sortBy = query.sortBy || "-_id";
+  const orderBy = ["asc", "desc"].includes(query.orderBy)
+    ? query.orderBy
+    : "asc";
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+  const page = query.page > 0 ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
+  const companyIndustry = req.query.companyIndustry
+    ? req.query.companyIndustry
+    : -1;
+  const companySize = req.query.companySize ? req.query.companySize : -1;
+
+  const filterArgs = {
+    $or: [
+      { companyName: { $regex: regex, $options: "i" } },
+      { companyEmail: { $regex: regex, $options: "i" } },
+      { companyPhoneNumber: { $regex: regex, $options: "i" } },
+      { companyLocation: { $regex: regex, $options: "i" } },
+      { companyDescription: { $regex: regex, $options: "i" } },
+    ],
+  };
+
+  if (status) filterArgs.status = status;
+  if (companySize !== -1) filterArgs.companySize = companySize;
+  if (companyIndustry !== -1) filterArgs.companyIndustry = companyIndustry;
+
+  const countEmployer = await Employer.countDocuments(filterArgs);
+
+  if (!countEmployer) throw new Error("List employer is not find");
+
+  const totalPage = Math.ceil(countEmployer / limit);
+
+  if (page > totalPage) skip = (totalPage - 1) * limit;
+
+  const listEmployers = await Employer.find(filterArgs)
+    .sort({ [sortBy]: orderBy, _id: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list of employers are successfully",
+    currentPage: page,
+    totalPage,
+    countEmployer,
+    data: listEmployers,
+  });
+});
 
 module.exports = {
   employerById,

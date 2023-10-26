@@ -7,10 +7,7 @@ const verifyToken = async (req, res, next) => {
       req.headers.authorization.startsWith("Bearer ")
     ) {
       const token = req.headers.authorization.split(" ")[1];
-      const decoded = await jwt.verify(
-        token,
-        process.env.JWT_SECRET_ACCESS_KEY
-      );
+      const decoded = await jwt.verify(token, process.env.ACCESS_TOKEN_KEY);
       req.user = decoded;
       next();
     } else {
@@ -27,7 +24,7 @@ const verifyToken = async (req, res, next) => {
 const isEmployer = async (req, res, next) => {
   try {
     if (
-      req.user.permissions === "employer" ||
+      req.user.permission === "employer" ||
       req.user._id !== req.employer.ownerId
     ) {
       throw new Error("You are not the owner of this employer");
@@ -44,7 +41,7 @@ const isEmployer = async (req, res, next) => {
 
 const isAdminSystem = async (req, res, next) => {
   try {
-    if (req.user.permissions !== "admin") {
+    if (req.user.permission !== "admin") {
       throw new Error("You are not the admin of this system");
     } else {
       next();

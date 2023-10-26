@@ -37,6 +37,7 @@ import { toast } from "react-toastify";
 import { icons } from "../../utils/icons";
 import { setTitle } from "../../redux/features/slices/titleSlice";
 import Loading from "../../components/Loading";
+import Swal from "sweetalert2";
 
 const ListJobsPage = () => {
   const dispatch = useDispatch();
@@ -74,8 +75,9 @@ const ListJobsPage = () => {
     { refetchOnMountOrArgChange: true }
   );
 
-  const [toggleHiringStatusJob] = useToggleHiringStatusJobMutation();
-  const [deleteJob] = useDeleteJobMutation();
+  const [toggleHiringStatusJob, { isLoading }] =
+    useToggleHiringStatusJobMutation();
+  const [deleteJob, { isLoading: isLoadingDeleteJob }] = useDeleteJobMutation();
 
   useEffect(() => {
     if (listJobsData && listJobsData.success) {
@@ -123,18 +125,30 @@ const ListJobsPage = () => {
 
   const handleRemoveJobItem = async ({ _id, addressId }) => {
     try {
-      const response = await deleteJob({
-        userId: user?._id,
-        employerId: user?.ownerEmployerId?._id,
-        jobId: _id,
-        addressId,
+      setOpen(false);
+      Swal.fire({
+        title: "Bạn có chắc không ?",
+        text: "Bạn sẽ không thể hoàn tác điều này!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#0B5345 ",
+        cancelButtonColor: "#A93226",
+        confirmButtonText: "Vâng, xoá !",
+        cancelButtonText: "Huỷ",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await deleteJob({
+            userId: user?._id,
+            employerId: user?.ownerEmployerId?._id,
+            jobId: _id,
+            addressId,
+          });
+          if (response && response.data && response.data.success) {
+            dispatch(removeJobItem({ _id }));
+            toast.success("Xoá tin tuyển dụng thành công !");
+          }
+        }
       });
-
-      if (response && response.data && response.data.success) {
-        dispatch(removeJobItem({ _id }));
-        setOpen(false);
-        toast.success("Xoá tin tuyển dụng thành công !");
-      }
     } catch (error) {
       console.log(error);
     }
@@ -158,7 +172,7 @@ const ListJobsPage = () => {
 
   return (
     <div className="mx-[30px] my-[30px]">
-      {isFetching && <Loading />}
+      {(isFetching || isLoading || isLoadingDeleteJob) && <Loading />}
       <div className="flex flex-col gap-2 bg-white p-2 rounded-md">
         <div className="flex items-center gap-3">
           <SelectCustom label="Sắp xếp theo" options={desiredSalaryOptions} />

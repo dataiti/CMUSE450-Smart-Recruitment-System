@@ -371,7 +371,79 @@ const getListJobForEmployer = asyncHandler(async (req, res) => {
   });
 });
 
-const getListJobForAdmin = asyncHandler(async (req, res) => {});
+const getListJobForAdmin = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const search = query.search || "";
+  const regex = search
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
+  const sortBy = query.sortBy || "-_id";
+  const orderBy = ["asc", "desc"].includes(query.orderBy)
+    ? query.orderBy
+    : "asc";
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+  const page = query.page > 0 ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
+
+  const status = req.query.status ? req.query.status : -1;
+  const experience = req.query.experience ? req.query.experience : -1;
+  // const categoryId = req.query.categoryId ? req.query.categoryId : -1;
+  const rating =
+    req.query.rating && req.query.rating > 0 && req.query.rating < 6
+      ? Number(req.query.rating)
+      : -1;
+  const salaryFrom =
+    req.query.salaryFrom && req.query.salaryFrom > 0
+      ? Number(req.query.salaryFrom)
+      : -1;
+  const salaryTo =
+    req.query.salaryTo && req.query.salaryTo > 0
+      ? Number(req.query.salaryTo)
+      : -1;
+
+  const filterArgs = {
+    $or: [
+      { recruitmentCampaignName: { $regex: regex, $options: "i" } },
+      { industry: { $regex: regex, $options: "i" } },
+      { recruitmentTitle: { $regex: regex, $options: "i" } },
+    ],
+  };
+
+  if (status !== -1) filterArgs.status = status;
+  if (experience !== -1) filterArgs.experience = experience;
+  if (typeof rating !== "undefined" && rating !== -1) {
+    filterArgs.rating = { $gte: rating };
+  }
+  if (typeof salaryFrom !== "undefined" && salaryFrom !== -1) {
+    filterArgs.salaryFrom = { $gte: salaryFrom };
+  }
+
+  if (typeof salaryTo !== "undefined" && salaryTo !== -1) {
+    filterArgs.salaryTo = { $lte: salaryTo };
+  }
+
+  const countJobs = await Job.countDocuments(filterArgs);
+
+  const totalPage = Math.ceil(countJobs / limit);
+
+  const listJobs = await Job.find(filterArgs)
+    .sort({ [sortBy]: orderBy, _id: -1 })
+    .skip(skip)
+    .limit(limit)
+    .populate("workRegion")
+    // .populate("categoryId", "name")
+    .populate("employerId");
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list jobs are successfully",
+    totalPage,
+    currentPage: page,
+    count: countJobs,
+    data: listJobs,
+  });
+});
 
 module.exports = {
   jobById,

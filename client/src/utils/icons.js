@@ -66,6 +66,7 @@ import {
   FaLock,
   FaDollarSign,
   FaFont,
+  FaUserCheck,
 } from "react-icons/fa6";
 import {
   AiOutlineBold,
@@ -85,6 +86,7 @@ import { LiaSearchPlusSolid, LiaSearchMinusSolid } from "react-icons/lia";
 import { ImTable2 } from "react-icons/im";
 
 const icons = {
+  FaUserCheck,
   ImTable2,
   AiFillCloseCircle,
   BsFiletypePdf,

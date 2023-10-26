@@ -115,7 +115,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
 });
 
 const getListOfCategories = asyncHandler(async (req, res) => {
-  const listCategories = await Category.find();
+  const listCategories = await Category.find({ isActive: true });
 
   return res.status(200).json({
     success: true,
@@ -124,14 +124,28 @@ const getListOfCategories = asyncHandler(async (req, res) => {
   });
 });
 
+const toggleActiveCategory = asyncHandler(async (req, res) => {
+  const findCategory = await Category.findOne({ _id: req.category._id });
+
+  if (!findCategory) throw new Error("Category is not find");
+
+  findCategory.isActive = !findCategory.isActive;
+
+  await findCategory.save();
+
+  return res.status(200).json({
+    success: true,
+    messsage: "Toggle active category is successfully",
+    data: findCategory,
+  });
+});
+
 const getListOfCategoriesForAdmin = asyncHandler(async (req, res) => {
-  const search = req.query.search ? req.query.search : null;
-  const regex =
-    search &&
-    search
-      .split(" ")
-      .filter((q) => q)
-      .join("|");
+  const search = req.query.search ? req.query.search : "";
+  const regex = search
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
   const sortBy = req.query.sortBy ? req.query.sortBy : "-_id";
   const orderBy =
     req.query.orderBy &&
@@ -180,5 +194,7 @@ module.exports = {
   createCategory,
   updateCategory,
   deleteCategory,
+  toggleActiveCategory,
   getListOfCategories,
+  getListOfCategoriesForAdmin,
 };

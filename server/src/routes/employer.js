@@ -9,10 +9,16 @@ const {
 } = require("../controllers/employer");
 const { userById } = require("../controllers/user");
 const { uploadCloud } = require("../configs/cloudinaryConfig");
+const { verifyToken, isAdminSystem } = require("../middlewares/verifyToken");
 
 const router = express.Router();
 
-router.get("/list-employers/admin/:userId", getListOfEmployerForAdmin);
+router.get(
+  "/list-employers/admin/:userId",
+  verifyToken,
+  isAdminSystem,
+  getListOfEmployerForAdmin
+);
 router.get("/get-employer-detail/:userId/:employerId", getEmployerDetail);
 router.post(
   "/register-employer/:userId",

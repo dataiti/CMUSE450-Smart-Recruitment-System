@@ -11,6 +11,8 @@ import {
   RegisterPage,
   UserProfilePage,
   ResumeDetail,
+  PaymentPage,
+  DecorationPage,
 } from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
 import ListResumes from "../pages/resume/ListResumes";
@@ -69,6 +71,14 @@ const routers = [
           {
             path: "/message",
             element: <MessagePage />,
+          },
+          {
+            path: "/decoration",
+            element: <DecorationPage />,
+          },
+          {
+            path: "/payment",
+            element: <PaymentPage />,
           },
           {
             path: "/company-profile",

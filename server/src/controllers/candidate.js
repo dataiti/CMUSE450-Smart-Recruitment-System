@@ -123,8 +123,6 @@ const deleteCandidate = asyncHandler(async (req, res) => {
   });
 });
 
-const getListOfCandidateForEmployer = asyncHandler(async (req, res) => {});
-
 const getListOfCandidateForAdmin = asyncHandler(async (req, res) => {});
 
 module.exports = {
@@ -133,6 +131,5 @@ module.exports = {
   registerCandidate,
   editCandidate,
   deleteCandidate,
-  getListOfCandidateForEmployer,
   getListOfCandidateForAdmin,
 };

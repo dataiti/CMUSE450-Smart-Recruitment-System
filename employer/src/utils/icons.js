@@ -40,6 +40,7 @@ import {
   FaCirclePlus,
   FaCircleXmark,
   FaFaceSmile,
+  FaUserCheck,
 } from "react-icons/fa6";
 import {
   AiOutlineBold,
@@ -52,6 +53,7 @@ import {
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 
 const icons = {
+  FaUserCheck,
   MdPayment,
   FaSignOutAlt,
   MdImagesearchRoller,

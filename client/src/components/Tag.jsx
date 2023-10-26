@@ -7,7 +7,9 @@ const Tag = ({ children, icon, className }) => {
       className={`flex items-center flex-wrap gap-1 px-4 py-1 rounded-full ${className}`}
     >
       {icon && icon}
-      <Typography className="!text-xs font-bold">{children}</Typography>
+      <Typography className="!text-xs font-bold  whitespace-nowrap">
+        {children}
+      </Typography>
     </div>
   );
 };

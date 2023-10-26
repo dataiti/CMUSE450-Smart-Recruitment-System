@@ -1,18 +1,43 @@
 const Job = require("../models/job");
-const Candidate = require("../models/candidate");
-const Address = require("../models/address");
+const ApplyJob = require("../models/applyJob");
 const Employer = require("../models/employer");
 const asyncHandler = require("express-async-handler");
 const moment = require("moment");
 
 const getOveviewStatistics = asyncHandler(async (req, res) => {
-  const numberOfOpenJobs = await Job.countDocuments({ status: "active" });
+  const numberOfOpenJobs = await Job.countDocuments({
+    employerId: req.employer._id,
+    isHiring: true,
+    status: "active",
+  });
+
+  const numberOfTotalJobs = await Job.countDocuments({
+    employerId: req.employer._id,
+    status: "active",
+  });
+
+  const numberOfTotalApplyJobs = await ApplyJob.countDocuments({
+    employerId: req.employer._id,
+  });
+
+  const numberOfFollower = await Employer.findOne({
+    _id: req.employer._id,
+  });
+
+  const numberOfApplyJobsNotViewed = await ApplyJob.countDocuments({
+    employerId: req.employer._id,
+    status: "notviewed",
+  });
 
   return res.status(200).json({
     success: true,
     message: "Get overview satatistics is successfully",
     data: {
+      numberOfTotalJobs,
       numberOfOpenJobs,
+      numberOfTotalApplyJobs,
+      numberOfFollower: numberOfFollower.followerIds.length,
+      numberOfApplyJobsNotViewed,
     },
   });
 });
@@ -42,44 +67,80 @@ const generateTimeBasedLineChart = asyncHandler(async (req, res) => {
 
   const dateToStringFormat = typeTimeChart === "year" ? "%m" : "%d-%m";
 
-  const result = await Job.aggregate([
-    {
-      $match: {
-        status: "active",
-        createdAt: {
-          $gte: startTime,
-          $lte: endTime,
+  if (typeChart === "applicated") {
+    chartData = await ApplyJob.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startTime,
+            $lte: endTime,
+          },
+          employerId: req.employer._id,
         },
-        employerId: req.employer._id,
       },
-    },
-    {
-      $group: {
-        _id: {
-          $cond: {
-            if: { $eq: [typeTimeChart, "day"] },
-            then: {
-              $dateToString: {
-                format: dateToStringFormat,
-                date: "$createdAt",
+      {
+        $group: {
+          _id: {
+            $cond: {
+              if: { $eq: [typeTimeChart, "day"] },
+              then: {
+                $dateToString: {
+                  format: dateToStringFormat,
+                  date: "$createdAt",
+                },
               },
-            },
-            else: {
-              $dateToString: {
-                format: dateToStringFormat,
-                date: "$createdAt",
+              else: {
+                $dateToString: {
+                  format: dateToStringFormat,
+                  date: "$createdAt",
+                },
               },
             },
           },
-        },
-        value: {
-          $sum: typeChart !== "applicated" ? 1 : { $size: "$appliedIds" },
+          value: {
+            $sum: 1,
+          },
         },
       },
-    },
-  ]);
-
-  chartData = result;
+    ]);
+  } else {
+    chartData = await Job.aggregate([
+      {
+        $match: {
+          status: "active",
+          createdAt: {
+            $gte: startTime,
+            $lte: endTime,
+          },
+          employerId: req.employer._id,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $cond: {
+              if: { $eq: [typeTimeChart, "day"] },
+              then: {
+                $dateToString: {
+                  format: dateToStringFormat,
+                  date: "$createdAt",
+                },
+              },
+              else: {
+                $dateToString: {
+                  format: dateToStringFormat,
+                  date: "$createdAt",
+                },
+              },
+            },
+          },
+          value: {
+            $sum: 1,
+          },
+        },
+      },
+    ]);
+  }
 
   const dateRange = [];
   let currentDate = moment(startTime);

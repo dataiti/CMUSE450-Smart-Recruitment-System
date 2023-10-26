@@ -8,10 +8,16 @@ const {
   followCompany,
   getListUserForAdmin,
 } = require("../controllers/user");
+const { isAdminSystem, verifyToken } = require("../middlewares/verifyToken");
 
 const router = express.Router();
 
-router.get("/list-users/admin/:userId", getListUserForAdmin);
+router.get(
+  "/list-users/admin/:userId",
+  verifyToken,
+  isAdminSystem,
+  getListUserForAdmin
+);
 router.get("/get-user-detail/:userId", getUserDetail);
 router.put("/edit-user/:userId", editUser);
 router.delete("/delete-user/:userId", deleteUser);

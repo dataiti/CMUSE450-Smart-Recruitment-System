@@ -14,9 +14,16 @@ const {
 const { userById } = require("../controllers/user");
 const { addressById } = require("../controllers/address");
 const { employerById } = require("../controllers/employer");
+const { verifyToken, isAdminSystem } = require("../middlewares/verifyToken");
 
 const router = express.Router();
 
+router.get(
+  "/list-jobs/admin/:userId",
+  verifyToken,
+  isAdminSystem,
+  getListJobForAdmin
+);
 router.get("/get-list-search-jobs", getListSearchJobs);
 router.get("/get-list-jobs", getListJobs);
 router.get(

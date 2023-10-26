@@ -8,6 +8,8 @@ import CompanyProfilePage from "./profile/CompanyProfilePage";
 import UserProfilePage from "./profile/UserProfilePage";
 import MessagePage from "./message/MessagePage";
 import ResumeDetail from "./resume/ResumeDetail";
+import DecorationPage from "./decoration/DecorationPage";
+import PaymentPage from "./payment/PaymentPage";
 
 export {
   LoginPage,
@@ -20,4 +22,6 @@ export {
   UserProfilePage,
   MessagePage,
   ResumeDetail,
+  DecorationPage,
+  PaymentPage,
 };

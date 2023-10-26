@@ -26,7 +26,7 @@ const Sidebar = () => {
 
   const [openJobMenu, setOpenJobMenu] = useState(true);
   const [openResumeMenu, setOpenResumeMenu] = useState(true);
-  const [openSettingMenu, setOpenSettingMenu] = useState(true);
+  const [openSettingMenu, setOpenSettingMenu] = useState(false);
 
   const handleOpenJobMenu = () => {
     setOpenJobMenu(!openJobMenu);

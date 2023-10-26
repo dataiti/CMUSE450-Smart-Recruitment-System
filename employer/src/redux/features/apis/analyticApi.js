@@ -18,10 +18,19 @@ const analyticApi = rootApi.injectEndpoints({
         };
       },
     }),
+    getOveviewStatistics: builder.query({
+      query: ({ userId, employerId, type }) => {
+        return {
+          url: `/analytic/get-oveview-statistics/${userId}/${employerId}?type=${type}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
 export const {
   useGenerateTimeBasedLineChartQuery,
   useGenerateTimeBasedPieChartByIndustryQuery,
+  useGetOveviewStatisticsQuery,
 } = analyticApi;

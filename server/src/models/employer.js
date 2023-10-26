@@ -6,22 +6,6 @@ const employerSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    fullName: {
-      type: String,
-      required: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
-    sex: {
-      type: String,
-      required: true,
-    },
-    workLocation: {
-      type: String,
-      required: true,
-    },
     companyLogo: {
       type: String,
       required: true,
@@ -72,8 +56,8 @@ const employerSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "Active",
-      enum: ["Active", "Locked"],
+      default: "active",
+      enum: ["pendding", "active", "locked"],
     },
     rating: {
       type: Number,
