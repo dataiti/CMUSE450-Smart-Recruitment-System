@@ -11,7 +11,7 @@ const ProfileLayout = () => {
         <Header />
       </div>
       <div className="py-4 mt-[80px] bg-[#e8edf2]">
-        <div className="grid grid-cols-12 gap-4 px-[160px]">
+        <div className="grid grid-cols-12 gap-4 px-[110px]">
           <div className="col-span-3">
             <SidebarProfile />
           </div>

@@ -82,7 +82,7 @@ const userSchema = new mongoose.Schema(
     status: {
       type: String,
       default: "active",
-      enum: ["active", "locked"],
+      enum: ["active", "locked", "online"],
     },
     socketId: {
       type: String,

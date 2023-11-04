@@ -141,8 +141,6 @@ const DashboardPage = () => {
     setEndDay(e.target.value);
   };
 
-  console.log(oveviewStatisticsData);
-
   return (
     <div className="my-3 mx-5 flex flex-col gap-2">
       {(isFetchingOveviewStatistics ||

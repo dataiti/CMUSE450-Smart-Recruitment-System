@@ -158,6 +158,48 @@ const getListApplyJobForEmployer = asyncHandler(async (req, res) => {
   });
 });
 
+const getListApplyJobForCandidate = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const search = query.search ? query.search : "";
+  const status = query.status ? query.status : "";
+  const regex = search
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+  const page = query.page > 0 ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
+
+  const filterArgs = {
+    $or: [{ CVName: { $regex: regex, $options: "i" } }],
+    candidateId: req.user._id,
+    // status: status,
+  };
+
+  const countApplyJobs = await ApplyJob.countDocuments(filterArgs);
+
+  const totalPage = Math.ceil(countApplyJobs / limit);
+
+  const listApplyJobs = await ApplyJob.find(filterArgs)
+    .sort("-_id")
+    .skip(skip)
+    .limit(limit)
+    .populate("candidateId", "firstName lastName email avatar")
+    .populate("jobId")
+    .populate(
+      "employerId",
+      "companyLogo companyName companyEmail companyPhoneNumber"
+    );
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list apply jobs for candidate are successfully",
+    totalPage,
+    count: countApplyJobs,
+    data: listApplyJobs,
+  });
+});
+
 module.exports = {
   applyJobById,
   getApplyJobDetail,
@@ -167,4 +209,5 @@ module.exports = {
   stopApplyJob,
   responseEmployerForApplyJob,
   getListApplyJobForEmployer,
+  getListApplyJobForCandidate,
 };

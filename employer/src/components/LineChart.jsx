@@ -2,7 +2,6 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 
 const LineChart = ({ data = [], className = "", type = "week" }) => {
-  console.log(type);
   const barPercentage =
     type === "week"
       ? 0.2

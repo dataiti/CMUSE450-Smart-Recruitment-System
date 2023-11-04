@@ -6,6 +6,15 @@ export const timeAgo = (date) => {
   return formatDistanceToNow(date, { addSuffix: true, locale: vi });
 };
 
+export const covertToDate = (dateString) => {
+  const date = new Date(Date.parse(dateString));
+  const formattedDate = `${date.getDate()}-${
+    date.getMonth() + 1
+  }-${date.getFullYear()}`;
+
+  return formattedDate;
+};
+
 export const formattedAmount = (amount) => {
   if (amount > 900000) return numeral(amount / 1000000).format("0") + " Triệu";
   else if (amount < 1000000 && amount > 99000) {

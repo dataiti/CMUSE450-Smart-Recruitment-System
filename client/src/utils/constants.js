@@ -149,6 +149,24 @@ export const navbarItems = [
   },
 ];
 
+export const statusOptions = [
+  { id: 1, text: "Tất cả", value: "" },
+  { id: 2, text: "Chờ phê duyệt", value: "pending" },
+  { id: 3, text: "Đang hoạt động", value: "active" },
+  { id: 4, text: "Đã hết hạn", value: "expired" },
+  { id: 5, text: "Bị từ chối", value: "reject" },
+];
+
+export const tableHeadApplyJob = [
+  { id: 1, name: "ID" },
+  { id: 2, name: "Thông tin công ty" },
+  { id: 3, name: "Tên chiến dịch" },
+  { id: 4, name: "Tên CV" },
+  { id: 5, name: "Ngày đăng" },
+  { id: 6, name: "Trạng thái" },
+  { id: 7, name: "Hành động" },
+];
+
 export const categoriesBarItems = [
   {
     id: 1,

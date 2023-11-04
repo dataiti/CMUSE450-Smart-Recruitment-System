@@ -9,6 +9,7 @@ import ResumeOnlinePage from "./resume/ResumeOnlinePage";
 import JobDetailPage from "./job/JobDetailPage";
 import WishListPage from "./wishlist/WishListPage";
 import CompanyProfile from "./company/CompanyProfile";
+import ListMyApplyJobs from "./profile/ListMyApplyJobs";
 
 export {
   HomePage,
@@ -22,4 +23,5 @@ export {
   JobDetailPage,
   WishListPage,
   CompanyProfile,
+  ListMyApplyJobs,
 };

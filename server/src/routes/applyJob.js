@@ -4,6 +4,7 @@ const {
   applyJob,
   getApplyJobDetail,
   getListApplyJobForEmployer,
+  getListApplyJobForCandidate,
 } = require("../controllers/applyJob");
 const { userById } = require("../controllers/user");
 const { jobById } = require("../controllers/job");
@@ -12,6 +13,10 @@ const { uploadMemo } = require("../configs/cloudinaryConfig");
 
 const router = express.Router();
 
+router.get(
+  "/get-list-apply-jobs/candidate/:userId",
+  getListApplyJobForCandidate
+);
 router.get(
   "/get-list-apply-jobs/:userId/:employerId",
   getListApplyJobForEmployer

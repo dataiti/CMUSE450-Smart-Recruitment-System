@@ -39,6 +39,8 @@ import {
   BsFacebook,
   BsFileEarmarkArrowDownFill,
   BsFiletypePdf,
+  BsCameraVideo,
+  BsTelephone,
 } from "react-icons/bs";
 import {
   FaUserAlt,
@@ -86,6 +88,8 @@ import { LiaSearchPlusSolid, LiaSearchMinusSolid } from "react-icons/lia";
 import { ImTable2 } from "react-icons/im";
 
 const icons = {
+  BsTelephone,
+  BsCameraVideo,
   FaUserCheck,
   ImTable2,
   AiFillCloseCircle,

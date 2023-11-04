@@ -87,7 +87,16 @@ input[type="checkbox"]:checked:after {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
-  min-height: 20px;
+  min-height: 10px;
+}
+
+.name-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  height: 20px;
 }
 
 .name-3 {

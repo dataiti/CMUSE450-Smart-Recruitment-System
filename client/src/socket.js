@@ -2,9 +2,9 @@ import io from "socket.io-client";
 
 let socket;
 
-const connectSocket = ({ employerId }) => {
+const connectSocket = ({ userId }) => {
   socket = io("http://localhost:5000", {
-    query: `employerId=${employerId}`,
+    query: `userId=${userId}`,
   });
 };
 

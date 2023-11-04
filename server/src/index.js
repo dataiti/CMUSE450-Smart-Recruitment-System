@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const Message = require("../src/models/message");
 const Employer = require("../src/models/employer");
 const User = require("../src/models/user");
+const Notification = require("../src/models/notification");
 require("dotenv").config();
 
 const router = require("./routes");
@@ -49,27 +50,75 @@ const server = app.listen(port, () => {
 
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
-    credentials: true,
+    origin: "*",
   },
 });
 
 // socket
 io.on("connection", async (socket) => {
-  io.on("get_direct_conversations", async ({ userId }, callback) => {
+  const userId = socket.handshake.query["userId"];
+  const employerId = socket.handshake.query["employerId"];
+
+  if (userId) console.log(`✅ User ${userId} connected socket is successfully`);
+  if (employerId)
+    console.log(`✅ Employer ${employerId} connected socket is successfully`);
+
+  if (Boolean(userId) && userId !== null) {
+    try {
+      await User.findByIdAndUpdate(userId, {
+        socketId: socket.id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (Boolean(employerId) && employerId !== null) {
+    try {
+      await Employer.findByIdAndUpdate(employerId, {
+        socketId: socket.id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  socket.on("get_direct_conversations", async ({ userId }) => {
     const existingConversations = await Message.find({
       participants: { $all: [userId] },
-    }).populate("participants", "firstName lastName avatar _id email status");
+    }).populate({
+      path: "participants",
+      model: "User",
+      select: "firstName lastName avatar _id email status",
+      populate: {
+        path: "ownerEmployerId",
+        model: "Employer",
+        select: "companyLogo companyName companyEmail _id companyPhoneNumber",
+      },
+    });
 
-    callback(existingConversations);
+    const toUser = await User.findById(userId);
+
+    io.to(toUser?.socketId).emit("user_get_direct_conversations", {
+      message: existingConversations,
+    });
   });
 
-  io.on("start_conversation", async (data) => {
+  socket.on("start_conversation", async (data) => {
     const { from, to } = data;
 
     const existingConversations = await Message.find({
       participants: { $size: 2, $all: [from, to] },
-    }).populate("participants", "firstName lastName avatar _id email status");
+    }).populate({
+      path: "participants",
+      model: "User",
+      select: "firstName lastName avatar _id email status",
+      populate: {
+        path: "ownerEmployerId",
+        model: "Employer",
+        select: "companyLogo companyName companyEmail _id companyPhoneNumber",
+      },
+    });
 
     if (existingConversations.length === 0) {
       let newChat = await Message.create({
@@ -78,7 +127,7 @@ io.on("connection", async (socket) => {
 
       newChat = await Message.findById(newChat).populate(
         "participants",
-        "firstName lastName _id email status"
+        "firstName lastName _id avatar email status"
       );
 
       socket.emit("start_chat", newChat);
@@ -87,19 +136,27 @@ io.on("connection", async (socket) => {
     }
   });
 
-  io.on("get_messages", async (data, callback) => {
+  socket.on("get_messages", async (data) => {
     try {
-      const { message } = await Message.findById(data.conversationId).select(
-        "messages"
-      );
+      const { conversationId, userId } = data;
+      const messages = await Message.findById(conversationId)
+        .populate("participants", "firstName lastName _id avatar email status")
+        .populate(
+          "messages.to messages.from",
+          "firstName lastName _id avatar email status"
+        );
 
-      callback(message);
+      const toUser = await User.findById(userId);
+
+      io.to(toUser?.socketId).emit("user_get_message", {
+        message: messages,
+      });
     } catch (error) {
       console.log(error);
     }
   });
 
-  io.on("text_message", async (data) => {
+  socket.on("text_message", async (data) => {
     const { message, from, to, type, conversationId } = data;
 
     const toUser = await User.findById(to);
@@ -118,17 +175,20 @@ io.on("connection", async (socket) => {
 
     await chat.save({ new: true, validateModifiedOnly: true });
 
+    const messages = await Message.findById(conversationId).populate(
+      "messages.to messages.from",
+      "firstName lastName _id avatar email status"
+    );
+
     io.to(toUser?.socketId).emit("new_message", {
-      conversationId,
-      message: newMessage,
+      message: messages,
     });
     io.to(fromUser?.socketId).emit("new_message", {
-      conversationId,
-      message: newMessage,
+      message: messages,
     });
   });
 
-  io.on("follow_employer", async (data) => {
+  socket.on("follow_employer", async (data) => {
     const { userId, employerId } = data;
 
     try {
@@ -143,7 +203,7 @@ io.on("connection", async (socket) => {
       employer.followerIds.push(userId);
       await employer.save();
 
-      user.employersFollowing.push(employerId);
+      user.followingIds.push(employerId);
       await user.save();
 
       io.to(employer.ownerId.socketId).emit("new_follower", { userId });
@@ -152,7 +212,7 @@ io.on("connection", async (socket) => {
     }
   });
 
-  io.on("unfollow_employer", async (data) => {
+  socket.on("unfollow_employer", async (data) => {
     const { userId, employerId } = data;
     try {
       const user = await User.findById(userId);
@@ -174,6 +234,74 @@ io.on("connection", async (socket) => {
       await user.save();
 
       io.to(employer.ownerId.socketId).emit("unfollowed", { userId });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("employer_send_notification", async (message) => {
+    const { userId, employerId, title, content, url } = message;
+    try {
+      const user = await User.findById(userId);
+
+      const employer = await Employer.findById(employerId);
+
+      if (!user || !employer) return;
+
+      const newNotification = new Notification({
+        userId,
+        employerId,
+        title,
+        content,
+        url,
+      });
+
+      const savedNewNotification = await newNotification.save();
+
+      const notificationPopulated = await Notification.findById(
+        savedNewNotification._id
+      )
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      io.to(user?.socketId).emit("user_get_notification", {
+        sucess: true,
+        message: notificationPopulated,
+      });
+
+      io.to(employer?.socketId).emit("employer_get_notification", {
+        sucess: true,
+        message: notificationPopulated,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("user_view_notification", async (message) => {
+    const { notificationId, userId } = message;
+    try {
+      const user = await User.findById(userId);
+
+      if (!user) return;
+
+      const notificationPopulated = await Notification.findById(notificationId)
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      notificationPopulated.isViewed = true;
+      await notificationPopulated.save();
+
+      io.to(user?.socketId).emit("user_viewed_notification", {
+        sucess: true,
+        message: notificationPopulated,
+      });
     } catch (error) {
       console.error(error);
     }

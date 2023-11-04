@@ -31,8 +31,19 @@ const applyJobApi = rootApi.injectEndpoints({
         };
       },
     }),
+    getListApplyJobForCandidate: builder.query({
+      query: ({ userId, search = "", status, limit, page }) => {
+        return {
+          url: `/applyJob/get-list-apply-jobs/candidate/${userId}?search=${search}&page=${page}&limit=${limit}&status=${status}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
-export const { useApplyJobMutation, useLazyGetListOfApplyJobsQuery } =
-  applyJobApi;
+export const {
+  useApplyJobMutation,
+  useLazyGetListOfApplyJobsQuery,
+  useGetListApplyJobForCandidateQuery,
+} = applyJobApi;

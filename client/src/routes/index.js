@@ -11,6 +11,7 @@ import {
   JobDetailPage,
   WishListPage,
   CompanyProfile,
+  ListMyApplyJobs,
 } from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
 
@@ -78,6 +79,10 @@ const routers = [
           {
             path: "/change-password",
             element: <ChangePasswordPage />,
+          },
+          {
+            path: "/manage-jobapply",
+            element: <ListMyApplyJobs />,
           },
         ],
       },

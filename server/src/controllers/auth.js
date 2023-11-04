@@ -48,9 +48,7 @@ const login = asyncHandler(async (req, res) => {
   if (!email || !password) throw new Error("Email or password is required");
 
   const findUser = await User.findOne({
-    email: { $exists: true, $ne: null, $eq: email },
-    googleId: { $exists: false, $eq: null },
-    facebookId: { $exists: false, $eq: null },
+    email,
   }).populate("ownerEmployerId");
 
   if (!findUser) throw new Error("Email is incorrect");

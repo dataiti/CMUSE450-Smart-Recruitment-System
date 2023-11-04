@@ -64,6 +64,9 @@ const employerSchema = new mongoose.Schema(
       min: 1,
       max: 5,
     },
+    socketId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
