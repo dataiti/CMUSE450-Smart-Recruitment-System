@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const scheduleSchema = new mongoose.Schema(
   {
-    candidateId: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Candidate",
+      ref: "User",
       required: true,
     },
     jobId: {
@@ -24,7 +24,7 @@ const scheduleSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: [],
+      enum: ["online", "offline"],
       required: true,
     },
     dateTime: {

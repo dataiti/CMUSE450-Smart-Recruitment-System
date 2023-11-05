@@ -29,8 +29,6 @@ import {
   TimelineBody,
   Typography,
   Button,
-  Stepper,
-  Step,
 } from "@material-tailwind/react";
 import { addJob } from "../../redux/features/slices/jobSlice";
 import InputTagsController from "../../components/InputTagsController";
@@ -98,9 +96,6 @@ const CreateRecruitmentJobPage = () => {
 
   const [createJob, { isLoading }] = useCreateJobMutation();
 
-  const [activeStep, setActiveStep] = useState(0);
-  const [isLastStep, setIsLastStep] = useState(false);
-  const [isFirstStep, setIsFirstStep] = useState(false);
   const [salaryTypeState, SetSalaryTypeState] = useState(1);
   const [provincesValue, setProvincesValue] = useState([]);
   const [districtsValue, setDistrictsValue] = useState([]);
@@ -199,9 +194,6 @@ const CreateRecruitmentJobPage = () => {
     fetchWorkLocationsApi();
   }, [province, district]);
 
-  // const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
-  // const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
-
   const handleSubmitRegisterEmployer = async (data) => {
     try {
       let formatData = { ...data };
@@ -239,441 +231,395 @@ const CreateRecruitmentJobPage = () => {
   return (
     <div className="flex flex-col gap-2 px-[100px] py-5 w-full">
       {isLoading && <Loading />}
-      <div className="w-full px-10 pt-4 pb-8 rounded-md shadow-sm bg-white">
-        <Stepper
-          activeStep={activeStep}
-          isLastStep={(value) => setIsLastStep(value)}
-          isFirstStep={(value) => setIsFirstStep(value)}
-        >
-          <Step className="cursor-pointer" onClick={() => setActiveStep(0)}>
-            <Typography className="font-bold">1</Typography>
-            <div className="absolute left-0 top-[104%] w-max text-center">
+      <form
+        className="bg-white py-4   px-10 w-full rounded-md shadow-sm"
+        onSubmit={handleSubmit(handleSubmitRegisterEmployer)}
+      >
+        <Timeline>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
               <Typography
-                className={`text-sm text-black ${
-                  activeStep === 0 ? "font-semibold" : "font-medium"
-                }`}
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
               >
-                Nội dung đăng tuyển
+                Thông tin chiến dịch
               </Typography>
-            </div>
-          </Step>
-          <Step className="cursor-pointer" onClick={() => setActiveStep(1)}>
-            <Typography className="font-bold">2</Typography>
-            <div className="absolute top-[104%] w-max text-center">
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <InputController
+                  control={control}
+                  name="recruitmentCampaignName"
+                  label="Tên chiến dịch tuyển dụng"
+                  error={errors?.recruitmentCampaignName}
+                />
+                <InputController
+                  control={control}
+                  name="jobPosition"
+                  label="Vị trí tuyển dụng"
+                  error={errors?.jobPosition}
+                />
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
               <Typography
-                className={`text-sm text-black ${
-                  activeStep === 1 ? "font-semibold" : "font-medium"
-                }`}
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
               >
-                Test đầu vào
+                Khu vực làm việc
               </Typography>
-            </div>
-          </Step>
-          <Step className="cursor-pointer" onClick={() => setActiveStep(2)}>
-            <Typography className="font-bold">3</Typography>
-            <div className="absolute top-[104%] w-max text-center">
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <SelectController
+                  control={control}
+                  name="province"
+                  label="Tỉnh / Thành Phố"
+                  error={errors?.province}
+                  options={provincesValue}
+                />
+                <SelectController
+                  control={control}
+                  name="district"
+                  label="Quận / Huyện"
+                  error={errors?.district}
+                  options={districtsValue}
+                />
+                <SelectController
+                  control={control}
+                  name="ward"
+                  label="Phường / Xã"
+                  error={errors?.ward}
+                  options={wardsValue}
+                />
+                <InputController
+                  control={control}
+                  name="exactAddress"
+                  label="Địa chỉ chính xác"
+                  error={errors?.exactAddress}
+                />
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
               <Typography
-                className={`text-sm text-black ${
-                  activeStep === 2 ? "font-semibold" : "font-medium"
-                }`}
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
               >
-                Hoàn tất
+                Tiêu đề tin tuyển dụng
               </Typography>
-            </div>
-          </Step>
-        </Stepper>
-      </div>
-      {activeStep === 0 && (
-        <form
-          className="bg-white py-4   px-10 w-full rounded-md shadow-sm"
-          onSubmit={handleSubmit(handleSubmitRegisterEmployer)}
-        >
-          <Timeline>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Thông tin chiến dịch
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <InputController
-                    control={control}
-                    name="recruitmentCampaignName"
-                    label="Tên chiến dịch tuyển dụng"
-                    error={errors?.recruitmentCampaignName}
-                  />
-                  <InputController
-                    control={control}
-                    name="jobPosition"
-                    label="Vị trí tuyển dụng"
-                    error={errors?.jobPosition}
-                  />
-                </div>
-              </TimelineBody>
-            </TimelineItem>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Khu vực làm việc
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <SelectController
-                    control={control}
-                    name="province"
-                    label="Tỉnh / Thành Phố"
-                    error={errors?.province}
-                    options={provincesValue}
-                  />
-                  <SelectController
-                    control={control}
-                    name="district"
-                    label="Quận / Huyện"
-                    error={errors?.district}
-                    options={districtsValue}
-                  />
-                  <SelectController
-                    control={control}
-                    name="ward"
-                    label="Phường / Xã"
-                    error={errors?.ward}
-                    options={wardsValue}
-                  />
-                  <InputController
-                    control={control}
-                    name="exactAddress"
-                    label="Địa chỉ chính xác"
-                    error={errors?.exactAddress}
-                  />
-                </div>
-              </TimelineBody>
-            </TimelineItem>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Tiêu đề tin tuyển dụng
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <InputController
-                    control={control}
-                    name="recruitmentTitle"
-                    label="Tiêu đề tin"
-                    error={errors?.recruitmentTitle}
-                  />
-                </div>
-              </TimelineBody>
-            </TimelineItem>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Ngành nghề & Lĩnh vực
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <SelectController
-                    control={control}
-                    name="industry"
-                    label="Ngành nghề chính"
-                    error={errors?.industry}
-                    options={companyIndustryOptions}
-                  />
-                </div>
-              </TimelineBody>
-            </TimelineItem>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Thông tin chung
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <InputController
-                    type="number"
-                    control={control}
-                    name="vacancyCount"
-                    label="Số lượng tuyển"
-                    error={errors?.vacancyCount}
-                  />
-                  <SelectController
-                    control={control}
-                    name="jobType"
-                    label="Loại công việc"
-                    error={errors?.jobType}
-                    options={jobTypeOptions}
-                  />
-                  <SelectController
-                    control={control}
-                    name="gender"
-                    label="Giới tính"
-                    error={errors?.gender}
-                    options={sexOptions}
-                  />
-                  <SelectController
-                    control={control}
-                    name="level"
-                    label="Cấp bậc"
-                    error={errors?.level}
-                    options={levelOptions}
-                  />
-                  <SelectController
-                    control={control}
-                    name="experience"
-                    label="Kinh nghiệm"
-                    error={errors?.experience}
-                    options={experiens}
-                  />
-                  <SelectController
-                    control={control}
-                    name="currencyType"
-                    label="Loại tiền tệ"
-                    error={errors?.currencyType}
-                    options={currencyTypeOptions}
-                  />
-                  <SelectController
-                    control={control}
-                    name="salaryType"
-                    label="Kiểu lương"
-                    error={errors?.salaryType}
-                    options={salaryTypeOptions}
-                  />
-                  {salaryTypeState === 1 && (
-                    <>
-                      <InputController
-                        type="number"
-                        control={control}
-                        name="salaryFrom"
-                        label="Từ"
-                        error={errors?.salaryFrom}
-                      />
-                      <InputController
-                        type="number"
-                        control={control}
-                        name="salaryTo"
-                        label="Đến"
-                        error={errors?.salaryTo}
-                      />
-                    </>
-                  )}
-                  {salaryTypeState === 2 && (
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <InputController
+                  control={control}
+                  name="recruitmentTitle"
+                  label="Tiêu đề tin"
+                  error={errors?.recruitmentTitle}
+                />
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
+              <Typography
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
+              >
+                Ngành nghề & Lĩnh vực
+              </Typography>
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <SelectController
+                  control={control}
+                  name="industry"
+                  label="Ngành nghề chính"
+                  error={errors?.industry}
+                  options={companyIndustryOptions}
+                />
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
+              <Typography
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
+              >
+                Thông tin chung
+              </Typography>
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <InputController
+                  type="number"
+                  control={control}
+                  name="vacancyCount"
+                  label="Số lượng tuyển"
+                  error={errors?.vacancyCount}
+                />
+                <SelectController
+                  control={control}
+                  name="jobType"
+                  label="Loại công việc"
+                  error={errors?.jobType}
+                  options={jobTypeOptions}
+                />
+                <SelectController
+                  control={control}
+                  name="gender"
+                  label="Giới tính"
+                  error={errors?.gender}
+                  options={sexOptions}
+                />
+                <SelectController
+                  control={control}
+                  name="level"
+                  label="Cấp bậc"
+                  error={errors?.level}
+                  options={levelOptions}
+                />
+                <SelectController
+                  control={control}
+                  name="experience"
+                  label="Kinh nghiệm"
+                  error={errors?.experience}
+                  options={experiens}
+                />
+                <SelectController
+                  control={control}
+                  name="currencyType"
+                  label="Loại tiền tệ"
+                  error={errors?.currencyType}
+                  options={currencyTypeOptions}
+                />
+                <SelectController
+                  control={control}
+                  name="salaryType"
+                  label="Kiểu lương"
+                  error={errors?.salaryType}
+                  options={salaryTypeOptions}
+                />
+                {salaryTypeState === 1 && (
+                  <>
                     <InputController
+                      type="number"
                       control={control}
                       name="salaryFrom"
                       label="Từ"
                       error={errors?.salaryFrom}
                     />
-                  )}
-                  {salaryTypeState === 3 && (
                     <InputController
+                      type="number"
                       control={control}
                       name="salaryTo"
                       label="Đến"
                       error={errors?.salaryTo}
                     />
-                  )}
-                </div>
-              </TimelineBody>
-            </TimelineItem>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Nội dung tuyển chi tiết
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <TextEditorController
-                    control={control}
-                    name="jobDescription"
-                    label="Mô tả công việc"
-                    error={errors?.jobDescription}
-                  />
-                </div>
-              </TimelineBody>
-            </TimelineItem>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Yêu cầu ứng viên
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <TextEditorController
-                    control={control}
-                    name="candidateRequirements"
-                    label="Mô tả yêu cầu ứng viên"
-                    error={errors?.candidateRequirements}
-                  />
-                  <InputTagsController
-                    control={control}
-                    name="skills"
-                    label="Kỹ năng"
-                    error={errors?.candidateRequirements}
-                  />
-                </div>
-              </TimelineBody>
-            </TimelineItem>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Quyền lợi ứng viên
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <TextEditorController
-                    control={control}
-                    name="candidateBenefits"
-                    label="Mô tả quyền lợi ứng viên"
-                    error={errors?.candidateBenefits}
-                  />
-                </div>
-              </TimelineBody>
-            </TimelineItem>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Thông tin nhận CV
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <InputController
-                    type="date"
-                    control={control}
-                    name="applicationDeadline"
-                    label="Hạn chót nhận CV"
-                    error={errors?.applicationDeadline}
-                  />
+                  </>
+                )}
+                {salaryTypeState === 2 && (
                   <InputController
                     control={control}
-                    name="receiverFullName"
-                    label="Họ và tên"
-                    error={errors?.receiverFullName}
+                    name="salaryFrom"
+                    label="Từ"
+                    error={errors?.salaryFrom}
                   />
+                )}
+                {salaryTypeState === 3 && (
                   <InputController
                     control={control}
-                    name="receiverEmail"
-                    label="Email"
-                    error={errors?.receiverEmail}
+                    name="salaryTo"
+                    label="Đến"
+                    error={errors?.salaryTo}
                   />
-                  <InputController
-                    control={control}
-                    name="receiverPhone"
-                    label="Số điện thoại"
-                    error={errors?.receiverPhone}
-                  />
-                </div>
-              </TimelineBody>
-            </TimelineItem>
-            <TimelineItem>
-              <TimelineHeader>
-                <TimelineIcon className="!p-0">
-                  <IconButtonCustom>
-                    <icons.BsCheckCircleFill />
-                  </IconButtonCustom>
-                </TimelineIcon>
-                <Typography
-                  variant="h5"
-                  className="text-base font-bold text-light-blue-600 uppercase"
-                >
-                  Hoàn thành
-                </Typography>
-                <div className="ml-[100px] flex items-center justify-center">
-                  <Button type="submit">Tiếp tục</Button>
-                </div>
-              </TimelineHeader>
-            </TimelineItem>
-          </Timeline>
-        </form>
-      )}
+                )}
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
+              <Typography
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
+              >
+                Nội dung tuyển chi tiết
+              </Typography>
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <TextEditorController
+                  control={control}
+                  name="jobDescription"
+                  label="Mô tả công việc"
+                  error={errors?.jobDescription}
+                />
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
+              <Typography
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
+              >
+                Yêu cầu ứng viên
+              </Typography>
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <TextEditorController
+                  control={control}
+                  name="candidateRequirements"
+                  label="Mô tả yêu cầu ứng viên"
+                  error={errors?.candidateRequirements}
+                />
+                <InputTagsController
+                  control={control}
+                  name="skills"
+                  label="Kỹ năng"
+                  error={errors?.candidateRequirements}
+                />
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
+              <Typography
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
+              >
+                Quyền lợi ứng viên
+              </Typography>
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <TextEditorController
+                  control={control}
+                  name="candidateBenefits"
+                  label="Mô tả quyền lợi ứng viên"
+                  error={errors?.candidateBenefits}
+                />
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
+              <Typography
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
+              >
+                Thông tin nhận CV
+              </Typography>
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <InputController
+                  type="date"
+                  control={control}
+                  name="applicationDeadline"
+                  label="Hạn chót nhận CV"
+                  error={errors?.applicationDeadline}
+                />
+                <InputController
+                  control={control}
+                  name="receiverFullName"
+                  label="Họ và tên"
+                  error={errors?.receiverFullName}
+                />
+                <InputController
+                  control={control}
+                  name="receiverEmail"
+                  label="Email"
+                  error={errors?.receiverEmail}
+                />
+                <InputController
+                  control={control}
+                  name="receiverPhone"
+                  label="Số điện thoại"
+                  error={errors?.receiverPhone}
+                />
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
+              <Typography
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
+              >
+                Hoàn thành
+              </Typography>
+              <div className="ml-[100px] flex items-center justify-center">
+                <Button type="submit">Tiếp tục</Button>
+              </div>
+            </TimelineHeader>
+          </TimelineItem>
+        </Timeline>
+      </form>
     </div>
   );
 };

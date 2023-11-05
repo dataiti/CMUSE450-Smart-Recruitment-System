@@ -64,6 +64,8 @@ const MessagePage = () => {
                 onClick={() => {
                   setOpenPicker(!openPicker);
                 }}
+                values={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
                 className="cursor-pointer hover:text-blue-gray-400"
               />
             }

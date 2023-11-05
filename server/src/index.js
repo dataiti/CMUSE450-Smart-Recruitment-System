@@ -268,12 +268,12 @@ io.on("connection", async (socket) => {
         );
 
       io.to(user?.socketId).emit("user_get_notification", {
-        sucess: true,
+        success: true,
         message: notificationPopulated,
       });
 
       io.to(employer?.socketId).emit("employer_get_notification", {
-        sucess: true,
+        success: true,
         message: notificationPopulated,
       });
     } catch (error) {
@@ -301,6 +301,32 @@ io.on("connection", async (socket) => {
       io.to(user?.socketId).emit("user_viewed_notification", {
         sucess: true,
         message: notificationPopulated,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("get_list_notifications", async (message) => {
+    const { userId } = message;
+    try {
+      const user = await User.findById(userId);
+
+      if (!user) return;
+
+      const listNotifications = await Notification.find({
+        userId,
+      })
+        .sort("-_id")
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      io.to(user?.socketId).emit("user_get_list_notifications", {
+        sucess: true,
+        message: listNotifications,
       });
     } catch (error) {
       console.error(error);

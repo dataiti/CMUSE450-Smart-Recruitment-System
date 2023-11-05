@@ -57,13 +57,6 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
         employerId: jobItem?.employerId?._id,
       });
       if (response && response.data && response.data.success) {
-        // dispatch(
-        //   setCredentials({
-        //     user: response?.data?.data,
-        //     accessToken: response?.data?.accessToken,
-        //     refreshToken: response?.data?.refreshToken,
-        //   })
-        // );
         setOpen(false);
         reset();
         setNamePDFFile("");

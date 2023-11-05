@@ -9,6 +9,7 @@ const InputController = ({
   error,
   isDisabel = false,
   type = "text",
+  isField = false,
 }) => {
   return (
     <div className="flex flex-col relative ml-10 w-full">
@@ -16,11 +17,19 @@ const InputController = ({
         name={name}
         control={control}
         render={({ field }) => (
-          <div className="w-full grid grid-cols-4">
+          <div
+            className={`${
+              isField ? "flex flex-col gap-1" : "grid grid-cols-4"
+            }`}
+          >
             <label className="col-span-1 text-base font-bold whitespace-no-wrap text-teal-800">
               {label}
             </label>
-            <div className={`col-span-2 relative w-full`}>
+            <div
+              className={`${
+                isField ? "w-[86%]" : "col-span-2 relative w-full"
+              } `}
+            >
               <Input
                 type={type}
                 label={label}

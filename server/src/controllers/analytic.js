@@ -252,10 +252,13 @@ const generateRankJob = asyncHandler(async (req, res) => {});
 
 const getSchedule = asyncHandler(async (req, res) => {});
 
+const getRecruitmentTrending = asyncHandler(async (req, res) => {});
+
 module.exports = {
   getOveviewStatistics,
   generateTimeBasedLineChart,
   generateTimeBasedPieChart,
   generateRankJob,
   getSchedule,
+  getRecruitmentTrending,
 };

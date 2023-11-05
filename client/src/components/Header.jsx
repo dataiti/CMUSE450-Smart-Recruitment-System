@@ -24,6 +24,7 @@ import ButtonCustom from "./ButtonCustom";
 import IconButtonCustom from "./IconButtonCustom";
 import { useDebounce } from "../hooks";
 import { useGetListSearchJobsQuery } from "../redux/features/apis/jobApi";
+import { socket } from "../socket";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const Header = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [listSearchValue, setListSearchValue] = useState([]);
+  const [listNotifications, setListNotifications] = useState([]);
   const [indexNavbar, setIndexNavbar] = useState(1);
 
   const searchDobouceValue = useDebounce(searchValue, 800);
@@ -51,6 +53,14 @@ const Header = () => {
   useEffect(() => {
     setListSearchValue(searchData?.data);
   }, [searchData]);
+
+  useEffect(() => {
+    socket?.emit("get_list_notifications", { userId: user?._id });
+  }, [user?._id]);
+
+  socket?.on("user_get_list_notifications", ({ message }) => {
+    setListNotifications(message);
+  });
 
   const handleOpenRegisterForm = () => setOpenegisterForm((cur) => !cur);
 
@@ -185,9 +195,44 @@ const Header = () => {
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <IconButton className="shadow-none p-3 rounded-full bg-white text-[#0891b2]">
-              <icons.PiBellRingingFill size={20} />
-            </IconButton>
+            <Menu>
+              <MenuHandler>
+                <IconButton className="shadow-none p-3 rounded-full bg-white text-[#0891b2]">
+                  <icons.PiBellRingingFill size={20} />
+                </IconButton>
+              </MenuHandler>
+              <MenuList className="hover:border-none">
+                <ul className="col-span-4 flex flex-col gap-1 w-[360px] h-[400px] overflow-y-auto">
+                  {listNotifications?.map((item) => (
+                    <li key={item?._id}>
+                      <Link to={item?.url}>
+                        <MenuItem
+                          className={` flex items-center gap-4 !hover:bg-blue-100 ${
+                            item?.isViewed ? "bg-white" : "bg-blue-50"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Avatar
+                              src={item?.employerId?.companyLogo}
+                              alt=""
+                              className="flex-none bg-blue-gray-600 !w-14 !h-14 object-contain !rounded-md"
+                            />
+                            <div>
+                              <Typography className="mb-1 text-sm font-medium name text-black">
+                                {item?.title}
+                              </Typography>
+                              <Typography className="mb-1 text-sm font-medium name text-gray-500">
+                                {item?.content}
+                              </Typography>
+                            </div>
+                          </div>
+                        </MenuItem>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </MenuList>
+            </Menu>
             <Link to="/messenger">
               <IconButton className="shadow-none p-3 rounded-full bg-white text-[#0891b2]">
                 <icons.BsMessenger size={20} />

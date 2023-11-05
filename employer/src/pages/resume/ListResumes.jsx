@@ -44,7 +44,6 @@ const ListResumes = () => {
     );
 
   useEffect(() => {
-    console.log(listApplyJobsData);
     if (listApplyJobsData && listApplyJobsData.success) {
       dispatch(
         setListApplyJobs({
@@ -172,7 +171,7 @@ const ListResumes = () => {
                             variant="filled"
                             className="text-xs capitalize font-bold rounded-full !p-3  bg-blue-gray-900 text-light-blue-600"
                           >
-                            Xem Chi tiết
+                            Chi tiết
                           </Button>
                         </Link>
                       </td>
@@ -192,114 +191,6 @@ const ListResumes = () => {
           />
         </div>
       </div>
-      {/* <Drawer
-        placement="right"
-        size={700}
-        open={open}
-        onClose={closeDrawer}
-        className="p-4 bg-[#e8edf2] h-[calc(100vh-200px)] overflow-auto"
-        transition={{ type: "spring", duration: 0.5 }}
-      >
-        <div className="w-full bg-white rounded-md fixed top-0 z-20">
-          <div className="w-full flex items-center gap-3 p-4">
-            <Button
-              className="bg-[#7f1d1d] capitalize ro"
-              onClick={() =>
-                handleRemoveJobItem({
-                  _id: jobDetailData?._id,
-                  addressId: jobDetailData?.workRegion?._id,
-                })
-              }
-            >
-              Xoá
-            </Button>
-            <Button className="bg-[#164e63] capitalize">Chỉnh sửa</Button>
-            <Button className="bg-[#134e4a] capitalize">
-              Danh sách CV ứng tuyển
-            </Button>
-            <Button
-              className="bg-[#374151] capitalize"
-              onClick={() => setOpen(false)}
-            >
-              Đóng
-            </Button>
-          </div>
-        </div>
-        <div className="flex flex-col gap-1 mt-[70px]">
-          <div className="flex flex-col gap-4 bg-white p-4 rounded-md ">
-            <Typography className="uppercase text-[#212f3f] font-bold text-lg">
-              {jobDetailData?.recruitmentTitle}
-            </Typography>
-            <div className="grid grid-cols-3">
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillDollarCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography className="text-sm font-bold">
-                    Mức lương
-                  </Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.HiLocationMarker size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Địa điểm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.workRegion?.province}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillClockCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Kinh nghiệm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Mô tả công việc
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.jobDescription &&
-                parse(jobDetailData.jobDescription)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Yêu cầu ứng viên
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.candidateRequirements &&
-                parse(jobDetailData.candidateRequirements)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Phúc lợi ứng viên
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.candidateBenefits &&
-                parse(jobDetailData.candidateBenefits)) ||
-                ""}
-            </div>
-          </div>
-        </div>
-      </Drawer> */}
     </div>
   );
 };

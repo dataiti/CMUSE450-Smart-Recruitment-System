@@ -59,8 +59,6 @@ const MessagePage = () => {
 
   const handleClickEmoji = () => {};
 
-  console.log(currentMessages);
-
   const handleSendMessage = () => {
     socket.emit("text_message", {
       to: currentConversation?._id,

@@ -20,8 +20,6 @@ const App = () => {
     };
   }, [user?.ownerEmployerId?._id, isLoggedIn]);
 
-  console.log(user?.ownerEmployerId?._id);
-
   return <div className="app">{routing}</div>;
 };
 
