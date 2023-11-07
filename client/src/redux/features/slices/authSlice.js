@@ -21,12 +21,16 @@ const authSlice = createSlice({
       state.accessToken = null;
       state.refreshToken = null;
     },
+    setWishlists: (state, action) => {
+      console.log(action.payload.data);
+      state.user.wishlistIds = action.payload.data;
+    },
   },
   extraReducers: (builder) => {},
 });
 
 export const authSelect = (state) => state.auth;
 
-export const { setCredentials, logOut } = authSlice.actions;
+export const { setCredentials, logOut, setWishlists } = authSlice.actions;
 
 export default authSlice.reducer;

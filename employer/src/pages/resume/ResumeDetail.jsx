@@ -172,7 +172,7 @@ const ResumeDetail = () => {
             </div>
           </div>
           <hr className="my-3 border-blue-gray-100" />
-          <div className="text-sm font-bold p-2 bg-blue-50 rounded-lg list-disc">
+          <div className="font-bold p-2 bg-gray-200 rounded-lg list-disc text-xs h-[340px] overflow-y-auto">
             {(applyJobDetailData?.data?.jobId?.candidateRequirements &&
               parse(applyJobDetailData?.data?.jobId?.candidateRequirements)) ||
               ""}

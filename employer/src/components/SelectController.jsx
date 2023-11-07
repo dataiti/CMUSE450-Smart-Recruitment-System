@@ -32,10 +32,10 @@ const SelectController = ({
                   className: "w-full",
                 }}
               >
-                {options?.map(({ value, id }) => {
+                {options?.map(({ text, value, id }) => {
                   return (
                     <Option key={id} value={JSON.stringify({ id, value })}>
-                      {value}
+                      {text || value}
                     </Option>
                   );
                 })}

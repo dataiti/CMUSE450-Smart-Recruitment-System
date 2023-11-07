@@ -13,8 +13,6 @@ const Mapbox = ({ workRegion }) => {
     zoom: 13,
   });
 
-  console.log(workRegion);
-
   useEffect(() => {
     const fetchApi = async () => {
       try {

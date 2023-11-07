@@ -4,25 +4,18 @@ import {
   CardFooter,
   Typography,
   Button,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Textarea,
 } from "@material-tailwind/react";
 import parse from "html-react-parser";
 import { formattedAmount, formattedProvinceNames, timeAgo } from "../utils/fn";
 import { icons } from "../utils/icons";
 import { Link } from "react-router-dom";
 import Tag from "./Tag";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
-import { Controller, useForm } from "react-hook-form";
-import { useApplyJobMutation } from "../redux/features/apis/applyJobApi";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { authSelect } from "../redux/features/slices/authSlice";
-import Loading from "./Loading";
-import IconButtonCustom from "./IconButtonCustom";
+import { authSelect, setWishlists } from "../redux/features/slices/authSlice";
+import { useToggleWishListItemMutation } from "../redux/features/apis/authApi";
+import ApplyJobForm from "./ApplyJobForm";
 
 const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
   const dispatch = useDispatch();
@@ -30,40 +23,19 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
   const { user } = useSelector(authSelect);
 
   const [open, setOpen] = useState(false);
-  const [namePDFFile, setNamePDFFile] = useState("");
+  const [isWishlist, setIsWishlist] = useState(false);
 
-  const [applyJob, { isLoading }] = useApplyJobMutation();
+  const [toggleWishListItem] = useToggleWishListItemMutation();
 
-  const { control, reset, handleSubmit } = useForm({
-    mode: "onChange",
-    defaultValues: {
-      CVpdf: "",
-      information: "",
-    },
-  });
-
-  const handleSubmitAppliJob = async (data) => {
-    try {
-      let formData = new FormData();
-      for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-          formData.append(key, data[key]);
-        }
-      }
-      const response = await applyJob({
-        data: formData,
-        userId: user?._id,
-        jobId: jobItem?._id,
-        employerId: jobItem?.employerId?._id,
-      });
-      if (response && response.data && response.data.success) {
-        setOpen(false);
-        reset();
-        setNamePDFFile("");
-        toast.success("Đã ứng tuyển thành công !");
-      }
-    } catch (error) {}
-  };
+  useEffect(() => {
+    if (user?.wishlistIds) {
+      setIsWishlist(
+        user?.wishlistIds?.some(
+          (wishlistId) => wishlistId?._id === jobItem?._id
+        )
+      );
+    }
+  }, [jobItem?._id, user?.wishlistIds]);
 
   return (
     <>
@@ -72,7 +44,6 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
         key={jobItem?._id}
         className="min-h-[288px] bg-white !rounded-md cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
       >
-        {isLoading && <Loading />}
         <Card className="bg-white !shadow-none flex flex-col">
           <CardBody className="w-full flex flex-col gap-2 !p-4">
             <div className="flex items-center justify-between">
@@ -80,7 +51,7 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                 <img
                   src={jobItem?.employerId?.companyLogo}
                   alt={jobItem?.recruitmentTitle}
-                  className="h-14 w-14 object-contain rounded-xl bg-blue-gray-800"
+                  className="h-14 w-14 flex-none object-contain rounded-xl bg-blue-gray-800"
                 />
                 <div className="flex flex-col gap-1">
                   <Typography className="text-lg font-bold text-teal-900 name">
@@ -100,9 +71,37 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                   </div>
                 </div>
               </div>
-              <span className="">
-                <icons.IoBookmark size={24} />
-              </span>
+              {isWishlist ? (
+                <span className="text-cyan-700">
+                  <icons.IoBookmark
+                    size={26}
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      setIsWishlist(false);
+                      const response = await toggleWishListItem({
+                        userId: user?._id,
+                        jobId: jobItem?._id,
+                      });
+                      dispatch(setWishlists({ data: response?.data?.data }));
+                    }}
+                  />
+                </span>
+              ) : (
+                <span className="text-cyan-700">
+                  <icons.IoBookmarkOutline
+                    size={26}
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      setIsWishlist(true);
+                      const response = await toggleWishListItem({
+                        userId: user?._id,
+                        jobId: jobItem?._id,
+                      });
+                      dispatch(setWishlists({ data: response?.data?.data }));
+                    }}
+                  />
+                </span>
+              )}
             </div>
             <div className="flex items-center gap-2">
               <Tag
@@ -178,94 +177,7 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
         </Card>
       </Link>
       <Modal open={open} handleOpen={() => setOpen(!open)}>
-        <form onSubmit={handleSubmit(handleSubmitAppliJob)}>
-          <DialogHeader>
-            <div className="flex items-center justify-between w-full">
-              <Typography className="font-bold uppercase name text-light-blue-500">{`Ứng tuyển ${jobItem?.recruitmentTitle}`}</Typography>
-              <span
-                className="hover:opacity-90 cursor-pointer transition-all"
-                onClick={() => setOpen(false)}
-              >
-                <icons.AiFillCloseCircle size={30} />
-              </span>
-            </div>
-          </DialogHeader>
-          <DialogBody divider>
-            <div className="flex flex-col gap-2 p-2 border border-gray-300 rounded-lg">
-              <Typography className="text-sm font-bold text-teal-800">
-                Lưu ý:
-              </Typography>
-              <Typography className="text-sm font-semibold">
-                1. Ứng viên nên lựa chọn ứng tuyển bằng CV Online & viết thêm
-                mong muốn tại phần thư giới thiệu để được Nhà tuyển dụng xem CV
-                sớm hơn.
-              </Typography>
-              <Typography className="text-sm font-semibold">
-                2. Để có trải nghiệm tốt nhất, bạn nên sử dụng các trình duyệt
-                phổ biến như Google Chrome hoặc Firefox. SRS khuyên tất cả các
-                bạn hãy luôn cẩn trọng trong quá trình tìm việc và chủ động
-                nghiên cứu về thông tin công ty, vị trí việc làm trước khi ứng
-                tuyển.
-              </Typography>
-            </div>
-            <div className="flex flex-col gap-2">
-              <Controller
-                control={control}
-                name="CVpdf"
-                render={({ field: { onChange } }) => (
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-teal-800">
-                      Chọn CV:
-                    </label>
-                    <label
-                      htmlFor="CVpdf"
-                      className="flex items-center gap-2 border border-gray-400 rounded-md px-4 py-2 w-[220px] cursor-pointer hover:bg-gray-100"
-                    >
-                      <icons.BsFiletypePdf size={18} />
-                      <Typography className="text-sm font-bold">
-                        Tải lên CV từ máy tính
-                      </Typography>
-                    </label>
-                    <input
-                      type="file"
-                      id="CVpdf"
-                      hidden
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        setNamePDFFile(file.name);
-                        return onChange(e.target.files[0]);
-                      }}
-                    />
-                    <Typography className="text-sm font-bold">
-                      {namePDFFile}
-                    </Typography>
-                  </div>
-                )}
-              />
-              <Controller
-                control={control}
-                name="information"
-                render={({ field }) => (
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-teal-800">
-                      Thư giới thiệu:
-                    </label>
-                    <Textarea
-                      label="Thư giới thiệu"
-                      placeholder="Viết giới thiệu ngắn gọn về bản thân (điểm mạnh, điểm yếu) vè nêu rõ mong muốn, lý do làm việc tại công ty này. Đây là cách gây ấn tượng với nhà tuyển dụng nếu bạn chưa có kinh nghiệm làm việc (hoặc CV không tốt)"
-                      {...field}
-                    />
-                  </div>
-                )}
-              />
-            </div>
-          </DialogBody>
-          <DialogFooter>
-            <Button type="submit" variant="gradient" color="green">
-              Nộp CV
-            </Button>
-          </DialogFooter>
-        </form>
+        <ApplyJobForm jobItem={jobItem} setOpen={setOpen} />
       </Modal>
     </>
   );

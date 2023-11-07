@@ -190,7 +190,6 @@ io.on("connection", async (socket) => {
 
   socket.on("follow_employer", async (data) => {
     const { userId, employerId } = data;
-
     try {
       const user = await User.findById(userId);
 
@@ -206,7 +205,7 @@ io.on("connection", async (socket) => {
       user.followingIds.push(employerId);
       await user.save();
 
-      io.to(employer.ownerId.socketId).emit("new_follower", { userId });
+      io.to(employer?.socketId).emit("new_follower", { userId });
     } catch (error) {
       console.error(error);
     }
@@ -224,12 +223,12 @@ io.on("connection", async (socket) => {
       if (!employer.followerIds.includes(userId)) return;
 
       employer.followerIds = employer.followerIds.filter(
-        (follower) => follower.toString() !== userId
+        (follower) => follower.toString() !== userId.toString()
       );
       await employer.save();
 
-      user.employersFollowing = user.employersFollowing.filter(
-        (employer) => employer.toString() !== employerId
+      user.employersFollowing = user.followingIds.filter(
+        (employer) => employer.toString() !== employerId.toString()
       );
       await user.save();
 

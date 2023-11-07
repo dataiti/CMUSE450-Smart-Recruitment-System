@@ -3,7 +3,7 @@ import {
   IoIosArrowDroprightCircle,
   IoIosArrowDropleftCircle,
 } from "react-icons/io";
-import { PiBellRingingFill } from "react-icons/pi";
+import { PiBellRingingFill, PiChartDonutFill } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
 import { FiSearch, FiChevronDown, FiEdit } from "react-icons/fi";
 import {
@@ -20,6 +20,7 @@ import {
   IoArrowUndoCircleOutline,
   IoLocationSharp,
   IoCloseCircleSharp,
+  IoBookmarkOutline,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -69,6 +70,7 @@ import {
   FaDollarSign,
   FaFont,
   FaUserCheck,
+  FaUserPlus,
 } from "react-icons/fa6";
 import {
   AiOutlineBold,
@@ -88,6 +90,10 @@ import { LiaSearchPlusSolid, LiaSearchMinusSolid } from "react-icons/lia";
 import { ImTable2 } from "react-icons/im";
 
 const icons = {
+  PiChartDonutFill,
+  IoMdSend,
+  IoBookmarkOutline,
+  FaUserPlus,
   BsTelephone,
   BsCameraVideo,
   FaUserCheck,
@@ -150,7 +156,6 @@ const icons = {
   FiEdit,
   IoLogOutOutline,
   IoKeyOutline,
-  IoMdSend,
   IoBriefcaseOutline,
   BsFillImageFill,
   FaUserAlt,

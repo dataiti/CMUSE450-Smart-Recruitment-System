@@ -21,12 +21,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    sex: {
+      type: String,
+      trim: true,
+    },
     avatar: {
       type: String,
       default:
         "https://res.cloudinary.com/doo78f14s/image/upload/v1677427616/CDIO2-project/dedault_jd3qnu.jpg",
     },
-
     password: {
       type: String,
     },
@@ -39,6 +42,8 @@ const userSchema = new mongoose.Schema(
       default: "user",
       enum: ["user", "admin"],
     },
+    viewedJobs: {},
+    appliedJobs: {},
     facebookId: {
       type: String,
     },
@@ -56,6 +61,10 @@ const userSchema = new mongoose.Schema(
     },
     passwordResetExpires: {
       type: String,
+    },
+    candidateId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Candidate",
     },
     ownerEmployerId: {
       type: mongoose.Schema.Types.ObjectId,

@@ -73,14 +73,13 @@ export const menuItems = [
 ];
 
 export const experiens = [
-  { id: 1, value: "Chưa có kinh nghiệm" },
-  { id: 2, value: "Dưới 1 năm" },
-  { id: 3, value: "1 năm" },
-  { id: 4, value: "2 năm" },
-  { id: 5, value: "3 năm" },
-  { id: 6, value: "4 năm" },
-  { id: 7, value: "5 năm" },
-  { id: 8, value: "Trên 5 năm" },
+  { id: 1, text: "Chưa có kinh nghiệm", value: 0 },
+  { id: 2, text: "1 năm", value: 1 },
+  { id: 3, text: "2 năm", value: 2 },
+  { id: 4, text: "3 năm", value: 3 },
+  { id: 5, text: "4 năm", value: 4 },
+  { id: 6, text: "5 năm", value: 5 },
+  { id: 7, text: "Trên 5 năm", value: 6 },
 ];
 
 export const desiredSalarys = [
@@ -126,6 +125,39 @@ export const companySizesOptions = [
   { id: 6, value: "1000+ nhân viên" },
   { id: 7, value: "3000+ nhân viên" },
   { id: 8, value: "5000+ nhân viên" },
+];
+
+export const jobPositionOptions = [
+  { id: 1, value: "Front-end Developer" },
+  { id: 2, value: "Back-end Developer" },
+  { id: 3, value: "Full-stack Developer" },
+  { id: 4, value: "Mobile App Developer" },
+  { id: 5, value: "Game Developer" },
+  { id: 6, value: "UI/UX Designer" },
+  { id: 7, value: "Graphic Designer" },
+  { id: 8, value: "Web Designer" },
+  { id: 9, value: "System Administrator" },
+  { id: 10, value: "Network Administrator" },
+  { id: 11, value: "Database Administrator (DBA)" },
+  { id: 12, value: "Security Analyst" },
+  { id: 14, value: "Project Manager" },
+  { id: 15, value: "Scrum Master" },
+  { id: 16, value: "Product Owner" },
+  { id: 17, value: "Data Analyst" },
+  { id: 18, value: "Data Scientist" },
+  { id: 19, value: "Software Engineer" },
+  { id: 20, value: "Quality Assurance (QA) Engineer" },
+  { id: 21, value: "Automation Test Engineer" },
+  { id: 22, value: "IT Infrastructure Manager" },
+  { id: 23, value: "Cloud Architect" },
+  { id: 24, value: "DevOps Engineer" },
+  { id: 25, value: "Systems Analyst" },
+  { id: 26, value: "Business Analyst" },
+  { id: 27, value: "Data Manager" },
+  { id: 28, value: "Database Developer" },
+  { id: 29, value: "iOS Developer" },
+  { id: 30, value: "Android Developer" },
+  { id: 31, value: "Khác" },
 ];
 
 export const companyIndustryOptions = [

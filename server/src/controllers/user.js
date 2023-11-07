@@ -84,7 +84,40 @@ const replacePassword = asyncHandler(async (req, res) => {
   });
 });
 
-const followCompany = asyncHandler(async (req, res) => {});
+const toggleWishListItem = asyncHandler(async (req, res) => {
+  const isJobInWishlist = req.user.wishlistIds.some((wishlistId) =>
+    wishlistId.equals(req.job._id)
+  );
+
+  if (isJobInWishlist) {
+    req.user.wishlistIds = req.user.wishlistIds.filter(
+      (wishlistId) => !wishlistId.equals(req.job._id)
+    );
+  } else {
+    req.user.wishlistIds.push(req.job._id);
+  }
+
+  await req.user.save();
+
+  const findWishlist = await User.findOne({ _id: req.user._id }).populate({
+    path: "wishlistIds",
+    model: "Job",
+    populate: {
+      path: "workRegion",
+      model: "Address",
+    },
+    populate: {
+      path: "employerId",
+      model: "Employer",
+    },
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Toggle wishlist successfully",
+    data: findWishlist.wishlistIds,
+  });
+});
 
 const getListUserForAdmin = asyncHandler(async (req, res) => {
   const { query } = req;
@@ -145,6 +178,6 @@ module.exports = {
   editUser,
   deleteUser,
   replacePassword,
-  followCompany,
+  toggleWishListItem,
   getListUserForAdmin,
 };

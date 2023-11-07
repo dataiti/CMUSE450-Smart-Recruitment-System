@@ -7,24 +7,12 @@ const candidateSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    fullName: {
-      type: String,
-      required: true,
-    },
-    yearOfBirth: {
-      type: String,
-      required: true,
-    },
-    sex: {
-      type: Boolean,
-      required: true,
-    },
-    careers: {
+    jobPosition: {
       type: String,
       required: true,
     },
     experience: {
-      type: String,
+      type: Number,
       required: true,
     },
     workLocation: {
@@ -34,12 +22,13 @@ const candidateSchema = new mongoose.Schema(
     desiredSalary: {
       type: String,
       required: true,
+      min: 0,
     },
-    yourCV: {
-      type: String,
-      // required: true,
+    skills: {
+      type: Array,
+      default: [],
+      required: true,
     },
-    skills: [String],
     yourWishes: {
       type: String,
     },

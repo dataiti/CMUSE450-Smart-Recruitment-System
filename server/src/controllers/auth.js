@@ -49,7 +49,20 @@ const login = asyncHandler(async (req, res) => {
 
   const findUser = await User.findOne({
     email,
-  }).populate("ownerEmployerId");
+  })
+    .populate("ownerEmployerId")
+    .populate({
+      path: "wishlistIds",
+      model: "Job",
+      populate: {
+        path: "workRegion",
+        model: "Address",
+      },
+      populate: {
+        path: "employerId",
+        model: "Employer",
+      },
+    });
 
   if (!findUser) throw new Error("Email is incorrect");
 

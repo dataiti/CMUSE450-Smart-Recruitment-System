@@ -47,7 +47,7 @@ function isValidDate(dateString) {
 }
 
 export const formattedProvinceNames = (inputString) => {
-  const modifiedString = inputString.replace(/(Tỉnh|Thành phố)\s/g, "");
+  const modifiedString = inputString?.replace(/(Tỉnh|Thành phố)\s/g, "");
 
   return modifiedString;
 };

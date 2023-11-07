@@ -252,9 +252,7 @@ const generateRankJob = asyncHandler(async (req, res) => {});
 
 const getSchedule = asyncHandler(async (req, res) => {});
 
-const getRecruitmentTrending = asyncHandler(async (req, res) => {
-  /////d/asdasdasds
-});
+const getRecruitmentTrending = asyncHandler(async (req, res) => {});
 
 module.exports = {
   getOveviewStatistics,

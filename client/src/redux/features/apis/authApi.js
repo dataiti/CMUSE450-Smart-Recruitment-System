@@ -55,6 +55,12 @@ const authApi = rootApi.injectEndpoints({
         body: { ...data },
       }),
     }),
+    toggleWishListItem: builder.mutation({
+      query: ({ userId, jobId }) => ({
+        url: `/user/toggle-wishlist-item/${userId}/${jobId}`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -66,4 +72,5 @@ export const {
   useLogOutMutation,
   useResetPasswordMutation,
   useReplacePasswordMutation,
+  useToggleWishListItemMutation,
 } = authApi;

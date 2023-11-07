@@ -10,11 +10,11 @@ const messageSchema = new mongoose.Schema(
     ],
     messages: [
       {
-        to: {
+        employerId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
-        from: {
+        userId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
@@ -27,9 +27,6 @@ const messageSchema = new mongoose.Schema(
           default: Date.now(),
         },
         text: {
-          type: String,
-        },
-        file: {
           type: String,
         },
       },

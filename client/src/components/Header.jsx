@@ -9,7 +9,6 @@ import {
   Typography,
   IconButton,
 } from "@material-tailwind/react";
-import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -215,13 +214,13 @@ const Header = () => {
                             <Avatar
                               src={item?.employerId?.companyLogo}
                               alt=""
-                              className="flex-none bg-blue-gray-600 !w-14 !h-14 object-contain !rounded-md"
+                              className="flex-none bg-blue-gray-600 !w-10 !h-10 object-contain !rounded-md"
                             />
-                            <div>
-                              <Typography className="mb-1 text-sm font-medium name text-black">
+                            <div className="flex flex-col gap-1">
+                              <Typography className="mb-1 text-sm font-bold name text-black">
                                 {item?.title}
                               </Typography>
-                              <Typography className="mb-1 text-sm font-medium name text-gray-500">
+                              <Typography className="mb-1 text-xs font-medium name text-gray-500">
                                 {item?.content}
                               </Typography>
                             </div>

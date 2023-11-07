@@ -1,14 +1,15 @@
 const Candidate = require("../models/candidate");
+const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 
 const candidateById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
 
-  if (isValidId) {
+  if (!isValidId) {
     return res.status(400).json({
       success: true,
-      message: "Id is invalid",
+      message: "CandidateId is invalid",
     });
   }
 
@@ -23,43 +24,43 @@ const candidateById = asyncHandler(async (req, res, next, id) => {
 const getCandidateDetail = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
-    message: "Register candidate is successfully",
+    message: "Get candidate detail is successfully",
     data: req.candidate,
   });
 });
 
 const registerCandidate = asyncHandler(async (req, res) => {
   const {
-    userId,
-    fullName,
-    yearOfBirth,
-    sex,
-    careers,
+    jobPosition,
     experience,
     workLocation,
     desiredSalary,
-    yourCV,
-    skills,
+    yourWishes,
     introduceYourself,
   } = req.body;
 
+  if (req.user.candidateId) throw new Error("Candidate is registed");
+
   const newCandidate = new Candidate({
-    userId,
-    fullName,
-    yearOfBirth,
-    sex,
-    careers,
+    userId: req.user._id,
+    jobPosition,
     experience,
     workLocation,
     desiredSalary,
-    yourCV,
-    skills,
+    skills: JSON.parse(req.body.skills),
+    yourWishes,
     introduceYourself,
   });
 
   await newCandidate.save();
 
   if (!newCandidate) throw new Error("Register candiate is fail");
+
+  await User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $set: { candidateId: newCandidate._id } },
+    { new: true }
+  );
 
   return res.status(200).json({
     success: true,
@@ -70,31 +71,25 @@ const registerCandidate = asyncHandler(async (req, res) => {
 
 const editCandidate = asyncHandler(async (req, res) => {
   const {
-    fullName,
-    yearOfBirth,
-    sex,
-    careers,
+    jobPosition,
     experience,
     workLocation,
     desiredSalary,
-    yourCV,
     skills,
+    yourWishes,
     introduceYourself,
   } = req.body;
 
   const updateCandiate = await Candidate.findOneAndUpdate(
-    { _id: req.candidate.candidateId },
+    { _id: req.candidate.candidateId, userId: req.user._id },
     {
       $set: {
-        fullName,
-        yearOfBirth,
-        sex,
-        careers,
+        jobPosition,
         experience,
         workLocation,
         desiredSalary,
-        yourCV,
         skills,
+        yourWishes,
         introduceYourself,
       },
     },
@@ -123,13 +118,10 @@ const deleteCandidate = asyncHandler(async (req, res) => {
   });
 });
 
-const getListOfCandidateForAdmin = asyncHandler(async (req, res) => {});
-
 module.exports = {
   candidateById,
   getCandidateDetail,
   registerCandidate,
   editCandidate,
   deleteCandidate,
-  getListOfCandidateForAdmin,
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useGetJobDetailQuery } from "../../redux/features/apis/jobApi";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -16,11 +16,56 @@ import { formatRemainingTime, formattedAmount } from "../../utils/fn";
 import EmploymentInfo from "../../components/EmploymentInfo";
 import Tag from "../../components/Tag";
 import IconButtonCustom from "../../components/IconButtonCustom";
+import ButtonCustom from "../../components/ButtonCustom";
+import { useSelector } from "react-redux";
+import { authSelect } from "../../redux/features/slices/authSlice";
+import { socket } from "../../socket";
+import Modal from "../../components/Modal";
+import ApplyJobForm from "../../components/ApplyJobForm";
+import EvaluateSuitableJob from "../../components/EvaluateSuitableJob";
+import { useGetEvaluateSuitableJobQuery } from "../../redux/features/apis/smartApi";
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
 
+  const { user } = useSelector(authSelect);
+
+  const [isFollowCompany, setIsFollowCompany] = useState(false);
+  const [openApplyModal, setOpenApplyModal] = useState(false);
+  const [openEvaluateJobModal, setOpenEvaluateJobModal] = useState(false);
+
   const { data: jobDetailData, isFetching } = useGetJobDetailQuery({ jobId });
+  const { data: evaluateSuitableJobQueryData } = useGetEvaluateSuitableJobQuery(
+    {
+      userId: user?._id,
+      candidateId: user?.candidateId,
+      jobId,
+    }
+  );
+
+  useEffect(() => {
+    setIsFollowCompany(
+      jobDetailData?.data?.employerId?.followerIds?.includes(user?._id)
+    );
+  }, [jobDetailData?.data?.employerId?.followerIds, user?._id]);
+
+  const handleUnfollowCompany = () => {
+    socket?.emit("unfollow_employer", {
+      employerId: jobDetailData?.data?.employerId?._id,
+      userId: user?._id,
+    });
+    setIsFollowCompany(false);
+  };
+
+  const handleFollowCompany = () => {
+    socket?.emit("follow_employer", {
+      employerId: jobDetailData?.data?.employerId?._id,
+      userId: user?._id,
+    });
+    setIsFollowCompany(true);
+  };
+
+  const handleStartConversation = () => {};
 
   return (
     <div className="px-[110px] py-[20px] flex flex-col gap-2">
@@ -91,10 +136,27 @@ const JobDetailPage = () => {
                 ))}
             </div>
             <div className="flex items-center gap-3">
-              <Button className="bg-[#212f3f] !px-20 hover:bg-teal-800 transition-all">
+              <Button
+                className="bg-[#212f3f] !px-20 hover:bg-blue-gray-700 transition-all flex items-center  gap-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setOpenApplyModal(true);
+                }}
+              >
+                <icons.IoMdSend size={24} />
                 Ứng tuyển
               </Button>
-              <IconButton className="bg-teal-900 hover:bg-teal-800 transition-all">
+              <Button
+                className="bg-[#212f3f] !px-20 hover:bg-blue-gray-700 transition-all flex items-center  gap-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setOpenEvaluateJobModal(true);
+                }}
+              >
+                <icons.PiChartDonutFill size={24} />
+                Xem mức độ phù hợp
+              </Button>
+              <IconButton className="bg-gray-400 hover:bg-gray-500 transition-all p-2">
                 <icons.IoBookmark size={24} />
               </IconButton>
             </div>
@@ -160,7 +222,7 @@ const JobDetailPage = () => {
               <img
                 src={jobDetailData?.data?.employerId?.companyLogo}
                 alt={jobDetailData?.data?.employerId?.companyName}
-                className="w-12 h-12 rounded-lg border border-gray-400 bg-white object-contain"
+                className="w-14 h-14 flex-none rounded-lg bg-blue-gray-500 object-contain"
               />
               <Typography className="uppercase font-bold text-light-blue-600">
                 Công ty{" "}
@@ -171,17 +233,48 @@ const JobDetailPage = () => {
             </div>
             <div className="flex items-center gap-2">
               <Typography className="flex items-center gap-2 font-bold text-xs">
-                <icons.MdEmail />
+                <div className="p-2 rounded-full bg-green-50 text-green-800">
+                  <icons.MdEmail />
+                </div>
                 {jobDetailData?.data?.employerId?.companyEmail}
               </Typography>
+              |
               <Typography className="flex items-center gap-2 font-bold text-xs">
-                <icons.MdPhoneInTalk />
+                <div className="p-2 rounded-full bg-green-50 text-green-800">
+                  <icons.MdPhoneInTalk />
+                </div>
                 {jobDetailData?.data?.employerId?.companyPhoneNumber}
               </Typography>
-              <Typography className="flex items-center gap-2 font-bold text-xs">
-                <icons.FaUserFriends />
-                {jobDetailData?.data?.employerId?.companySize}
-              </Typography>
+            </div>
+            <div className="flex items-center gap-2">
+              {isFollowCompany ? (
+                <ButtonCustom
+                  className="bg-gray-300 hover:bg-gray-400 text-black flex items-center gap-2"
+                  onClick={handleUnfollowCompany}
+                >
+                  <icons.FaUserCheck size={18} />
+                  <Typography className="text-xs font-bold">
+                    Đang theo dõi
+                  </Typography>
+                </ButtonCustom>
+              ) : (
+                <ButtonCustom
+                  className="bg-gray-300 hover:bg-gray-400 text-black flex items-center gap-2"
+                  onClick={handleFollowCompany}
+                >
+                  <icons.FaUserPlus size={18} />
+                  <Typography className="text-xs font-bold">
+                    Theo dõi
+                  </Typography>
+                </ButtonCustom>
+              )}
+              <ButtonCustom
+                className="bg-gray-300 hover:bg-gray-400 text-black"
+                onClick={handleStartConversation}
+              >
+                <icons.BsMessenger size={18} />
+                Nhắn tin
+              </ButtonCustom>
             </div>
             <Link
               to={`/company-profile/${jobDetailData?.data?._id}`}
@@ -257,6 +350,25 @@ const JobDetailPage = () => {
           </Container>
         </div>
       </div>
+      <Modal
+        open={openApplyModal}
+        handleOpen={() => setOpenApplyModal(!openApplyModal)}
+      >
+        <ApplyJobForm
+          jobItem={jobDetailData?.data}
+          setOpen={setOpenApplyModal}
+        />
+      </Modal>
+      <Modal
+        open={openEvaluateJobModal}
+        handleOpen={() => setOpenEvaluateJobModal(!openEvaluateJobModal)}
+        size="lg"
+      >
+        <EvaluateSuitableJob
+          setOpen={setOpenEvaluateJobModal}
+          data={evaluateSuitableJobQueryData}
+        />
+      </Modal>
     </div>
   );
 };

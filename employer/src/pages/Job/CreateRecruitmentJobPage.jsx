@@ -15,6 +15,7 @@ import {
   companyIndustryOptions,
   currencyTypeOptions,
   experiens,
+  jobPositionOptions,
   jobTypeOptions,
   levelOptions,
   salaryTypeOptions,
@@ -259,11 +260,12 @@ const CreateRecruitmentJobPage = () => {
                   label="Tên chiến dịch tuyển dụng"
                   error={errors?.recruitmentCampaignName}
                 />
-                <InputController
+                <SelectController
                   control={control}
                   name="jobPosition"
                   label="Vị trí tuyển dụng"
                   error={errors?.jobPosition}
+                  options={jobPositionOptions}
                 />
               </div>
             </TimelineBody>

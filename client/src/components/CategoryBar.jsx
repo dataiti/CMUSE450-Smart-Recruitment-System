@@ -29,8 +29,6 @@ const CategoryBar = ({
   experienceFilter,
 }) => {
   const [openJobMenu, setOpenJobMenu] = useState(true);
-  const [openResumeMenu, setOpenResumeMenu] = useState(true);
-  const [openSettingMenu, setOpenSettingMenu] = useState(true);
   const [provincesValue, setProvincesValue] = useState([]);
 
   useEffect(() => {
@@ -51,14 +49,6 @@ const CategoryBar = ({
 
   const handleOpenJobMenu = () => {
     setOpenJobMenu(!openJobMenu);
-  };
-
-  const handleOpenResumeMenu = () => {
-    setOpenResumeMenu(!openResumeMenu);
-  };
-
-  const handleOpenSettingMenu = () => {
-    setOpenSettingMenu(!openSettingMenu);
   };
 
   return (
@@ -152,7 +142,7 @@ const CategoryBar = ({
                             htmlFor={`checkbox-${itemChild.value}`}
                             className="w-full cursor-pointer text-black font-medium"
                           >
-                            {itemChild.value}
+                            {itemChild.text || itemChild.value}
                           </label>
                         </ListItem>
                       </List>
