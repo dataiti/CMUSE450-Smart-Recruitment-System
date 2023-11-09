@@ -10,11 +10,11 @@ const messageSchema = new mongoose.Schema(
     ],
     messages: [
       {
-        employerId: {
+        from: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
-        userId: {
+        to: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },

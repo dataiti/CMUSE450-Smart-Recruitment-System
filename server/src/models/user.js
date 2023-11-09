@@ -42,8 +42,24 @@ const userSchema = new mongoose.Schema(
       default: "user",
       enum: ["user", "admin"],
     },
-    viewedJobs: {},
-    appliedJobs: {},
+    viewedJobs: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Job",
+        },
+      ],
+      default: [],
+    },
+    appliedJobs: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Job",
+        },
+      ],
+      default: [],
+    },
     facebookId: {
       type: String,
     },

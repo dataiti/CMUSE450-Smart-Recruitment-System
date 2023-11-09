@@ -1,5 +1,6 @@
 const ApplyJob = require("../models/applyJob");
 const Job = require("../models/job");
+const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const {
@@ -70,6 +71,16 @@ const applyJob = asyncHandler(async (req, res) => {
       {
         $set: {
           appliedIds: [...req.job.appliedIds, savedApplyJob._id],
+        },
+      },
+      { new: true }
+    );
+
+    await User.findOneAndUpdate(
+      { _id: req.user._id },
+      {
+        $set: {
+          appliedJobs: [...req.user.appliedJobs, req.job._id],
         },
       },
       { new: true }

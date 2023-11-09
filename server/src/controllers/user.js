@@ -119,6 +119,29 @@ const toggleWishListItem = asyncHandler(async (req, res) => {
   });
 });
 
+const userViewedJobs = asyncHandler(async (req, res) => {
+  if (
+    req.user.viewedJobs.some(
+      (item) => item.toString() === req.job._id.toString()
+    )
+  ) {
+    return res.status(200).json({
+      success: true,
+      message: "This job is viewed",
+      data: req.user.viewedJobs,
+    });
+  } else {
+    req.user.viewedJobs = [...req.user.viewedJobs, req.job._id];
+    await req.user.save();
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "User viewed job successfully",
+    data: req.user.viewedJobs,
+  });
+});
+
 const getListUserForAdmin = asyncHandler(async (req, res) => {
   const { query } = req;
   const status = query.status ? query.status : "";
@@ -179,5 +202,6 @@ module.exports = {
   deleteUser,
   replacePassword,
   toggleWishListItem,
+  userViewedJobs,
   getListUserForAdmin,
 };

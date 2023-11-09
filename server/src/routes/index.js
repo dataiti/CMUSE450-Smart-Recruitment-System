@@ -10,6 +10,7 @@ const feedbackRouter = require("./feedback");
 const chatbotRouter = require("./chatbot");
 const applyJobRouter = require("./applyJob");
 const smartRouter = require("./smart");
+const searchRouter = require("./search");
 
 const router = (app) => {
   app.use("/api/v1/auth", authRouter);
@@ -24,6 +25,7 @@ const router = (app) => {
   app.use("/api/v1/chatbot", chatbotRouter);
   app.use("/api/v1/applyJob", applyJobRouter);
   app.use("/api/v1/smart", smartRouter);
+  app.use("/api/v1/search", searchRouter);
 };
 
 module.exports = router;
