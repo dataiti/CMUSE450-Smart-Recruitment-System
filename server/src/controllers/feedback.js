@@ -4,6 +4,7 @@ const Employer = require("../models/employer");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
+const User = require("../models/user");
 
 const feedbackById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -81,9 +82,74 @@ const createFeedback = asyncHandler(async (req, res, next) => {
   });
 });
 
-const updateFeedback = asyncHandler(async (req, res) => {});
+const updateFeedback = asyncHandler(async (req, res) => {
+  //:feedbackId
+  const feedbackId = req.params.feedbackId;
+  //:userId
+  const userId = req.params.userId;
+  const { candidateId, jobId, employerId, feedbackText, rating } = req.body;
+  const images =
+    req.files &&
+    req.files.map((file) => {
+      return file.path;
+    });
+  const publicIds =
+    req.files &&
+    req.files.map((file) => {
+      return file.filename;
+    });
+  const existingUser = await User.findById(userId);
+  const existingFeedback = await Feedback.findById(feedbackId);
+  if (!existingUser) {
+    publicIds &&
+      publicIds.forEach(async (item) => {
+        await cloudinary.uploader.destroy(item);
+      });
+    throw new Error("User Not Found!");
+  } else if (!existingFeedback) {
+    publicIds &&
+      publicIds.forEach(async (item) => {
+        await cloudinary.uploader.destroy(item);
+      });
+    throw new Error("Feedback Not Found!");
+  } else if (existingFeedback && existingUser) {
+    // nếu có giá trị trong body thì cập nhật nếu không thì giữ giá trị cũ
+    existingFeedback.candidateId = candidateId || existingFeedback.candidateId;
+    existingFeedback.jobId = jobId || existingFeedback.jobId;
+    existingFeedback.employerId = employerId || existingFeedback.employerId;
+    existingFeedback.feedbackText =
+      feedbackText || existingFeedback.feedbackText;
+    existingFeedback.rating = rating || existingFeedback.rating;
+    existingFeedback.images = images || existingFeedback.images;
+    existingFeedback.publicIds = publicIds || existingFeedback.publicIds;
+    const updatedFeedback = await existingFeedback.save();
+    res.status(200).json({
+      success: true,
+      message: "Feedback updated successfully",
+      data: updatedFeedback,
+    });
+  }
+});
 
-const deleteFeedback = asyncHandler(async (req, res) => {});
+const deleteFeedback = asyncHandler(async (req, res) => {
+  const existingFeedback = await Feedback.findById(req.feedback._id);
+  if (!existingFeedback) {
+    publicIds &&
+      publicIds.forEach(async (item) => {
+        await cloudinary.uploader.destroy(item);
+      });
+    throw new Error("Feedback Not Found!");
+  } else if (existingFeedback) {
+    const deleteFeedback = await Feedback.findByIdAndDelete(
+      existingFeedback._id
+    );
+    res.status(200).json({
+      success: true,
+      message: "Feedback delete successfully",
+      data: deleteFeedback,
+    });
+  }
+});
 
 const updateRatingForJob = asyncHandler(async (req, res) => {
   const { jobId, employerId } = req.body;
