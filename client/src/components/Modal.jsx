@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog } from "@material-tailwind/react";
 
-const Modal = ({ children, open, handleOpen, size = "base" }) => {
+const Modal = ({ children, open, handleOpen, size = "md" }) => {
   return (
     <Dialog
       open={open}

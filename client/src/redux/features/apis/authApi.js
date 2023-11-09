@@ -32,15 +32,6 @@ const authApi = rootApi.injectEndpoints({
         };
       },
     }),
-    replacePassword: builder.mutation({
-      query: ({ data, userId }) => {
-        return {
-          url: `/user/replace-password/${userId}`,
-          method: "PUT",
-          body: data,
-        };
-      },
-    }),
     resetPassword: builder.mutation({
       query: (data) => ({
         url: "/auth/reset-password",
@@ -55,12 +46,6 @@ const authApi = rootApi.injectEndpoints({
         body: { ...data },
       }),
     }),
-    toggleWishListItem: builder.mutation({
-      query: ({ userId, jobId }) => ({
-        url: `/user/toggle-wishlist-item/${userId}/${jobId}`,
-        method: "PUT",
-      }),
-    }),
   }),
 });
 
@@ -71,6 +56,4 @@ export const {
   useForgotPasswordMutation,
   useLogOutMutation,
   useResetPasswordMutation,
-  useReplacePasswordMutation,
-  useToggleWishListItemMutation,
 } = authApi;

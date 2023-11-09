@@ -1,6 +1,7 @@
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
 import numeral from "numeral";
+import { experiens } from "./constants";
 
 export const timeAgo = (date) => {
   return formatDistanceToNow(date, { addSuffix: true, locale: vi });
@@ -50,4 +51,12 @@ export const formattedProvinceNames = (inputString) => {
   const modifiedString = inputString?.replace(/(Tỉnh|Thành phố)\s/g, "");
 
   return modifiedString;
+};
+
+export const printExperienceText = (value) => {
+  const experienceItem = experiens.find((item) => item.value === value);
+
+  if (experienceItem) {
+    return experienceItem.text;
+  }
 };

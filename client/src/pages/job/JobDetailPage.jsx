@@ -12,7 +12,11 @@ import Container from "../../components/Container";
 import { icons } from "../../utils/icons";
 import Mapbox from "../../components/Mapbox";
 import parse from "html-react-parser";
-import { formatRemainingTime, formattedAmount } from "../../utils/fn";
+import {
+  formatRemainingTime,
+  formattedAmount,
+  printExperienceText,
+} from "../../utils/fn";
 import EmploymentInfo from "../../components/EmploymentInfo";
 import Tag from "../../components/Tag";
 import IconButtonCustom from "../../components/IconButtonCustom";
@@ -23,7 +27,8 @@ import { socket } from "../../socket";
 import Modal from "../../components/Modal";
 import ApplyJobForm from "../../components/ApplyJobForm";
 import EvaluateSuitableJob from "../../components/EvaluateSuitableJob";
-import { useGetEvaluateSuitableJobQuery } from "../../redux/features/apis/smartApi";
+import { useGetEvaluateSuitableJobQuery } from "../../redux/features/apis/analyticApi";
+import { useUserViewedJobMutation } from "../../redux/features/apis/userApi";
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
@@ -35,6 +40,11 @@ const JobDetailPage = () => {
   const [openEvaluateJobModal, setOpenEvaluateJobModal] = useState(false);
 
   const { data: jobDetailData, isFetching } = useGetJobDetailQuery({ jobId });
+  // const { data: userViewedJobData } = useUserViewedJobMutation({
+  //   userId: user?._id,
+  //   jobId,
+  // });
+
   const { data: evaluateSuitableJobQueryData } = useGetEvaluateSuitableJobQuery(
     {
       userId: user?._id,
@@ -121,7 +131,7 @@ const JobDetailPage = () => {
                 title="Kinh nghiệm"
                 icon={<icons.AiFillClockCircle size={30} />}
               >
-                {jobDetailData?.data?.experience}
+                {printExperienceText(jobDetailData?.data?.experience)}
               </EmploymentInfo>
             </div>
             <div className="flex items-center gap-3">
@@ -233,16 +243,16 @@ const JobDetailPage = () => {
             </div>
             <div className="flex items-center gap-2">
               <Typography className="flex items-center gap-2 font-bold text-xs">
-                <div className="p-2 rounded-full bg-green-50 text-green-800">
+                <span className="p-2 rounded-full bg-green-50 text-green-800">
                   <icons.MdEmail />
-                </div>
+                </span>
                 {jobDetailData?.data?.employerId?.companyEmail}
               </Typography>
               |
               <Typography className="flex items-center gap-2 font-bold text-xs">
-                <div className="p-2 rounded-full bg-green-50 text-green-800">
+                <span className="p-2 rounded-full bg-green-50 text-green-800">
                   <icons.MdPhoneInTalk />
-                </div>
+                </span>
                 {jobDetailData?.data?.employerId?.companyPhoneNumber}
               </Typography>
             </div>
@@ -294,15 +304,17 @@ const JobDetailPage = () => {
               <Typography className=" font-bold text-sm">
                 {jobDetailData?.data?.workRegion?.exactAddress}
               </Typography>
-              <Typography className=" font-bold text-sm">
-                {jobDetailData?.data?.workRegion?.ward}
-              </Typography>
-              <Typography className=" font-bold text-sm">
-                {jobDetailData?.data?.workRegion?.district}
-              </Typography>
-              <Typography className=" font-bold text-sm">
-                {jobDetailData?.data?.workRegion?.province}
-              </Typography>
+              <div className="flex items-center gap-1">
+                <Typography className=" font-bold text-sm">
+                  {jobDetailData?.data?.workRegion?.ward} -
+                </Typography>
+                <Typography className=" font-bold text-sm">
+                  {jobDetailData?.data?.workRegion?.district} -
+                </Typography>
+                <Typography className=" font-bold text-sm">
+                  {jobDetailData?.data?.workRegion?.province}
+                </Typography>
+              </div>
             </div>
             <div className="h-[220px] w-full border border-gray-400 rounded-md overflow-hidden">
               <Mapbox workRegion={jobDetailData?.data?.workRegion} />
@@ -338,7 +350,7 @@ const JobDetailPage = () => {
                 title="Kinh nghiệm"
                 icon={<icons.HiLocationMarker size={30} />}
               >
-                {jobDetailData?.data?.experience}
+                {printExperienceText(jobDetailData?.data?.experience)}
               </EmploymentInfo>
               <EmploymentInfo
                 title="Loại công việc"

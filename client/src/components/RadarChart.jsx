@@ -43,16 +43,11 @@ const RadarChart = ({
                 color: ["#e74c3c", "#f39c12", "#2ecc71", "#3498db", "#9b59b6"],
               },
               suggestedMin: 0,
-              pointLabels: {
-                fontColor: "#fff", // Đặt màu cho các label
-                fontSize: 16,
-              },
             },
           },
           plugins: {
             legend: {
-              display: true,
-              position: "bottom",
+              display: false,
             },
           },
         }}

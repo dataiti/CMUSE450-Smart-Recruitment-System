@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import InputController from "../../components/InputController";
 import { Link } from "react-router-dom";
 import ButtonCustom from "../../components/ButtonCustom";
-import { useReplacePasswordMutation } from "../../redux/features/apis/authApi";
+import { useReplacePasswordMutation } from "../../redux/features/apis/userApi";
 import { toast } from "react-toastify";
 import Loading from "../../components/Loading";
 

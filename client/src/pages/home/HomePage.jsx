@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CarouselCustom from "../../components/CarouselCustom";
 import { images } from "../../assets/images";
 import Loading from "../../components/Loading";
@@ -6,24 +6,69 @@ import { loyaltyProgramItem } from "../../utils/constants";
 import { Typography } from "@material-tailwind/react";
 import Container from "../../components/Container";
 import { useGetListOfCategoriesQuery } from "../../redux/features/apis/categoryApi";
+import LineChart from "../../components/LineChart";
+import { useGetTechnicalTrendingChartQuery } from "../../redux/features/apis/analyticApi";
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+} from "@material-tailwind/react";
+import { useGetListOfJobsForHomaPageQuery } from "../../redux/features/apis/jobApi";
+import { useSelector } from "react-redux";
+import { authSelect } from "../../redux/features/slices/authSlice";
+import JobCard from "../../components/JobCard";
+import ButtonCustom from "../../components/ButtonCustom";
 
 const HomePage = () => {
+  const { user } = useSelector(authSelect);
+
+  const [limit, setLimit] = useState(6);
+
   const { data: listCategoriesData, isFetching } =
     useGetListOfCategoriesQuery();
 
+  const { data: technicalTrendingChartData } =
+    useGetTechnicalTrendingChartQuery();
+
+  const { data: listJobsForHomePageData, isFetching: isFetchingListJobs } =
+    useGetListOfJobsForHomaPageQuery(
+      { userId: user?._id, limit },
+      { refetchOnMountOrArgChange: true }
+    );
+
+  const data = [
+    {
+      label: "Tất cả công việc",
+      value: "all",
+      desc: `It really matters and then like it really doesn't matter.
+        What matters is the people who are sparked by it. And the people
+        who are like offended by it, it doesn't matter.`,
+    },
+    {
+      label: "Các công ty đang theo dõi",
+      value: "following",
+      desc: `Because it's about motivating the doers. Because I'm here
+        to follow my dreams and inspire other people to follow their dreams, too.`,
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-4 py-[20px]">
-      {isFetching && <Loading />}
+      {(isFetching || isFetchingListJobs) && <Loading />}
       <div className="px-[110px] grid grid-cols-12 gap-2">
         <div className="col-span-8">
           <CarouselCustom images={images.listBannerImage} />
         </div>
-        <div className="col-span-4 flex flex-col gap-2">
-          <img src={images.banner3} alt="" className="rounded-md" />
-          <img src={images.banner1} alt="" className="rounded-md" />
-        </div>
+        <Container className="!bg-blue-gray-900 h-full col-span-4 flex flex-col gap-2">
+          <Typography className="text-light-blue-600 text-sm font-bold uppercase">
+            Biểu đồ xu hướng công nghệ tuyển dụng
+          </Typography>
+          <LineChart data={technicalTrendingChartData?.data} />
+        </Container>
       </div>
-      <div className="h-28 w-[100%] bg-zinc-200 grid grid-cols-5 gap-5 py-2 px-[110px] bg-white">
+      <div className="h-28 w-[100%] bg-zinc-200 grid grid-cols-5 gap-5 py-2 px-[110px] bg-blue-gray-100">
         {loyaltyProgramItem.map((item, index) => {
           return (
             <div key={index} className="flex gap-2 items-center ">
@@ -42,8 +87,8 @@ const HomePage = () => {
           );
         })}
       </div>
-      <div className="flex flex-col gap-4 px-[110px]">
-        <Container className="grid grid-cols-7 gap-1 !p-1 sticky z-20 top-[80px] !bg-blue-gray-100">
+      <div className="flex flex-col gap-4 px-[110px] ">
+        <Container className="grid grid-cols-7 gap-1 !p-1 !bg-blue-gray-100">
           {listCategoriesData?.data?.length > 0 &&
             listCategoriesData?.data?.map((category) => {
               return (
@@ -65,8 +110,43 @@ const HomePage = () => {
               );
             })}
         </Container>
-        <Container>Cong ty hang dau</Container>
-        <Container>Cac cong viec moi</Container>
+        <Container className="bg-blue-gray-100">
+          <Tabs id="custom-animation" value="all" className="z-20">
+            <TabsHeader>
+              {listJobsForHomePageData?.data?.map((job) => (
+                <Tab
+                  key={job?.value}
+                  value={job?.value}
+                  className="text-sm font-bold text-light-blue-600 "
+                >
+                  {job?.label}
+                </Tab>
+              ))}
+            </TabsHeader>
+            <TabsBody
+              animate={{
+                initial: { y: 250 },
+                mount: { y: 0 },
+                unmount: { y: 250 },
+              }}
+            >
+              {listJobsForHomePageData?.data?.map((job) => (
+                <TabPanel key={job?.value} value={job?.value}>
+                  <div className="grid grid-cols-3 gap-2">
+                    {job?.data?.map((jobItem) => {
+                      return <JobCard jobItem={jobItem} key={jobItem?._id} />;
+                    })}
+                  </div>
+                </TabPanel>
+              ))}
+            </TabsBody>
+          </Tabs>
+        </Container>
+        <div className="flex justify-center">
+          <ButtonCustom onClick={() => setLimit((prev) => prev + 6)}>
+            Xem Thêm
+          </ButtonCustom>
+        </div>
       </div>
     </div>
   );

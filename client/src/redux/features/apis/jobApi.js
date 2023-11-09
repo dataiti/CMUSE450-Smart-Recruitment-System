@@ -40,6 +40,14 @@ const jobApi = rootApi.injectEndpoints({
         };
       },
     }),
+    getListOfJobsForHomaPage: builder.query({
+      query: ({ userId, limit }) => {
+        return {
+          url: `/job/get-list-jobs/homepage/${userId}?limit=${limit}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -47,4 +55,5 @@ export const {
   useGetListSearchJobsQuery,
   useGetJobDetailQuery,
   useGetListOfJobsQuery,
+  useGetListOfJobsForHomaPageQuery,
 } = jobApi;

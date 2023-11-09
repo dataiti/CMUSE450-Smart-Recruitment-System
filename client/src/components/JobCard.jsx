@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelect, setWishlists } from "../redux/features/slices/authSlice";
-import { useToggleWishListItemMutation } from "../redux/features/apis/authApi";
+import { useToggleWishListItemMutation } from "../redux/features/apis/userApi";
 import ApplyJobForm from "./ApplyJobForm";
 
 const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
