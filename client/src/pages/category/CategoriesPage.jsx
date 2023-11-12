@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import JobCard from "../../components/JobCard";
 import Loading from "../../components/Loading";
 import DrawerCustom from "../../components/DrawerCustom";
-import ReactPaginate from "react-paginate";
+import PaginationOption from "../../components/PaginationOption";
 
 const CategoriesPage = () => {
   const dispatch = useDispatch();
@@ -155,7 +155,7 @@ const CategoriesPage = () => {
         <Link to="/" className="text-light-blue-500 text-sm font-bold">
           Trang chủ
         </Link>
-        <Link to="/categorycategories-job" className="font-bold text-sm">
+        <Link to="/categories-job" className="font-bold text-sm">
           Danh mục việc làm
         </Link>
       </Breadcrumbs>
@@ -175,7 +175,7 @@ const CategoriesPage = () => {
         </div>
         <div className="w-[76%] flex flex-col gap-2">
           <div
-            className={`grid grid-cols-4 gap-2 bg-white rounded-md p-3 sticky z-20 top-[80px] ${
+            className={`grid grid-cols-4 gap-2 bg-gradient-to-l from-[#cbd5e1] to-[#fff] rounded-md p-3 sticky z-20 top-[80px] ${
               isSticky ? "shadow-lg" : "shadow-none"
             }`}
           >
@@ -210,41 +210,14 @@ const CategoriesPage = () => {
               />
             </div>
           </div>
-          <div className="flex items-center justify-between">
-            <Typography className="flex items-center gap-2 font-bold text-light-blue-600">
-              <icons.FiSearch size={18} /> Tìm thấy {count} công việc
-            </Typography>
-            <div className="flex items-center gap-2">
-              {isColumnCard ? (
-                <IconButton
-                  className="shadow-none bg-white text-[#212f3f] !p-5 !rounded-md"
-                  onClick={() => setIsColumnCard(false)}
-                >
-                  <icons.FaBars size={24} />
-                </IconButton>
-              ) : (
-                <IconButton
-                  className="shadow-none bg-white text-[#212f3f] !p-5 !rounded-md"
-                  onClick={() => setIsColumnCard(true)}
-                >
-                  <icons.FaGripVertical size={24} />
-                </IconButton>
-              )}
-              <div className="bg-white p-1 rounded-md ">
-                <ReactPaginate
-                  pageCount={totalPage}
-                  onPageChange={handlePageChange}
-                  forcePage={page - 1}
-                  containerClassName={"pagination"}
-                  nextLabel={<icons.IoArrowRedoCircleOutline size={36} />}
-                  previousLabel={<icons.IoArrowUndoCircleOutline size={36} />}
-                  activeClassName="!bg-[#212f3f] text-white text-gray-700 py-1 px-3 rounded-sm"
-                  pageClassName="bg-gray-200 text-gray-700 py-1 px-3 rounded-sm"
-                  className="flex items-center gap-2 text-gray-700"
-                />
-              </div>
-            </div>
-          </div>
+          <PaginationOption
+            count={count}
+            handlePageChange={handlePageChange}
+            isColumnCard={isColumnCard}
+            page={page}
+            setIsColumnCard={setIsColumnCard}
+            totalPage={totalPage}
+          />
           <div
             className={`${
               isColumnCard ? "grid grid-cols-2" : "flex flex-col"

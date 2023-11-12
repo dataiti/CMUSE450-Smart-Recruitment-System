@@ -42,6 +42,7 @@ import {
   BsFiletypePdf,
   BsCameraVideo,
   BsTelephone,
+  BsFillCheckCircleFill,
 } from "react-icons/bs";
 import {
   FaUserAlt,
@@ -90,6 +91,7 @@ import { LiaSearchPlusSolid, LiaSearchMinusSolid } from "react-icons/lia";
 import { ImTable2 } from "react-icons/im";
 
 const icons = {
+  BsFillCheckCircleFill,
   PiChartDonutFill,
   IoMdSend,
   IoBookmarkOutline,

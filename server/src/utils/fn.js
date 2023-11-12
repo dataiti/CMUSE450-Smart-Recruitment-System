@@ -3,4 +3,52 @@ const parseArrayQueryParam = (paramName, query) =>
     ? JSON.parse(query[paramName])
     : -1;
 
-module.exports = { parseArrayQueryParam };
+const calculateSimilarity = (userA, userB) => {
+  const viewedJobsA = userA.viewedJobs?.map((job) => job.toString());
+  const appliedJobsA = userA.appliedJobs?.map((job) => job.toString());
+  const wishlistJobsA = userA.wishlistIds?.map((job) => job.toString());
+  const viewedJobsB = userB.viewedJobs?.map((job) => job.toString());
+  const appliedJobsB = userB.appliedJobs?.map((job) => job.toString());
+  const wishlistJobsB = userB.wishlistIds?.map((job) => job.toString());
+
+  const intersectionViewed = viewedJobsA.filter((job) =>
+    viewedJobsB.includes(job)
+  );
+  const intersectionApplied = appliedJobsA.filter((job) =>
+    appliedJobsB.includes(job)
+  );
+  const intersectionWishlist = wishlistJobsA.filter((job) =>
+    wishlistJobsB.includes(job)
+  );
+
+  const magnitudeA = Math.sqrt(
+    viewedJobsA.length + appliedJobsA.length + wishlistJobsA.length
+  );
+  const magnitudeB = Math.sqrt(
+    viewedJobsB.length + appliedJobsB.length + wishlistJobsB.length
+  );
+
+  const cosineSimilarityViewed =
+    magnitudeA !== 0 && magnitudeB !== 0
+      ? intersectionViewed.length / (magnitudeA * magnitudeB)
+      : 0;
+
+  const cosineSimilarityApplied =
+    magnitudeA !== 0 && magnitudeB !== 0
+      ? intersectionApplied.length / (magnitudeA * magnitudeB)
+      : 0;
+
+  const cosineSimilarityWishlist =
+    magnitudeA !== 0 && magnitudeB !== 0
+      ? intersectionWishlist.length / (magnitudeA * magnitudeB)
+      : 0;
+
+  const weightedAverage =
+    0.5 * cosineSimilarityViewed +
+    0.3 * cosineSimilarityWishlist +
+    0.2 * cosineSimilarityApplied;
+
+  return weightedAverage;
+};
+
+module.exports = { parseArrayQueryParam, calculateSimilarity };

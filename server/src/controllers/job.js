@@ -445,6 +445,39 @@ const getListJobForAdmin = asyncHandler(async (req, res) => {
   });
 });
 
+const getListJobsForHomePage = asyncHandler(async (req, res) => {
+  const { limit } = req.query;
+
+  const allJobs = await Job.find()
+    .limit(limit)
+    .populate("workRegion")
+    .populate("employerId");
+
+  const followingsJobs = await Job.find({
+    employerId: { $in: req.user.followingIds },
+  })
+    .limit(limit)
+    .populate("workRegion")
+    .populate("employerId");
+
+  return res.status(200).json({
+    cuccess: true,
+    message: "Get list jobs for home page is successfully",
+    data: [
+      {
+        label: "Tất cả công việc",
+        value: "all",
+        data: allJobs,
+      },
+      {
+        label: "Các công ty đang theo dõi",
+        value: "following",
+        data: followingsJobs,
+      },
+    ],
+  });
+});
+
 module.exports = {
   jobById,
   getJobDetail,
@@ -456,4 +489,5 @@ module.exports = {
   getListJobs,
   getListJobForEmployer,
   getListJobForAdmin,
+  getListJobsForHomePage,
 };

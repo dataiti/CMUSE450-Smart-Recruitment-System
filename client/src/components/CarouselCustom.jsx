@@ -1,6 +1,7 @@
-import { Carousel } from "@material-tailwind/react";
+import { Button, Carousel, Typography } from "@material-tailwind/react";
 import { icons } from "../utils/icons";
 import IconButtonCustom from "./IconButtonCustom";
+import ButtonCustom from "./ButtonCustom";
 
 const CarouselCustom = ({ images = [] }) => {
   return (
@@ -47,12 +48,13 @@ const CarouselCustom = ({ images = [] }) => {
     >
       {images?.map((image, index) => {
         return (
-          <img
-            src={image}
-            alt="banner"
-            className="h-full w-full object-cover"
-            key={index}
-          />
+          <div className="h-full w-full" key={index}>
+            <img
+              src={image}
+              alt="banner"
+              className="h-full w-full object-cover"
+            />
+          </div>
         );
       })}
     </Carousel>

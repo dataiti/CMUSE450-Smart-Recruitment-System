@@ -33,11 +33,11 @@ const LineChart = ({
       {
         data: data.map((item) => item?.value || 0),
         backgroundColor: [
-          "#e74c3c",
-          "#f39c12",
-          "#2ecc71",
-          "#3498db",
-          "#9b59b6",
+          "#881337",
+          "#713f12",
+          "#134e4a",
+          "#0c4a6e",
+          "#581c87",
         ],
         barPercentage: 0.7,
       },
@@ -65,7 +65,7 @@ const LineChart = ({
                 display: true,
               },
               ticks: {
-                color: "white",
+                color: "black",
               },
             },
           },

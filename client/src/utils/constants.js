@@ -130,8 +130,17 @@ export const navbarItems = [
   },
   {
     id: 2,
-    path: "/categories-job",
     title: "Việc làm",
+    childrens: [
+      {
+        path: "/categories-job",
+        title: "Danh mục việc làm",
+      },
+      {
+        path: "/recommender-job",
+        title: "Đề xuất công việc phù hợp",
+      },
+    ],
   },
   {
     id: 3,

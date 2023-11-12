@@ -252,7 +252,105 @@ const generateRankJob = asyncHandler(async (req, res) => {});
 
 const getSchedule = asyncHandler(async (req, res) => {});
 
-const getRecruitmentTrending = asyncHandler(async (req, res) => {});
+const evaluateSuitableJob = asyncHandler(async (req, res) => {
+  const candidateSkills = req.candidate.skills;
+  const candidateExperience = req.candidate.experience;
+
+  const requiredSkills = req.job.skills;
+  const requiredExperience = req.job.experience;
+
+  const skillMatch = candidateSkills.filter((skill) =>
+    requiredSkills.includes(skill)
+  );
+
+  const skillNotMatch = requiredSkills.filter(
+    (skill) => !candidateSkills.includes(skill)
+  );
+
+  const skillPercentage = (skillMatch.length / requiredSkills.length) * 100;
+
+  let experiencePercentage;
+  if (candidateExperience > requiredExperience || requiredExperience === 0)
+    experiencePercentage = 100;
+  else experiencePercentage = (candidateExperience / requiredExperience) * 100;
+
+  const overallPercentage = (skillPercentage + experiencePercentage) / 2;
+
+  return res.status(200).json({
+    success: true,
+    message: "Get job detail is successfully",
+    data: {
+      overallPercentage,
+      percentages: [
+        {
+          title: "Kỹ năng",
+          value: skillPercentage,
+        },
+        {
+          title: "Kinh nghiệm",
+          value: experiencePercentage,
+        },
+        {
+          title: "Vị trí",
+          value: skillPercentage,
+        },
+        {
+          title: "Định hướng",
+          value: skillPercentage,
+        },
+        {
+          title: "Yếu tố khác",
+          value: skillPercentage,
+        },
+      ],
+      skillMatch,
+      skillNotMatch,
+    },
+  });
+});
+
+const getTechnicalTrendingChart = asyncHandler(async (req, res) => {
+  const trends = await Job.aggregate([
+    {
+      $unwind: "$skills",
+    },
+    {
+      $group: {
+        _id: "$skills",
+        value: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { value: -1 },
+    },
+  ]).limit(5);
+
+  return res.status(200).json({
+    success: true,
+    message: "Get recruitment trending is successfully",
+    data: trends,
+  });
+});
+
+const getWorkPositionTrendingChart = asyncHandler(async (req, res) => {
+  const trends = await Job.aggregate([
+    {
+      $group: {
+        _id: "$workPosition",
+        value: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { value: -1 },
+    },
+  ]).limit(6);
+
+  return res.status(200).json({
+    success: true,
+    message: "Get recruitment trending is successfully",
+    data: trends,
+  });
+});
 
 module.exports = {
   getOveviewStatistics,
@@ -260,5 +358,7 @@ module.exports = {
   generateTimeBasedPieChart,
   generateRankJob,
   getSchedule,
-  getRecruitmentTrending,
+  evaluateSuitableJob,
+  getWorkPositionTrendingChart,
+  getTechnicalTrendingChart,
 };

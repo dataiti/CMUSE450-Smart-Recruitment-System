@@ -10,6 +10,7 @@ const {
   getListJobs,
   getListJobForEmployer,
   getListJobForAdmin,
+  getListJobsForHomePage,
 } = require("../controllers/job");
 const { userById } = require("../controllers/user");
 const { addressById } = require("../controllers/address");
@@ -25,6 +26,7 @@ router.get(
   getListJobForAdmin
 );
 router.get("/get-list-search-jobs", getListSearchJobs);
+router.get("/get-list-jobs/homepage/:userId", getListJobsForHomePage);
 router.get("/get-list-jobs", getListJobs);
 router.get(
   "/get-list-jobs/employer/:userId/:employerId",

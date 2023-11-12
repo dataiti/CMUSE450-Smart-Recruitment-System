@@ -6,8 +6,6 @@ import { icons } from "../utils/icons";
 import Tag from "./Tag";
 
 const EvaluateSuitableJob = ({ setOpen = () => {}, data = {} }) => {
-  console.log(data);
-
   return (
     <div className=" h-full rounded-md !text-black bg-blue-gray-900">
       <DialogHeader>
@@ -60,6 +58,7 @@ const EvaluateSuitableJob = ({ setOpen = () => {}, data = {} }) => {
                   <Tag
                     key={index}
                     className="text-green-500 bg-indigo-50 rounded-md !px-6 !py-2 !text-base"
+                    icon={<icons.BsFillCheckCircleFill />}
                   >
                     {skill}
                   </Tag>
@@ -75,6 +74,7 @@ const EvaluateSuitableJob = ({ setOpen = () => {}, data = {} }) => {
                   <Tag
                     key={index}
                     className="text-red-500 bg-indigo-50 rounded-md !px-6 !py-2 !text-base"
+                    icon={<icons.IoCloseCircleSharp />}
                   >
                     {skill}
                   </Tag>

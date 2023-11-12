@@ -12,6 +12,7 @@ import {
   WishListPage,
   CompanyProfile,
   ListMyApplyJobs,
+  JobRecommendationPage,
 } from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
 
@@ -31,6 +32,10 @@ const routers = [
       {
         path: "/job-detail/:jobId",
         element: <JobDetailPage />,
+      },
+      {
+        path: "/recommender-job",
+        element: <JobRecommendationPage />,
       },
     ],
   },

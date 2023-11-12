@@ -99,17 +99,51 @@ const Header = () => {
           {navbarItems.map((item) => {
             return (
               <div className="" key={item.id}>
-                <Link
-                  to={item.path}
-                  className={`font-bold text-sm uppercase ${
-                    item.id === indexNavbar
-                      ? "text-light-blue-500"
-                      : "text-white"
-                  }`}
-                  onClick={() => setIndexNavbar(item.id)}
-                >
-                  {item.title}
-                </Link>
+                {item.childrens ? (
+                  <Menu>
+                    <MenuHandler>
+                      <Typography
+                        className={`font-bold text-sm uppercase cursor-pointer ${
+                          item.id === indexNavbar
+                            ? "text-light-blue-500"
+                            : "text-white"
+                        }`}
+                      >
+                        {item.title}
+                      </Typography>
+                    </MenuHandler>
+                    <MenuList className="hover:border-none">
+                      <ul className="col-span-4 flex w-full flex-col gap-1">
+                        {item.childrens.map(({ id, title, path }) => (
+                          <li key={id}>
+                            <Link to={path}>
+                              <MenuItem
+                                className="bg-gray-200 flex items-center gap-4 py-3"
+                                onClick={() => setIndexNavbar(item.id)}
+                              >
+                                <Typography className="mb-1 text-sm font-bold">
+                                  {title}
+                                </Typography>
+                              </MenuItem>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </MenuList>
+                  </Menu>
+                ) : (
+                  <Link
+                    to={item.path}
+                    className={`font-bold text-sm uppercase ${
+                      item.id === indexNavbar
+                        ? "text-light-blue-500"
+                        : "text-white"
+                    }`}
+                    onClick={() => setIndexNavbar(item.id)}
+                  >
+                    {item.title}
+                  </Link>
+                )}
               </div>
             );
           })}

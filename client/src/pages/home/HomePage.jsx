@@ -38,22 +38,6 @@ const HomePage = () => {
       { refetchOnMountOrArgChange: true }
     );
 
-  const data = [
-    {
-      label: "Tất cả công việc",
-      value: "all",
-      desc: `It really matters and then like it really doesn't matter.
-        What matters is the people who are sparked by it. And the people
-        who are like offended by it, it doesn't matter.`,
-    },
-    {
-      label: "Các công ty đang theo dõi",
-      value: "following",
-      desc: `Because it's about motivating the doers. Because I'm here
-        to follow my dreams and inspire other people to follow their dreams, too.`,
-    },
-  ];
-
   return (
     <div className="flex flex-col gap-4 py-[20px]">
       {(isFetching || isFetchingListJobs) && <Loading />}
@@ -61,18 +45,18 @@ const HomePage = () => {
         <div className="col-span-8">
           <CarouselCustom images={images.listBannerImage} />
         </div>
-        <Container className="!bg-blue-gray-900 h-full col-span-4 flex flex-col gap-2">
+        <Container className="!bg-gradient-to-l from-[#304352] to-[#cbd5e1] h-full col-span-4 flex flex-col gap-2">
           <Typography className="text-light-blue-600 text-sm font-bold uppercase">
             Biểu đồ xu hướng công nghệ tuyển dụng
           </Typography>
           <LineChart data={technicalTrendingChartData?.data} />
         </Container>
       </div>
-      <div className="h-28 w-[100%] bg-zinc-200 grid grid-cols-5 gap-5 py-2 px-[110px] bg-blue-gray-100">
+      <div className="h-20 w-[100%] bg-zinc-200 grid grid-cols-5 gap-5 py-2 px-[110px] bg-gradient-to-l from- bg-blue-gray-100 to-[#cbd5e1]">
         {loyaltyProgramItem.map((item, index) => {
           return (
             <div key={index} className="flex gap-2 items-center ">
-              <span className="p-2 bg-indigo-50 rounded-md text-[#212f3f]">
+              <span className="p-2 bg-indigo-100 rounded-md text-[#212f3f]">
                 {item.icon}
               </span>
               <div className="flex flex-col gap-1">
@@ -88,7 +72,7 @@ const HomePage = () => {
         })}
       </div>
       <div className="flex flex-col gap-4 px-[110px] ">
-        <Container className="grid grid-cols-7 gap-1 !p-1 !bg-blue-gray-100">
+        <Container className="grid grid-cols-7 gap-1 !p-1 !bg-blue-gray-200">
           {listCategoriesData?.data?.length > 0 &&
             listCategoriesData?.data?.map((category) => {
               return (

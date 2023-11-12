@@ -42,7 +42,7 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
       <Link
         to={`/job-detail/${jobItem?._id}`}
         key={jobItem?._id}
-        className="min-h-[288px] bg-white !rounded-md cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
+        className="min-h-[288px] bg-white !rounded-md shadow-md cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
       >
         <Card className="bg-white !shadow-none flex flex-col">
           <CardBody className="w-full flex flex-col gap-2 !p-4">

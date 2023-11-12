@@ -43,6 +43,7 @@ const RadarChart = ({
                 color: ["#e74c3c", "#f39c12", "#2ecc71", "#3498db", "#9b59b6"],
               },
               suggestedMin: 0,
+              suggestedMax: 100,
             },
           },
           plugins: {
