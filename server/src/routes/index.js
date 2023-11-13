@@ -10,6 +10,7 @@ const feedbackRouter = require("./feedback");
 const chatbotRouter = require("./chatbot");
 const applyJobRouter = require("./applyJob");
 const recommenderRouter = require("./recommender");
+const transactionRouter = require("./transaction");
 const searchRouter = require("./search");
 
 const router = (app) => {
@@ -25,6 +26,7 @@ const router = (app) => {
   app.use("/api/v1/chatbot", chatbotRouter);
   app.use("/api/v1/applyJob", applyJobRouter);
   app.use("/api/v1/recommender", recommenderRouter);
+  app.use("/api/v1/transaction", transactionRouter);
   app.use("/api/v1/search", searchRouter);
 };
 
