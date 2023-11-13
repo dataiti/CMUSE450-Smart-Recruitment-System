@@ -3,9 +3,29 @@ const moment = require("moment");
 const querystring = require("qs");
 const crypto = require("crypto");
 const { sortObject } = require("../utils/fn");
-// const transaction = require('')
+const Transaction = require("../models/transaction");
 
-const transactionById = asyncHandler(async (req, res, next, id) => {});
+const transactionById = asyncHandler(async (req, res, next, id) => {
+  const isValidId = mongoose.Types.ObjectId.isValid(id);
+
+  if (!isValidId) {
+    return res.status(400).json({
+      success: false,
+      message: "Transaction Id is invalid",
+    });
+  }
+
+  const transaction = await Transaction.findById(id);
+
+  if (!transaction)
+    return res.status(400).json({
+      success: false,
+      message: "Transaction is not find",
+    });
+
+  req.transaction = transaction;
+  next();
+});
 
 const createPayment = asyncHandler(async (req, res, next) => {
   var ipAddr =
@@ -63,11 +83,128 @@ const createPayment = asyncHandler(async (req, res, next) => {
   res.status(200).json({ redirectUrl: vnpUrl });
 });
 
-const createTransaction = asyncHandler(async (req, res) => {});
+const createTransaction = asyncHandler(async (req, res) => {
+  const { orderId, bank, amount, orderInfo } = req.body;
 
-const getListTransactionsForEmployer = asyncHandler(async (req, res) => {});
+  if (!orderId || !bank || !amount || !orderInfo)
+    throw new Error("All fields are required");
 
-const getListTransactionsForAdmin = asyncHandler(async (req, res) => {});
+  const newTransaction = new Transaction({
+    employerId: req.employer._id,
+    orderId,
+    bank,
+    amount,
+    orderInfo,
+  });
+
+  await newTransaction.save();
+
+  return res.status(200).json({
+    success: true,
+    message: "Create transaction is successfully",
+    data: newTransaction,
+  });
+});
+
+const getListTransactionsForEmployer = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const status = query.status ? query.status : "";
+  const search = query.search || "";
+  const regex = search
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
+  const sortBy = query.sortBy || "-_id";
+  const orderBy = ["asc", "desc"].includes(query.orderBy)
+    ? query.orderBy
+    : "asc";
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+  const page = query.page > 0 ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
+
+  const filterArgs = {
+    $or: [
+      { orderId: { $regex: regex, $options: "i" } },
+      { orderInfo: { $regex: regex, $options: "i" } },
+    ],
+    employerId: req.employer._id,
+  };
+
+  if (status) filterArgs.status = status;
+
+  const countTransaction = await Transaction.countDocuments(filterArgs);
+
+  if (!countTransaction) throw new Error("List transactions is not find");
+
+  const totalPage = Math.ceil(countTransaction / limit);
+
+  if (page > totalPage) skip = (totalPage - 1) * limit;
+
+  const listTransactions = await Transaction.find(filterArgs)
+    .sort({ [sortBy]: orderBy, _id: -1 })
+    .skip(skip)
+    .limit(limit)
+    .populate("employerId");
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list of transactions are successfully",
+    currentPage: page,
+    totalPage,
+    countUser,
+    data: listTransactions,
+  });
+});
+
+const getListTransactionsForAdmin = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const status = query.status ? query.status : "";
+  const search = query.search || "";
+  const regex = search
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
+  const sortBy = query.sortBy || "-_id";
+  const orderBy = ["asc", "desc"].includes(query.orderBy)
+    ? query.orderBy
+    : "asc";
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+  const page = query.page > 0 ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
+
+  const filterArgs = {
+    $or: [
+      { orderId: { $regex: regex, $options: "i" } },
+      { orderInfo: { $regex: regex, $options: "i" } },
+    ],
+  };
+
+  if (status) filterArgs.status = status;
+
+  const countTransaction = await Transaction.countDocuments(filterArgs);
+
+  if (!countTransaction)
+    throw new Error("List transactions for admin is not find");
+
+  const totalPage = Math.ceil(countTransaction / limit);
+
+  if (page > totalPage) skip = (totalPage - 1) * limit;
+
+  const listTransactions = await Transaction.find(filterArgs)
+    .sort({ [sortBy]: orderBy, _id: -1 })
+    .skip(skip)
+    .limit(limit)
+    .populate("employerId");
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list of transactions for admin are successfully",
+    currentPage: page,
+    totalPage,
+    countUser,
+    data: listTransactions,
+  });
+});
 
 module.exports = {
   transactionById,
