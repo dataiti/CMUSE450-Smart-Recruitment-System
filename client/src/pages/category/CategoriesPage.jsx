@@ -5,7 +5,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import React, { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { icons } from "../../utils/icons";
 import CategoryBar from "../../components/CategoryBar";
 import { orderByOptions, sortByOptions } from "../../utils/constants";
@@ -24,6 +24,8 @@ const CategoriesPage = () => {
   const dispatch = useDispatch();
 
   const { listJobs, totalPage, count } = useSelector(jobSelect);
+
+  const location = useLocation();
 
   const [industryFilter, setIndustryFilter] = useState([]);
   const [rating, setRating] = useState(0);
@@ -63,6 +65,13 @@ const CategoriesPage = () => {
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const paramValue = queryParams.get("category");
+
+    if (paramValue) setIndustryFilter((prev) => [...prev, paramValue]);
+  }, [location.search]);
 
   useEffect(() => {
     if (listJobsData && listJobsData.success) {

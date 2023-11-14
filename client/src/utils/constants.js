@@ -59,26 +59,31 @@ export const menuCVItems = [
   {
     id: 1,
     icon: <icons.HiDocumentText size={20} />,
+    type: "template",
     name: "Mẫu CV",
   },
   {
     id: 2,
     icon: <icons.FaFont size={20} />,
+    type: "font",
     name: "Phông chữ",
   },
   {
     id: 3,
     icon: <icons.MdColorLens size={20} />,
+    type: "color",
     name: "Màu sắc",
   },
   {
     id: 4,
     icon: <icons.LiaSearchPlusSolid size={20} />,
+    type: "",
     name: "Phóng to",
   },
   {
     id: 5,
     icon: <icons.LiaSearchMinusSolid size={20} />,
+    type: "",
     name: "Thu nhỏ",
   },
 ];

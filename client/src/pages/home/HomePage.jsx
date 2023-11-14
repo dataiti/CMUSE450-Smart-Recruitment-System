@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import JobCard from "../../components/JobCard";
 import ButtonCustom from "../../components/ButtonCustom";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const { user } = useSelector(authSelect);
@@ -56,7 +57,7 @@ const HomePage = () => {
         {loyaltyProgramItem.map((item, index) => {
           return (
             <div key={index} className="flex gap-2 items-center ">
-              <span className="p-2 bg-indigo-100 rounded-md text-[#212f3f]">
+              <span className="p-2 bg-yellow-50 rounded-md text-orange-900">
                 {item.icon}
               </span>
               <div className="flex flex-col gap-1">
@@ -76,8 +77,9 @@ const HomePage = () => {
           {listCategoriesData?.data?.length > 0 &&
             listCategoriesData?.data?.map((category) => {
               return (
-                <div
-                  key={category}
+                <Link
+                  to={`/categories-job?category=${category?.name}`}
+                  key={category?._id}
                   className="flex flex-col items-center gap-1 bg-green-50 rounded-md py-3 hover:bg-green-100/80 transition-all cursor-pointer"
                 >
                   <div className="h-24 w-24 p-3 bg-white rounded-full">
@@ -90,7 +92,7 @@ const HomePage = () => {
                   <Typography className="text-xs font-bold text-green-900">
                     {category?.name}
                   </Typography>
-                </div>
+                </Link>
               );
             })}
         </Container>

@@ -8,7 +8,7 @@ const MessengerLayout = () => {
       <div className="w-[100px] h-full bg-[#212f3f]">
         <Sidebar />
       </div>
-      <div className="w-full">
+      <div className="w-full bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9]">
         <Outlet />
       </div>
     </div>

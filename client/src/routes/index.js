@@ -47,10 +47,6 @@ const routers = [
         element: <ProtectedRoutes />,
         children: [
           {
-            path: "/resume-online",
-            element: <ResumeOnlinePage />,
-          },
-          {
             path: "/wishlist",
             element: <WishListPage />,
           },
@@ -105,6 +101,15 @@ const routers = [
             element: <MessagePage />,
           },
         ],
+      },
+    ],
+  },
+  {
+    element: <ProtectedRoutes />,
+    children: [
+      {
+        path: "/resume-online",
+        element: <ResumeOnlinePage />,
       },
     ],
   },
