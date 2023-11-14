@@ -1,16 +1,33 @@
 import React from "react";
-import { Typography } from "@material-tailwind/react";
+import { Avatar, Typography } from "@material-tailwind/react";
 
-export const TextMessage = ({ el }) => {
+export const TextMessage = ({ el, user }) => {
   return (
-    <div className={`flex ${el.outgoing ? "justify-start" : "justify-end"} `}>
-      <div
-        className={`${
-          el.outgoing ? "bg-white" : "bg-[#212f3f] text-white"
-        } px-4 py-3 rounded-2xl max-w-[400px]`}
-      >
-        <Typography className="text-xs">{el.message}</Typography>
-      </div>
+    <div
+      className={`flex ${
+        el?.sender === "user" ? "justify-start" : "justify-end"
+      } `}
+    >
+      {el?.sender === "user" ? (
+        <div className="flex gap-3">
+          <Avatar src={user?.avatar} alt="" className="h-10 w-10" />
+          <div
+            className={`${
+              el?.sender === "user" ? "bg-white" : "bg-[#212f3f] text-white"
+            } px-4 py-3 rounded-xl max-w-[350px]`}
+          >
+            <Typography className="text-sm font-bold">{el?.content}</Typography>
+          </div>
+        </div>
+      ) : (
+        <div
+          className={`${
+            el?.sender === "user" ? "bg-white" : "bg-[#212f3f] text-white"
+          } px-4 py-3 rounded-xl max-w-[400px]`}
+        >
+          <Typography className="text-sm font-bold">{el?.content}</Typography>
+        </div>
+      )}
     </div>
   );
 };

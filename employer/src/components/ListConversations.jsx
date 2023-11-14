@@ -1,35 +1,78 @@
-import { Avatar, Input, Typography } from "@material-tailwind/react";
-import React from "react";
-import { fakeChatListData } from "../utils/constants";
+import { Avatar, Typography } from "@material-tailwind/react";
+import React, { useEffect } from "react";
+import { socket } from "../socket";
+import { useDispatch, useSelector } from "react-redux";
+import { authSelect } from "../redux/features/slices/authSlice";
+import { setCurrentConversation } from "../redux/features/slices/messageSlice";
 
-const ListConversations = () => {
+const ListConversations = ({ data = [] }) => {
+  const dispatch = useDispatch();
+
+  const { user } = useSelector(authSelect);
+
+  const handleGetMessage = ({ messageId }) => {
+    socket.emit("get_messages", {
+      messageId,
+    });
+  };
+
+  useEffect(() => {
+    const handleUserGetMessage = (message) => {
+      if (message.success)
+        dispatch(setCurrentConversation({ data: message.message }));
+    };
+
+    socket?.on("user_get_message", handleUserGetMessage);
+
+    return () => {
+      socket?.off("user_get_message", handleUserGetMessage);
+    };
+  }, [dispatch]);
+
   return (
     <div className="flex flex-col gap-2 p-5">
-      <Typography>Danh sách trò chuyện</Typography>
-      <Input label="Tìm kiếm" />
+      <Typography className="font-bold text-light-blue-600">
+        Danh sách trò chuyện
+      </Typography>
+      <input
+        placeholder="Tìm kiếm cuộc trò chuyện"
+        className="px-4 py-3 bg-light-blue-50 rounded-full placeholder:text-sm outline-none border-none"
+      />
       <hr className="my-2 border-blue-gray-100" />
       <div className="flex flex-col gap-3">
-        {fakeChatListData.map((item) => {
+        {data?.map((item) => {
           return (
             <div
-              key={item.id}
-              className="w-full flex items-center p-2 gap-3 bg-blue-gray-50 rounded-lg"
+              key={item?.id}
+              className="w-full flex items-center p-3 gap-3 bg-blue-gray-50 rounded-lg hover:bg-blue-gray-100 transition-all cursor-pointer"
+              onClick={() => handleGetMessage({ messageId: item?._id })}
             >
               <Avatar
-                src={item.avatar}
-                alt={item.name}
-                className="border-2 border-[#212f3f]"
+                src={item?.userId?.avatar}
+                alt={item?.firtName}
+                className="border-2 border-gray-300 flex-none"
               />
               <div className="w-full flex flex-col gap-2">
                 <Typography className="text-sm font-bold">
-                  {item.name}
+                  {item?.userId?.lastName} {item?.userId?.firstName}
                 </Typography>
-                <div className="w-full flex items-center justify-between">
+                <div className="w-full flex items-center justify-between name">
+                  {item?.lastMessage?.content ? (
+                    <Typography className="text-sm font-semibold text-gray-600">
+                      {`${
+                        item?.lastMessage?.sender === "employer"
+                          ? "Bạn: "
+                          : `${item?.userId?.firstName}: `
+                      }`}{" "}
+                      {item?.lastMessage?.content}
+                    </Typography>
+                  ) : (
+                    <Typography className="text-sm font-semibold text-gray-600">
+                      Các bạn đã được kết nối trên hệ thống SRS
+                    </Typography>
+                  )}
                   <Typography className="text-xs">
-                    {item.lastMessage.slice(0, 14)} ...
-                  </Typography>
-                  <Typography className="text-xs">
-                    {item.lastMessageTime}
+                    {item?.lastMessage?.createdAt}
                   </Typography>
                 </div>
               </div>

@@ -8,7 +8,7 @@ const AuthLayout = () => {
       <div className="w-full h-[80px] fixed z-50">
         <Header />
       </div>
-      <div className="px-[230px] pt-[90px] bg-[#e8edf2] min-h-screen flex items-center justify-center">
+      <div className="px-[230px] pt-[90px] bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9] min-h-screen flex items-center justify-center">
         <Outlet />
       </div>
     </div>

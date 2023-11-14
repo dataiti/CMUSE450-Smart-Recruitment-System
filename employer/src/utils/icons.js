@@ -30,6 +30,8 @@ import {
   BsCalendar3,
   BsBarChartLineFill,
   BsCameraFill,
+  BsCameraVideo,
+  BsTelephone,
 } from "react-icons/bs";
 import { FaUserAlt, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { BiSolidPhoneCall } from "react-icons/bi";
@@ -53,6 +55,8 @@ import {
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 
 const icons = {
+  BsTelephone,
+  BsCameraVideo,
   FaUserCheck,
   MdPayment,
   FaSignOutAlt,
