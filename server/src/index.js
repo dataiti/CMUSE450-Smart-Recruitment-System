@@ -83,72 +83,91 @@ io.on("connection", async (socket) => {
     }
   }
 
-  socket.on("get_direct_conversations", async ({ userId }) => {
-    const existingConversations = await Message.find({
-      participants: { $all: [userId] },
-    }).populate({
-      path: "participants",
-      model: "User",
-      select: "firstName lastName avatar _id email status",
-      populate: {
-        path: "ownerEmployerId",
-        model: "Employer",
-        select: "companyLogo companyName companyEmail _id companyPhoneNumber",
-      },
-    });
+  socket.on("user_list_conversations", async ({ userId }) => {
+    try {
+      const existingConversations = await Message.find({
+        userId,
+      })
+        .sort("updatedAt")
+        .populate("userId", "firstName lastName avatar email")
+        .populate("employerId", "companyLogo companyName companyEmail");
 
-    const toUser = await User.findById(userId);
-
-    io.to(toUser?.socketId).emit("user_get_direct_conversations", {
-      message: existingConversations,
-    });
-  });
-
-  socket.on("start_conversation", async (data) => {
-    const { from, to } = data;
-
-    const existingConversations = await Message.find({
-      participants: { $size: 2, $all: [from, to] },
-    }).populate({
-      path: "participants",
-      model: "User",
-      select: "firstName lastName avatar _id email status",
-      populate: {
-        path: "ownerEmployerId",
-        model: "Employer",
-        select: "companyLogo companyName companyEmail _id companyPhoneNumber",
-      },
-    });
-
-    if (existingConversations.length === 0) {
-      let newChat = await Message.create({
-        participants: [to, from],
+      const formatData = existingConversations.map((conversation) => {
+        return {
+          _id: conversation._id,
+          employerId: conversation.employerId,
+          lastMessage: conversation.messages[conversation.messages.length - 1],
+        };
       });
 
-      newChat = await Message.findById(newChat).populate(
-        "participants",
-        "firstName lastName _id avatar email status"
-      );
+      socket.emit("user_get_list_conversations", {
+        message: formatData,
+      });
+    } catch (error) {}
+  });
 
-      socket.emit("start_chat", newChat);
-    } else {
-      socket.emit("start_chat", existingConversations[0]);
-    }
+  socket.on("employer_list_conversations", async ({ employerId }) => {
+    try {
+      const existingConversations = await Message.find({
+        employerId,
+      })
+        .populate("userId", "firstName lastName avatar email")
+        .populate("employerId", "companyLogo companyName companyEmail");
+
+      const formatData = existingConversations.map((conversation) => {
+        return {
+          _id: conversation._id,
+          userId: conversation.userId,
+          lastMessage: conversation.messages[conversation.messages.length - 1],
+        };
+      });
+
+      socket.emit("employer_get_list_conversations", {
+        message: formatData,
+      });
+    } catch (error) {}
+  });
+
+  socket.on("start_conversation", async (message) => {
+    try {
+      const { employerId, userId } = message;
+
+      const existingConversations = await Message.find({
+        employerId,
+        userId,
+      })
+        .populate("userId", "firstName lastName avatar email")
+        .populate("employerId", "companyLogo companyName companyEmail");
+
+      if (existingConversations.length === 0) {
+        let newChat = await Message.create({
+          employerId,
+          userId,
+        });
+
+        newChat = await Message.findById(newChat)
+          .populate("userId", "firstName lastName avatar email")
+          .populate("employerId", "companyLogo companyName companyEmail");
+
+        socket.emit("start_chat", { success: true, message: newChat });
+      } else {
+        socket.emit("start_chat", {
+          success: true,
+          message: existingConversations[0],
+        });
+      }
+    } catch (error) {}
   });
 
   socket.on("get_messages", async (data) => {
     try {
-      const { conversationId, userId } = data;
-      const messages = await Message.findById(conversationId)
-        .populate("participants", "firstName lastName _id avatar email status")
-        .populate(
-          "messages.to messages.from",
-          "firstName lastName _id avatar email status"
-        );
+      const { messageId } = data;
+      const messages = await Message.findById(messageId)
+        .populate("userId", "firstName lastName avatar email")
+        .populate("employerId", "companyLogo companyName companyEmail");
 
-      const toUser = await User.findById(userId);
-
-      io.to(toUser?.socketId).emit("user_get_message", {
+      socket.emit("user_get_message", {
+        success: true,
         message: messages,
       });
     } catch (error) {
@@ -156,36 +175,36 @@ io.on("connection", async (socket) => {
     }
   });
 
-  socket.on("text_message", async (data) => {
-    const { message, from, to, type, conversationId } = data;
+  socket.on("text_message", async (message) => {
+    try {
+      const { sender, content, employerId, userId, type, messageId } = message;
 
-    const toUser = await User.findById(to);
-    const fromUser = await User.findById(from);
+      const findEmployer = await Employer.findById(employerId);
+      const findUser = await User.findById(userId);
 
-    const newMessage = {
-      to,
-      from,
-      type,
-      text: message,
-      createdAt: Date.now(),
-    };
+      const newMessage = {
+        sender,
+        content,
+        type,
+        createdAt: Date.now(),
+      };
 
-    const chat = await Message.findById(conversationId);
-    chat.messages.push(newMessage);
+      const findMessage = await Message.findById(messageId)
+        .populate("userId", "firstName lastName avatar email")
+        .populate("employerId", "companyLogo companyName companyEmail");
+      findMessage.messages.push(newMessage);
 
-    await chat.save({ new: true, validateModifiedOnly: true });
+      await findMessage.save({ new: true, validateModifiedOnly: true });
 
-    const messages = await Message.findById(conversationId).populate(
-      "messages.to messages.from",
-      "firstName lastName _id avatar email status"
-    );
-
-    io.to(toUser?.socketId).emit("new_message", {
-      message: messages,
-    });
-    io.to(fromUser?.socketId).emit("new_message", {
-      message: messages,
-    });
+      io.to(findUser?.socketId).emit("new_message", {
+        success: true,
+        message: findMessage,
+      });
+      io.to(findEmployer?.socketId).emit("new_message", {
+        success: true,
+        message: findMessage,
+      });
+    } catch (error) {}
   });
 
   socket.on("follow_employer", async (data) => {

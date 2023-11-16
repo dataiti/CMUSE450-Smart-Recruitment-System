@@ -2,32 +2,34 @@ const mongoose = require("mongoose");
 
 const messageSchema = new mongoose.Schema(
   {
-    participants: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    employerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employer",
+      required: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     messages: [
       {
-        from: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-        },
-        to: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
+        sender: {
+          type: String,
+          enum: ["user", "employer"],
         },
         type: {
           type: String,
-          enum: ["Text", "Media", "Document", "Link"],
+          enum: ["text", "media", "document", "link"],
+          default: "text",
+        },
+        content: {
+          type: String,
+          required: true,
         },
         createdAt: {
           type: Date,
           default: Date.now(),
-        },
-        text: {
-          type: String,
         },
       },
     ],

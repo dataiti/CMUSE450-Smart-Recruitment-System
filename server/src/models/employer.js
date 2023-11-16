@@ -54,11 +54,6 @@ const employerSchema = new mongoose.Schema(
       ],
       default: [],
     },
-    status: {
-      type: String,
-      default: "active",
-      enum: ["pendding", "active", "locked"],
-    },
     rating: {
       type: Number,
       min: 1,
@@ -66,6 +61,15 @@ const employerSchema = new mongoose.Schema(
     },
     socketId: {
       type: String,
+    },
+    isBuyedPremium: {
+      type: Boolean,
+      default: false,
+    },
+    status: {
+      type: String,
+      default: "active",
+      enum: ["pendding", "active", "locked"],
     },
   },
   { timestamps: true }

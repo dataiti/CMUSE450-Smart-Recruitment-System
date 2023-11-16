@@ -60,7 +60,31 @@ const getSearchHistoryForUser = asyncHandler(async (req, res) => {
   });
 });
 
-const getListJobsByKeywordForUser = asyncHandler(async (req, res) => {});
+const getListJobsByKeywordForUser = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const keyword = query.keyword || "";
+  const regex = keyword
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+
+  let data = [];
+
+  if (!keyword) {
+    data = await Search.find({ userId: req.user._id }).limit(limit);
+  } else {
+    data = await Search.find({
+      keyword: { $regex: regex, $options: "i" },
+    }).limit(limit);
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Get search history is successfully",
+    data: data,
+  });
+});
 
 module.exports = {
   searchById,

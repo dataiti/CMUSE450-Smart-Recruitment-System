@@ -22,8 +22,8 @@ router.get(
   "/get-list-transactions/:userId/:employerId",
   getListTransactionsForEmployer
 );
-router.post("/create-payment", createPayment);
-router.post("/create-transaction", createTransaction);
+router.post("/create-payment/:userId/:employerId", createPayment);
+router.post("/create-transaction/:userId/:employerId", createTransaction);
 
 router.param("userId", userById);
 router.param("transactionId", transactionById);

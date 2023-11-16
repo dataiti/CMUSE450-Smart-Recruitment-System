@@ -43,12 +43,11 @@ const createPayment = asyncHandler(async (req, res, next) => {
   var createDate = moment(date).format("YYYYMMDDHHmmss");
   var orderId = moment(date).format("HHmmss");
 
-  var amount = 10000 * 100;
-  var bankCode = "NCB";
-
-  var orderInfo = "Noi dung thanh toan";
-  var orderType = "billpayment";
-  var locale = "vn";
+  var amount = req.body.amount;
+  var bankCode = req.body.bankCode;
+  var orderInfo = req.body.orderInfo;
+  var orderType = req.body.orderType;
+  var locale = req.body.locale;
   if (locale === null || locale === "") {
     locale = "vn";
   }
