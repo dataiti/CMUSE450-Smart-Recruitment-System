@@ -2,7 +2,6 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { Header } from "../components";
 import SidebarProfile from "../components/SidebarProfile";
-import Footer from "../components/Footer";
 
 const ProfileLayout = () => {
   return (
@@ -11,17 +10,14 @@ const ProfileLayout = () => {
         <Header />
       </div>
       <div className="py-4 mt-[80px] bg-[#e8edf2]">
-        <div className="grid grid-cols-12 gap-4 px-[110px]">
-          <div className="col-span-3">
+        <div className="px-[110px]">
+          <div className="fixed ">
             <SidebarProfile />
           </div>
-          <div className="col-span-9">
+          <div className="pl-[20rem] w-full">
             <Outlet />
           </div>
         </div>
-      </div>
-      <div className="w-full">
-        <Footer />
       </div>
     </div>
   );

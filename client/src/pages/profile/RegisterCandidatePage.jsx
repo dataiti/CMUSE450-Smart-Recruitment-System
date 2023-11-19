@@ -10,16 +10,12 @@ import {
   Breadcrumbs,
 } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SelectController from "../../components/SelectController";
 import TextareaController from "../../components/TextareaController";
-import {
-  desiredSalarys,
-  experiens,
-  jobPositionOptions,
-} from "../../utils/constants";
+import { experiens, jobPositionOptions } from "../../utils/constants";
 import axiosClient from "../../configs/axiosConfig";
 import IconButtonCustom from "../../components/IconButtonCustom";
 import ButtonCustom from "../../components/ButtonCustom";
@@ -30,12 +26,13 @@ import { useCreateCandidateMutation } from "../../redux/features/apis/candidateA
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { toast } from "react-toastify";
+import InputController from "../../components/InputController";
 
 const schema = yup.object().shape({
-  jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),
-  experience: yup.string().required("Vui lòng chọn trình độ kinh nghiệm"),
-  workLocation: yup.string().required("Vui lòng nhập địa điểm làm việc"),
-  desiredSalary: yup.string().required("Vui lòng nhập mức lương mong muốn"),
+  // jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),
+  // experience: yup.string().required("Vui lòng chọn trình độ kinh nghiệm"),
+  // workLocation: yup.string().required("Vui lòng nhập địa điểm làm việc"),
+  // desiredSalary: yup.string().required("Vui lòng nhập mức lương mong muốn"),
 });
 
 const RegisterCandidatePage = () => {
@@ -56,7 +53,7 @@ const RegisterCandidatePage = () => {
       jobPosition: "",
       experience: "",
       workLocation: "",
-      desiredSalary: "",
+      desiredSalary: 0,
       skills: [],
       yourWishes: "",
       introduceYourself: "",
@@ -168,12 +165,11 @@ const RegisterCandidatePage = () => {
                   error={errors?.workLocation}
                   options={workLocationsValue}
                 />
-                <SelectController
+                <InputController
                   control={control}
                   name="desiredSalary"
                   label="Mức lương mong muốn"
                   error={errors?.desiredSalary}
-                  options={desiredSalarys}
                 />
                 <InputTagsController
                   control={control}

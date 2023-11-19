@@ -4,6 +4,7 @@ import { DialogBody, DialogHeader, Typography } from "@material-tailwind/react";
 import ProgressCustom from "./ProgressCustom";
 import { icons } from "../utils/icons";
 import Tag from "./Tag";
+import CirculeProgress from "./CirculeProgress";
 
 const EvaluateSuitableJob = ({ setOpen = () => {}, data = {} }) => {
   return (
@@ -26,10 +27,11 @@ const EvaluateSuitableJob = ({ setOpen = () => {}, data = {} }) => {
           <div className="flex flex-col gap-2">
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-4">
-                <div className="border border-gray-100 rounded-md flex-1 p-4">
+                <div className="flex items-center justify-between border border-gray-100 rounded-md flex-1 p-4">
                   <Typography className="text-sm font-bold text-light-blue-600">
                     Đánh giá mức độ phù hợp
                   </Typography>
+                  <CirculeProgress percentage={data?.data?.overallPercentage} />
                 </div>
                 <div className="flex flex-col gap-4 p-4 border border-gray-100 rounded-md">
                   {data?.data?.percentages?.map((percentage, index) => {

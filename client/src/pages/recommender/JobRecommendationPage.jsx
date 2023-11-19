@@ -11,7 +11,6 @@ import SelectCustom from "../../components/SelectCustom";
 import { icons } from "../../utils/icons";
 import { orderByOptions, sortByOptions } from "../../utils/constants";
 import PaginationOption from "../../components/PaginationOption";
-import JobCardSmall from "../../components/JobCardSmall";
 
 const JobRecommendationPage = () => {
   const { user } = useSelector(authSelect);
@@ -118,9 +117,7 @@ const JobRecommendationPage = () => {
               >
                 {recommentJobsData?.data?.length > 0 &&
                   recommentJobsData?.data?.map((jobItem) => {
-                    return (
-                      <JobCardSmall jobItem={jobItem} key={jobItem?._id} />
-                    );
+                    return <JobCard jobItem={jobItem} key={jobItem?._id} />;
                   })}
               </div>
             </div>

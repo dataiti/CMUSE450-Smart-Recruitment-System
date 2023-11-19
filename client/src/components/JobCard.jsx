@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authSelect, setWishlists } from "../redux/features/slices/authSlice";
 import { useToggleWishListItemMutation } from "../redux/features/apis/userApi";
 import ApplyJobForm from "./ApplyJobForm";
+import CirculeProgress from "./CirculeProgress";
 
 const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
   const dispatch = useDispatch();
@@ -171,6 +172,7 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                   Xem nhanh
                 </Button>
               </div>
+              <CirculeProgress />
             </div>
           </CardFooter>
         </Card>

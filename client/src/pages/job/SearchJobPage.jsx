@@ -1,4 +1,4 @@
-import { Breadcrumbs } from "@material-tailwind/react";
+import { Breadcrumbs, Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CategoryBar from "../../components/CategoryBar";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading";
 import PaginationOption from "../../components/PaginationOption";
 import JobCard from "../../components/JobCard";
+import { videos } from "../../assets/videos";
 
 const SearchPage = () => {
   const dispatch = useDispatch();
@@ -142,6 +143,22 @@ const SearchPage = () => {
           />
         </div>
         <div className="w-[76%] flex flex-col gap-2">
+          <div className="flex gap-4 w-full p-2 rounded-md bg-gradient-to-l from-[#304352] to-[#cbd5e1]">
+            <video className="w-[20%] rounded-lg" autoPlay loop>
+              <source src={videos.CVSearching} type="video/mp4" />
+            </video>
+            <div className="w-[80%]">
+              <Typography className="text-white font-bold text-base">
+                Chào mừng bạn đến với Trang Tìm Kiếm Công Việc - nơi kết nối ước
+                mơ và cơ hội! Tại đây, chúng tôi không chỉ là cổng thông tin về
+                hàng ngàn cơ hội việc làm mà còn là điểm hẹn của những cá nhân
+                đam mê và doanh nghiệp đổi mới.Dù bạn là người tìm kiếm công
+                việc hay đang muốn mở rộng đội ngũ nhân sự, hãy bắt đầu hành
+                trình sự nghiệp của bạn tại đây. Hãy khám phá, ứng tuyển, và đặt
+                dấu ấn của mình trong thế giới việc làm đầy thách thức này!
+              </Typography>
+            </div>
+          </div>
           <PaginationOption
             count={count}
             handlePageChange={handlePageChange}
