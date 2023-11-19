@@ -31,11 +31,9 @@ const jobApi = rootApi.injectEndpoints({
         gender,
         level,
         rating,
-        salaryFrom,
-        salaryTo,
       }) => {
         return {
-          url: `/job/get-list-jobs?search=${search}&sortBy=${sortBy}&orderBy=${orderBy}&page=${page}&limit=${limit}&experience=${experience}&industry=${industry}&jobType=${jobType}&gender=${gender}&level=${level}&rating=${rating}&salaryFrom=${salaryFrom}&salaryTo=${salaryTo}`,
+          url: `/job/get-list-jobs?search=${search}&sortBy=${sortBy}&orderBy=${orderBy}&page=${page}&limit=${limit}&experience=${experience}&industry=${industry}&jobType=${jobType}&gender=${gender}&level=${level}&rating=${rating}`,
           method: "GET",
         };
       },

@@ -17,12 +17,11 @@ import { authSelect, setWishlists } from "../redux/features/slices/authSlice";
 import { useToggleWishListItemMutation } from "../redux/features/apis/userApi";
 import ApplyJobForm from "./ApplyJobForm";
 
-const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
+const JobCardSmall = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
   const dispatch = useDispatch();
 
   const { user } = useSelector(authSelect);
 
-  const [open, setOpen] = useState(false);
   const [isWishlist, setIsWishlist] = useState(false);
 
   const [toggleWishListItem] = useToggleWishListItemMutation();
@@ -42,10 +41,10 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
       <Link
         to={`/job-detail/${jobItem?._id}`}
         key={jobItem?._id}
-        className="min-h-[288px] bg-white !rounded-md shadow-md cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
+        className="bg-gray-100 !rounded-md border border-light-blue-500 cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
       >
-        <Card className="bg-white !shadow-none flex flex-col">
-          <CardBody className="w-full flex flex-col gap-2 !p-4">
+        <Card className="!bg-gray-100 !shadow-none flex flex-col">
+          <CardBody className="w-full flex flex-col gap-2 !p-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <img
@@ -122,19 +121,13 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                 {jobItem?.salaryType === "Trong khoảng"
                   ? `Từ ${formattedAmount(
                       jobItem?.salaryFrom
-                    )} Đến ${formattedAmount(jobItem?.salaryFrom)}`
+                    )} - ${formattedAmount(jobItem?.salaryFrom)}`
                   : jobItem?.salaryType === "Từ"
                   ? `Từ ${formattedAmount(jobItem?.salaryFrom)}`
                   : jobItem?.salaryType === "Đến"
                   ? `Đến ${formattedAmount(jobItem?.salaryFrom)}`
                   : "Thỏa thuận"}
               </Tag>
-            </div>
-            <div className="bg-gray-100 rounded-md p-2">
-              <div className=" !text-gray-500 !text-xs name-3">
-                {(jobItem.jobDescription && parse(jobItem.jobDescription)) ||
-                  ""}
-              </div>
             </div>
             <div className="flex items-center gap-1">
               {jobItem?.skills &&
@@ -148,38 +141,10 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                 ))}
             </div>
           </CardBody>
-          <CardFooter className="!pt-0 mt-auto !p-4">
-            <div className="flex justify-between">
-              <div className="flex items-center gap-2">
-                <Button
-                  className="bg-[#212f3f] shadow-none hover:shadow-none !py-2"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setOpen(true);
-                  }}
-                >
-                  Ứng tuyển
-                </Button>
-                <Button
-                  className="bg-teal-900 shadow-none hover:shadow-none !py-2"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleViewJobDetail({ _id: jobItem?._id });
-                    setOpenDrawer(true);
-                  }}
-                >
-                  Xem nhanh
-                </Button>
-              </div>
-            </div>
-          </CardFooter>
         </Card>
       </Link>
-      <Modal open={open} handleOpen={() => setOpen(!open)}>
-        <ApplyJobForm jobItem={jobItem} setOpen={setOpen} />
-      </Modal>
     </>
   );
 };
 
-export default JobCard;
+export default JobCardSmall;

@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Typography } from "@material-tailwind/react";
+import React, { useRef, useState } from "react";
+import { Typography } from "@material-tailwind/react";
 import { useReactToPrint } from "react-to-print";
-import { menuCVItems, sidebarItems } from "../../utils/constants";
+import { menuCVItems } from "../../utils/constants";
 import IconButtonCustom from "../../components/IconButtonCustom";
 import { icons } from "../../utils/icons";
 import { toast } from "react-toastify";
 import { images } from "../../assets/images";
+import { Link } from "react-router-dom";
 
 const ResumeOnlinePage = () => {
   const [sizePaperPercent, setSizePaperPercent] = useState(100);
@@ -33,7 +34,14 @@ const ResumeOnlinePage = () => {
     <div className="h-screen bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9]">
       <div className="flex h-full">
         <div className="w-[80px] h-full bg-blue-gray-900 ">
-          <div className="flex flex-col items-stretch gap-7 py-5">
+          <div className="flex flex-col items-center gap-7 py-5">
+            <Link to="/">
+              <img
+                className="h-14 w-14 rounded-lg object-cover"
+                src={images.logo}
+                alt=""
+              />
+            </Link>
             {menuCVItems.map((item) => {
               return (
                 <div

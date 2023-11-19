@@ -21,6 +21,9 @@ import {
   IoLocationSharp,
   IoCloseCircleSharp,
   IoBookmarkOutline,
+  IoAlertSharp,
+  IoRemove,
+  IoClose,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -43,6 +46,7 @@ import {
   BsCameraVideo,
   BsTelephone,
   BsFillCheckCircleFill,
+  BsArrowsFullscreen,
 } from "react-icons/bs";
 import {
   FaUserAlt,
@@ -91,6 +95,10 @@ import { LiaSearchPlusSolid, LiaSearchMinusSolid } from "react-icons/lia";
 import { ImTable2 } from "react-icons/im";
 
 const icons = {
+  BsArrowsFullscreen,
+  IoRemove,
+  IoClose,
+  IoAlertSharp,
   BsFillCheckCircleFill,
   PiChartDonutFill,
   IoMdSend,

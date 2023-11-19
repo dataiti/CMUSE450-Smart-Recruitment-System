@@ -18,14 +18,14 @@ import {
 import { useGetListOfJobsForHomaPageQuery } from "../../redux/features/apis/jobApi";
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import JobCard from "../../components/JobCard";
 import ButtonCustom from "../../components/ButtonCustom";
 import { Link } from "react-router-dom";
+import JobCardSmall from "../../components/JobCardSmall";
 
 const HomePage = () => {
   const { user } = useSelector(authSelect);
 
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(12);
 
   const { data: listCategoriesData, isFetching } =
     useGetListOfCategoriesQuery();
@@ -53,11 +53,11 @@ const HomePage = () => {
           <LineChart data={technicalTrendingChartData?.data} />
         </Container>
       </div>
-      <div className="h-20 w-[100%] bg-zinc-200 grid grid-cols-5 gap-5 py-2 px-[110px] bg-gradient-to-l from- bg-blue-gray-100 to-[#cbd5e1]">
+      <div className="h-20 w-[100%] bg-zinc-200 grid grid-cols-5 gap-5 py-2 px-[110px] bg-yellow-50">
         {loyaltyProgramItem.map((item, index) => {
           return (
             <div key={index} className="flex gap-2 items-center ">
-              <span className="p-2 bg-yellow-50 rounded-md text-orange-900">
+              <span className="p-2 bg-indigo-50 rounded-md text-purple-500">
                 {item.icon}
               </span>
               <div className="flex flex-col gap-1">
@@ -120,7 +120,9 @@ const HomePage = () => {
                 <TabPanel key={job?.value} value={job?.value}>
                   <div className="grid grid-cols-3 gap-2">
                     {job?.data?.map((jobItem) => {
-                      return <JobCard jobItem={jobItem} key={jobItem?._id} />;
+                      return (
+                        <JobCardSmall jobItem={jobItem} key={jobItem?._id} />
+                      );
                     })}
                   </div>
                 </TabPanel>

@@ -7,7 +7,6 @@ import {
   MenuItem,
   Avatar,
   Typography,
-  IconButton,
 } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,8 +21,12 @@ import { useLogOutMutation } from "../redux/features/apis/authApi";
 import ButtonCustom from "./ButtonCustom";
 import IconButtonCustom from "./IconButtonCustom";
 import { useDebounce } from "../hooks";
-import { useGetListSearchJobsQuery } from "../redux/features/apis/jobApi";
 import { socket } from "../socket";
+import {
+  useDeleteSearchMutation,
+  useSaveSearchMutation,
+  useGetListJobsByKeywordForUserQuery,
+} from "../redux/features/apis/searchApi";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -35,31 +38,50 @@ const Header = () => {
   const [openRegisterForm, setOpenegisterForm] = useState(false);
   const [openLoginForm, setOpenLoginForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [isFocus, setIsFocus] = useState(false);
-  const [listSearchValue, setListSearchValue] = useState([]);
   const [listNotifications, setListNotifications] = useState([]);
   const [indexNavbar, setIndexNavbar] = useState(1);
+  const [isOpenNotification, setIsOpenNotification] = useState(false);
+  const [listSearchValue, setListSearchValue] = useState([]);
+  const [isFocus, setIsFocus] = useState(false);
 
   const searchDobouceValue = useDebounce(searchValue, 800);
 
   const inputRef = useRef();
 
-  const { data: searchData, isFetching } = useGetListSearchJobsQuery(
-    { search: searchDobouceValue },
+  const { data: searchData, isFetching } = useGetListJobsByKeywordForUserQuery(
+    { userId: user?._id, keyword: searchDobouceValue },
     { refetchOnMountOrArgChange: true }
   );
+
+  const [deleteSearch] = useDeleteSearchMutation();
+  const [saveSearch] = useSaveSearchMutation();
 
   useEffect(() => {
     setListSearchValue(searchData?.data);
   }, [searchData]);
 
-  useEffect(() => {
-    socket?.emit("get_list_notifications", { userId: user?._id });
-  }, [user?._id]);
-
   socket?.on("user_get_list_notifications", ({ message }) => {
     setListNotifications(message);
   });
+
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+
+  const handleClickSearchIem = ({ keyword }) => {
+    setIsFocus(false);
+    navigate(`/search-job?keyword=${keyword}`);
+  };
+
+  const handleOutsideClick = (e) => {
+    if (inputRef.current && !inputRef.current.contains(e.target)) {
+      setIsFocus(false);
+    }
+  };
 
   const handleOpenRegisterForm = () => setOpenegisterForm((cur) => !cur);
 
@@ -70,9 +92,28 @@ const Header = () => {
     inputRef.current.focus();
   };
 
-  const handleClickSearchIem = ({ _id }) => {
-    setIsFocus(false);
-    navigate(`/job-detail/${_id}`);
+  const handleEnterKeywordSearch = async (e) => {
+    if (e.key === "Enter") {
+      setIsFocus(false);
+      await saveSearch({ userId: user?._id });
+      navigate(`/search-job?keyword=${searchValue}`);
+    }
+  };
+
+  const handleGetNotifications = () => {
+    setIsOpenNotification((prev) => !prev);
+    socket?.emit("get_list_notifications", { userId: user?._id });
+  };
+
+  const handleDeleteSearchKeyword = async ({ searchId }) => {
+    const response = await deleteSearch({ userId: user?._id, searchId });
+    if (response?.success) {
+      setListSearchValue((prev) =>
+        prev.filter(
+          (search) => search?._id?.toString() !== searchId?.toString()
+        )
+      );
+    }
   };
 
   const handleLogout = async () => {
@@ -91,16 +132,18 @@ const Header = () => {
     <div className="bg-[#212f3f] h-full">
       <div className="h-full w-full flex items-center justify-between px-[110px]">
         <div className="p-0 flex-1 h-full w-full flex items-center gap-5 text-white">
-          <img
-            className="h-14 w-14 rounded-lg object-cover"
-            src={images.logo}
-            alt=""
-          />
+          <Link to="/">
+            <img
+              className="h-14 w-14 rounded-lg object-cover"
+              src={images.logo}
+              alt=""
+            />
+          </Link>
           {navbarItems.map((item) => {
             return (
               <div className="" key={item.id}>
                 {item.childrens ? (
-                  <Menu>
+                  <Menu className="!outline-none !border-none">
                     <MenuHandler>
                       <Typography
                         className={`font-bold text-sm uppercase cursor-pointer ${
@@ -149,25 +192,21 @@ const Header = () => {
           })}
         </div>
         <div className="bg-white rounded-full w-[28%] px-4 py-2 mx-2 relative">
-          <IconButtonCustom className="w-[34px] h-[34px] absolute left-1 top-[50%] -translate-y-[50%]">
+          <IconButtonCustom className="w-[36px] h-[36px] absolute left-1 top-[50%] -translate-y-[50%] bg-teal-700 text-white">
             <icons.FiSearch size={20} />
           </IconButtonCustom>
           <input
-            className="outline-none w-full pl-8 placeholder:text-sm text-sm text-[#212f3f] font-bold"
+            className="outline-none w-full pl-8 py-1 placeholder:text-sm text-sm text-[#212f3f] font-bold"
             placeholder="Nhập từ khoá để tìm kiếm..."
             spellCheck="false"
             ref={inputRef}
             value={searchValue}
+            onKeyDown={handleEnterKeywordSearch}
             onChange={(e) => {
               setSearchValue(e.target.value);
               setIsFocus(true);
             }}
             onFocus={() => setIsFocus(true)}
-            onBlur={() => {
-              if (!isFocus) {
-                setIsFocus(false);
-              }
-            }}
           />
           {!!searchValue && !isFetching && (
             <span
@@ -182,26 +221,44 @@ const Header = () => {
               <icons.BiLoaderCircle size={24} />
             </span>
           )}
-          {isFocus && listSearchValue?.length > 0 && (
-            <div className="absolute top-[110%] left-0 overflow-hidden bg-white w-full rounded-md flex flex-col gap-2 shadow-md">
-              {listSearchValue.map((searchItem) => {
+          {isFocus && (
+            <div className="absolute top-[110%] left-0 overflow-hidden bg-white w-full rounded-md flex flex-col shadow-md">
+              {listSearchValue?.map((searchItem) => {
                 return (
-                  <Typography
-                    className="text-xs font-bold flex items-center gap-2 hover:bg-blue-gray-50 py-2 px-4 cursor-pointer transition-all"
+                  <div
+                    className="flex items-center justify-between hover:bg-blue-gray-50 py-3 px-4 cursor-pointer transition-all"
                     key={searchItem?._id}
-                    onClick={() =>
-                      handleClickSearchIem({ _id: searchItem?._id })
-                    }
                   >
-                    <icons.FiSearch size={20} />
-                    {searchItem?.recruitmentTitle}
-                  </Typography>
+                    <div className="flex items-center gap-2 ">
+                      <span className="text-light-blue-500">
+                        <icons.FiSearch size={20} />
+                      </span>
+                      <Typography
+                        className="text-sm font-bold flex-1 name"
+                        onClick={() =>
+                          handleClickSearchIem({ keyword: searchItem?.keyword })
+                        }
+                      >
+                        {searchItem?.keyword}
+                      </Typography>
+                    </div>
+                    <button
+                      className="w-3"
+                      onClick={() =>
+                        handleDeleteSearchKeyword({ searchId: searchItem?._id })
+                      }
+                    >
+                      {user?._id.toString() ===
+                        searchItem?.userId?.toString() && (
+                        <icons.IoClose size={16} />
+                      )}
+                    </button>
+                  </div>
                 );
               })}
             </div>
           )}
         </div>
-
         {!isLoggedIn ? (
           <div className="flex-1 flex items-center gap-3 justify-end">
             <>
@@ -228,55 +285,64 @@ const Header = () => {
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <Menu>
-              <MenuHandler>
-                <IconButton className="shadow-none p-3 rounded-full bg-white text-[#0891b2]">
-                  <icons.PiBellRingingFill size={20} />
-                </IconButton>
-              </MenuHandler>
-              <MenuList className="hover:border-none">
-                <ul className="col-span-4 flex flex-col gap-1 w-[360px] h-[400px] overflow-y-auto">
+            <button
+              className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20"
+              onClick={handleGetNotifications}
+            >
+              <icons.PiBellRingingFill size={20} />
+              <span className="absolute z-30 top-[-3px] right-[-3px] bg-red-500 p-[3px] rounded-full text-white">
+                <icons.IoAlertSharp size={12} />
+              </span>
+              {isOpenNotification && (
+                <ul className="absolute bg-white p-2 shadow-2xl rounded-md top-[120%] left-[50%] -translate-x-[50%] col-span-4 flex flex-col gap-1 w-[360px] h-[400px] overflow-y-auto">
                   {listNotifications?.map((item) => (
                     <li key={item?._id}>
-                      <Link to={item?.url}>
-                        <MenuItem
-                          className={` flex items-center gap-4 !hover:bg-blue-100 ${
-                            item?.isViewed ? "bg-white" : "bg-blue-50"
-                          }`}
-                        >
-                          <div className="flex items-center gap-2">
-                            <Avatar
-                              src={item?.employerId?.companyLogo}
-                              alt=""
-                              className="flex-none bg-blue-gray-600 !w-10 !h-10 object-contain !rounded-md"
-                            />
-                            <div className="flex flex-col gap-1">
-                              <Typography className="mb-1 text-sm font-bold name text-black">
-                                {item?.title}
-                              </Typography>
-                              <Typography className="mb-1 text-xs font-medium name text-gray-500">
-                                {item?.content}
-                              </Typography>
-                            </div>
+                      <Link
+                        to={item?.url}
+                        className={` flex items-center gap-4 !hover:bg-blue-100 p-2 rounded-md  ${
+                          item?.isViewed
+                            ? "bg-green-50 border-l-4 border-green-500"
+                            : "bg-blue-50 border-l-4 border-blue-500"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Avatar
+                            src={item?.employerId?.companyLogo}
+                            alt=""
+                            className="flex-none bg-blue-gray-600 !w-10 !h-10 object-contain !rounded-md"
+                          />
+                          <div className="flex flex-col text-start gap-1">
+                            <Typography className="mb-1 text-sm font-bold name text-black">
+                              {item?.title}
+                            </Typography>
+                            <Typography className="mb-1 text-xs font-medium name text-gray-500">
+                              {item?.content}
+                            </Typography>
                           </div>
-                        </MenuItem>
+                        </div>
                       </Link>
                     </li>
                   ))}
                 </ul>
-              </MenuList>
-            </Menu>
+              )}
+            </button>
             <Link to="/messenger">
-              <IconButton className="shadow-none p-3 rounded-full bg-white text-[#0891b2]">
+              <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">
                 <icons.BsMessenger size={20} />
-              </IconButton>
+                <span className="absolute z-30 top-[-3px] right-[-3px] bg-red-500 p-[3px] rounded-full text-white">
+                  <icons.IoAlertSharp size={12} />
+                </span>
+              </button>
             </Link>
             <Link to="/wishlist">
-              <IconButton className="shadow-none p-3 rounded-full bg-white text-[#0891b2]">
+              <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative">
                 <icons.IoBookmark size={20} />
-              </IconButton>
+                <span className="absolute z-30 top-[-3px] right-[-3px] bg-red-500 p-[3px] rounded-full text-white">
+                  <icons.IoAlertSharp size={12} />
+                </span>
+              </button>
             </Link>
-            <Menu>
+            <Menu className="!outline-none !border-none">
               <MenuHandler>
                 <Button
                   variant="text"

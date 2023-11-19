@@ -11,6 +11,7 @@ import WishListPage from "./wishlist/WishListPage";
 import CompanyProfile from "./company/CompanyProfile";
 import ListMyApplyJobs from "./profile/ListMyApplyJobs";
 import JobRecommendationPage from "./recommender/JobRecommendationPage";
+import SearchJobPage from "./job/SearchJobPage";
 
 export {
   HomePage,
@@ -26,4 +27,5 @@ export {
   CompanyProfile,
   ListMyApplyJobs,
   JobRecommendationPage,
+  SearchJobPage,
 };

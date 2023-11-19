@@ -13,6 +13,7 @@ import {
   CompanyProfile,
   ListMyApplyJobs,
   JobRecommendationPage,
+  SearchJobPage,
 } from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
 
@@ -28,6 +29,10 @@ const routers = [
       {
         path: "/categories-job",
         element: <CategoriesPage />,
+      },
+      {
+        path: "/search-job",
+        element: <SearchJobPage />,
       },
       {
         path: "/job-detail/:jobId",

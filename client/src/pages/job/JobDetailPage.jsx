@@ -21,7 +21,7 @@ import EmploymentInfo from "../../components/EmploymentInfo";
 import Tag from "../../components/Tag";
 import IconButtonCustom from "../../components/IconButtonCustom";
 import ButtonCustom from "../../components/ButtonCustom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { socket } from "../../socket";
 import Modal from "../../components/Modal";
@@ -29,22 +29,23 @@ import ApplyJobForm from "../../components/ApplyJobForm";
 import EvaluateSuitableJob from "../../components/EvaluateSuitableJob";
 import { useGetEvaluateSuitableJobQuery } from "../../redux/features/apis/analyticApi";
 import { useUserViewedJobMutation } from "../../redux/features/apis/userApi";
+import BoxChat from "../../components/BoxChat";
+import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
+  const dispatch = useDispatch();
 
   const { user } = useSelector(authSelect);
 
   const [isFollowCompany, setIsFollowCompany] = useState(false);
   const [openApplyModal, setOpenApplyModal] = useState(false);
   const [openEvaluateJobModal, setOpenEvaluateJobModal] = useState(false);
+  const [isBoxChatOpen, setIsBoxChatOpen] = useState(false);
+  const [isBoxChatBubble, setIsBoxChatBubble] = useState(false);
 
   const { data: jobDetailData, isFetching } = useGetJobDetailQuery({ jobId });
-  // const { data: userViewedJobData } = useUserViewedJobMutation({
-  //   userId: user?._id,
-  //   jobId,
-  // });
-
+  const [userViewedJob] = useUserViewedJobMutation();
   const { data: evaluateSuitableJobQueryData } = useGetEvaluateSuitableJobQuery(
     {
       userId: user?._id,
@@ -54,10 +55,33 @@ const JobDetailPage = () => {
   );
 
   useEffect(() => {
+    const userViewedJobApi = async () => {
+      await userViewedJob({
+        userId: user?._id,
+        jobId,
+      });
+    };
+    userViewedJobApi();
+  }, [jobId, user?._id, userViewedJob]);
+
+  useEffect(() => {
     setIsFollowCompany(
       jobDetailData?.data?.employerId?.followerIds?.includes(user?._id)
     );
   }, [jobDetailData?.data?.employerId?.followerIds, user?._id]);
+
+  useEffect(() => {
+    const handleUserGetMessage = (message) => {
+      if (message.success)
+        dispatch(setCurrentConversation({ data: message.message }));
+    };
+
+    socket?.on("start_chat", handleUserGetMessage);
+
+    return () => {
+      socket?.off("start_chat", handleUserGetMessage);
+    };
+  }, [dispatch]);
 
   const handleUnfollowCompany = () => {
     socket?.emit("unfollow_employer", {
@@ -75,10 +99,36 @@ const JobDetailPage = () => {
     setIsFollowCompany(true);
   };
 
-  const handleStartConversation = () => {};
+  const handleStartConversation = () => {
+    setIsBoxChatOpen(true);
+    setIsBoxChatBubble(false);
+    socket?.emit("start_conversation", {
+      employerId: jobDetailData?.data?.employerId?._id,
+      userId: user?._id,
+    });
+  };
 
   return (
-    <div className="px-[110px] py-[20px] flex flex-col gap-2">
+    <div className="px-[110px] py-[20px] flex flex-col gap-2 relative">
+      {isBoxChatOpen && (
+        <BoxChat
+          isBoxChatOpen={isBoxChatOpen}
+          setIsBoxChatOpen={setIsBoxChatOpen}
+          setIsBoxChatBubble={setIsBoxChatBubble}
+          isBoxChatBubble={isBoxChatBubble}
+        />
+      )}
+      {isBoxChatBubble && (
+        <button
+          className="h-14 w-14 flex items-center justify-center rounded-full bg-[#212f3f] text-light-blue-600 fixed bottom-5 right-5 shadow-2xl z-40"
+          onClick={() => {
+            setIsBoxChatBubble(false);
+            setIsBoxChatOpen(true);
+          }}
+        >
+          <icons.BsMessenger size={28} />
+        </button>
+      )}
       {isFetching && <Loading />}
       <Breadcrumbs fullWidth className="bg-white">
         <Link to="/" className="text-light-blue-500 text-sm font-bold">
