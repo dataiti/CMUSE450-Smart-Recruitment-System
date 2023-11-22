@@ -76,6 +76,7 @@ import {
   FaFont,
   FaUserCheck,
   FaUserPlus,
+  FaDeleteLeft,
 } from "react-icons/fa6";
 import {
   AiOutlineBold,
@@ -95,6 +96,7 @@ import { LiaSearchPlusSolid, LiaSearchMinusSolid } from "react-icons/lia";
 import { ImTable2 } from "react-icons/im";
 
 const icons = {
+  FaDeleteLeft,
   BsArrowsFullscreen,
   IoRemove,
   IoClose,

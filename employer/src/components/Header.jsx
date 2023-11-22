@@ -51,44 +51,60 @@ const Header = () => {
         <Typography className="text-light-blue-500 font-bold uppercase">
           {name}
         </Typography>
-        {isLoggedIn && (
-          <Menu>
-            <MenuHandler>
-              <Button
-                variant="text"
-                className="text-base font-normal capitalize tracking-normal shadow-none active:shadow-none flex items-center gap-2 p-1 rounded-full bg-[#0891b2] cursor-pointer hover:bg-[#06b6d4] active:bg-[#06b6d4] transition-all"
-              >
-                <Avatar
-                  variant="circular"
-                  alt={`${user?.firstName} ${user?.lastName}`}
-                  className="h-10 w-10 border-2 border-white hover:z-10 focus:z-10 "
-                  src={user?.avatar}
-                />
-                <div>
-                  <Typography className="text-sm font-bold">{`${user?.firstName} ${user?.lastName}`}</Typography>
-                  <Typography className="text-xs font-bold text-white">
-                    {user?.email}
-                  </Typography>
-                </div>
-                <icons.FiChevronDown />
-              </Button>
-            </MenuHandler>
-            <MenuList className="hover:border-none">
-              <MenuItem
-                className="bg-gray-200 flex items-center gap-4 py-3"
-                onClick={handleLogout}
-              >
-                <icons.IoLogOutOutline size={24} />
-                <Typography
-                  color="blue-gray"
-                  className="mb-1 text-sm font-medium"
+        <div className="flex items-center gap-2">
+          <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">
+            <icons.PiBellRingingFill size={20} />
+            <span className="absolute z-30 top-[-3px] right-[-3px] bg-red-500 p-[3px] rounded-full text-white">
+              <icons.IoAlertSharp size={12} />
+            </span>
+          </button>
+          <Link to="/message">
+            <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">
+              <icons.BsMessenger size={20} />
+              <span className="absolute z-30 top-[-3px] right-[-3px] bg-red-500 p-[3px] rounded-full text-white">
+                <icons.IoAlertSharp size={12} />
+              </span>
+            </button>
+          </Link>
+          {isLoggedIn && (
+            <Menu>
+              <MenuHandler>
+                <Button
+                  variant="text"
+                  className="text-base font-normal capitalize tracking-normal shadow-none active:shadow-none flex items-center gap-2 p-1 rounded-full bg-[#0891b2] cursor-pointer hover:bg-[#06b6d4] active:bg-[#06b6d4] transition-all"
                 >
-                  Đăng xuất
-                </Typography>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        )}
+                  <Avatar
+                    variant="circular"
+                    alt={`${user?.firstName} ${user?.lastName}`}
+                    className="h-10 w-10 border-2 border-white hover:z-10 focus:z-10 "
+                    src={user?.avatar}
+                  />
+                  <div>
+                    <Typography className="text-sm font-bold">{`${user?.firstName} ${user?.lastName}`}</Typography>
+                    <Typography className="text-xs font-bold text-white">
+                      {user?.email}
+                    </Typography>
+                  </div>
+                  <icons.FiChevronDown />
+                </Button>
+              </MenuHandler>
+              <MenuList className="hover:border-none">
+                <MenuItem
+                  className="bg-gray-200 flex items-center gap-4 py-3"
+                  onClick={handleLogout}
+                >
+                  <icons.IoLogOutOutline size={24} />
+                  <Typography
+                    color="blue-gray"
+                    className="mb-1 text-sm font-medium"
+                  >
+                    Đăng xuất
+                  </Typography>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+        </div>
       </div>
     </div>
   );

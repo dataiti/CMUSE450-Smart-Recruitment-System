@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { authSelect, setWishlists } from "../redux/features/slices/authSlice";
 import { useToggleWishListItemMutation } from "../redux/features/apis/userApi";
 import ApplyJobForm from "./ApplyJobForm";
-import CirculeProgress from "./CirculeProgress";
 
 const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
   const dispatch = useDispatch();
@@ -43,7 +42,7 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
       <Link
         to={`/job-detail/${jobItem?._id}`}
         key={jobItem?._id}
-        className="min-h-[288px] bg-white !rounded-md cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
+        className="min-h-[288px] bg-white !rounded-md shadow-md cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
       >
         <Card className="bg-white !shadow-none flex flex-col">
           <CardBody className="w-full flex flex-col gap-2 !p-4">
@@ -58,13 +57,14 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                   <Typography className="text-lg font-bold text-teal-900 name">
                     {jobItem?.recruitmentTitle}
                   </Typography>
-                  <div className="flex items-center gap-1">
-                    <Typography className="flex items-center gap-2 text-sm font-bold text-blue-gray-900">
+
+                  <div className="flex items-center gap-2">
+                    <Typography className="flex items-center gap-2 text-base font-bold text-blue-gray-900">
                       <icons.BiSolidBuildingHouse size={18} color="#a16207" />
                       {jobItem?.employerId?.companyName}
                     </Typography>
                     •
-                    <Typography className="flex items-center gap-2 text-xs font-medium">
+                    <Typography className="flex items-center gap-2 text-sm font-medium">
                       <icons.AiFillClockCircle size={18} color="#a16207" />
                       {timeAgo(new Date(jobItem?.createdAt))}
                     </Typography>
@@ -172,7 +172,6 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                   Xem nhanh
                 </Button>
               </div>
-              <CirculeProgress />
             </div>
           </CardFooter>
         </Card>

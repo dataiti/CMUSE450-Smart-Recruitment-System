@@ -1,8 +1,13 @@
+const fs = require("fs");
 const Candidate = require("../models/candidate");
 const User = require("../models/user");
 const Job = require("../models/job");
 const asyncHandler = require("express-async-handler");
 const { calculateSimilarity } = require("../utils/fn");
+const pdf = require("pdf-parse");
+const TextRazor = require("textrazor");
+const natural = require("natural");
+const tf = require("@tensorflow/tfjs");
 
 const recommentJobForCandidate = asyncHandler(async (req, res) => {
   const { query } = req;
@@ -80,7 +85,28 @@ const recommentJobForCandidate = asyncHandler(async (req, res) => {
 });
 
 const recommentCVForEmployer = asyncHandler(async (req, res) => {
-  const findCandidate = await Candidate.findOne({ _id: req.user });
+  const data = await pdf(req.file.buffer);
+  const cvText = data.text;
+
+  console.log(cvText);
+
+  const apiKey = "dd63cbf8f22980fa825b89af0c451836deff75eab08f5a4ca26f42a9";
+  const textRazor = new TextRazor(apiKey);
+  const options = { extractors: "entities,topics,words" };
+  textRazor
+    .exec(cvText, options)
+    .then((res) => {
+      console.log("Entities:");
+      res.response.entities.forEach((entity) => {
+        console.log(`  - ${entity.entityId}: ${entity.matchedText}`);
+      });
+
+      console.log("Topics:");
+      res.response.topics.forEach((topic) => {
+        console.log(`  - ${topic.label}: ${topic.score}`);
+      });
+    })
+    .catch((err) => console.error(err));
 });
 
 module.exports = {

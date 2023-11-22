@@ -1,5 +1,6 @@
 const Job = require("../models/job");
 const ApplyJob = require("../models/applyJob");
+const Category = require("../models/category");
 const Employer = require("../models/employer");
 const asyncHandler = require("express-async-handler");
 const moment = require("moment");
@@ -255,9 +256,14 @@ const getSchedule = asyncHandler(async (req, res) => {});
 const evaluateSuitableJob = asyncHandler(async (req, res) => {
   const candidateSkills = req.candidate.skills;
   const candidateExperience = req.candidate.experience;
+  const candidateJobPosition = req.candidate.jobPosition;
+  const candidateDesiredSalary = req.candidate.desiredSalary;
 
   const requiredSkills = req.job.skills;
   const requiredExperience = req.job.experience;
+  const requiredJobPosition = req.job.jobPosition;
+  const requiredSalaryFrom = req.job?.salaryFrom;
+  const requiredSalaryTo = req.job?.salaryTo;
 
   const skillMatch = candidateSkills.filter((skill) =>
     requiredSkills.includes(skill)
@@ -267,40 +273,79 @@ const evaluateSuitableJob = asyncHandler(async (req, res) => {
     (skill) => !candidateSkills.includes(skill)
   );
 
-  const skillPercentage = (skillMatch.length / requiredSkills.length) * 100;
+  const skillPercentage =
+    (skillMatch.length / requiredSkills.length) * 100 || 0;
 
-  let experiencePercentage;
+  let experiencePercentage = 0;
   if (candidateExperience > requiredExperience || requiredExperience === 0)
     experiencePercentage = 100;
   else experiencePercentage = (candidateExperience / requiredExperience) * 100;
 
-  const overallPercentage = (skillPercentage + experiencePercentage) / 2;
+  const findCategories = await Category.find();
+  let jobPositionPercentage = 0;
+
+  console.log({ candidateJobPosition, requiredJobPosition });
+  if (candidateJobPosition === requiredJobPosition) jobPositionPercentage = 100;
+  else {
+    findCategories.forEach((category) => {
+      if (
+        category.subcategories.find(
+          (item) => item.name === candidateJobPosition
+        ) &&
+        category.subcategories.find((item) => item.name === requiredJobPosition)
+      ) {
+        jobPositionPercentage = 20;
+      }
+    });
+  }
+
+  let salaryPercentage = 0;
+
+  if (req.job.salaryType === "Thỏa thuận") salaryPercentage = 0;
+  if (requiredSalaryFrom && requiredSalaryTo) {
+    const medianSalary = (requiredSalaryFrom + requiredSalaryTo) / 2;
+    const absoluteDifference = Math.abs(candidateDesiredSalary - medianSalary);
+    salaryPercentage = (1 - absoluteDifference / medianSalary) * 100;
+  } else if (!requiredSalaryFrom && requiredSalaryTo) {
+    const absoluteDifference = Math.abs(
+      candidateDesiredSalary - requiredSalaryTo
+    );
+    salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
+  } else if (requiredSalaryFrom && !requiredSalaryTo) {
+    const absoluteDifference = Math.abs(
+      candidateDesiredSalary - requiredSalaryFrom
+    );
+    salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
+  }
+
+  const overallPercentage =
+    (skillPercentage + experiencePercentage + jobPositionPercentage) / 3;
 
   return res.status(200).json({
     success: true,
     message: "Get job detail is successfully",
     data: {
-      overallPercentage,
+      overallPercentage: overallPercentage.toFixed(2),
       percentages: [
         {
           title: "Kỹ năng",
-          value: skillPercentage,
+          value: skillPercentage.toFixed(2),
         },
         {
           title: "Kinh nghiệm",
-          value: experiencePercentage,
+          value: experiencePercentage.toFixed(2),
         },
         {
-          title: "Vị trí",
-          value: skillPercentage,
+          title: "Vị trí công việc",
+          value: jobPositionPercentage.toFixed(2),
         },
         {
-          title: "Định hướng",
-          value: skillPercentage,
+          title: "Lương",
+          value: salaryPercentage.toFixed(2),
         },
         {
           title: "Yếu tố khác",
-          value: skillPercentage,
+          value: skillPercentage.toFixed(2),
         },
       ],
       skillMatch,

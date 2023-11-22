@@ -3,6 +3,9 @@ const Job = require("../models/job");
 const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
+const compromise = require("compromise");
+const natural = require("natural");
+const tokenizer = new natural.WordTokenizer();
 const {
   getStorage,
   ref,
@@ -11,6 +14,7 @@ const {
   deleteObject,
 } = require("firebase/storage");
 const firebaseConfig = require("../configs/firebaseConfig");
+const pdf = require("pdf-parse");
 
 const applyJobById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);

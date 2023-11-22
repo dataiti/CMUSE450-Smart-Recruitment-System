@@ -122,7 +122,7 @@ const MessagePage = () => {
                 }
               })}
             </div>
-            <div className="h-[60px] flex items-center gap-2 justify-center px-8 bg-white border-t border-blue-gray-100">
+            <div className="h-[60px] flex items-center gap-2 justify-center px-4 bg-white border-t border-blue-gray-100">
               <Input
                 label="Nhập tin nhắn"
                 icon={

@@ -67,4 +67,8 @@ function sortObject(obj) {
   return sorted;
 }
 
-module.exports = { parseArrayQueryParam, calculateSimilarity, sortObject };
+module.exports = {
+  parseArrayQueryParam,
+  calculateSimilarity,
+  sortObject,
+};

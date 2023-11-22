@@ -11,12 +11,7 @@ import { MediaMessage, ReplyMessage, TextMessage } from "./TypeMessage";
 import { Avatar, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
-const BoxChat = ({
-  isBoxChatOpen,
-  setIsBoxChatOpen,
-  setIsBoxChatBubble,
-  isBoxChatBubble,
-}) => {
+const BoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

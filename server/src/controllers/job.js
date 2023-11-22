@@ -216,6 +216,89 @@ const getListSearchJobs = asyncHandler(async (req, res) => {
   });
 });
 
+const getListJobsByKeyword = asyncHandler(async (req, res) => {
+  const { query } = req;
+  const keyword = query.keyword || "";
+  const regex = search
+    .split(" ")
+    .filter((q) => q)
+    .join("|");
+  const sortBy = query.sortBy || "-_id";
+  const orderBy = ["asc", "desc"].includes(query.orderBy)
+    ? query.orderBy
+    : "asc";
+  const limit = query.limit > 0 ? Number(query.limit) : 6;
+  const page = query.page > 0 ? Number(query.page) : 1;
+  const skip = (page - 1) * limit;
+
+  const industryArr = parseArrayQueryParam("industry", query);
+  const jobTypeArr = parseArrayQueryParam("jobType", query);
+  const genderArr = parseArrayQueryParam("gender", query);
+  const levelArr = parseArrayQueryParam("level", query);
+  const experienceArr = parseArrayQueryParam("experience", query);
+  const rating =
+    query.rating && query.rating > 0 && query.rating < 6
+      ? Number(query.rating)
+      : -1;
+  const salaryFrom =
+    query.salaryFrom && query.salaryFrom > 0 ? Number(query.salaryFrom) : -1;
+  const salaryTo =
+    query.salaryTo && query.salaryTo > 0 ? Number(query.salaryTo) : -1;
+
+  const filterArgs = {
+    $or: [
+      { recruitmentCampaignName: { $regex: regex, $options: "i" } },
+      { industry: { $regex: regex, $options: "i" } },
+      { recruitmentTitle: { $regex: regex, $options: "i" } },
+      { jobDescription: { $regex: regex, $options: "i" } },
+      { candidateRequirements: { $regex: regex, $options: "i" } },
+      { candidateBenefits: { $regex: regex, $options: "i" } },
+    ],
+    isHiring: true,
+    status: "active",
+  };
+
+  if (industryArr !== -1) filterArgs.industry = { $in: industryArr };
+  if (jobTypeArr !== -1) filterArgs.jobType = { $in: jobTypeArr };
+  if (genderArr !== -1) filterArgs.gender = { $in: genderArr };
+  if (levelArr !== -1) filterArgs.level = { $in: levelArr };
+  if (experienceArr !== -1) filterArgs.experience = { $in: experienceArr };
+  if (typeof rating !== "undefined" && rating !== -1) {
+    filterArgs.rating = { $gte: rating };
+  }
+  if (typeof salaryFrom !== "undefined" && salaryFrom !== -1) {
+    filterArgs.salaryFrom = { $gte: salaryFrom };
+  }
+
+  if (typeof salaryTo !== "undefined" && salaryTo !== -1) {
+    filterArgs.salaryTo = { $lte: salaryTo };
+  }
+
+  const countJobs = await Job.countDocuments(filterArgs);
+
+  const totalPage = Math.ceil(countJobs / limit);
+
+  const listJobs = await Job.find(filterArgs)
+    .sort({ [sortBy]: orderBy, _id: -1 })
+    .skip(skip)
+    .limit(limit)
+    .populate("workRegion")
+    // .populate("categoryId", "name")
+    .populate("employerId");
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list jobs are successfully",
+    totalPage,
+    currentPage: page,
+    count: countJobs,
+    data: {
+      employer: {},
+      listJobs,
+    },
+  });
+});
+
 const getListJobs = asyncHandler(async (req, res) => {
   const { query } = req;
   const search = query.search || "";

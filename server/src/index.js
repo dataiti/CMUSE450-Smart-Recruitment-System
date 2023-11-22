@@ -6,6 +6,7 @@ const Message = require("../src/models/message");
 const Employer = require("../src/models/employer");
 const User = require("../src/models/user");
 const Notification = require("../src/models/notification");
+const { client, MODEL_NAME } = require("./configs/googleAIConfig");
 require("dotenv").config();
 
 const router = require("./routes");
@@ -345,6 +346,25 @@ io.on("connection", async (socket) => {
       io.to(user?.socketId).emit("user_get_list_notifications", {
         sucess: true,
         message: listNotifications,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("send_question", async (message) => {
+    const { prompt } = message;
+    try {
+      const result = await client.generateText({
+        model: MODEL_NAME,
+        prompt: {
+          text: prompt,
+        },
+      });
+
+      socket.emit("get_answer", {
+        success: true,
+        message: result[0]?.candidates[0]?.output,
       });
     } catch (error) {
       console.error(error);

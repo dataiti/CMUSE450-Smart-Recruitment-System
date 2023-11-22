@@ -32,10 +32,17 @@ const SelectController = ({
                   className: "w-full",
                 }}
               >
-                {options?.map(({ text, value, id }) => {
+                {options?.map(({ text, value, name, id, subcategories }) => {
                   return (
-                    <Option key={id} value={JSON.stringify({ id, value })}>
-                      {text || value}
+                    <Option
+                      key={id}
+                      value={JSON.stringify({
+                        id,
+                        value: value || name,
+                        other: subcategories || [],
+                      })}
+                    >
+                      {text || value || name}
                     </Option>
                   );
                 })}

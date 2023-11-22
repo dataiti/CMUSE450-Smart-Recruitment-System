@@ -46,7 +46,7 @@ const registerCandidate = asyncHandler(async (req, res) => {
     jobPosition,
     experience,
     workLocation,
-    desiredSalary,
+    desiredSalary: Number(desiredSalary),
     skills: JSON.parse(req.body.skills),
     yourWishes,
     introduceYourself,

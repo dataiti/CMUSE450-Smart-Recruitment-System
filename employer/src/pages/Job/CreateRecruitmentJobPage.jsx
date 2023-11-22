@@ -12,7 +12,6 @@ import { useCreateJobMutation } from "../../redux/features/apis/jobApi";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import SelectController from "../../components/SelectController";
 import {
-  companyIndustryOptions,
   currencyTypeOptions,
   experiens,
   jobPositionOptions,
@@ -36,6 +35,8 @@ import InputTagsController from "../../components/InputTagsController";
 import IconButtonCustom from "../../components/IconButtonCustom";
 import { setTitle } from "../../redux/features/slices/titleSlice";
 import Loading from "../../components/Loading";
+import { useGetListOfCategoriesQuery } from "../../redux/features/apis/categoryApi";
+import { videos } from "../../assets/videos";
 
 const schema = yup.object().shape({
   recruitmentCampaignName: yup
@@ -96,6 +97,7 @@ const CreateRecruitmentJobPage = () => {
   const { user } = useSelector(authSelect);
 
   const [createJob, { isLoading }] = useCreateJobMutation();
+  const { data: listCategoriesData } = useGetListOfCategoriesQuery();
 
   const [salaryTypeState, SetSalaryTypeState] = useState(1);
   const [provincesValue, setProvincesValue] = useState([]);
@@ -232,6 +234,21 @@ const CreateRecruitmentJobPage = () => {
   return (
     <div className="flex flex-col gap-2 px-[100px] py-5 w-full">
       {isLoading && <Loading />}
+      <div className="flex gap-4 w-full p-2 rounded-md bg-gradient-to-r from-[#304352] to-[#cbd5e1]">
+        <video className="w-[20%] rounded-lg" autoPlay loop>
+          <source src={videos.CVSearching} type="video/mp4" />
+        </video>
+        <div className="w-[80%]">
+          <Typography className="text-white font-bold text-base">
+            Chào mừng bạn đến với nền tảng đăng tin của chúng tôi! Để đảm bảo
+            rằng thông tin công việc của bạn được truyền đạt một cách chính xác
+            và thu hút ứng viên phù hợp, hãy xem xét những lưu ý quan trọng sau
+            đây. Chúng tôi tin rằng việc tuân thủ những lưu ý trên sẽ giúp công
+            việc của bạn nổi bật và thu hút ứng viên chất lượng. Chúc bạn có một
+            trải nghiệm đăng tin hiệu quả!
+          </Typography>
+        </div>
+      </div>
       <form
         className="bg-white py-4   px-10 w-full rounded-md shadow-sm"
         onSubmit={handleSubmit(handleSubmitRegisterEmployer)}
@@ -259,13 +276,6 @@ const CreateRecruitmentJobPage = () => {
                   name="recruitmentCampaignName"
                   label="Tên chiến dịch tuyển dụng"
                   error={errors?.recruitmentCampaignName}
-                />
-                <SelectController
-                  control={control}
-                  name="jobPosition"
-                  label="Vị trí tuyển dụng"
-                  error={errors?.jobPosition}
-                  options={jobPositionOptions}
                 />
               </div>
             </TimelineBody>
@@ -365,7 +375,14 @@ const CreateRecruitmentJobPage = () => {
                   name="industry"
                   label="Ngành nghề chính"
                   error={errors?.industry}
-                  options={companyIndustryOptions}
+                  options={listCategoriesData?.data}
+                />
+                <SelectController
+                  control={control}
+                  name="jobPosition"
+                  label="Vị trí tuyển dụng"
+                  error={errors?.jobPosition}
+                  options={jobPositionOptions}
                 />
               </div>
             </TimelineBody>

@@ -7,7 +7,6 @@ const candidateRouter = require("./candidate");
 const categoryRouter = require("./category");
 const analyticRouter = require("./analytic");
 const feedbackRouter = require("./feedback");
-const chatbotRouter = require("./chatbot");
 const applyJobRouter = require("./applyJob");
 const recommenderRouter = require("./recommender");
 const transactionRouter = require("./transaction");
@@ -23,7 +22,6 @@ const router = (app) => {
   app.use("/api/v1/category", categoryRouter);
   app.use("/api/v1/analytic", analyticRouter);
   app.use("/api/v1/feedback", feedbackRouter);
-  app.use("/api/v1/chatbot", chatbotRouter);
   app.use("/api/v1/applyJob", applyJobRouter);
   app.use("/api/v1/recommender", recommenderRouter);
   app.use("/api/v1/transaction", transactionRouter);

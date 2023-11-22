@@ -248,86 +248,30 @@ export const typeChartPercentOptions = [
   { id: 2, text: "Theo loại công việc", value: "jobType" },
 ];
 
-export const recruitmentChatData = [
-  {
-    type: "text",
-    message: "Chào bạn, bạn đang quan tâm đến vị trí tuyển dụng nào?",
-    incoming: true,
-    outgoing: false,
-  },
-  {
-    type: "text",
-    message: "Chào bạn, tôi quan tâm đến vị trí phát triển phần mềm.",
-    incoming: false,
-    outgoing: true,
-  },
-  {
-    type: "text",
-    message:
-      "Rất tốt, chúng tôi hiện đang có một số vị trí phù hợp. Bạn đã có kinh nghiệm làm việc trong lĩnh vực này chưa?",
-    incoming: true,
-    outgoing: false,
-  },
-  {
-    type: "text",
-    message: "Có, tôi đã có 2 năm kinh nghiệm trong phát triển phần mềm.",
-    incoming: false,
-    outgoing: true,
-  },
-  {
-    type: "text",
-    message:
-      "Rất tốt, chúng tôi sẽ cần một bản CV của bạn để tiến hành xem xét. Bạn có thể gửi nó cho chúng tôi được không?",
-    incoming: true,
-    outgoing: false,
-  },
-  {
-    type: "text",
-    message: "Tất nhiên, tôi sẽ gửi bản CV của mình ngay.",
-    incoming: false,
-    outgoing: true,
-  },
-  {
-    type: "text",
-    message:
-      "Cảm ơn bạn, chúng tôi sẽ xem xét và liên hệ lại trong thời gian sớm nhất.",
-    incoming: true,
-    outgoing: false,
-  },
-];
-
-export const fakeChatListData = [
+export const premiumPackageData = [
   {
     id: 1,
-    name: "Anh Thắng",
-    avatar:
-      "https://res.cloudinary.com/doo78f14s/image/upload/v1677427616/CDIO2-project/dedault_jd3qnu.jpg",
-    lastMessage: "Chào bạn, bạn khỏe không?",
-    lastMessageTime: "10:30 AM",
+    title: "Xác Nhận Doanh Nghiệp",
+    description:
+      "Nhận được 'tick xanh' hoặc biểu tượng xác nhận doanh nghiệp trên hồ sơ của bạn, tăng tính minh bạch và độ tin cậy trong mắt ứng viên.",
   },
   {
     id: 2,
-    name: "Đạt",
-    avatar:
-      "https://res.cloudinary.com/doo78f14s/image/upload/v1677427616/CDIO2-project/dedault_jd3qnu.jpg",
-    lastMessage: "Có phải bạn đã nhận được email của tôi?",
-    lastMessageTime: "Hôm qua",
+    title: "Ưu tiên Hiển Thị",
+    description:
+      "Các công việc của bạn sẽ được ưu tiên hiển thị trước trên trang tìm kiếm, giúp thu hút sự chú ý từ ứng viên.",
   },
   {
     id: 3,
-    name: "Anh Khoa",
-    avatar:
-      "https://res.cloudinary.com/doo78f14s/image/upload/v1677427616/CDIO2-project/dedault_jd3qnu.jpg",
-    lastMessage: "Không có gì đáng ngạc nhiên cả!",
-    lastMessageTime: "Hôm qua",
+    title: "Trang Tuyển Dụng Tùy Chỉnh",
+    description:
+      "Tạo trang tuyển dụng riêng biệt với nhiều tùy chọn tùy chỉnh hơn, giúp tăng tính chuyên nghiệp.",
   },
   {
     id: 4,
-    name: "Minh Quang",
-    avatar:
-      "https://res.cloudinary.com/doo78f14s/image/upload/v1677427616/CDIO2-project/dedault_jd3qnu.jpg",
-    lastMessage: "Tôi đã xem xét hồ sơ của bạn.",
-    lastMessageTime: "2 ngày trước",
+    title: "Đăng Tin Tuyển Không Giới Hạn",
+    description:
+      "Bạn có khả năng đăng bất kỳ số lượng công việc nào mà bạn cần, mà không bị hạn chế bởi giới hạn số lượng tin đăng.",
   },
 ];
 

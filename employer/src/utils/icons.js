@@ -14,6 +14,7 @@ import {
   IoSettingsSharp,
   IoArrowRedoCircleOutline,
   IoArrowUndoCircleOutline,
+  IoAlertSharp,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -55,6 +56,7 @@ import {
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 
 const icons = {
+  IoAlertSharp,
   BsTelephone,
   BsCameraVideo,
   FaUserCheck,

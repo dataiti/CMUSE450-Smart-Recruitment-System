@@ -6,10 +6,11 @@ const {
 const { userById } = require("../controllers/user");
 const { candidateById } = require("../controllers/candidate");
 const { jobById } = require("../controllers/job");
+const { uploadMemo } = require("../configs/cloudinaryConfig");
 
 const router = express.Router();
 
-router.get("/create-address", recommentCVForEmployer);
+router.get("/recomment-cv", uploadMemo.single("CVpdf"), recommentCVForEmployer);
 router.get("/recomment-jobs/:userId", recommentJobForCandidate);
 
 router.param("userId", userById);

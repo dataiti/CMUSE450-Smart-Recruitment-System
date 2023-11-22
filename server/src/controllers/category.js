@@ -66,14 +66,13 @@ const createCategory = asyncHandler(async (req, res) => {
 });
 
 const updateCategory = asyncHandler(async (req, res) => {
-  const { name, description, subcategories } = req.body;
-  const image = req.file.path;
-  const publicId = req.file.filename;
+  const { name, description } = req.body;
+  const image = req?.file?.path;
+  const publicId = req?.file?.filename;
 
-  if (!name) {
-    await cloudinary.uploader.destroy(publicId);
-    throw new Error("Field name is required");
-  }
+  const subcategories = req.body.subcategories
+    ? JSON.parse(req.body.subcategories)
+    : [];
 
   const updatedCategory = await Category.findByIdAndUpdate(
     req.category._id,
@@ -82,7 +81,7 @@ const updateCategory = asyncHandler(async (req, res) => {
       description,
       image,
       publicId,
-      subcategories: JSON.parse(subcategories),
+      subcategories,
     },
     { new: true }
   );

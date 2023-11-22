@@ -1,14 +1,11 @@
 import { Avatar, Typography } from "@material-tailwind/react";
 import React, { useEffect } from "react";
 import { socket } from "../socket";
-import { useDispatch, useSelector } from "react-redux";
-import { authSelect } from "../redux/features/slices/authSlice";
+import { useDispatch } from "react-redux";
 import { setCurrentConversation } from "../redux/features/slices/messageSlice";
 
 const ListConversations = ({ data = [] }) => {
   const dispatch = useDispatch();
-
-  const { user } = useSelector(authSelect);
 
   const handleGetMessage = ({ messageId }) => {
     socket.emit("get_messages", {

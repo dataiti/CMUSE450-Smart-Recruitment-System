@@ -34,9 +34,7 @@ router.get(
 );
 router.get("/get-job-detail/:jobId", getJobDetail);
 router.post("/create-job/:userId/:employerId", createJob);
-// router.put("/edit-user/:userId", editUser);
 router.delete("/delete-job/:userId/:employerId/:jobId/:addressId", deleteJob);
-// router.put("/replace-password/:userId", replacePassword);
 router.put(
   "/toggle-hiring-satus/:userId/:employerId/:jobId",
   toggleHiringStatusJob

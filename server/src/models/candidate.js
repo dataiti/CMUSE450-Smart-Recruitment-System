@@ -20,7 +20,7 @@ const candidateSchema = new mongoose.Schema(
       required: true,
     },
     desiredSalary: {
-      type: String,
+      type: Number,
       required: true,
       min: 0,
     },

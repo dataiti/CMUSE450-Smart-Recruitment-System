@@ -37,7 +37,7 @@ router.post(
   createCategory
 );
 router.put(
-  "/udpate-category/admin/:userId/:categoryId",
+  "/update-category/admin/:userId/:categoryId",
   verifyToken,
   isAdminSystem,
   uploadCloud.single("image"),

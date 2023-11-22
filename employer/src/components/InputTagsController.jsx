@@ -15,7 +15,7 @@ const InputTagsController = ({
 
   const handleInputChange = (e) => {
     if (e && e.target) {
-      setInputValue(e.target.value);
+      setInputValue(e.target.value.toLowerCase());
     }
   };
 
