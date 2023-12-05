@@ -54,7 +54,7 @@ const BoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 shadow-2xl h-[440px] w-[360px] z-40 rounded-xl overflow-hidden border border-gray-400">
+    <div className="fixed bottom-20 right-5 shadow-2xl h-[440px] w-[360px] z-40 rounded-xl overflow-hidden border border-gray-400">
       <div className="h-[60px] w-full p-2 bg-white border-b border-blue-gray-100 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Avatar

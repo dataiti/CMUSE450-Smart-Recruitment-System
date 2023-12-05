@@ -231,7 +231,12 @@ const Header = () => {
                   >
                     <div className="flex items-center gap-2 ">
                       <span className="text-light-blue-500">
-                        <icons.FiSearch size={20} />
+                        {user?._id.toString() ===
+                        searchItem?.userId?.toString() ? (
+                          <icons.MdAccessTimeFilled size={20} />
+                        ) : (
+                          <icons.FiSearch size={20} />
+                        )}
                       </span>
                       <Typography
                         className="text-sm font-bold flex-1 name"
@@ -242,17 +247,19 @@ const Header = () => {
                         {searchItem?.keyword}
                       </Typography>
                     </div>
-                    <button
-                      className="w-3"
-                      onClick={() =>
-                        handleDeleteSearchKeyword({ searchId: searchItem?._id })
-                      }
-                    >
-                      {user?._id.toString() ===
-                        searchItem?.userId?.toString() && (
+                    {user?._id.toString() ===
+                      searchItem?.userId?.toString() && (
+                      <button
+                        className="w-4 h-4 rounded-full bg-gray-400 flex items-center justify-center text-white"
+                        onClick={() =>
+                          handleDeleteSearchKeyword({
+                            searchId: searchItem?._id,
+                          })
+                        }
+                      >
                         <icons.IoClose size={16} />
-                      )}
-                    </button>
+                      </button>
+                    )}
                   </div>
                 );
               })}

@@ -172,7 +172,7 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                   Xem nhanh
                 </Button>
               </div>
-              <CirculeProgress />
+              <CirculeProgress percentage={Number(jobItem?.percentage) || 0} />
             </div>
           </CardFooter>
         </Card>

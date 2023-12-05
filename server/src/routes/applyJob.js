@@ -25,11 +25,9 @@ router.get(
   "/get-apply-job-detail/:userId/:applyId/:employerId",
   getApplyJobDetail
 );
-router.post(
-  "/apply-job/:userId/:jobId/:employerId",
-  uploadMemo.single("CVpdf"),
-  applyJob
-);
+router.post("/apply-job", uploadMemo.single("CVpdf"), applyJob);
+
+///:userId/:jobId/:employerId
 
 router.param("jobId", jobById);
 router.param("employerId", employerById);

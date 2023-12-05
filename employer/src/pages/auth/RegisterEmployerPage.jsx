@@ -20,10 +20,7 @@ import SelectController from "../../components/SelectController";
 import {
   companyIndustryOptions,
   companySizesOptions,
-  experiens,
-  sexOptions,
 } from "../../utils/constants";
-
 import TextEditorController from "../../components/TextEditorController";
 import axiosClient from "../../configs/axiosConfig";
 import InputFileController from "../../components/InputFileController";
@@ -34,23 +31,6 @@ import { setTitle } from "../../redux/features/slices/titleSlice";
 import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
-  fullName: yup
-    .string()
-    .required("Họ và tên là trường bắt buộc")
-    .min(3, "Họ và tên phải có ít nhất 3 ký tự")
-    .max(50, "Họ và tên không được quá 50 ký tự"),
-  phoneNumber: yup
-    .string()
-    .required("Số điện thoại là trường bắt buộc")
-    .matches(
-      /^[0-9]{10}$/,
-      "Số điện thoại phải có đúng 10 chữ số và không chứa ký tự đặc biệt"
-    ),
-  sex: yup.string().required("Giới tính là trường bắt buộc"),
-  workLocation: yup
-    .string()
-    .required("Địa điểm làm việc là trường bắt buộc")
-    .max(100, "Địa điểm làm việc không được quá 100 ký tự"),
   companyName: yup
     .string()
     .required("Tên công ty là trường bắt buộc")
@@ -71,14 +51,10 @@ const schema = yup.object().shape({
     .string()
     .required("Ngành công nghiệp là trường bắt buộc"),
   companySize: yup.string().required("Quy mô công ty là trường bắt buộc"),
-  companyLocation: yup
-    .string()
-    .required("Địa điểm công ty là trường bắt buộc")
-    .max(100, "Địa điểm công ty không được quá 100 ký tự"),
   companyDescription: yup
     .string()
     .required("Mô tả công ty là trường bắt buộc")
-    .max(500, "Mô tả công ty không được quá 500 ký tự"),
+    .max(1000, "Mô tả công ty không được quá 500 ký tự"),
 });
 
 const RegisterPage = () => {
@@ -89,19 +65,18 @@ const RegisterPage = () => {
 
   const [registerEmployer] = useRegisterEmployerMutation();
 
-  const [workLocationsValue, setWorkLocationsValue] = useState([]);
+  const [provincesValue, setProvincesValue] = useState([]);
+  const [districtsValue, setDistrictsValue] = useState([]);
+  const [wardsValue, setWardsValue] = useState([]);
 
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      fullName: "",
-      phoneNumber: "",
-      sex: "",
-      workLocation: "",
       companyLogo: "",
       companyName: "",
       companyEmail: "",
@@ -109,14 +84,20 @@ const RegisterPage = () => {
       websiteUrl: "",
       companyIndustry: "",
       companySize: "",
-      companyLocation: "",
+      province: "",
+      district: "",
+      ward: "",
+      exactAddress: "",
       companyDescription: "",
     },
     resolver: yupResolver(schema),
   });
 
+  const province = watch("province");
+  const district = watch("district");
+
   useEffect(() => {
-    dispatch(setTitle("Thêm tin tuyển dụng"));
+    dispatch(setTitle("Đăng ký nhà tuyển dụng"));
   }, [dispatch]);
 
   useEffect(() => {
@@ -128,12 +109,36 @@ const RegisterPage = () => {
             id: item.province_id,
             value: item.province_name,
           }));
-          setWorkLocationsValue(provinceNames);
+          setProvincesValue(provinceNames);
+        }
+        if (JSON.parse(province).id) {
+          const response = await axiosClient.get(
+            `/province/district/${JSON.parse(province).id}`
+          );
+          if (response && response.data && response.data.results) {
+            const districtNames = response.data.results.map((item) => ({
+              id: item.district_id,
+              value: item.district_name,
+            }));
+            setDistrictsValue(districtNames);
+          }
+        }
+        if (JSON.parse(district).id) {
+          const response = await axiosClient.get(
+            `/province/ward/${JSON.parse(district).id}`
+          );
+          if (response && response.data && response.data.results) {
+            const wardNames = response.data.results.map((item) => ({
+              id: item.ward_id,
+              value: item.ward_name,
+            }));
+            setWardsValue(wardNames);
+          }
         }
       } catch (error) {}
     };
     fetchWorkLocationsApi();
-  }, []);
+  }, [province, district]);
 
   const handleSubmitRegisterEmployer = async (data) => {
     try {
@@ -157,6 +162,10 @@ const RegisterPage = () => {
         if (formatData.hasOwnProperty(key)) {
           formData.append(key, formatData[key]);
         }
+      }
+
+      for (const value of formData.values()) {
+        console.log(value);
       }
 
       const response = await registerEmployer({ formData, userId: user._id });
@@ -188,48 +197,6 @@ const RegisterPage = () => {
           onSubmit={handleSubmit(handleSubmitRegisterEmployer)}
         >
           <Timeline>
-            <TimelineItem>
-              <TimelineConnector />
-              <TimelineHeader>
-                <TimelineIcon className="p-2 !bg-[#212f3f]">
-                  <icons.IoBriefcase />
-                </TimelineIcon>
-                <Typography variant="h5" className="text-lg text-teal-800">
-                  Thông tin nhà tuyển dụng
-                </Typography>
-              </TimelineHeader>
-              <TimelineBody className="pb-8 flex flex-col gap-5">
-                <div className="flex flex-col gap-6">
-                  <InputController
-                    control={control}
-                    name="fullName"
-                    label="Họ và tên cá nhân"
-                    error={errors?.fullName}
-                  />
-                  <InputController
-                    control={control}
-                    name="phoneNumber"
-                    label="Số điện thoại cá nhân"
-                    error={errors?.phoneNumber}
-                    options={experiens}
-                  />
-                  <SelectController
-                    control={control}
-                    name="sex"
-                    label="Giới tính"
-                    error={errors?.sex}
-                    options={sexOptions}
-                  />
-                  <SelectController
-                    control={control}
-                    name="workLocation"
-                    label="Địa điểm làm việc"
-                    error={errors?.workLocation}
-                    options={workLocationsValue}
-                  />
-                </div>
-              </TimelineBody>
-            </TimelineItem>
             <TimelineItem>
               <TimelineConnector />
               <TimelineHeader>
@@ -286,11 +253,32 @@ const RegisterPage = () => {
                     error={errors?.companySize}
                     options={companySizesOptions}
                   />
+                  <SelectController
+                    control={control}
+                    name="province"
+                    label="Tỉnh / Thành Phố"
+                    error={errors?.province}
+                    options={provincesValue}
+                  />
+                  <SelectController
+                    control={control}
+                    name="district"
+                    label="Quận / Huyện"
+                    error={errors?.district}
+                    options={districtsValue}
+                  />
+                  <SelectController
+                    control={control}
+                    name="ward"
+                    label="Phường / Xã"
+                    error={errors?.ward}
+                    options={wardsValue}
+                  />
                   <InputController
                     control={control}
-                    name="companyLocation"
-                    label="Địa chỉ công ty"
-                    error={errors?.companyLocation}
+                    name="exactAddress"
+                    label="Địa chỉ chính xác"
+                    error={errors?.exactAddress}
                   />
                   <TextEditorController
                     control={control}

@@ -249,21 +249,22 @@ const generateTimeBasedPieChart = asyncHandler(async (req, res) => {
   });
 });
 
-const generateRankJob = asyncHandler(async (req, res) => {});
-
-const getSchedule = asyncHandler(async (req, res) => {});
-
 const evaluateSuitableJob = asyncHandler(async (req, res) => {
-  const candidateSkills = req.candidate.skills;
-  const candidateExperience = req.candidate.experience;
-  const candidateJobPosition = req.candidate.jobPosition;
-  const candidateDesiredSalary = req.candidate.desiredSalary;
+  const {
+    skills: candidateSkills,
+    experience: candidateExperience,
+    jobPosition: candidateJobPosition,
+    desiredSalary: candidateDesiredSalary,
+  } = req.candidate;
 
-  const requiredSkills = req.job.skills;
-  const requiredExperience = req.job.experience;
-  const requiredJobPosition = req.job.jobPosition;
-  const requiredSalaryFrom = req.job?.salaryFrom;
-  const requiredSalaryTo = req.job?.salaryTo;
+  const {
+    skills: requiredSkills,
+    experience: requiredExperience,
+    jobPosition: requiredJobPosition,
+    salaryType,
+    salaryFrom,
+    salaryTo,
+  } = req.job;
 
   const skillMatch = candidateSkills.filter((skill) =>
     requiredSkills.includes(skill)
@@ -276,45 +277,36 @@ const evaluateSuitableJob = asyncHandler(async (req, res) => {
   const skillPercentage =
     (skillMatch.length / requiredSkills.length) * 100 || 0;
 
-  let experiencePercentage = 0;
-  if (candidateExperience > requiredExperience || requiredExperience === 0)
-    experiencePercentage = 100;
-  else experiencePercentage = (candidateExperience / requiredExperience) * 100;
+  const experiencePercentage =
+    candidateExperience >= requiredExperience || requiredExperience === 0
+      ? 100
+      : (candidateExperience / requiredExperience) * 100;
 
   const findCategories = await Category.find();
-  let jobPositionPercentage = 0;
-
-  console.log({ candidateJobPosition, requiredJobPosition });
-  if (candidateJobPosition === requiredJobPosition) jobPositionPercentage = 100;
-  else {
-    findCategories.forEach((category) => {
-      if (
-        category.subcategories.find(
-          (item) => item.name === candidateJobPosition
-        ) &&
-        category.subcategories.find((item) => item.name === requiredJobPosition)
-      ) {
-        jobPositionPercentage = 20;
-      }
-    });
-  }
+  const jobPositionPercentage =
+    candidateJobPosition === requiredJobPosition
+      ? 100
+      : findCategories.some((category) =>
+          category.subcategories.some((item) =>
+            [candidateJobPosition, requiredJobPosition].includes(item.name)
+          )
+        )
+      ? 20
+      : 0;
 
   let salaryPercentage = 0;
 
-  if (req.job.salaryType === "Thỏa thuận") salaryPercentage = 0;
-  if (requiredSalaryFrom && requiredSalaryTo) {
-    const medianSalary = (requiredSalaryFrom + requiredSalaryTo) / 2;
+  if (salaryType === "Thỏa thuận") {
+    salaryPercentage = 0;
+  } else if (salaryFrom !== undefined && salaryTo !== undefined) {
+    const medianSalary = (salaryFrom + salaryTo) / 2;
     const absoluteDifference = Math.abs(candidateDesiredSalary - medianSalary);
     salaryPercentage = (1 - absoluteDifference / medianSalary) * 100;
-  } else if (!requiredSalaryFrom && requiredSalaryTo) {
-    const absoluteDifference = Math.abs(
-      candidateDesiredSalary - requiredSalaryTo
-    );
+  } else if (salaryFrom === undefined && salaryTo !== undefined) {
+    const absoluteDifference = Math.abs(candidateDesiredSalary - salaryTo);
     salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
-  } else if (requiredSalaryFrom && !requiredSalaryTo) {
-    const absoluteDifference = Math.abs(
-      candidateDesiredSalary - requiredSalaryFrom
-    );
+  } else if (salaryFrom !== undefined && salaryTo === undefined) {
+    const absoluteDifference = Math.abs(candidateDesiredSalary - salaryFrom);
     salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
   }
 
@@ -327,26 +319,11 @@ const evaluateSuitableJob = asyncHandler(async (req, res) => {
     data: {
       overallPercentage: overallPercentage.toFixed(2),
       percentages: [
-        {
-          title: "Kỹ năng",
-          value: skillPercentage.toFixed(2),
-        },
-        {
-          title: "Kinh nghiệm",
-          value: experiencePercentage.toFixed(2),
-        },
-        {
-          title: "Vị trí công việc",
-          value: jobPositionPercentage.toFixed(2),
-        },
-        {
-          title: "Lương",
-          value: salaryPercentage.toFixed(2),
-        },
-        {
-          title: "Yếu tố khác",
-          value: skillPercentage.toFixed(2),
-        },
+        { title: "Kỹ năng", value: skillPercentage.toFixed(2) },
+        { title: "Kinh nghiệm", value: experiencePercentage.toFixed(2) },
+        { title: "Vị trí công việc", value: jobPositionPercentage.toFixed(2) },
+        { title: "Lương", value: salaryPercentage.toFixed(2) },
+        { title: "Yếu tố khác", value: skillPercentage.toFixed(2) },
       ],
       skillMatch,
       skillNotMatch,
@@ -401,8 +378,6 @@ module.exports = {
   getOveviewStatistics,
   generateTimeBasedLineChart,
   generateTimeBasedPieChart,
-  generateRankJob,
-  getSchedule,
   evaluateSuitableJob,
   getWorkPositionTrendingChart,
   getTechnicalTrendingChart,

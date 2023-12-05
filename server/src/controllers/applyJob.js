@@ -3,7 +3,7 @@ const Job = require("../models/job");
 const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
-const compromise = require("compromise");
+const nlp = require("compromise");
 const natural = require("natural");
 const tokenizer = new natural.WordTokenizer();
 const {
@@ -15,6 +15,7 @@ const {
 } = require("firebase/storage");
 const firebaseConfig = require("../configs/firebaseConfig");
 const pdf = require("pdf-parse");
+const { MODEL_NAME, client } = require("../configs/googleAIConfig");
 
 const applyJobById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -34,7 +35,11 @@ const applyJobById = asyncHandler(async (req, res, next, id) => {
       "companyLogo companyName companyEmail companyPhoneNumber"
     );
 
-  if (!applyJob) throw new Error("ApplyJob  is not find");
+  if (!applyJob)
+    return res.status(400).json({
+      success: true,
+      message: "Apply job is not find",
+    });
 
   req.applyJob = applyJob;
   next();
@@ -49,60 +54,85 @@ const getApplyJobDetail = asyncHandler(async (req, res) => {
 });
 
 const applyJob = asyncHandler(async (req, res) => {
-  const storage = getStorage();
-  const storageRef = ref(storage, `pdf-files/${req.file.originalname}`);
+  const data = await pdf(req.file.buffer);
+  const cvText = data.text;
 
-  try {
-    const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, {
-      contentType: req.file.mimetype,
-    });
+  // const tokenizer = new natural.WordTokenizer();
+  // const tokens = cvText.split("\n").filter((word) => word.trim() !== "");
 
-    const downloadURL = await getDownloadURL(snapshot.ref);
+  const result = await client.generateText({
+    model: MODEL_NAME,
+    prompt: {
+      text: `${cvText}. Please generate json format for contact, number of work year experience, skills as an array, education`,
+    },
+  });
 
-    const newApplyJob = new ApplyJob({
-      candidateId: req.user._id,
-      jobId: req.job._id,
-      employerId: req.employer._id,
-      CVName: req.file.originalname,
-      CVpdf: downloadURL,
-      information: req.body.information,
-    });
+  console.log(JSON.parse(result[0]?.candidates[0]?.output));
 
-    const savedApplyJob = await newApplyJob.save();
+  // const cleanedJsonString = result[0]?.candidates[0]?.output.replace(
+  //   /\\n|\\t/g,
+  //   ""
+  // );
 
-    await Job.findOneAndUpdate(
-      { _id: req.job._id },
-      {
-        $set: {
-          appliedIds: [...req.job.appliedIds, savedApplyJob._id],
-        },
-      },
-      { new: true }
-    );
+  // const jsonData = JSON.parse(cleanedJsonString);
 
-    await User.findOneAndUpdate(
-      { _id: req.user._id },
-      {
-        $set: {
-          appliedJobs: [...req.user.appliedJobs, req.job._id],
-        },
-      },
-      { new: true }
-    );
+  // console.log(jsonData);
 
-    return res.status(200).json({
-      success: true,
-      message: "File uploaded to Firebase and ApplyJob added",
-      data: savedApplyJob,
-    });
-  } catch (error) {
-    await deleteObject(storageRef);
+  // console.log(tokens);
+  // const storage = getStorage();
+  // const storageRef = ref(storage, `pdf-files/${req.file.originalname}`);
 
-    return res.status(500).json({
-      success: false,
-      message: "Error uploading file and adding ApplyJob",
-    });
-  }
+  // try {
+  //   const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, {
+  //     contentType: req.file.mimetype,
+  //   });
+
+  //   const downloadURL = await getDownloadURL(snapshot.ref);
+
+  //   const newApplyJob = new ApplyJob({
+  //     candidateId: req.user._id,
+  //     jobId: req.job._id,
+  //     employerId: req.employer._id,
+  //     CVName: req.file.originalname,
+  //     CVpdf: downloadURL,
+  //     information: req.body.information,
+  //   });
+
+  //   const savedApplyJob = await newApplyJob.save();
+
+  //   await Job.findOneAndUpdate(
+  //     { _id: req.job._id },
+  //     {
+  //       $set: {
+  //         appliedIds: [...req.job.appliedIds, savedApplyJob._id],
+  //       },
+  //     },
+  //     { new: true }
+  //   );
+
+  //   await User.findOneAndUpdate(
+  //     { _id: req.user._id },
+  //     {
+  //       $set: {
+  //         appliedJobs: [...req.user.appliedJobs, req.job._id],
+  //       },
+  //     },
+  //     { new: true }
+  //   );
+
+  return res.status(200).json({
+    success: true,
+    message: "File uploaded to Firebase and ApplyJob added",
+    data: result[0]?.candidates[0]?.output,
+  });
+  // } catch (error) {
+  //   await deleteObject(storageRef);
+
+  //   return res.status(500).json({
+  //     success: false,
+  //     message: "Error uploading file and adding ApplyJob",
+  //   });
+  // }
 });
 
 const updateApplyJob = asyncHandler(async (req, res) => {});

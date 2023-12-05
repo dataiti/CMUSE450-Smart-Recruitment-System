@@ -74,18 +74,6 @@ export const menuCVItems = [
     type: "color",
     name: "Màu sắc",
   },
-  {
-    id: 4,
-    icon: <icons.LiaSearchPlusSolid size={20} />,
-    type: "",
-    name: "Phóng to",
-  },
-  {
-    id: 5,
-    icon: <icons.LiaSearchMinusSolid size={20} />,
-    type: "",
-    name: "Thu nhỏ",
-  },
 ];
 
 export const menuItems = [
@@ -406,4 +394,19 @@ export const fakeDataMessage = [
     incoming: false,
     outgoing: true,
   },
+];
+
+export const colors = [
+  { id: 1, value: "bg-blue-gray-500" },
+  { id: 2, value: "bg-gray-500" },
+  { id: 3, value: "bg-brown-500" },
+  { id: 1, value: "bg-deep-orange-500" },
+  { id: 1, value: "bg-orange-500" },
+  { id: 1, value: "bg-yellow-500" },
+  { id: 1, value: "bg-lime-500" },
+  { id: 1, value: "bg-light-green-500" },
+  { id: 1, value: "bg-green-500" },
+  { id: 1, value: "" },
+  { id: 1, value: "" },
+  { id: 1, value: "" },
 ];

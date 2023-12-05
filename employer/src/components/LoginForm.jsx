@@ -145,6 +145,7 @@ const LoginForm = ({ handleOpen }) => {
               variant="small"
               className="ml-1 font-bold text-blue-500"
               onClick={handleOpen}
+              to="/register"
             >
               Đăng ký ngay
             </Link>

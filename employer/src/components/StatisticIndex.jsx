@@ -3,7 +3,7 @@ import { Typography } from "@material-tailwind/react";
 
 const StatisticIndex = ({ title, icon, index }) => {
   return (
-    <div className="bg-white shadow-sm p-2 rounded-md h-24 flex flex-col gap-3 items-center">
+    <div className="bg-white shadow-sm p-4 rounded-md h-28 flex flex-col gap-2 items-center">
       <Typography className="uppercase text-sm flex items-center gap-2 font-extrabold text-green-900">
         {icon}
         {title}

@@ -31,9 +31,10 @@ const jobApi = rootApi.injectEndpoints({
         gender,
         level,
         rating,
+        candidateId,
       }) => {
         return {
-          url: `/job/get-list-jobs?search=${search}&sortBy=${sortBy}&orderBy=${orderBy}&page=${page}&limit=${limit}&experience=${experience}&industry=${industry}&jobType=${jobType}&gender=${gender}&level=${level}&rating=${rating}`,
+          url: `/job/get-list-jobs?search=${search}&sortBy=${sortBy}&orderBy=${orderBy}&page=${page}&limit=${limit}&experience=${experience}&industry=${industry}&jobType=${jobType}&gender=${gender}&level=${level}&rating=${rating}&candidateId=${candidateId}`,
           method: "GET",
         };
       },
@@ -46,6 +47,14 @@ const jobApi = rootApi.injectEndpoints({
         };
       },
     }),
+    getListJobsByCompany: builder.query({
+      query: ({ employerId, limit }) => {
+        return {
+          url: `/job/get-list-jobs/company?limit=${limit}&employerId=${employerId}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -54,4 +63,5 @@ export const {
   useGetJobDetailQuery,
   useGetListOfJobsQuery,
   useGetListOfJobsForHomaPageQuery,
+  useGetListJobsByCompanyQuery,
 } = jobApi;

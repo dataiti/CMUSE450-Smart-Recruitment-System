@@ -1,21 +1,12 @@
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
-import parse from "html-react-parser";
+import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { formattedAmount, formattedProvinceNames, timeAgo } from "../utils/fn";
 import { icons } from "../utils/icons";
 import { Link } from "react-router-dom";
 import Tag from "./Tag";
 import { useEffect, useState } from "react";
-import Modal from "./Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelect, setWishlists } from "../redux/features/slices/authSlice";
 import { useToggleWishListItemMutation } from "../redux/features/apis/userApi";
-import ApplyJobForm from "./ApplyJobForm";
 
 const JobCardSmall = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
   const dispatch = useDispatch();
@@ -41,9 +32,9 @@ const JobCardSmall = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
       <Link
         to={`/job-detail/${jobItem?._id}`}
         key={jobItem?._id}
-        className="bg-gray-100 !rounded-md border border-light-blue-500 cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
+        className="bg-white !rounded-md border border-light-blue-500 cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
       >
-        <Card className="!bg-gray-100 !shadow-none flex flex-col">
+        <Card className="!shadow-none flex flex-col">
           <CardBody className="w-full flex flex-col gap-2 !p-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">

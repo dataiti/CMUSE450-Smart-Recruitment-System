@@ -53,7 +53,7 @@ const HomePage = () => {
           <LineChart data={technicalTrendingChartData?.data} />
         </Container>
       </div>
-      <div className="h-20 w-[100%] bg-zinc-200 grid grid-cols-5 gap-5 py-2 px-[110px] bg-yellow-50">
+      <div className="h-20 w-[100%] bg-zinc-200 grid grid-cols-5 gap-5 py-2 px-[110px] bg-blue-gray-300">
         {loyaltyProgramItem.map((item, index) => {
           return (
             <div key={index} className="flex gap-2 items-center ">
@@ -64,7 +64,7 @@ const HomePage = () => {
                 <Typography className="text-sm font-bold">
                   {item.display}
                 </Typography>
-                <Typography className="text-xs text-gray-500 font-bold">
+                <Typography className="text-xs text-white font-bold">
                   {item.subDisplay}
                 </Typography>
               </div>
@@ -80,7 +80,7 @@ const HomePage = () => {
                 <Link
                   to={`/categories-job?category=${category?.name}`}
                   key={category?._id}
-                  className="flex flex-col items-center gap-1 bg-green-50 rounded-md py-3 hover:bg-green-100/80 transition-all cursor-pointer"
+                  className="flex flex-col items-center gap-1 bg-gray-200 rounded-md py-3 hover:bg-gray-300 transition-all cursor-pointer"
                 >
                   <div className="h-24 w-24 p-3 bg-white rounded-full">
                     <img
@@ -89,7 +89,7 @@ const HomePage = () => {
                       className="h-full w-full rounded-full object-cover"
                     />
                   </div>
-                  <Typography className="text-xs font-bold text-green-900">
+                  <Typography className="text-xs font-bold text-black">
                     {category?.name}
                   </Typography>
                 </Link>

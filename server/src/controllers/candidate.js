@@ -15,7 +15,11 @@ const candidateById = asyncHandler(async (req, res, next, id) => {
 
   const candidate = await Candidate.findById(id);
 
-  if (!candidate) throw new Error("Candidate is not find");
+  if (!candidate)
+    return res.status(400).json({
+      success: true,
+      message: "Candidate is not find",
+    });
 
   req.candidate = candidate;
   next();

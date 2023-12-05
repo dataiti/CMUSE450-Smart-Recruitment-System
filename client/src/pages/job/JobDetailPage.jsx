@@ -31,6 +31,8 @@ import { useGetEvaluateSuitableJobQuery } from "../../redux/features/apis/analyt
 import { useUserViewedJobMutation } from "../../redux/features/apis/userApi";
 import BoxChat from "../../components/BoxChat";
 import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
+import ShareButton from "../../components/ShareButton";
+import Address from "../../components/Address";
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
@@ -53,6 +55,10 @@ const JobDetailPage = () => {
       jobId,
     }
   );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const userViewedJobApi = async () => {
@@ -110,6 +116,9 @@ const JobDetailPage = () => {
 
   return (
     <div className="px-[110px] py-[20px] flex flex-col gap-2 relative">
+      <div className="fixed left-12 top-36">
+        <ShareButton jobDetailData={jobDetailData} />
+      </div>
       {isBoxChatOpen && (
         <BoxChat
           isBoxChatOpen={isBoxChatOpen}
@@ -120,7 +129,7 @@ const JobDetailPage = () => {
       )}
       {isBoxChatBubble && (
         <button
-          className="h-14 w-14 flex items-center justify-center rounded-full bg-[#212f3f] text-light-blue-600 fixed bottom-5 right-5 shadow-2xl z-40"
+          className="h-14 w-14 flex items-center justify-center rounded-full bg-[#212f3f] text-light-blue-600 fixed bottom-20 right-5 shadow-2xl z-40"
           onClick={() => {
             setIsBoxChatBubble(false);
             setIsBoxChatOpen(true);
@@ -337,10 +346,15 @@ const JobDetailPage = () => {
               </ButtonCustom>
             </div>
             <Link
-              to={`/company-profile/${jobDetailData?.data?._id}`}
-              className="text-blue-600 italic text-sm text-center hover:underline"
+              to={`/company-profile/${jobDetailData?.data?.employerId?._id}`}
+              className="text-blue-600 italic text-sm flex items-center justify-center gap-2 hover:underline transition-all"
             >
-              Xem thêm
+              <Typography className="text-sm font-bold">
+                Xem trang công ty
+              </Typography>
+              <span>
+                <icons.TbExternalLink size={16} />
+              </span>
             </Link>
           </Container>
           <Container className="flex flex-col gap-2">
@@ -350,22 +364,12 @@ const JobDetailPage = () => {
               </IconButtonCustom>
               Địa điểm làm việc
             </Typography>
-            <div className="flex flex-col gap-2">
-              <Typography className=" font-bold text-sm">
-                {jobDetailData?.data?.workRegion?.exactAddress}
-              </Typography>
-              <div className="flex items-center gap-1">
-                <Typography className=" font-bold text-sm">
-                  {jobDetailData?.data?.workRegion?.ward} -
-                </Typography>
-                <Typography className=" font-bold text-sm">
-                  {jobDetailData?.data?.workRegion?.district} -
-                </Typography>
-                <Typography className=" font-bold text-sm">
-                  {jobDetailData?.data?.workRegion?.province}
-                </Typography>
-              </div>
-            </div>
+            <Address
+              province={jobDetailData?.data?.workRegion?.province}
+              district={jobDetailData?.data?.workRegion?.district}
+              ward={jobDetailData?.data?.workRegion?.ward}
+              exactAddress={jobDetailData?.data?.workRegion?.exactAddress}
+            />
             <div className="h-[220px] w-full border border-gray-400 rounded-md overflow-hidden">
               <Mapbox workRegion={jobDetailData?.data?.workRegion} />
             </div>

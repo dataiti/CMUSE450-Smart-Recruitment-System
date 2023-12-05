@@ -19,11 +19,15 @@ import JobCard from "../../components/JobCard";
 import Loading from "../../components/Loading";
 import DrawerCustom from "../../components/DrawerCustom";
 import PaginationOption from "../../components/PaginationOption";
+import { videos } from "../../assets/videos";
+import ButtonCustom from "../../components/ButtonCustom";
+import { authSelect } from "../../redux/features/slices/authSlice";
 
 const CategoriesPage = () => {
   const dispatch = useDispatch();
 
   const { listJobs, totalPage, count } = useSelector(jobSelect);
+  const { user } = useSelector(authSelect);
 
   const location = useLocation();
 
@@ -36,7 +40,7 @@ const CategoriesPage = () => {
   const [sortBy, setSortBy] = useState("asc");
   const [orderBy, setOrderBy] = useState("_id");
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
   const [salaryFrom, setSalaryFrom] = useState("_id");
   const [salaryTo, setSalaryTo] = useState("_id");
@@ -62,9 +66,14 @@ const CategoriesPage = () => {
       rating: rating,
       salaryFrom,
       salaryTo,
+      candidateId: user?.candidateId,
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -87,7 +96,7 @@ const CategoriesPage = () => {
   }, [dispatch, listJobsData]);
 
   useEffect(() => {
-    setLimit(!isColumnCard ? 5 : 10);
+    setLimit(!isColumnCard ? 4 : 8);
   }, [isColumnCard]);
 
   useEffect(() => {
@@ -183,8 +192,27 @@ const CategoriesPage = () => {
           />
         </div>
         <div className="w-[76%] flex flex-col gap-2">
+          <div className="flex gap-4 w-full p-2 rounded-md bg-gradient-to-l from-[#304352] to-[#cbd5e1]">
+            <video className="w-[20%] rounded-lg" autoPlay loop>
+              <source src={videos.CVSearching} type="video/mp4" />
+            </video>
+            <div className="w-[80%] flex flex-col gap-2">
+              <Typography className="text-white font-bold text-base">
+                Hệ thống Gợi ý Công việc kết hợp cả hai thuật toán:
+                Collaborative Filtering và Content-Based Filtering để tạo ra một
+                trải nghiệm cá nhân hóa cho ứng viên. Kết hợp 2 thuật toán trên
+                lại sẽ là Hybrid Filtering, kết quả là một danh sách các công
+                việc được đề xuất dựa trên sở thích và kỹ năng cá nhân của ứng
+                viên, mang lại trải nghiệm gợi ý cá nhân và đa dạng trong sự
+                nghiệp của họ.
+              </Typography>
+              <Link to="/recommender-job">
+                <ButtonCustom>Xem gợi ý công việc phù hợp với bạn</ButtonCustom>
+              </Link>
+            </div>
+          </div>
           <div
-            className={`grid grid-cols-4 gap-2 bg-gradient-to-l from-[#cbd5e1] to-[#fff] rounded-md p-3 sticky z-20 top-[80px] ${
+            className={`grid grid-cols-4 gap-2 bg-white rounded-md p-3 sticky z-20 top-[80px] ${
               isSticky ? "shadow-lg" : "shadow-none"
             }`}
           >

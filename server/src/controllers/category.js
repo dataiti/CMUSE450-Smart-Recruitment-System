@@ -15,7 +15,11 @@ const categoryById = asyncHandler(async (req, res, next, id) => {
 
   const category = await Category.findById(id);
 
-  if (!category) throw new Error("Category is not find");
+  if (!category)
+    return res.status(400).json({
+      success: true,
+      message: "Category is not find",
+    });
 
   req.category = category;
   next();

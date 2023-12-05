@@ -1,3 +1,5 @@
+const Category = require("../models/category");
+
 const parseArrayQueryParam = (paramName, query) =>
   query[paramName] && query[paramName] !== "[]"
     ? JSON.parse(query[paramName])
@@ -67,8 +69,76 @@ function sortObject(obj) {
   return sorted;
 }
 
+const evaluateSuitableJob = async ({ candidate, job }) => {
+  const {
+    skills: candidateSkills,
+    experience: candidateExperience,
+    jobPosition: candidateJobPosition,
+    desiredSalary: candidateDesiredSalary,
+  } = candidate;
+
+  const {
+    skills: requiredSkills,
+    experience: requiredExperience,
+    jobPosition: requiredJobPosition,
+    salaryType,
+    salaryFrom,
+    salaryTo,
+  } = job;
+
+  const skillMatch = candidateSkills.filter((skill) =>
+    requiredSkills.includes(skill)
+  );
+
+  const skillNotMatch = requiredSkills.filter(
+    (skill) => !candidateSkills.includes(skill)
+  );
+
+  const skillPercentage =
+    (skillMatch.length / requiredSkills.length) * 100 || 0;
+
+  const experiencePercentage =
+    candidateExperience >= requiredExperience || requiredExperience === 0
+      ? 100
+      : (candidateExperience / requiredExperience) * 100;
+
+  const findCategories = await Category.find();
+  const jobPositionPercentage =
+    candidateJobPosition === requiredJobPosition
+      ? 100
+      : findCategories.some((category) =>
+          category.subcategories.some((item) =>
+            [candidateJobPosition, requiredJobPosition].includes(item.name)
+          )
+        )
+      ? 20
+      : 0;
+
+  let salaryPercentage = 0;
+
+  if (salaryType === "Thỏa thuận") {
+    salaryPercentage = 0;
+  } else if (salaryFrom !== undefined && salaryTo !== undefined) {
+    const medianSalary = (salaryFrom + salaryTo) / 2;
+    const absoluteDifference = Math.abs(candidateDesiredSalary - medianSalary);
+    salaryPercentage = (1 - absoluteDifference / medianSalary) * 100;
+  } else if (salaryFrom === undefined && salaryTo !== undefined) {
+    const absoluteDifference = Math.abs(candidateDesiredSalary - salaryTo);
+    salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
+  } else if (salaryFrom !== undefined && salaryTo === undefined) {
+    const absoluteDifference = Math.abs(candidateDesiredSalary - salaryFrom);
+    salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
+  }
+
+  const overallPercentage =
+    (skillPercentage + experiencePercentage + jobPositionPercentage) / 3;
+
+  return overallPercentage.toFixed(2);
+};
+
 module.exports = {
   parseArrayQueryParam,
   calculateSimilarity,
   sortObject,
+  evaluateSuitableJob,
 };

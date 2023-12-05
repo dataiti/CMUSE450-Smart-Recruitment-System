@@ -3,7 +3,8 @@ const Address = require("../models/address");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const job = require("../models/job");
-const { parseArrayQueryParam } = require("../utils/fn");
+const Candidate = require("../models/candidate");
+const { parseArrayQueryParam, evaluateSuitableJob } = require("../utils/fn");
 
 const jobById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -19,7 +20,11 @@ const jobById = asyncHandler(async (req, res, next, id) => {
     .populate("employerId")
     .populate("workRegion");
 
-  if (!job) throw new Error("Job is not find");
+  if (!job)
+    return res.status(400).json({
+      success: true,
+      message: "Job is not find",
+    });
 
   req.job = job;
   next();
@@ -313,6 +318,7 @@ const getListJobs = asyncHandler(async (req, res) => {
   const limit = query.limit > 0 ? Number(query.limit) : 6;
   const page = query.page > 0 ? Number(query.page) : 1;
   const skip = (page - 1) * limit;
+  const candidateId = query.candidateId;
 
   const industryArr = parseArrayQueryParam("industry", query);
   const jobTypeArr = parseArrayQueryParam("jobType", query);
@@ -357,17 +363,43 @@ const getListJobs = asyncHandler(async (req, res) => {
     filterArgs.salaryTo = { $lte: salaryTo };
   }
 
+  let candidate;
+
+  if (candidateId) {
+    candidate = await Candidate.findById(candidateId);
+  }
+
   const countJobs = await Job.countDocuments(filterArgs);
 
   const totalPage = Math.ceil(countJobs / limit);
 
-  const listJobs = await Job.find(filterArgs)
-    .sort({ [sortBy]: orderBy, _id: -1 })
-    .skip(skip)
-    .limit(limit)
-    .populate("workRegion")
-    // .populate("categoryId", "name")
-    .populate("employerId");
+  let listJobs;
+  if (!candidateId) {
+    listJobs = await Job.find(filterArgs)
+      .sort({ [sortBy]: orderBy, _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("workRegion")
+      // .populate("categoryId", "name")
+      .populate("employerId");
+  }
+  if (candidateId) {
+    const listJobsWithEvaluation = await Job.find(filterArgs)
+      .sort({ [sortBy]: orderBy, _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("workRegion")
+      // .populate("categoryId", "name")
+      .populate("employerId")
+      .lean();
+
+    listJobs = await Promise.all(
+      listJobsWithEvaluation.map(async (job) => {
+        const percentage = await evaluateSuitableJob({ candidate, job });
+        return { ...job, percentage };
+      })
+    );
+  }
 
   return res.status(200).json({
     success: true,
@@ -528,6 +560,21 @@ const getListJobForAdmin = asyncHandler(async (req, res) => {
   });
 });
 
+const getListJobsByCompany = asyncHandler(async (req, res) => {
+  const { limit, employerId } = req.query;
+
+  const allJobs = await Job.find({ employerId: employerId })
+    .limit(limit)
+    .populate("workRegion")
+    .populate("employerId");
+
+  return res.status(200).json({
+    cuccess: true,
+    message: "Get list jobs by company is successfully",
+    data: allJobs,
+  });
+});
+
 const getListJobsForHomePage = asyncHandler(async (req, res) => {
   const { limit } = req.query;
 
@@ -573,4 +620,5 @@ module.exports = {
   getListJobForEmployer,
   getListJobForAdmin,
   getListJobsForHomePage,
+  getListJobsByCompany,
 };

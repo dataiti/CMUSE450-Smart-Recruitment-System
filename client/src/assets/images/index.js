@@ -9,7 +9,12 @@ import banner3 from "./banner3.jpg";
 import startchat from "./startchat.jpg";
 
 const listBannerImage = [banner1, banner2, banner3];
-const listCVTemplateImage = [decker, cascade, iconic, simple];
+const listCVTemplateImage = [
+  { id: 1, value: iconic },
+  { id: 1, value: decker },
+  { id: 1, value: cascade },
+  { id: 1, value: simple },
+];
 
 export const images = {
   cascade,

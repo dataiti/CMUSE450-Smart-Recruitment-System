@@ -9,6 +9,7 @@ import Loading from "../../components/Loading";
 import PaginationOption from "../../components/PaginationOption";
 import JobCard from "../../components/JobCard";
 import { videos } from "../../assets/videos";
+import ButtonCustom from "../../components/ButtonCustom";
 
 const SearchPage = () => {
   const dispatch = useDispatch();
@@ -147,16 +148,19 @@ const SearchPage = () => {
             <video className="w-[20%] rounded-lg" autoPlay loop>
               <source src={videos.CVSearching} type="video/mp4" />
             </video>
-            <div className="w-[80%]">
+            <div className="w-[80%] flex flex-col gap-2">
               <Typography className="text-white font-bold text-base">
-                Chào mừng bạn đến với Trang Tìm Kiếm Công Việc - nơi kết nối ước
-                mơ và cơ hội! Tại đây, chúng tôi không chỉ là cổng thông tin về
-                hàng ngàn cơ hội việc làm mà còn là điểm hẹn của những cá nhân
-                đam mê và doanh nghiệp đổi mới.Dù bạn là người tìm kiếm công
-                việc hay đang muốn mở rộng đội ngũ nhân sự, hãy bắt đầu hành
-                trình sự nghiệp của bạn tại đây. Hãy khám phá, ứng tuyển, và đặt
-                dấu ấn của mình trong thế giới việc làm đầy thách thức này!
+                Hệ thống Gợi ý Công việc kết hợp cả hai thuật toán:
+                Collaborative Filtering và Content-Based Filtering để tạo ra một
+                trải nghiệm cá nhân hóa cho ứng viên. Kết hợp 2 thuật toán trên
+                lại sẽ là Hybrid Filtering, kết quả là một danh sách các công
+                việc được đề xuất dựa trên sở thích và kỹ năng cá nhân của ứng
+                viên, mang lại trải nghiệm gợi ý cá nhân và đa dạng trong sự
+                nghiệp của họ.
               </Typography>
+              <Link to="/recommender-job">
+                <ButtonCustom>Xem gợi ý công việc phù hợp với bạn</ButtonCustom>
+              </Link>
             </div>
           </div>
           <PaginationOption

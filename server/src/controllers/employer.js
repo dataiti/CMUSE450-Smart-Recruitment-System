@@ -1,5 +1,5 @@
 const Employer = require("../models/employer");
-const User = require("../models/user");
+const Address = require("../models/address");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 
@@ -13,9 +13,13 @@ const employerById = asyncHandler(async (req, res, next, id) => {
     });
   }
 
-  const employer = await Employer.findById(id);
+  const employer = await Employer.findById(id).populate("addressId");
 
-  if (!employer) throw new Error("Employer is not find");
+  if (!employer)
+    return res.status(400).json({
+      success: true,
+      message: "Employer is not find",
+    });
 
   req.employer = employer;
   next();
@@ -44,8 +48,20 @@ const registerEmployer = asyncHandler(async (req, res) => {
     companyDescription,
   } = req.body;
 
+  const newAddress = new Address({
+    province: req.body.province,
+    ward: req.body.ward,
+    district: req.body.district,
+    exactAddress: req.body.exactAddress,
+  });
+
+  await newAddress.save();
+
+  if (!newAddress) throw new Error("Create job is fail");
+
   const newEmployer = new Employer({
     ownerId: req.user._id,
+    addressId: newAddress._id,
     companyLogo,
     publicId,
     companyName,
@@ -62,6 +78,9 @@ const registerEmployer = asyncHandler(async (req, res) => {
 
   if (!newEmployer) throw new Error("Register employer is fail");
 
+  req.user.ownerEmployerId = newEmployer._id;
+  req.user.save();
+
   return res.status(200).json({
     success: true,
     message: "Register employer is successfully",
@@ -69,7 +88,32 @@ const registerEmployer = asyncHandler(async (req, res) => {
   });
 });
 
-const editEmployer = asyncHandler(async (req, res) => {});
+const editEmployer = asyncHandler(async (req, res) => {
+  const newAddress = new Address({
+    province: req.body.province,
+    ward: req.body.ward,
+    district: req.body.district,
+    exactAddress: req.body.exactAddress,
+  });
+
+  await newAddress.save();
+
+  if (!newAddress) throw new Error("Create job is fail");
+
+  const updateEmployer = await Employer.findOneAndUpdate(
+    { _id: req.employer._id },
+    { $set: { addressId: newAddress } },
+    { new: true }
+  );
+
+  if (!updateEmployer) throw new Error("Register employer is fail");
+
+  return res.status(200).json({
+    success: true,
+    message: "Register employer is successfully",
+    data: updateEmployer,
+  });
+});
 
 const deleteEmployer = asyncHandler(async (req, res) => {
   const deleteCandidate = await Candidate.findOneAndDelete({

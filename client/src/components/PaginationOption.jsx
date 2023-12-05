@@ -14,25 +14,25 @@ const PaginationOption = ({
   return (
     <div className="flex items-center justify-between">
       <Typography className="flex items-center gap-2 font-bold text-light-blue-600">
-        <icons.FiSearch size={18} /> Tìm thấy {count} công việc phù hợp với bạn
+        <icons.FiSearch size={18} /> Tìm thấy {count} công việc
       </Typography>
       <div className="flex items-center gap-2">
         {isColumnCard ? (
           <IconButton
-            className="shadow-none bg-[#cbd5e1] text-[#212f3f] !p-5 !rounded-md"
+            className="shadow-none bg-white text-[#212f3f] !p-5 !rounded-md"
             onClick={() => setIsColumnCard(false)}
           >
             <icons.FaBars size={24} />
           </IconButton>
         ) : (
           <IconButton
-            className="shadow-none bg-[#cbd5e1] text-[#212f3f] !p-5 !rounded-md"
+            className="shadow-none bg-white text-[#212f3f] !p-5 !rounded-md"
             onClick={() => setIsColumnCard(true)}
           >
             <icons.FaGripVertical size={24} />
           </IconButton>
         )}
-        <div className="bg-[#cbd5e1] p-1 rounded-md ">
+        <div className="bg-white p-1 rounded-md ">
           <ReactPaginate
             pageCount={totalPage}
             onPageChange={handlePageChange}

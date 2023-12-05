@@ -32,6 +32,7 @@ import {
   MdKeyboardArrowUp,
   MdPhoneInTalk,
   MdColorLens,
+  MdAccessTimeFilled,
 } from "react-icons/md";
 import {
   BsFillImageFill,
@@ -94,8 +95,11 @@ import { SiTailwindcss, SiExpress } from "react-icons/si";
 import { DiMongodb } from "react-icons/di";
 import { LiaSearchPlusSolid, LiaSearchMinusSolid } from "react-icons/lia";
 import { ImTable2 } from "react-icons/im";
+import { TbExternalLink } from "react-icons/tb";
 
 const icons = {
+  TbExternalLink,
+  MdAccessTimeFilled,
   FaDeleteLeft,
   BsArrowsFullscreen,
   IoRemove,

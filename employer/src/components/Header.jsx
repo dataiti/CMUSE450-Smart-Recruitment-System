@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useLogOutMutation } from "../redux/features/apis/authApi";
+import ButtonCustom from "./ButtonCustom";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -51,22 +52,23 @@ const Header = () => {
         <Typography className="text-light-blue-500 font-bold uppercase">
           {name}
         </Typography>
-        <div className="flex items-center gap-2">
-          <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">
-            <icons.PiBellRingingFill size={20} />
-            <span className="absolute z-30 top-[-3px] right-[-3px] bg-red-500 p-[3px] rounded-full text-white">
-              <icons.IoAlertSharp size={12} />
-            </span>
-          </button>
-          <Link to="/message">
+        {isLoggedIn ? (
+          <div className="flex items-center gap-2">
             <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">
-              <icons.BsMessenger size={20} />
+              <icons.PiBellRingingFill size={20} />
               <span className="absolute z-30 top-[-3px] right-[-3px] bg-red-500 p-[3px] rounded-full text-white">
                 <icons.IoAlertSharp size={12} />
               </span>
             </button>
-          </Link>
-          {isLoggedIn && (
+            <Link to="/message">
+              <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">
+                <icons.BsMessenger size={20} />
+                <span className="absolute z-30 top-[-3px] right-[-3px] bg-red-500 p-[3px] rounded-full text-white">
+                  <icons.IoAlertSharp size={12} />
+                </span>
+              </button>
+            </Link>
+
             <Menu>
               <MenuHandler>
                 <Button
@@ -103,8 +105,21 @@ const Header = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex-1 flex items-center gap-3 justify-end">
+            <>
+              <ButtonCustom to="/register">Đăng ký</ButtonCustom>
+              <ButtonCustom to="/login">Đăng nhập</ButtonCustom>
+              <ButtonCustom
+                className="bg-teal-800 hover:bg-teal-700"
+                to="http://localhost:3000"
+              >
+                Kênh tìm việc
+              </ButtonCustom>
+            </>
+          </div>
+        )}
       </div>
     </div>
   );

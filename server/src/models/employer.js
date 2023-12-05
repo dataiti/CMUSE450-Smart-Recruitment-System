@@ -33,13 +33,19 @@ const employerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    coverImage: {
+      type: String,
+    },
+    coverImagePublicId: {
+      type: String,
+    },
     companySize: {
       type: String,
       required: true,
     },
-    companyLocation: {
-      type: String,
-      required: true,
+    addressId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Address",
     },
     companyDescription: {
       type: String,

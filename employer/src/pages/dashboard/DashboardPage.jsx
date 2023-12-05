@@ -36,7 +36,7 @@ const DashboardPage = () => {
   const [startDay, setStartDay] = useState("");
   const [endDay, setEndDay] = useState("");
   const [type, setType] = useState("applicated");
-  const [typeTime, setTypeTime] = useState("month");
+  const [typeTime, setTypeTime] = useState("year");
   const [typePieChart, setTypePieChart] = useState("industry");
 
   const [limit, setLimit] = useState(5);

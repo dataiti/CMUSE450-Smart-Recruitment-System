@@ -13,7 +13,11 @@ const searchById = asyncHandler(async (req, res, next, id) => {
 
   const search = await Search.findById(id);
 
-  if (!search) throw new Error("search is not find");
+  if (!search)
+    return res.status(400).json({
+      success: true,
+      message: "Search is not find",
+    });
 
   req.search = search;
   next();

@@ -1,8 +1,76 @@
-import React from "react";
+// import React from "react";
 import InputEditCV from "./InputEditCV";
 import { Typography } from "@material-tailwind/react";
 
+import React, { useRef, useState } from "react";
+
+const EditableDiv = ({ id, onDelete, isBlock, isFocus, label }) => {
+  const divRef = useRef(null);
+
+  const handleDelete = () => {
+    onDelete(id);
+  };
+
+  return (
+    <div
+      ref={divRef}
+      className={`bg-white z-20 font-bold ${
+        isBlock && "w-[14%]"
+      } px-1 py-[1px] text-sm rounded-none border-2 outline-none ${
+        isFocus ? "border-gray-500" : "border-transparent"
+      }`}
+      spellCheck={false}
+      contentEditable={true}
+      dangerouslySetInnerHTML={{ __html: label }}
+    >
+      <button onClick={handleDelete}>Xoá</button>
+    </div>
+  );
+};
+
 const IconicCV = () => {
+  const [contentBefore, setContentBefore] = useState([]);
+  const [contentAfter, setContentAfter] = useState([]);
+
+  const handleAddBefore = () => {
+    setContentBefore((prevContent) => [
+      ...prevContent,
+      <EditableDiv
+        key={prevContent.length}
+        id={prevContent.length}
+        onDelete={handleDeleteBefore}
+        isBlock
+        isFocus
+        label="Before Content"
+      />,
+    ]);
+  };
+
+  const handleAddAfter = () => {
+    setContentAfter((prevContent) => [
+      ...prevContent,
+      <EditableDiv
+        key={prevContent.length}
+        id={prevContent.length}
+        onDelete={handleDeleteAfter}
+        isBlock
+        isFocus
+        label="After Content"
+      />,
+    ]);
+  };
+
+  const handleDeleteBefore = (id) => {
+    setContentBefore((prevContent) =>
+      prevContent.filter((item) => item.props.id !== id)
+    );
+  };
+
+  const handleDeleteAfter = (id) => {
+    setContentAfter((prevContent) =>
+      prevContent.filter((item) => item.props.id !== id)
+    );
+  };
   return (
     <div className="flex flex-col gap-2 w-full h-full">
       <div className="grid grid-cols-12 gap-4 w-full">

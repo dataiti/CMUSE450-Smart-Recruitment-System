@@ -63,7 +63,7 @@ const RegisterForm = ({ open, handleOpen }) => {
 
   return (
     <form
-      className="bg-white py-8 rounded-3xl mx-auto w-full max-w-[24rem]"
+      className="bg-white py-8 rounded-3xl mx-auto w-full max-w-[600px]"
       onSubmit={handleSubmit(onSubmitRegister)}
     >
       <Typography variant="h3" color="black" className="text-center">

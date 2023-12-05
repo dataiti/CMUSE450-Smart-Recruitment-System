@@ -19,13 +19,13 @@ router.get(
   isAdminSystem,
   getListOfEmployerForAdmin
 );
-router.get("/get-employer-detail/:userId/:employerId", getEmployerDetail);
+router.get("/get-employer-detail/:employerId", getEmployerDetail);
 router.post(
   "/register-employer/:userId",
   uploadCloud.single("companyLogo"),
   registerEmployer
 );
-router.put("/edit-employer/:userId", editEmployer);
+router.put("/edit-employer/:userId/:employerId", editEmployer);
 router.delete("/delete-employer/:userId", deleteEmployer);
 
 router.param("employerId", employerById);
