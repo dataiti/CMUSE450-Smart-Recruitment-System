@@ -13,20 +13,24 @@ import { icons } from "../../utils/icons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import SelectController from "../../components/SelectController";
-import TextareaController from "../../components/TextareaController";
 import { experiens, jobPositionOptions } from "../../utils/constants";
 import axiosClient from "../../configs/axiosConfig";
-import IconButtonCustom from "../../components/IconButtonCustom";
-import ButtonCustom from "../../components/ButtonCustom";
-import Loading from "../../components/Loading";
 import { Link } from "react-router-dom";
-import InputTagsController from "../../components/InputTagsController";
 import { useCreateCandidateMutation } from "../../redux/features/apis/candidateApi";
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { toast } from "react-toastify";
-import InputController from "../../components/InputController";
+import {
+  InputController,
+  TextareaController,
+  SelectController,
+  InputTagsController,
+} from "../../components/forms";
+import {
+  ButtonCustom,
+  IconButtonCustom,
+  Loading,
+} from "../../components/shares";
 
 const schema = yup.object().shape({
   // jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),

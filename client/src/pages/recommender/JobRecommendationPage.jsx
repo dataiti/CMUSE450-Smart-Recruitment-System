@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { useGetRecommentJobForCandidateQuery } from "../../redux/features/apis/recommenderApi";
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import Loading from "../../components/Loading";
+import {
+  Loading,
+  SelectCustom,
+  PaginationOption,
+} from "../../components/shares";
 import { Link } from "react-router-dom";
 import { Breadcrumbs, Input, Typography } from "@material-tailwind/react";
-import JobCard from "../../components/JobCard";
+import { JobCard } from "../../components/jobs";
 import { useDebounce } from "../../hooks";
-import SelectCustom from "../../components/SelectCustom";
 import { icons } from "../../utils/icons";
 import { orderByOptions, sortByOptions } from "../../utils/constants";
-import PaginationOption from "../../components/PaginationOption";
 
 const JobRecommendationPage = () => {
   const { user } = useSelector(authSelect);

@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import CarouselCustom from "../../components/CarouselCustom";
 import { images } from "../../assets/images";
-import Loading from "../../components/Loading";
 import { loyaltyProgramItem } from "../../utils/constants";
 import { Typography } from "@material-tailwind/react";
-import Container from "../../components/Container";
 import { useGetListOfCategoriesQuery } from "../../redux/features/apis/categoryApi";
-import LineChart from "../../components/LineChart";
+import { LineChart } from "../../components/charts";
 import { useGetTechnicalTrendingChartQuery } from "../../redux/features/apis/analyticApi";
 import {
   Tabs,
@@ -18,9 +15,14 @@ import {
 import { useGetListOfJobsForHomaPageQuery } from "../../redux/features/apis/jobApi";
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import ButtonCustom from "../../components/ButtonCustom";
+import {
+  ButtonCustom,
+  Container,
+  CarouselCustom,
+  Loading,
+} from "../../components/shares";
 import { Link } from "react-router-dom";
-import JobCardSmall from "../../components/JobCardSmall";
+import { JobCardSmall } from "../../components/jobs";
 
 const HomePage = () => {
   const { user } = useSelector(authSelect);

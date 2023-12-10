@@ -7,15 +7,13 @@ import {
 } from "@material-tailwind/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Loading from "../../components/Loading";
 import { useGetListApplyJobForCandidateQuery } from "../../redux/features/apis/applyJobApi";
 import { useDebounce } from "../../hooks";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { useSelector } from "react-redux";
 import { statusOptions, tableHeadApplyJob } from "../../utils/constants";
-import Pagination from "../../components/Pagination";
 import { covertToDate } from "../../utils/fn";
-import SelectCustom from "../../components/SelectCustom";
+import { SelectCustom, Pagination, Loading } from "../../components/shares";
 
 const ListMyApplyJobs = () => {
   const { user } = useSelector(authSelect);

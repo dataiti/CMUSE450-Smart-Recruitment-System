@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import JobCard from "../../components/JobCard";
+import { JobCard } from "../../components/jobs";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { Link } from "react-router-dom";

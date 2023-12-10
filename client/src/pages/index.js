@@ -12,6 +12,7 @@ import CompanyProfile from "./company/CompanyProfile";
 import ListMyApplyJobs from "./profile/ListMyApplyJobs";
 import JobRecommendationPage from "./recommender/JobRecommendationPage";
 import SearchJobPage from "./job/SearchJobPage";
+import BlogPage from "./blog/BlogPage";
 
 export {
   HomePage,
@@ -28,4 +29,5 @@ export {
   ListMyApplyJobs,
   JobRecommendationPage,
   SearchJobPage,
+  BlogPage,
 };

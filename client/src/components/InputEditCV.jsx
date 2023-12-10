@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   ExperienceInput,
   InfoInput,
+  PartInput,
   ProjectInput,
+  SkillInput,
   TextInput,
   TitleInput,
 } from "./InputCVCustom";
@@ -10,10 +12,14 @@ import ActionButtons from "./ActionsButton";
 
 const InputEditCV = ({
   type = "text",
-  label = "",
-  value = "",
-  description = "",
   isBlock = true,
+  handleMoveUp,
+  handleMoveDown,
+  handleAddAbove,
+  handleAddBelow,
+  handleDelete,
+  dangerouslySetInnerHTML,
+  handleContentChange,
 }) => {
   const [isFocus, setIsFocus] = useState(false);
 
@@ -44,10 +50,6 @@ const InputEditCV = ({
       absoluteDivRef.current.style.width = `${width}px`;
       absoluteDivRef.current.style.height = `${height}px`;
     }
-  };
-
-  const handleClickDelete = () => {
-    console.log(123);
   };
 
   useEffect(() => {
@@ -84,38 +86,64 @@ const InputEditCV = ({
         role="textbox"
         tabIndex="0"
       >
-        {type === "title" && <TitleInput value={value} divRef2={divRef2} />}
+        {type === "title" && (
+          <TitleInput
+            divRef2={divRef2}
+            dangerouslySetInnerHTML={dangerouslySetInnerHTML}
+            handleContentChange={handleContentChange}
+          />
+        )}
         {type === "info" && (
           <InfoInput
             divRef1={divRef1}
             divRef2={divRef2}
-            label={label}
             isFocus={isFocus}
-            value={value}
-            isBlock={isBlock}
+            dangerouslySetInnerHTML={dangerouslySetInnerHTML}
+            handleContentChange={handleContentChange}
           />
         )}
         {type === "experience" && (
           <ExperienceInput
             divRef1={divRef1}
             divRef2={divRef2}
-            label={label}
             isFocus={isFocus}
-            value={value}
-            description={description}
+            dangerouslySetInnerHTML={dangerouslySetInnerHTML}
+            handleContentChange={handleContentChange}
           />
         )}
         {type === "project" && (
-          <ProjectInput divRef2={divRef2} isFocus={isFocus} />
+          <ProjectInput
+            divRef2={divRef2}
+            isFocus={isFocus}
+            dangerouslySetInnerHTML={dangerouslySetInnerHTML}
+            handleContentChange={handleContentChange}
+          />
         )}
-        {type === "text" && (
-          <TextInput divRef2={divRef2} isFocus={isFocus} value={value} />
+        {type === "overview" && (
+          <TextInput
+            divRef2={divRef2}
+            isFocus={isFocus}
+            dangerouslySetInnerHTML={dangerouslySetInnerHTML}
+            handleContentChange={handleContentChange}
+          />
+        )}
+        {type === "skill" && (
+          <SkillInput
+            divRef2={divRef2}
+            isFocus={isFocus}
+            dangerouslySetInnerHTML={dangerouslySetInnerHTML}
+            handleContentChange={handleContentChange}
+          />
         )}
       </div>
       <ActionButtons
         isFocus={isFocus}
         absoluteDivRef={absoluteDivRef}
-        handleClickDelete={handleClickDelete}
+        handleMoveUp={handleMoveUp}
+        handleMoveDown={handleMoveDown}
+        handleAddAbove={handleAddAbove}
+        handleAddBelow={handleAddBelow}
+        handleDelete={handleDelete}
       />
     </div>
   );

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import ListConversations from "../../components/ListConversations";
+import { ListConversations } from "../../components/shares";
 import {
   MediaMessage,
   ReplyMessage,
   TextMessage,
-} from "../../components/TypeMessage";
+} from "../../components/shares/TypeMessage";
 import {
   Avatar,
   IconButton,

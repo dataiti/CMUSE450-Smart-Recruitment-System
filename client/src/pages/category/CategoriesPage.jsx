@@ -7,20 +7,22 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { icons } from "../../utils/icons";
-import CategoryBar from "../../components/CategoryBar";
+import { CategoryBar } from "../../components/layouts";
 import { orderByOptions, sortByOptions } from "../../utils/constants";
-import SelectCustom from "../../components/SelectCustom";
 import parse from "html-react-parser";
 import { useDebounce } from "../../hooks";
 import { useGetListOfJobsQuery } from "../../redux/features/apis/jobApi";
 import { jobSelect, setListJobs } from "../../redux/features/slices/jobSlice";
 import { useDispatch, useSelector } from "react-redux";
-import JobCard from "../../components/JobCard";
-import Loading from "../../components/Loading";
-import DrawerCustom from "../../components/DrawerCustom";
-import PaginationOption from "../../components/PaginationOption";
+import { JobCard } from "../../components/jobs";
 import { videos } from "../../assets/videos";
-import ButtonCustom from "../../components/ButtonCustom";
+import {
+  ButtonCustom,
+  PaginationOption,
+  DrawerCustom,
+  Loading,
+  SelectCustom,
+} from "../../components/shares";
 import { authSelect } from "../../redux/features/slices/authSlice";
 
 const CategoriesPage = () => {

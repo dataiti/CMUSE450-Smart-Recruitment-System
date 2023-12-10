@@ -1,16 +1,15 @@
-import { Breadcrumbs, Button } from "@material-tailwind/react";
+import { Breadcrumbs } from "@material-tailwind/react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { useSelector } from "react-redux";
-import InputController from "../../components/InputController";
 import { Link } from "react-router-dom";
-import ButtonCustom from "../../components/ButtonCustom";
 import { useReplacePasswordMutation } from "../../redux/features/apis/userApi";
 import { toast } from "react-toastify";
-import Loading from "../../components/Loading";
+import { InputController } from "../../components/forms";
+import { Loading, ButtonCustom } from "../../components/shares";
 
 const schema = yup.object().shape({
   currentPassword: yup

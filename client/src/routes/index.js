@@ -14,8 +14,9 @@ import {
   ListMyApplyJobs,
   JobRecommendationPage,
   SearchJobPage,
+  BlogPage,
 } from "../pages";
-import ProtectedRoutes from "../components/ProtectedRoutes";
+import { ProtectedRoutes } from "../components/shares";
 
 const routers = [
   {
@@ -39,8 +40,8 @@ const routers = [
         element: <JobDetailPage />,
       },
       {
-        path: "/recommender-job",
-        element: <JobRecommendationPage />,
+        path: "/blog",
+        element: <BlogPage />,
       },
     ],
   },
@@ -58,6 +59,10 @@ const routers = [
           {
             path: "/company-profile/:companyId",
             element: <CompanyProfile />,
+          },
+          {
+            path: "/recommender-job",
+            element: <JobRecommendationPage />,
           },
         ],
       },

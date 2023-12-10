@@ -1,15 +1,17 @@
 import { Breadcrumbs, Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import CategoryBar from "../../components/CategoryBar";
+import { CategoryBar } from "../../components/layouts";
 import { useGetListOfJobsQuery } from "../../redux/features/apis/jobApi";
 import { jobSelect, setListJobs } from "../../redux/features/slices/jobSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../../components/Loading";
-import PaginationOption from "../../components/PaginationOption";
-import JobCard from "../../components/JobCard";
+import { JobCard } from "../../components/jobs";
 import { videos } from "../../assets/videos";
-import ButtonCustom from "../../components/ButtonCustom";
+import {
+  ButtonCustom,
+  PaginationOption,
+  Loading,
+} from "../../components/shares";
 
 const SearchPage = () => {
   const dispatch = useDispatch();

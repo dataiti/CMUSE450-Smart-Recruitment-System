@@ -2,19 +2,21 @@ import { Breadcrumbs } from "@material-tailwind/react";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetEmployerDetailQuery } from "../../redux/features/apis/employerApi";
-import Loading from "../../components/Loading";
-import Container from "../../components/Container";
-import IconButtonCustom from "../../components/IconButtonCustom";
-import Address from "../../components/Address";
-import Mapbox from "../../components/Mapbox";
 import { Typography } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
 import parse from "html-react-parser";
-import ShareButton from "../../components/ShareButton";
 import { useState } from "react";
 import { useGetListJobsByCompanyQuery } from "../../redux/features/apis/jobApi";
-import JobCardSmall from "../../components/JobCardSmall";
-import ButtonCustom from "../../components/ButtonCustom";
+import { JobCardSmall } from "../../components/jobs";
+import {
+  ButtonCustom,
+  ShareButton,
+  Address,
+  Mapbox,
+  IconButtonCustom,
+  Container,
+  Loading,
+} from "../../components/shares";
 
 const CompanyProfile = () => {
   const { companyId } = useParams();
@@ -138,11 +140,23 @@ const CompanyProfile = () => {
               <Mapbox workRegion={companyDetailData?.data?.addressId} />
             </div>
           </Container>
-          <div className="flex items-center justify-center gap-3 bg-white rounded-s-md">
-            <Typography className="font-bold text-sm text-light-blue-500">
-              Chia sẻ công ty qua:{" "}
-            </Typography>
-            <ShareButton isRow />
+          <div className="bg-white p-2 rounded-md">
+            <div className="flex justify-center items-center gap-2">
+              <ButtonCustom className="bg-gray-300 hover:bg-gray-400 text-black flex items-center gap-2">
+                <icons.FaUserPlus size={18} />
+                <Typography className="text-xs font-bold">Theo dõi</Typography>
+              </ButtonCustom>
+              <ButtonCustom className="bg-gray-300 hover:bg-gray-400 text-black">
+                <icons.BsMessenger size={18} />
+                Nhắn tin
+              </ButtonCustom>
+            </div>
+            <div className="flex items-center justify-center gap-3 bg-white rounded-s-md">
+              <Typography className="font-bold text-sm text-light-blue-500">
+                Chia sẻ công ty qua:{" "}
+              </Typography>
+              <ShareButton isRow />
+            </div>
           </div>
         </div>
       </div>

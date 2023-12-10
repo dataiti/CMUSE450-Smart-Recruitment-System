@@ -1,19 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Spinner, Typography } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import { useReactToPrint } from "react-to-print";
 import { colors, menuCVItems } from "../../utils/constants";
-import IconButtonCustom from "../../components/IconButtonCustom";
+import { IconButtonCustom } from "../../components/shares";
 import { icons } from "../../utils/icons";
 import { toast } from "react-toastify";
 import { images } from "../../assets/images";
 import { Link } from "react-router-dom";
 import { socket } from "../../socket";
-import Markdown from "markdown-to-jsx";
-import IconicCV from "../../components/IconicCV";
-import Chatbot from "../../components/Chatbot";
-import InputEditCV from "../../components/InputEditCV";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import CascadeCV from "../../components/CascadeCV";
+import { Chatbot } from "../../components/shares";
+import Iconic from "../../components/CVs/templates/Iconic";
 
 const ResumeOnlinePage = () => {
   const [inputMessageValue, setInputMessageValue] = useState("");
@@ -22,20 +18,20 @@ const ResumeOnlinePage = () => {
     "Hãy gửi một hỏi, tôi sẽ trả lời giúp bạn"
   );
   const [isLoading, setIsLoading] = useState(false);
-  // const [contentMenu, setContentMenu] = useState(
-  //   () => images.listCVTemplateImage
-  // );
+  const [contentMenu, setContentMenu] = useState(
+    () => images.listCVTemplateImage
+  );
   const [typeMenu, setTypeMenu] = useState("template");
 
   const conponentPDF = useRef();
 
-  // useEffect(() => {
-  //   if (typeMenu === "template") {
-  //     setContentMenu(images.listCVTemplateImage);
-  //   } else if (typeMenu === "color") {
-  //     setContentMenu(colors);
-  //   }
-  // }, [typeMenu]);
+  useEffect(() => {
+    if (typeMenu === "template") {
+      setContentMenu(images.listCVTemplateImage);
+    } else if (typeMenu === "color") {
+      setContentMenu(colors);
+    }
+  }, [typeMenu]);
 
   useEffect(() => {
     const handleUserGetAnswer = (message) => {
@@ -112,9 +108,9 @@ const ResumeOnlinePage = () => {
             </div>
           </div>
         </div>
-        <div className="w-[16%] bg-blue-gray-800 h-screen overflow-y-auto">
+        <div className="w-[14%] bg-blue-gray-800 h-screen overflow-y-auto">
           <div className="flex flex-col gap-3 px-5 py-10">
-            {/* {contentMenu.map((content, index) => {
+            {contentMenu.map((content, index) => {
               return (
                 <div key={index} className="rounded-md shadow-lg">
                   {typeMenu === "template" ? (
@@ -130,23 +126,25 @@ const ResumeOnlinePage = () => {
                   )}
                 </div>
               );
-            })} */}
+            })}
           </div>
         </div>
 
-        <div className="w-[50%] h-full flex justify-center overflow-y-auto">
+        <div className="w-[52%] h-full flex justify-center overflow-y-auto p-4">
           <div className="h-full w-full bg-white py-8 px-16" ref={conponentPDF}>
-            <IconicCV />
+            <Iconic />
           </div>
         </div>
-        <Chatbot
-          answer={answer}
-          question={question}
-          isLoading={isLoading}
-          setInputMessageValue={setInputMessageValue}
-          inputMessageValue={inputMessageValue}
-          handleSendMessageChatbot={handleSendMessageChatbot}
-        />
+        <div className="w-[34%] h-screen">
+          <Chatbot
+            answer={answer}
+            question={question}
+            isLoading={isLoading}
+            setInputMessageValue={setInputMessageValue}
+            inputMessageValue={inputMessageValue}
+            handleSendMessageChatbot={handleSendMessageChatbot}
+          />
+        </div>
       </div>
     </div>
   );

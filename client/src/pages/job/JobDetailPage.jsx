@@ -7,32 +7,34 @@ import {
   IconButton,
   Typography,
 } from "@material-tailwind/react";
-import Loading from "../../components/Loading";
-import Container from "../../components/Container";
+import Loading from "../../components/shares/Loading";
+import Container from "../../components/shares/Container";
 import { icons } from "../../utils/icons";
-import Mapbox from "../../components/Mapbox";
+import Mapbox from "../../components/shares/Mapbox";
 import parse from "html-react-parser";
 import {
   formatRemainingTime,
   formattedAmount,
   printExperienceText,
 } from "../../utils/fn";
-import EmploymentInfo from "../../components/EmploymentInfo";
-import Tag from "../../components/Tag";
-import IconButtonCustom from "../../components/IconButtonCustom";
-import ButtonCustom from "../../components/ButtonCustom";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { socket } from "../../socket";
-import Modal from "../../components/Modal";
-import ApplyJobForm from "../../components/ApplyJobForm";
-import EvaluateSuitableJob from "../../components/EvaluateSuitableJob";
 import { useGetEvaluateSuitableJobQuery } from "../../redux/features/apis/analyticApi";
 import { useUserViewedJobMutation } from "../../redux/features/apis/userApi";
-import BoxChat from "../../components/BoxChat";
 import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
-import ShareButton from "../../components/ShareButton";
-import Address from "../../components/Address";
+import {
+  Address,
+  ShareButton,
+  BoxChat,
+  EvaluateSuitableJob,
+  Modal,
+  ButtonCustom,
+  IconButtonCustom,
+  Tag,
+  EmploymentInfo,
+} from "../../components/shares";
+import { ApplyJobForm } from "../../components/forms";
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
