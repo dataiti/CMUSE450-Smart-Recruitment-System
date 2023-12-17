@@ -1,18 +1,17 @@
-import { Input, Typography } from "@material-tailwind/react";
 import React from "react";
 import { Controller } from "react-hook-form";
+import { Textarea, Typography } from "@material-tailwind/react";
 
-const InputController = ({
+const TextareaController = ({
   name,
   control,
   label,
   error,
-  isDisabel = false,
-  type = "text",
+  isDisabled = false,
   isField = false,
 }) => {
   return (
-    <div className="flex flex-col relative ml-10 w-full">
+    <div className="flex flex-col relative ml-8 w-full">
       <Controller
         name={name}
         control={control}
@@ -30,21 +29,17 @@ const InputController = ({
                 isField ? "w-[86%]" : "col-span-2 relative w-full"
               } `}
             >
-              <Input
-                type={type}
+              <Textarea
                 label={label}
                 {...field}
                 error={!!error}
-                disabled={isDisabel}
-                className=" bg-white w-full"
-                labelProps={{
-                  className: "w-full",
-                }}
+                className="col-span-3 bg-white w-full"
+                disabled={isDisabled}
               />
               {!!error && (
                 <Typography
                   color="red"
-                  className="absolute -bottom-5 text-xs font-medium"
+                  className="absolute -bottom-3 text-xs font-medium"
                 >
                   {error?.message}
                 </Typography>
@@ -57,4 +52,4 @@ const InputController = ({
   );
 };
 
-export default InputController;
+export default TextareaController;

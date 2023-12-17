@@ -1,4 +1,8 @@
 const Category = require("../models/category");
+const Employer = require("../models/employer");
+const User = require("../models/user");
+const Notification = require("../models/notification");
+const ApplyJob = require("../models/applyJob");
 
 const parseArrayQueryParam = (paramName, query) =>
   query[paramName] && query[paramName] !== "[]"
@@ -136,9 +140,64 @@ const evaluateSuitableJob = async ({ candidate, job }) => {
   return overallPercentage.toFixed(2);
 };
 
+const handleCVStatusChange = async ({
+  message,
+  applyStatus,
+  candidateStatus,
+}) => {
+  const { userId, employerId, applyJobId } = message;
+
+  try {
+    const applyJob = await ApplyJob.findById(applyJobId);
+    const user = await User.findById(userId);
+    const employer = await Employer.findById(employerId);
+
+    if (!user || !applyJob || !employer) return;
+
+    await ApplyJob.findByIdAndUpdate(
+      applyJobId,
+      { $set: { applyStatus, candidateStatus } },
+      { new: true }
+    );
+
+    const notificationContent =
+      newStatus === "viewed"
+        ? `${employer?.companyName} đã xem CV mà bạn đã ứng tuyển. Xem ngay`
+        : newStatus === "rejected"
+        ? `${employer?.companyName} đã từ chối CV mà bạn đã ứng tuyển. Xem ngay`
+        : `${employer?.companyName} đã gửi lời mời phỏng vấn mà bạn đã ứng tuyển. Xem ngay`;
+
+    const newNotification = new Notification({
+      userId,
+      employerId,
+      title: "Thông báo kết quả CV của bạn",
+      content: notificationContent,
+      type: "message",
+    });
+
+    await newNotification.save();
+
+    const listNotifications = await Notification.find({ userId })
+      .sort("-_id")
+      .populate("userId", "firstName lastName _id avatar email status")
+      .populate(
+        "employerId",
+        "companyLogo companyName companyEmail _id companyPhoneNumber"
+      );
+
+    io.to(user?.socketId).emit("user_get_list_notifications", {
+      success: true,
+      message: listNotifications,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   parseArrayQueryParam,
   calculateSimilarity,
   sortObject,
   evaluateSuitableJob,
+  handleCVStatusChange,
 };

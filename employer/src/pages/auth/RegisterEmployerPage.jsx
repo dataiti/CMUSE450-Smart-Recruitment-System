@@ -11,19 +11,21 @@ import {
 } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import InputController from "../../components/InputController";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { icons } from "../../utils/icons";
-import SelectController from "../../components/SelectController";
 import {
   companyIndustryOptions,
   companySizesOptions,
 } from "../../utils/constants";
-import TextEditorController from "../../components/TextEditorController";
 import axiosClient from "../../configs/axiosConfig";
-import InputFileController from "../../components/InputFileController";
+import {
+  InputFileController,
+  TextEditorController,
+  SelectController,
+  InputController,
+} from "../../components/forms";
 import { useDispatch, useSelector } from "react-redux";
 import { useRegisterEmployerMutation } from "../../redux/features/apis/employerApi";
 import { authSelect, updateUser } from "../../redux/features/slices/authSlice";

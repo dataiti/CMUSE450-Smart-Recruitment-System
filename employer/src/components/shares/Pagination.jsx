@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import ReactPaginate from "react-paginate";
-import { icons } from "../utils/icons";
+import { icons } from "../../utils/icons";
 
 const Pagination = ({
   totalPage,

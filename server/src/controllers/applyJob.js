@@ -54,20 +54,20 @@ const getApplyJobDetail = asyncHandler(async (req, res) => {
 });
 
 const applyJob = asyncHandler(async (req, res) => {
-  const data = await pdf(req.file.buffer);
-  const cvText = data.text;
+  // const data = await pdf(req.file.buffer);
+  // const cvText = data.text;
 
-  // const tokenizer = new natural.WordTokenizer();
-  // const tokens = cvText.split("\n").filter((word) => word.trim() !== "");
+  // // const tokenizer = new natural.WordTokenizer();
+  // // const tokens = cvText.split("\n").filter((word) => word.trim() !== "");
 
-  const result = await client.generateText({
-    model: MODEL_NAME,
-    prompt: {
-      text: `${cvText}. Please generate json format for contact, number of work year experience, skills as an array, education`,
-    },
-  });
+  // const result = await client.generateText({
+  //   model: MODEL_NAME,
+  //   prompt: {
+  //     text: `${cvText}. Please generate json format for contact, number of work year experience, skills as an array, education`,
+  //   },
+  // });
 
-  console.log(JSON.parse(result[0]?.candidates[0]?.output));
+  // console.log(JSON.parse(result[0]?.candidates[0]?.output));
 
   // const cleanedJsonString = result[0]?.candidates[0]?.output.replace(
   //   /\\n|\\t/g,
@@ -79,60 +79,54 @@ const applyJob = asyncHandler(async (req, res) => {
   // console.log(jsonData);
 
   // console.log(tokens);
-  // const storage = getStorage();
-  // const storageRef = ref(storage, `pdf-files/${req.file.originalname}`);
+  const storage = getStorage();
+  const storageRef = ref(storage, `pdf-files/${req.file.originalname}`);
 
-  // try {
-  //   const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, {
-  //     contentType: req.file.mimetype,
-  //   });
+  try {
+    const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, {
+      contentType: req.file.mimetype,
+    });
 
-  //   const downloadURL = await getDownloadURL(snapshot.ref);
+    const downloadURL = await getDownloadURL(snapshot.ref);
 
-  //   const newApplyJob = new ApplyJob({
-  //     candidateId: req.user._id,
-  //     jobId: req.job._id,
-  //     employerId: req.employer._id,
-  //     CVName: req.file.originalname,
-  //     CVpdf: downloadURL,
-  //     information: req.body.information,
-  //   });
+    const newApplyJob = new ApplyJob({
+      candidateId: req.user._id,
+      jobId: req.job._id,
+      employerId: req.employer._id,
+      CVName: req.file.originalname,
+      CVpdf: downloadURL,
+      information: req.body.information,
+    });
 
-  //   const savedApplyJob = await newApplyJob.save();
+    const savedApplyJob = await newApplyJob.save();
 
-  //   await Job.findOneAndUpdate(
-  //     { _id: req.job._id },
-  //     {
-  //       $set: {
-  //         appliedIds: [...req.job.appliedIds, savedApplyJob._id],
-  //       },
-  //     },
-  //     { new: true }
-  //   );
+    await Job.findOneAndUpdate(
+      { _id: req.job._id },
+      {
+        $set: {
+          appliedIds: [...req.job.appliedIds, savedApplyJob._id],
+        },
+      },
+      { new: true }
+    );
 
-  //   await User.findOneAndUpdate(
-  //     { _id: req.user._id },
-  //     {
-  //       $set: {
-  //         appliedJobs: [...req.user.appliedJobs, req.job._id],
-  //       },
-  //     },
-  //     { new: true }
-  //   );
+    await User.findOneAndUpdate(
+      { _id: req.user._id },
+      {
+        $set: {
+          appliedJobs: [...req.user.appliedJobs, req.job._id],
+        },
+      },
+      { new: true }
+    );
+  } catch (error) {
+    await deleteObject(storageRef);
 
-  return res.status(200).json({
-    success: true,
-    message: "File uploaded to Firebase and ApplyJob added",
-    data: result[0]?.candidates[0]?.output,
-  });
-  // } catch (error) {
-  //   await deleteObject(storageRef);
-
-  //   return res.status(500).json({
-  //     success: false,
-  //     message: "Error uploading file and adding ApplyJob",
-  //   });
-  // }
+    return res.status(500).json({
+      success: false,
+      message: "Error uploading file and adding ApplyJob",
+    });
+  }
 });
 
 const updateApplyJob = asyncHandler(async (req, res) => {});

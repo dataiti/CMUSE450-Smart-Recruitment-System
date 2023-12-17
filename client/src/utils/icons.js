@@ -48,6 +48,7 @@ import {
   BsTelephone,
   BsFillCheckCircleFill,
   BsArrowsFullscreen,
+  BsFileTextFill,
 } from "react-icons/bs";
 import {
   FaUserAlt,
@@ -57,6 +58,7 @@ import {
   FaUserFriends,
   FaHeadphonesAlt,
   FaBriefcase,
+  FaListUl,
 } from "react-icons/fa";
 import {
   BiSolidPhoneCall,
@@ -98,6 +100,8 @@ import { ImTable2 } from "react-icons/im";
 import { TbExternalLink } from "react-icons/tb";
 
 const icons = {
+  BsFileTextFill,
+  FaListUl,
   TbExternalLink,
   MdAccessTimeFilled,
   FaDeleteLeft,

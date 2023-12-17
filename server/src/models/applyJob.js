@@ -28,13 +28,17 @@ const applyJobSchema = new mongoose.Schema(
     information: {
       type: String,
     },
-    response: {
-      type: String,
-    },
     status: {
       type: String,
-      default: "notviewed",
-      enum: ["notviewed", "viewed", "accepted", "rejected", "progressing"],
+      default: "pending",
+      enum: [
+        "pending",
+        "invited",
+        "responsed",
+        "rejected",
+        "progressing",
+        "interviewed",
+      ],
     },
   },
   { timestamps: true }

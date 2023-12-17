@@ -1,5 +1,6 @@
 const Search = require("../models/search");
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 
 const searchById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -25,6 +26,8 @@ const searchById = asyncHandler(async (req, res, next, id) => {
 
 const saveSearch = asyncHandler(async (req, res) => {
   const { keyword } = req.body;
+
+  console.log(keyword);
   if (!keyword) throw new Error("Keyword field is required");
 
   const newSearch = new Search({
@@ -66,7 +69,7 @@ const getSearchHistoryForUser = asyncHandler(async (req, res) => {
 
 const getListJobsByKeywordForUser = asyncHandler(async (req, res) => {
   const { query } = req;
-  const keyword = query.keyword || "";
+  const keyword = query.keyword ? query.keyword : "";
   const regex = keyword
     .split(" ")
     .filter((q) => q)

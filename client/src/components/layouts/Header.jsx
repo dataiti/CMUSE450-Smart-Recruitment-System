@@ -17,7 +17,7 @@ import { authSelect, logOut } from "../../redux/features/slices/authSlice";
 import { images } from "../../assets/images";
 import { menuItems, navbarItems } from "../../utils/constants";
 import { useLogOutMutation } from "../../redux/features/apis/authApi";
-import { ButtonCustom, IconButtonCustom } from "../shares";
+import { ButtonCustom, IconButtonCustom, ListNotification } from "../shares";
 import { useDebounce } from "../../hooks";
 import { socket } from "../../socket";
 import {
@@ -36,11 +36,23 @@ const Header = () => {
   const [openRegisterForm, setOpenegisterForm] = useState(false);
   const [openLoginForm, setOpenLoginForm] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [listNotifications, setListNotifications] = useState([]);
   const [indexNavbar, setIndexNavbar] = useState(1);
   const [isOpenNotification, setIsOpenNotification] = useState(false);
   const [listSearchValue, setListSearchValue] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
+  const [listNotifications, setListNotifications] = useState([]);
+  const [isLoadingNotification, setIsLoadingNotification] = useState(false);
+
+  useEffect(() => {
+    setIsLoadingNotification(true);
+    socket?.emit("get_list_notifications", { userId: user?._id });
+  }, [user?._id]);
+
+  socket?.on("user_get_list_notifications", ({ message }) => {
+    setIsLoadingNotification(true);
+    setListNotifications(message);
+    setIsLoadingNotification(false);
+  });
 
   const searchDobouceValue = useDebounce(searchValue, 800);
 
@@ -59,6 +71,7 @@ const Header = () => {
   }, [searchData]);
 
   socket?.on("user_get_list_notifications", ({ message }) => {
+    console.log(message);
     setListNotifications(message);
   });
 
@@ -93,7 +106,7 @@ const Header = () => {
   const handleEnterKeywordSearch = async (e) => {
     if (e.key === "Enter") {
       setIsFocus(false);
-      await saveSearch({ userId: user?._id });
+      await saveSearch({ userId: user?._id, keyword: searchValue });
       navigate(`/search-job?keyword=${searchValue}`);
     }
   };
@@ -104,14 +117,12 @@ const Header = () => {
   };
 
   const handleDeleteSearchKeyword = async ({ searchId }) => {
-    const response = await deleteSearch({ userId: user?._id, searchId });
-    if (response?.success) {
-      setListSearchValue((prev) =>
-        prev.filter(
-          (search) => search?._id?.toString() !== searchId?.toString()
-        )
-      );
-    }
+    await deleteSearch({ userId: user?._id, searchId });
+    setListSearchValue((prev) => {
+      return prev.filter((search) => {
+        return search?._id?.toString() !== searchId?.toString();
+      });
+    });
   };
 
   const handleLogout = async () => {
@@ -175,6 +186,7 @@ const Header = () => {
                 ) : (
                   <Link
                     to={item.path}
+                    target={`${item.id === 3 ? "_blank" : ""}`}
                     className={`font-bold text-sm uppercase ${
                       item.id === indexNavbar
                         ? "text-light-blue-500"
@@ -251,6 +263,7 @@ const Header = () => {
                         className="w-4 h-4 rounded-full bg-gray-400 flex items-center justify-center text-white"
                         onClick={() =>
                           handleDeleteSearchKeyword({
+                            userId: user?._id,
                             searchId: searchItem?._id,
                           })
                         }
@@ -299,37 +312,52 @@ const Header = () => {
                 <icons.IoAlertSharp size={12} />
               </span>
               {isOpenNotification && (
-                <ul className="absolute bg-white p-2 shadow-2xl rounded-md top-[120%] left-[50%] -translate-x-[50%] col-span-4 flex flex-col gap-1 w-[360px] h-[400px] overflow-y-auto">
-                  {listNotifications?.map((item) => (
-                    <li key={item?._id}>
-                      <Link
-                        to={item?.url}
-                        className={` flex items-center gap-4 !hover:bg-blue-100 p-2 rounded-md  ${
-                          item?.isViewed
-                            ? "bg-green-50 border-l-4 border-green-500"
-                            : "bg-blue-50 border-l-4 border-blue-500"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Avatar
-                            src={item?.employerId?.companyLogo}
-                            alt=""
-                            className="flex-none bg-blue-gray-600 !w-10 !h-10 object-contain !rounded-md"
-                          />
-                          <div className="flex flex-col text-start gap-1">
-                            <Typography className="mb-1 text-sm font-bold name text-black">
-                              {item?.title}
-                            </Typography>
-                            <Typography className="mb-1 text-xs font-medium name text-gray-500">
-                              {item?.content}
-                            </Typography>
-                          </div>
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <ListNotification
+                  listNotifications={listNotifications}
+                  isLoading={isLoadingNotification}
+                />
               )}
+              {/* {isOpenNotification && (
+                <ul className="absolute bg-white p-2 shadow-2xl rounded-md top-[120%] left-[50%] -translate-x-[50%] col-span-4 flex flex-col gap-1 w-[360px] h-[400px] overflow-y-auto">
+                  {listNotifications.length > 0 ? (
+                    listNotifications.map((item) => (
+                      <li key={item?._id}>
+                        <Link
+                          to={item?.url}
+                          className={` flex items-center gap-4 !hover:bg-blue-100 p-2 rounded-md  ${
+                            item?.isViewed
+                              ? "bg-green-50 border-l-4 border-green-500"
+                              : "bg-blue-50 border-l-4 border-blue-500"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Avatar
+                              src={item?.employerId?.companyLogo}
+                              alt=""
+                              className="flex-none bg-blue-gray-600 !w-10 !h-10 object-contain !rounded-md"
+                            />
+                            <div className="flex flex-col text-start gap-1">
+                              <Typography className="mb-1 text-sm font-bold name text-black">
+                                {item?.title}
+                              </Typography>
+                              <Typography className="mb-1 text-xs font-medium name text-gray-500">
+                                {item?.content}
+                              </Typography>
+                            </div>
+                          </div>
+                        </Link>
+                      </li>
+                    ))
+                  ) : (
+                    <div className="flex flex-col items-center justify-center gap-4 absolute bg-white p-2 shadow-2xl rounded-md top-[120%] left-[50%] -translate-x-[50%] col-span-4 w-[360px] h-[400px]">
+                      <img src={images.notifications} alt="" className="w-28" />
+                      <Typography className="font-bold ">
+                        Không có thông báo!
+                      </Typography>
+                    </div>
+                  )}
+                </ul>
+              )} */}
             </button>
             <Link to="/messenger">
               <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">

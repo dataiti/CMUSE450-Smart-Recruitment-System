@@ -6,6 +6,8 @@ const Message = require("../src/models/message");
 const Employer = require("../src/models/employer");
 const User = require("../src/models/user");
 const Notification = require("../src/models/notification");
+const ApplyJob = require("../src/models/applyJob");
+const Schedule = require("../src/models/schedule");
 const { client, MODEL_NAME } = require("./configs/googleAIConfig");
 require("dotenv").config();
 
@@ -16,6 +18,7 @@ const app = express();
 
 const socket = require("socket.io");
 const connectDatabase = require("./configs/connectDBConfig");
+const { handleCVStatusChange } = require("./utils/fn");
 
 // connect db
 connectDatabase();
@@ -259,7 +262,7 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("employer_send_notification", async (message) => {
-    const { userId, employerId, title, content, url } = message;
+    const { userId, employerId, title, content, type } = message;
     try {
       const user = await User.findById(userId);
 
@@ -272,7 +275,7 @@ io.on("connection", async (socket) => {
         employerId,
         title,
         content,
-        url,
+        type,
       });
 
       const savedNewNotification = await newNotification.save();
@@ -365,6 +368,211 @@ io.on("connection", async (socket) => {
       socket.emit("get_answer", {
         success: true,
         message: result[0]?.candidates[0]?.output,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("employer_reject_CV", async (message) => {
+    const { userId, employerId, applyJobId } = message;
+    try {
+      const applyJob = await ApplyJob.findById(applyJobId);
+      const user = await User.findById(userId);
+      const employer = await Employer.findById(employerId);
+
+      if (!user || !applyJob || !employer) {
+        return;
+      }
+
+      const apply = await ApplyJob.findByIdAndUpdate(
+        applyJobId,
+        { $set: { status: "rejected" } },
+        { new: true }
+      );
+
+      console.log(apply);
+
+      const newNotification = new Notification({
+        userId,
+        employerId,
+        title: `Thông báo từ ${employer?.companyName}`,
+        content: `${employer?.companyName} đã từ chối CV mà bạn đã ứng tuyển. Xem ngay`,
+        type: "message",
+      });
+
+      await newNotification.save();
+
+      const listNotifications = await Notification.find({ userId })
+        .sort("-_id")
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      io.to(user?.socketId).emit("user_get_list_notifications", {
+        success: true,
+        message: listNotifications,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("employer_interview_invition_CV", async (message) => {
+    const { userId, employerId, applyJobId, data } = message;
+    const {
+      title,
+      interviewerName,
+      interviewerEmail,
+      interviewerPhoneNumber,
+      scheduleDate,
+      location,
+      endTime,
+      startTime,
+      typeMeeting,
+      content,
+    } = data;
+    try {
+      const applyJob = await ApplyJob.findById(applyJobId);
+      const user = await User.findById(userId);
+      const employer = await Employer.findById(employerId);
+
+      if (!user || !applyJob || !employer) return;
+
+      await ApplyJob.findByIdAndUpdate(
+        applyJobId,
+        { $set: { status: "invited" } },
+        { new: true }
+      );
+
+      const startDateTime = new Date(`${scheduleDate}T${startTime}`);
+      const endDateTime = new Date(`${scheduleDate}T${endTime}`);
+
+      const newSchedule = new Schedule({
+        userId,
+        employerId,
+        applyJobId,
+        title,
+        interviewerName,
+        interviewerEmail,
+        interviewerPhoneNumber,
+        status: typeMeeting === "online" ? "online" : "offline",
+        start: startDateTime,
+        end: endDateTime,
+        location,
+        // content,
+      });
+
+      await newSchedule.save();
+
+      const newNotification = new Notification({
+        userId,
+        employerId,
+        title: `Thông báo từ ${employer?.companyName}`,
+        content: `${employer?.companyName} đã gửi lời mời phỏng vấn. Xem ngay`,
+        type: "invitation",
+      });
+
+      await newNotification.save();
+
+      const listNotifications = await Notification.find({ userId })
+        .sort("-_id")
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      io.to(user?.socketId).emit("user_get_list_notifications", {
+        success: true,
+        message: listNotifications,
+        data: data,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("user_cancel_intiviton_CV", async (message) => {
+    const { userId, employerId, applyJobId } = message;
+    try {
+      const applyJob = await ApplyJob.findById(applyJobId);
+      const user = await User.findById(userId);
+      const employer = await Employer.findById(employerId);
+
+      if (!user || !applyJob || !employer) return;
+
+      await ApplyJob.findByIdAndUpdate(
+        applyJobId,
+        { $set: { status: "canceled" } },
+        { new: true }
+      );
+
+      const newNotification = new Notification({
+        userId,
+        employerId,
+        title: `Thông báo từ ${employer?.companyName}`,
+        content: `${employer?.companyName} đã từ chối CV mà bạn đã ứng tuyển. Xem ngay`,
+        type: "message",
+      });
+
+      await newNotification.save();
+
+      const listNotifications = await Notification.find({ userId })
+        .sort("-_id")
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      io.to(user?.socketId).emit("user_get_list_notifications", {
+        success: true,
+        message: listNotifications,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("user_accepted_intiviton_CV", async (message) => {
+    const { userId, employerId, applyJobId } = message;
+    try {
+      const applyJob = await ApplyJob.findById(applyJobId);
+      const user = await User.findById(userId);
+      const employer = await Employer.findById(employerId);
+
+      if (!user || !applyJob || !employer) return;
+
+      await ApplyJob.findByIdAndUpdate(
+        applyJobId,
+        { $set: { status: "invited" } },
+        { new: true }
+      );
+
+      const newNotification = new Notification({
+        userId,
+        employerId,
+        title: `Thông báo từ ${employer?.companyName}`,
+        content: `${employer?.companyName} đã từ chối CV mà bạn đã ứng tuyển. Xem ngay`,
+        type: "message",
+      });
+
+      await newNotification.save();
+
+      const listNotifications = await Notification.find({ userId })
+        .sort("-_id")
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      io.to(user?.socketId).emit("user_get_list_notifications", {
+        success: true,
+        message: listNotifications,
       });
     } catch (error) {
       console.error(error);

@@ -1,5 +1,5 @@
 import React from "react";
-import { authSelect, logOut } from "../redux/features/slices/authSlice";
+import { authSelect, logOut } from "../../redux/features/slices/authSlice";
 import {
   Avatar,
   Button,
@@ -9,14 +9,14 @@ import {
   MenuList,
   Typography,
 } from "@material-tailwind/react";
-import { icons } from "../utils/icons";
-import { images } from "../assets/images";
-import { titleSelect } from "../redux/features/slices/titleSlice";
+import { icons } from "../../utils/icons";
+import { images } from "../../assets/images";
+import { titleSelect } from "../../redux/features/slices/titleSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useLogOutMutation } from "../redux/features/apis/authApi";
-import ButtonCustom from "./ButtonCustom";
+import { useLogOutMutation } from "../../redux/features/apis/authApi";
+import { ButtonCustom } from "../shares";
 
 const Header = () => {
   const dispatch = useDispatch();

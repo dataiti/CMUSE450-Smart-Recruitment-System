@@ -1,26 +1,48 @@
 import { icons } from "../utils/icons";
-import { images } from "../assets/images";
 
-export const CVTemplates = [
+export const menuItems = [
   {
-    id: 1,
-    name: "Cascade",
-    path: images.cascade,
+    to: "/dashboard",
+    label: "Dashboard",
+    icon: <icons.BsBarChartLineFill size={20} />,
   },
   {
-    id: 2,
-    name: "Decker",
-    path: images.decker,
+    label: "Chiến dịch tuyển dụng",
+    icon: <icons.IoBriefcase size={20} />,
+    subItems: [
+      { to: "/list-jobs", label: "Quản lý tin tuyển dụng" },
+      { to: "/create-recruitment-job", label: "Thêm tin tuyển dụng" },
+    ],
   },
   {
-    id: 3,
-    name: "Iconic",
-    path: images.iconic,
+    to: "/list-resumes",
+    label: "Hồ sơ & CV ứng tuyển",
+    icon: <icons.HiDocumentText size={20} />,
   },
   {
-    id: 4,
-    name: "Simple",
-    path: images.simple,
+    to: "/my-schedule",
+    label: "Lịch trình",
+    icon: <icons.BsCalendar3 size={20} />,
+  },
+  {
+    to: "/message",
+    label: "Tin nhắn",
+    icon: <icons.BsMessenger size={20} />,
+  },
+  {
+    to: "/decoration",
+    label: "Trang trí trang",
+    icon: <icons.MdImagesearchRoller size={20} />,
+  },
+  {
+    to: "/payment",
+    label: "Nâng cấp gói",
+    icon: <icons.MdPayment size={20} />,
+  },
+  {
+    to: "/company-profile",
+    label: "Thông tin công ty",
+    icon: <icons.IoSettingsSharp size={20} />,
   },
 ];
 
@@ -39,41 +61,21 @@ export const sexOptions = [
   },
 ];
 
-export const menuItems = [
+export const typeMeetingOptions = [
   {
     id: 1,
-    path: "/profile",
-    title: "Cài đặt thông tin cá nhân",
-    icon: <icons.FiEdit size={20} />,
+    text: "Offline",
+    value: "offline",
   },
   {
     id: 2,
-    path: "/candidate",
-    title: "Trở thành ứng viên",
-    icon: <icons.IoBriefcaseOutline size={20} />,
-  },
-  {
-    id: 3,
-    path: "/schedule-interview",
-    title: "Lịch trình",
-    icon: <icons.BsCalendar3 size={20} />,
-  },
-  {
-    id: 4,
-    path: "/meeting",
-    title: "Cuộc họp",
-    icon: <icons.HiOutlineVideoCamera size={20} />,
-  },
-  {
-    id: 5,
-    path: "/change-password",
-    title: "Đổi mật khẩu",
-    icon: <icons.IoKeyOutline size={24} />,
+    text: "Online",
+    value: "online",
   },
 ];
 
 export const experiens = [
-  { id: 1, text: "Chưa có kinh nghiệm", value: 0 },
+  { id: 1, text: "Chưa có kinh nghiệm", value: 0.5 },
   { id: 2, text: "1 năm", value: 1 },
   { id: 3, text: "2 năm", value: 2 },
   { id: 4, text: "3 năm", value: 3 },
@@ -214,10 +216,11 @@ export const tableHeadJob = [
 export const tableHeadApplyJob = [
   { id: 1, name: "ID" },
   { id: 2, name: "Thông tin ứng cử viên" },
-  { id: 3, name: "Tên chiến dịch" },
+  { id: 3, name: "Tên công việc" },
   { id: 4, name: "Tên CV" },
-  { id: 5, name: "Ngày đăng" },
-  { id: 6, name: "Trạng thái" },
+  { id: 6, name: "Độ phù hợp" },
+  { id: 5, name: "Ngày ứng tuyển" },
+  { id: 6, name: "Độ phù hợp" },
   { id: 7, name: "Hành động" },
 ];
 

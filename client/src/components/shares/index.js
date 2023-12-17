@@ -22,8 +22,13 @@ import SelectCustom from "./SelectCustom";
 import ShareButton from "./ShareButton";
 import SwitchCustom from "./SwitchCustom";
 import Tag from "./Tag";
+import MyCalendar from "./MyCalendar";
+import Followings from "./Followings";
+import ListNotification from "./ListNotification";
+import JobStatusBadge from "./JobStatusBadge";
 
 export {
+  JobStatusBadge,
   Address,
   BoxChat,
   ButtonCustom,
@@ -48,4 +53,7 @@ export {
   ShareButton,
   SwitchCustom,
   Tag,
+  MyCalendar,
+  Followings,
+  ListNotification,
 };

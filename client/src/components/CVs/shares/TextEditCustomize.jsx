@@ -2,15 +2,18 @@ import React from "react";
 
 const TextEditCustomize = ({
   className = "",
-  isFocus,
   handleContentChange,
   divRef,
   html,
+  editableRef,
 }) => {
   return (
     <>
       <div
-        ref={divRef}
+        ref={(ref) => {
+          if (divRef) divRef.current = ref;
+          if (editableRef) editableRef.current = ref;
+        }}
         className={className}
         spellCheck={false}
         contentEditable={true}

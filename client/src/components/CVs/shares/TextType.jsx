@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ActionButtons from "./ActionButtons";
 import TextEditCustomize from "./TextEditCustomize";
+import Menu from "./Menu";
 
 const TextType = ({
   handleMoveUp,
@@ -58,9 +59,28 @@ const TextType = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         resizeObserver.unobserve(divRef1.current);
       }
+
+      if (divRef1.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        resizeObserver.unobserve(editableRef.current);
+      }
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const editableRef = useRef(null);
+
+  const handleBoldClick = () => {
+    document.execCommand("bold", false, null);
+  };
+
+  const handleItalicClick = () => {
+    document.execCommand("italic", false, null);
+  };
+
+  const handleUnderlineClick = () => {
+    document.execCommand("underline", false, null);
+  };
 
   return (
     <div className={`relative ${isFocus && "z-40"} block`}>
@@ -75,6 +95,7 @@ const TextType = ({
           isFocus={isFocus}
           handleContentChange={handleContentChange}
           divRef={divRef2}
+          editableRef={editableRef}
           html="- Over 2 years of experience in programming with good communication and quick learning skills<br>
               - Strengths: Front-end technology and Back-end web application development<br>
               - Proficiency in HTML, CSS, JavaScript<br>
@@ -94,6 +115,12 @@ const TextType = ({
         handleAddAbove={handleAddAbove}
         handleAddBelow={handleAddBelow}
         handleDelete={handleDelete}
+      />
+      <Menu
+        isFocus={isFocus}
+        handleBoldClick={handleBoldClick}
+        handleItalicClick={handleItalicClick}
+        handleUnderlineClick={handleUnderlineClick}
       />
     </div>
   );

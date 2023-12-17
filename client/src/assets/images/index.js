@@ -7,6 +7,7 @@ import banner1 from "./banner1.jpg";
 import banner2 from "./banner2.jpg";
 import banner3 from "./banner3.jpg";
 import startchat from "./startchat.jpg";
+import notifications from "./no-notifications.png";
 
 const listBannerImage = [banner1, banner2, banner3];
 const listCVTemplateImage = [
@@ -28,4 +29,5 @@ export const images = {
   startchat,
   listBannerImage,
   listCVTemplateImage,
+  notifications,
 };

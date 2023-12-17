@@ -7,9 +7,9 @@ const scheduleSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    jobId: {
+    applyJobId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Job",
+      ref: "ApplyJob",
       required: true,
     },
     employerId: {
@@ -17,32 +17,43 @@ const scheduleSchema = new mongoose.Schema(
       ref: "Employer",
       required: true,
     },
-    addressId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Address",
-      required: true,
-    },
-    type: {
-      type: String,
-      enum: ["online", "offline"],
-      required: true,
-    },
-    dateTime: {
-      type: Date,
-      required: true,
-    },
     interviewerName: {
       type: String,
       required: true,
     },
-    status: {
+    interviewerEmail: {
       type: String,
       required: true,
-      default: "",
-      enum: [],
     },
-    notes: {
+    interviewerPhoneNumber: {
       type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    // content: {
+    //   type: String,
+    //   required: true,
+    // },
+    status: {
+      type: String,
+      defaut: "pending",
+      enum: ["pending", "online", "offline", "rejected"],
+      required: true,
+    },
+    start: {
+      type: Date,
+      required: true,
+    },
+    end: {
+      type: Date,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }

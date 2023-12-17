@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Pagination from "../../components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import {
   jobSelect,
@@ -29,14 +28,17 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import SwitchCustom from "../../components/Switch";
-import SelectCustom from "../../components/SelectCustom";
 import { useDebounce } from "../../hooks";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { icons } from "../../utils/icons";
 import { setTitle } from "../../redux/features/slices/titleSlice";
-import Loading from "../../components/Loading";
+import {
+  Loading,
+  SelectCustom,
+  SwitchCustom,
+  Pagination,
+} from "../../components/shares";
 import Swal from "sweetalert2";
 
 const ListJobsPage = () => {
@@ -48,7 +50,7 @@ const ListJobsPage = () => {
   const [orderBy, setOrderBy] = useState("asc");
   const [sortBy, setSortBy] = useState("_id");
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
   const [experienceSelected, setExperienceSelected] = useState("");
   const [statusJobSelected, setStatusJobSelected] = useState("");
@@ -228,7 +230,7 @@ const ListJobsPage = () => {
                       className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                       key={job?._id || index}
                     >
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
                         <SwitchCustom
                           _id={job?._id}
                           isChecked={job?.isHiring}
@@ -237,25 +239,25 @@ const ListJobsPage = () => {
                           }
                         />
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800 whitespace-nowrap">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800 whitespace-nowrap">
                         ... {job?._id.slice(-4)}
                       </td>
                       <td
                         colSpan={1}
-                        className="px-2 text-sm font-bold py-3 text-blue-gray-800"
+                        className="px-2 text-xs font-bold py-1 text-blue-gray-800"
                       >
                         {job?.recruitmentCampaignName}
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
                         {job?.recruitmentTitle.slice(0, 25)}
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
                         {job?.industry}
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         {job?.appliedIds?.length}
                       </td>
-                      <td className="py-3 text-center text-blue-gray-800">
+                      <td className="py-1 text-center text-blue-gray-800">
                         {job.status === "pending" ? (
                           <div className="p-2 rounded-md text-[10px] bg-blue-50 text-blue-500">
                             Chờ phê duyệt
@@ -274,14 +276,14 @@ const ListJobsPage = () => {
                           </div>
                         )}
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         {covertToDate(job?.createdAt)}
                       </td>
-                      <td className="px-1 text-sm font-bold py-3 text-blue-gray-800">
+                      <td className="px-1 text-xs font-bold py-1 text-blue-gray-800">
                         <Button
                           variant="filled"
                           onClick={() => handleViewJobDetail({ _id: job?._id })}
-                          className="text-xs capitalize font-bold rounded-full !px-4 !py-3 bg-blue-gray-900 text-light-blue-600"
+                          className="!text-xs capitalize font-bold rounded-full !px-4 !py-3 bg-gray-400 text-black"
                         >
                           Xem thêm
                         </Button>

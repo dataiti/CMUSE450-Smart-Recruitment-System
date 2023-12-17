@@ -4,11 +4,10 @@ import { Typography } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setTitle } from "../../redux/features/slices/titleSlice";
-import ButtonCustom from "../../components/ButtonCustom";
 import { numberWithCommas } from "../../utils/fn";
 import { useCreatePaymentMutation } from "../../redux/features/apis/transactionApi";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import Loading from "../../components/Loading";
+import { Loading, ButtonCustom } from "../../components/shares";
 
 const PaymentPage = () => {
   const dispatch = useDispatch();

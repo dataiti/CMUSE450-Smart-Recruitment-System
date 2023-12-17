@@ -10,19 +10,20 @@ import {
 } from "@material-tailwind/react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import InputController from "../../components/InputController";
+import {
+  InputController,
+  SelectController,
+  TextEditorController,
+  InputFileController,
+} from "../../components/forms";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { icons } from "../../utils/icons";
-import SelectController from "../../components/SelectController";
 import {
   companyIndustryOptions,
   companySizesOptions,
 } from "../../utils/constants";
-
-import TextEditorController from "../../components/TextEditorController";
-import InputFileController from "../../components/InputFileController";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetEmployerDetailQuery } from "../../redux/features/apis/employerApi";
 import { authSelect } from "../../redux/features/slices/authSlice";

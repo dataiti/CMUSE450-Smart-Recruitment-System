@@ -8,7 +8,7 @@ const MainLayout = () => {
       <div className="w-full h-[80px] fixed z-50">
         <Header />
       </div>
-      <div className=" bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9] min-h-[calc(100vh-80px)] pt-[80px]">
+      <div className="bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9] min-h-[calc(100vh-80px)] pt-[80px]">
         <Outlet />
       </div>
       <div className="w-full">

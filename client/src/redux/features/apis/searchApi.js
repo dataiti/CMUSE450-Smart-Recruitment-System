@@ -3,10 +3,12 @@ import { rootApi } from "../../../configs/rootApi";
 const searchApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     saveSearch: builder.mutation({
-      query: ({ userId }) => {
+      query: ({ userId, keyword }) => {
+        console.log(userId, keyword);
         return {
           url: `/search/save-search/${userId}`,
           method: "POST",
+          body: { keyword },
         };
       },
     }),

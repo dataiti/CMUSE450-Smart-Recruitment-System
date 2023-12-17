@@ -11,7 +11,7 @@ const SelectController = ({
   options = [],
 }) => {
   return (
-    <div className="flex flex-col relative ml-10 w-full">
+    <div className="flex flex-col relative ml-8 w-full">
       <Controller
         name={name}
         control={control}
@@ -32,14 +32,13 @@ const SelectController = ({
                   className: "w-full",
                 }}
               >
-                {options?.map(({ text, value, name, id, subcategories }) => {
+                {options?.map(({ text, value, name, id }) => {
                   return (
                     <Option
                       key={id}
                       value={JSON.stringify({
                         id,
                         value: value || name,
-                        other: subcategories || [],
                       })}
                     >
                       {text || value || name}

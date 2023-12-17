@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IconButton, Typography } from "@material-tailwind/react";
 import { Controller } from "react-hook-form";
-import { icons } from "../utils/icons";
+import { icons } from "../../utils/icons";
 
 const InputTagsController = ({
   name,
@@ -32,7 +32,7 @@ const InputTagsController = ({
   };
 
   return (
-    <div className="flex flex-col relative ml-10 w-full">
+    <div className="flex flex-col relative ml-8 w-full">
       <Controller
         name={name}
         control={control}

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import RegisterForm from "../../components/RegisterForm";
+import { RegisterForm } from "../../components/forms";
 import { setTitle } from "../../redux/features/slices/titleSlice";
 import { useDispatch } from "react-redux";
 

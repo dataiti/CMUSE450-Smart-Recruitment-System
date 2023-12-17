@@ -1,7 +1,7 @@
 import { Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
-import { icons } from "../utils/icons";
+import { icons } from "../../utils/icons";
 
 const InputController = ({ name, control, label, error, imgUrlPreview }) => {
   const [imagePreview, setImagePreview] = useState("");
@@ -13,7 +13,7 @@ const InputController = ({ name, control, label, error, imgUrlPreview }) => {
   }, [imgUrlPreview]);
 
   return (
-    <div className="flex flex-col relative ml-10 w-full">
+    <div className="flex flex-col relative ml-8 w-full">
       <Controller
         name={name}
         control={control}

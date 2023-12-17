@@ -12,11 +12,13 @@ import {
   PaginationOption,
   Loading,
 } from "../../components/shares";
+import { authSelect } from "../../redux/features/slices/authSlice";
 
 const SearchPage = () => {
   const dispatch = useDispatch();
 
   const { listJobs, totalPage, count } = useSelector(jobSelect);
+  const { user } = useSelector(authSelect);
 
   const location = useLocation();
 
@@ -42,6 +44,7 @@ const SearchPage = () => {
       gender: JSON.stringify(genderFilter),
       level: JSON.stringify(levelFilter),
       rating: rating,
+      candidateId: user?.candidateId,
     },
     { refetchOnMountOrArgChange: true }
   );

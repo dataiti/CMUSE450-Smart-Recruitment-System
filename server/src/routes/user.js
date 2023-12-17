@@ -7,6 +7,7 @@ const {
   replacePassword,
   toggleWishListItem,
   userViewedJobs,
+  getListFollowings,
   getListUserForAdmin,
 } = require("../controllers/user");
 const { isAdminSystem, verifyToken } = require("../middlewares/verifyToken");
@@ -20,6 +21,7 @@ router.get(
   isAdminSystem,
   getListUserForAdmin
 );
+router.get("/get-followings/:userId", getListFollowings);
 router.get("/get-user-detail/:userId", getUserDetail);
 router.put("/edit-user/:userId", editUser);
 router.delete("/delete-user/:userId", deleteUser);

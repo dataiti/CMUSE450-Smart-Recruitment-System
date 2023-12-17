@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import InputController from "../../components/InputController";
+import { InputController } from "../../components/forms";
 import { Button } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";

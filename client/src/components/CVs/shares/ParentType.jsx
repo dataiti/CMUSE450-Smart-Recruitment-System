@@ -11,6 +11,7 @@ const ParentType = ({
   handleContentChange,
   children,
   title,
+  color,
 }) => {
   const [isFocus, setIsFocus] = useState(false);
 
@@ -76,19 +77,21 @@ const ParentType = ({
         role="textbox"
         tabIndex="0"
       >
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-[2px]">
           <div className="flex">
             <TextEditCustomize
               isFocus={isFocus}
               handleContentChange={handleContentChange}
               divRef={divRef2}
               html={title}
-              className={` bg-white z-20 min-w-[30px] px-1 py-[1px] text-sm uppercase font-bold text-teal-600 rounded-none border-2 outline-none ${
+              className={` bg-white z-20 min-w-[30px] text-base uppercase font-extrabold ${
+                color.color
+              } rounded-none border-2 outline-none ${
                 isFocus ? "border-gray-500" : "border-transparent"
               }`}
             />
           </div>
-          <div className="h-[2px] w-full bg-teal-600"></div>
+          <div className={`h-[2px] w-full ${color.backgound}`}></div>
           <div>{children}</div>
         </div>
       </div>

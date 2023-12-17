@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import InputController from "../../components/InputController";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { icons } from "../../utils/icons";
-import TextEditorController from "../../components/TextEditorController";
 import axiosClient from "../../configs/axiosConfig";
 import { useCreateJobMutation } from "../../redux/features/apis/jobApi";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import SelectController from "../../components/SelectController";
 import {
   currencyTypeOptions,
   experiens,
@@ -31,10 +28,14 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { addJob } from "../../redux/features/slices/jobSlice";
-import InputTagsController from "../../components/InputTagsController";
-import IconButtonCustom from "../../components/IconButtonCustom";
+import {
+  InputTagsController,
+  InputController,
+  TextEditorController,
+  SelectController,
+} from "../../components/forms";
 import { setTitle } from "../../redux/features/slices/titleSlice";
-import Loading from "../../components/Loading";
+import { Loading, IconButtonCustom } from "../../components/shares";
 import { useGetListOfCategoriesQuery } from "../../redux/features/apis/categoryApi";
 import { videos } from "../../assets/videos";
 
@@ -125,7 +126,7 @@ const CreateRecruitmentJobPage = () => {
       jobType: "",
       gender: "",
       level: "",
-      experience: "",
+      experience: 0,
       currencyType: "",
       salaryType: "",
       jobDescription: "",

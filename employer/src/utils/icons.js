@@ -1,4 +1,8 @@
-import { IoMdSend } from "react-icons/io";
+import {
+  IoMdSend,
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
+} from "react-icons/io";
 import { PiBellRingingFill } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
 import { FiSearch, FiChevronDown, FiEdit } from "react-icons/fi";
@@ -56,6 +60,8 @@ import {
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 
 const icons = {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
   IoAlertSharp,
   BsTelephone,
   BsCameraVideo,

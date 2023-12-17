@@ -23,7 +23,7 @@ const Chatbot = ({
             </Typography>
           </div>
         )}
-        <div className="flex justify-center">
+        <div className="flex justify-center my-4">
           {isLoading && <Spinner className="h-8 w-8" />}
         </div>
         {answer && (

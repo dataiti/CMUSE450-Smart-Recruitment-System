@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "../../components/Pagination";
+import {
+  Pagination,
+  Loading,
+  JobStatusBadge,
+  CirculeProgress,
+} from "../../components/shares";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setListApplyJobs,
@@ -8,13 +13,12 @@ import {
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { tableHeadApplyJob } from "../../utils/constants";
-import { covertToDate } from "../../utils/fn";
 import { Avatar, Button, Input, Typography } from "@material-tailwind/react";
 import { useDebounce } from "../../hooks";
 import { Link } from "react-router-dom";
 import { setTitle } from "../../redux/features/slices/titleSlice";
-import Loading from "../../components/Loading";
 import { useGetListApplyJobForEmployerQuery } from "../../redux/features/apis/apply";
+import { covertToDate } from "../../utils/fn";
 
 const ListResumes = () => {
   const dispatch = useDispatch();
@@ -23,7 +27,7 @@ const ListResumes = () => {
   const { user } = useSelector(authSelect);
 
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(7);
   const [page, setPage] = useState(1);
 
   const debouncedValue = useDebounce(search, 500);
@@ -69,7 +73,7 @@ const ListResumes = () => {
   };
 
   return (
-    <div className="mx-[30px] my-[30px]">
+    <div className="mx-[30px] my-[26px]">
       {isFetching && <Loading />}
       <div className="flex flex-col gap-2 bg-white p-2 rounded-md">
         <div className="flex items-center gap-3">
@@ -109,28 +113,27 @@ const ListResumes = () => {
                       className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                       key={job?._id || index}
                     >
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800 whitespace-nowrap">
-                        ... {job?._id.slice(-4)}
+                      <td className="px-2 text-sm font-bold py-1 text-blue-gray-800 whitespace-nowrap">
+                        {job?._id.slice(-4)}
                       </td>
-                      <td className="px-3 text-sm font-bold py-3 text-blue-gray-800">
-                        <div className="flex items-center">
-                          <Avatar src={job?.candidateId?.avatar} alt="avatar" />
+                      <td className="px-3 text-xs font-bold py-1 text-blue-gray-800">
+                        <div className="flex items-center gap-2">
+                          <Avatar
+                            src={job?.candidateId?.avatar}
+                            alt="avatar"
+                            className="h-12 w-12 p-1 bg-blue-gray-100"
+                          />
                           <div className="flex flex-col">
                             <Typography className="text-xs font-bold">
-                              {job?.candidateId?.lastName +
-                                " " +
-                                job?.candidateId?.firstName}
-                            </Typography>
-                            <Typography className="text-xs font-bold">
-                              {job?.candidateId?.email}
+                              {job?.candidateId?.firstName}
                             </Typography>
                           </div>
                         </div>
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
-                        {job?.jobId?.recruitmentCampaignName}
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
+                        {job?.jobId?.recruitmentTitle}
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         <Link
                           to={job?.CVpdf}
                           target="_blank"
@@ -139,34 +142,17 @@ const ListResumes = () => {
                           {job?.CVName}
                         </Link>
                       </td>
-                      <td className="py-3 text-center text-blue-gray-800">
-                        {job.status === "notviewed" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-blue-50 text-blue-500">
-                            Chưa xem
-                          </div>
-                        ) : job.status === "viewed" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-green-50 text-green-500">
-                            Đã xem
-                          </div>
-                        ) : job.status === "accepted" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-yellow-50 text-yellow-500">
-                            Được chấp nhận
-                          </div>
-                        ) : job.status === "rejected" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-red-50 text-red-500">
-                            Bị từ chối
-                          </div>
-                        ) : (
-                          <div className="p-2 rounded-md text-[10px] bg-indigo-50 text-indigo-500">
-                            Đang tiến triển
-                          </div>
-                        )}
+                      <td className="py-1 text-center text-blue-gray-800">
+                        <JobStatusBadge status={job?.status} />
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
+                      <td className="py-1 text-xs text-center text-blue-gray-800">
                         {covertToDate(job?.createdAt)}
                       </td>
-                      <td className="px-1 text-sm font-bold py-3 text-blue-gray-800">
-                        <Link to={`/list-resumes/${job?._id}`}>
+                      <td className="py-1 text-center text-blue-gray-800">
+                        <CirculeProgress />
+                      </td>
+                      <td className="px-1 text-xs font-bold py-1 text-blue-gray-800">
+                        <Link to={`/cv-processing/${job?._id}`}>
                           <Button
                             variant="filled"
                             className="text-xs capitalize font-bold rounded-full !p-3  bg-blue-gray-900 text-light-blue-600"

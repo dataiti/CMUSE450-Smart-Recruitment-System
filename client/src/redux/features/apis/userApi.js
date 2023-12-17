@@ -2,6 +2,14 @@ import { rootApi } from "../../../configs/rootApi";
 
 const userApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
+    getListFollowings: builder.query({
+      query: ({ userId }) => {
+        return {
+          url: `/user/get-followings/${userId}`,
+          method: "GET",
+        };
+      },
+    }),
     replacePassword: builder.mutation({
       query: ({ data, userId }) => {
         return {
@@ -30,4 +38,5 @@ export const {
   useReplacePasswordMutation,
   useToggleWishListItemMutation,
   useUserViewedJobMutation,
+  useGetListFollowingsQuery,
 } = userApi;

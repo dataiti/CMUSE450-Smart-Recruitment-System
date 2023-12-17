@@ -20,7 +20,44 @@ const scheduleById = asyncHandler(async (req, res, next) => {
 });
 
 const createSchedule = asyncHandler(async (req, res, next) => {
-  const { userId, jobId, employerId } = req.body;
+  const {
+    employerId,
+    applyJobId,
+    title,
+    interviewerName,
+    interviewerEmail,
+    interviewerPhoneNumber,
+    scheduleDate,
+    location,
+    endTime,
+    startTime,
+    typeMeeting,
+  } = req.body;
+
+  const startDateTime = new Date(`${scheduleDate}T${startTime}`);
+  const endDateTime = new Date(`${scheduleDate}T${endTime}`);
+
+  const newSchedule = new Schedule({
+    userId: req.user._id,
+    employerId: req.employer._id,
+    applyJobId: applyJobId,
+    title,
+    interviewerName,
+    interviewerEmail,
+    interviewerPhoneNumber,
+    status: typeMeeting === "online" ? "online" : "offline",
+    start: startDateTime,
+    end: endDateTime,
+    location,
+  });
+
+  await newSchedule.save();
+
+  return res.status(200).json({
+    success: true,
+    message: "Create schedule is successfully",
+    data: newSchedule,
+  });
 });
 
 const getScheduleDetail = asyncHandler(async (req, res, next) => {});
@@ -31,7 +68,15 @@ const editSchedule = asyncHandler(async (req, res, next) => {});
 
 const getListSchedulesForUser = asyncHandler(async (req, res, next) => {});
 
-const getListSchedulesForEmployer = asyncHandler(async (req, res, next) => {});
+const getListSchedulesForEmployer = asyncHandler(async (req, res, next) => {
+  const listSchedules = await Schedule.find({ employerId: req.employer._id });
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list schedules is successfully",
+    data: listSchedules,
+  });
+});
 
 module.exports = {
   scheduleById,

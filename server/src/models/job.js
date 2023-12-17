@@ -52,6 +52,7 @@ const jobSchema = new mongoose.Schema(
     experience: {
       type: Number,
       required: true,
+      min: 0,
     },
     currencyType: {
       type: String,
@@ -120,6 +121,7 @@ const jobSchema = new mongoose.Schema(
       type: Number,
       min: 1,
       max: 5,
+      default: 4.5,
     },
   },
   { timestamps: true }

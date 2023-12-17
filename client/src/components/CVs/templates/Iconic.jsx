@@ -8,7 +8,7 @@ import { icons } from "../../../utils/icons";
 import ProfessionalProfile from "../parts/ProfessionalProfile";
 import WorkExperience from "../parts/WorkExperience";
 
-const Iconic = () => {
+const Iconic = ({ color }) => {
   const [open, setOpen] = useState(false);
   const [indexAdd, setIndexAdd] = useState(0);
   const [typeAdd, setTypeAdd] = useState("");
@@ -127,6 +127,8 @@ const Iconic = () => {
     setEditedContents(newEditedContents);
   };
 
+  console.log(color);
+
   return (
     <div className="flex flex-col gap-2 w-full h-full">
       <div className="w-full flex flex-col gap-2">
@@ -144,6 +146,7 @@ const Iconic = () => {
                   handleContentChange(index, e.target.innerHTML)
                 }
                 title={div.type}
+                color={color}
               >
                 {div.type === "project" && <Project t />}
                 {div.type === "skill" && <Skills />}

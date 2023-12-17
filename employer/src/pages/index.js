@@ -10,6 +10,8 @@ import MessagePage from "./message/MessagePage";
 import ResumeDetail from "./resume/ResumeDetail";
 import DecorationPage from "./decoration/DecorationPage";
 import PaymentPage from "./payment/PaymentPage";
+import RecruitProcessPage from "./resume/RecruitProcessPage";
+import MySchedulePage from "./schedule/MySchedulePage";
 
 export {
   LoginPage,
@@ -24,4 +26,6 @@ export {
   ResumeDetail,
   DecorationPage,
   PaymentPage,
+  RecruitProcessPage,
+  MySchedulePage,
 };

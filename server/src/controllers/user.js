@@ -195,6 +195,16 @@ const getListUserForAdmin = asyncHandler(async (req, res) => {
   });
 });
 
+const getListFollowings = asyncHandler(async (req, res) => {
+  const listFollowings = await User.findOne({ _id: req.user._id }).populate(
+    "followingIds"
+  );
+
+  return res.status(200).json({
+    data: listFollowings.followingIds,
+  });
+});
+
 module.exports = {
   userById,
   getUserDetail,
@@ -204,4 +214,5 @@ module.exports = {
   toggleWishListItem,
   userViewedJobs,
   getListUserForAdmin,
+  getListFollowings,
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useGetJobDetailQuery } from "../../redux/features/apis/jobApi";
 import { Link, useParams } from "react-router-dom";
 import {
+  Avatar,
   Breadcrumbs,
   Button,
   IconButton,

@@ -1,8 +1,8 @@
 import { Avatar, Typography } from "@material-tailwind/react";
 import React, { useEffect } from "react";
-import { socket } from "../socket";
+import { socket } from "../../socket";
 import { useDispatch } from "react-redux";
-import { setCurrentConversation } from "../redux/features/slices/messageSlice";
+import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
 
 const ListConversations = ({ data = [] }) => {
   const dispatch = useDispatch();

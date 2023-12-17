@@ -1,8 +1,10 @@
+import { Typography } from "@material-tailwind/react";
 import React from "react";
 import { Controller } from "react-hook-form";
-import { Textarea, Typography } from "@material-tailwind/react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-const TextareaController = ({
+const TextEditorController = ({
   name,
   control,
   label,
@@ -11,7 +13,7 @@ const TextareaController = ({
   isField = false,
 }) => {
   return (
-    <div className="flex flex-col relative ml-10 w-full">
+    <div className="flex flex-col relative ml-8 mb-12 w-full">
       <Controller
         name={name}
         control={control}
@@ -29,17 +31,22 @@ const TextareaController = ({
                 isField ? "w-[86%]" : "col-span-2 relative w-full"
               } `}
             >
-              <Textarea
-                label={label}
+              <ReactQuill
                 {...field}
-                error={!!error}
-                className="col-span-3 bg-white w-full"
-                disabled={isDisabled}
+                value={field.value || ""}
+                theme="snow"
+                modules={{}}
+                className={`w-full h-[240px] ${
+                  !!error ? "border-red-500" : ""
+                }`}
+                readOnly={isDisabled}
+                style={{ borderRadius: "10px" }}
               />
+
               {!!error && (
                 <Typography
                   color="red"
-                  className="absolute -bottom-3 text-xs font-medium"
+                  className="absolute -bottom-5 text-xs font-medium"
                 >
                   {error?.message}
                 </Typography>
@@ -52,4 +59,4 @@ const TextareaController = ({
   );
 };
 
-export default TextareaController;
+export default TextEditorController;

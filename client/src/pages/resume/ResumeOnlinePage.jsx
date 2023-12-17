@@ -14,6 +14,10 @@ import Iconic from "../../components/CVs/templates/Iconic";
 const ResumeOnlinePage = () => {
   const [inputMessageValue, setInputMessageValue] = useState("");
   const [question, setQuestion] = useState("");
+  const [color, setColor] = useState({
+    backgound: "bg-green-500",
+    color: "text-green-500",
+  });
   const [answer, setAnswer] = useState(
     "Hãy gửi một hỏi, tôi sẽ trả lời giúp bạn"
   );
@@ -108,7 +112,7 @@ const ResumeOnlinePage = () => {
             </div>
           </div>
         </div>
-        <div className="w-[14%] bg-blue-gray-800 h-screen overflow-y-auto">
+        <div className="w-[12%] bg-blue-gray-800 h-screen overflow-y-auto">
           <div className="flex flex-col gap-3 px-5 py-10">
             {contentMenu.map((content, index) => {
               return (
@@ -121,7 +125,13 @@ const ResumeOnlinePage = () => {
                     />
                   ) : (
                     <div
-                      className={`h-10 w-full rounded-md ${content.value} `}
+                      className={`h-10 w-full rounded-md ${content.backgound} cursor-pointer`}
+                      onClick={() =>
+                        setColor({
+                          backgound: content.backgound,
+                          color: content.color,
+                        })
+                      }
                     ></div>
                   )}
                 </div>
@@ -132,10 +142,10 @@ const ResumeOnlinePage = () => {
 
         <div className="w-[52%] h-full flex justify-center overflow-y-auto p-4">
           <div className="h-full w-full bg-white py-8 px-16" ref={conponentPDF}>
-            <Iconic />
+            <Iconic color={color} />
           </div>
         </div>
-        <div className="w-[34%] h-screen">
+        <div className="w-[36%] h-screen">
           <Chatbot
             answer={answer}
             question={question}

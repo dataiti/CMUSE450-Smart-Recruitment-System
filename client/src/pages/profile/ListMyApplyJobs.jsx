@@ -13,13 +13,18 @@ import { authSelect } from "../../redux/features/slices/authSlice";
 import { useSelector } from "react-redux";
 import { statusOptions, tableHeadApplyJob } from "../../utils/constants";
 import { covertToDate } from "../../utils/fn";
-import { SelectCustom, Pagination, Loading } from "../../components/shares";
+import {
+  SelectCustom,
+  Pagination,
+  Loading,
+  JobStatusBadge,
+} from "../../components/shares";
 
 const ListMyApplyJobs = () => {
   const { user } = useSelector(authSelect);
 
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(7);
   const [page, setPage] = useState(1);
   const [statusSelected, setStatusSelected] = useState("");
 
@@ -103,29 +108,27 @@ const ListMyApplyJobs = () => {
                       className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                       key={job?._id || index}
                     >
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800 whitespace-nowrap">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800 whitespace-nowrap">
                         ... {job?._id.slice(-4)}
                       </td>
-                      <td className="px-3 text-sm font-bold py-3 text-blue-gray-800">
-                        <div className="flex items-center">
+                      <td className="px-3 text-xs font-bold py-1 text-blue-gray-800">
+                        <div className="flex items-center gap-2">
                           <Avatar
                             src={job?.employerId?.companyLogo}
                             alt="avatar"
+                            className="h-12 w-12 p-1 bg-blue-gray-100"
                           />
                           <div className="flex flex-col">
                             <Typography className="text-xs font-bold">
                               {job?.employerId?.companyName}
                             </Typography>
-                            <Typography className="text-xs font-bold">
-                              {job?.employerId?.companyEmail}
-                            </Typography>
                           </div>
                         </div>
                       </td>
-                      <td className="px-2 text-xs font-bold py-3 text-blue-gray-800 name-3">
-                        {job?.jobId?.recruitmentCampaignName}
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800 name-3">
+                        {job?.jobId?.recruitmentTitle}
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         <Link
                           to={job?.CVpdf}
                           target="_blank"
@@ -134,33 +137,13 @@ const ListMyApplyJobs = () => {
                           {job?.CVName?.slice(0, 20)}
                         </Link>
                       </td>
-                      <td className="py-3 text-center text-blue-gray-800">
-                        {job.status === "notviewed" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-blue-50 text-blue-500">
-                            Chưa xem
-                          </div>
-                        ) : job.status === "viewed" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-green-50 text-green-500">
-                            Đã xem
-                          </div>
-                        ) : job.status === "accepted" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-yellow-50 text-yellow-500">
-                            Được chấp nhận
-                          </div>
-                        ) : job.status === "rejected" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-red-50 text-red-500">
-                            Bị từ chối
-                          </div>
-                        ) : (
-                          <div className="p-2 rounded-md text-[10px] bg-indigo-50 text-indigo-500">
-                            Đang tiến triển
-                          </div>
-                        )}
+                      <td className="py-1 text-center text-blue-gray-800">
+                        <JobStatusBadge status={job?.status} />
                       </td>
-                      <td className="px-2 text-xs font-bold py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         {covertToDate(job?.createdAt)}
                       </td>
-                      <td className="px-1 text-sm font-bold py-3 text-blue-gray-800">
+                      <td className="px-1 text-xs font-bold py-1 text-blue-gray-800">
                         <Link to={`/list-resumes/${job?._id}`}>
                           <Button
                             variant="filled"

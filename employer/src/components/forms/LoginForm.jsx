@@ -12,9 +12,12 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useLogInMutation } from "../redux/features/apis/authApi";
-import { authSelect, setCredentials } from "../redux/features/slices/authSlice";
-import Loading from "./Loading";
+import { useLogInMutation } from "../../redux/features/apis/authApi";
+import {
+  authSelect,
+  setCredentials,
+} from "../../redux/features/slices/authSlice";
+import { Loading } from "../shares";
 
 const schema = yup.object().shape({
   email: yup

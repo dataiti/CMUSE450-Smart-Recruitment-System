@@ -18,9 +18,10 @@ const notificationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    url: {
+    type: {
       type: String,
       required: true,
+      enum: ["message", "invitation", "system"],
     },
     isViewed: {
       type: Boolean,

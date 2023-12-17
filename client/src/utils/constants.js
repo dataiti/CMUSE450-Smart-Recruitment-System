@@ -28,6 +28,27 @@ export const loyaltyProgramItem = [
   },
 ];
 
+export const menuCVItems = [
+  {
+    id: 1,
+    path: "/",
+    icon: <icons.HiHome size={20} />,
+    name: "Trang chủ",
+  },
+  {
+    id: 2,
+    type: "template",
+    icon: <icons.HiDocumentText size={20} />,
+    name: "Mẫu CV",
+  },
+  {
+    id: 3,
+    type: "color",
+    icon: <icons.MdColorLens size={20} />,
+    name: "Màu sắc",
+  },
+];
+
 export const sidebarItems = [
   {
     id: 1,
@@ -55,24 +76,43 @@ export const sidebarItems = [
   },
 ];
 
-export const menuCVItems = [
+export const navbarBlogItems = [
   {
     id: 1,
-    icon: <icons.HiDocumentText size={20} />,
-    type: "template",
-    name: "Mẫu CV",
+    icon: <icons.HiHome size={24} />,
+    path: "/",
+    name: "Trang chủ",
   },
   {
     id: 2,
-    icon: <icons.FaFont size={20} />,
-    type: "font",
-    name: "Phông chữ",
+    icon: <icons.FaBriefcase size={24} />,
+    path: "/categories-job",
+    name: "Danh mục công việc",
   },
+
   {
     id: 3,
-    icon: <icons.MdColorLens size={20} />,
-    type: "color",
-    name: "Màu sắc",
+    icon: <icons.BsFileTextFill size={24} />,
+    path: "/resume-online",
+    name: "Hồ sơ & CV",
+  },
+  {
+    id: 4,
+    icon: <icons.BsMessenger size={24} />,
+    path: "/messenger",
+    name: "Tin nhắn",
+  },
+  {
+    id: 5,
+    icon: <icons.IoBookmark size={24} />,
+    path: "/wishlist",
+    name: "Yêu thích",
+  },
+  {
+    id: 6,
+    icon: <icons.FaUserAlt size={24} />,
+    path: "/profile",
+    name: "Cá nhân",
   },
 ];
 
@@ -190,7 +230,7 @@ export const statusOptions = [
 
 export const tableHeadApplyJob = [
   { id: 1, name: "ID" },
-  { id: 2, name: "Thông tin công ty" },
+  { id: 2, name: "công ty" },
   { id: 3, name: "Tên chiến dịch" },
   { id: 4, name: "Tên CV" },
   { id: 5, name: "Ngày đăng" },
@@ -397,16 +437,13 @@ export const fakeDataMessage = [
 ];
 
 export const colors = [
-  { id: 1, value: "bg-blue-gray-500" },
-  { id: 2, value: "bg-gray-500" },
-  { id: 3, value: "bg-brown-500" },
-  { id: 1, value: "bg-deep-orange-500" },
-  { id: 1, value: "bg-orange-500" },
-  { id: 1, value: "bg-yellow-500" },
-  { id: 1, value: "bg-lime-500" },
-  { id: 1, value: "bg-light-green-500" },
-  { id: 1, value: "bg-green-500" },
-  { id: 1, value: "" },
-  { id: 1, value: "" },
-  { id: 1, value: "" },
+  { id: 1, backgound: "bg-blue-gray-500", color: "text-blue-gray-500" },
+  { id: 2, backgound: "bg-gray-500", color: "text-gray-500" },
+  { id: 3, backgound: "bg-brown-500", color: "text-brown-500" },
+  { id: 1, backgound: "bg-deep-orange-500", color: "text-deep-orange-500" },
+  { id: 1, backgound: "bg-orange-500", color: "text-orange-500" },
+  { id: 1, backgound: "bg-yellow-500", color: "text-yellow-500" },
+  { id: 1, backgound: "bg-lime-500", color: "text-lime-500" },
+  { id: 1, backgound: "bg-light-green-500", color: "text-light-green-500" },
+  { id: 1, backgound: "bg-green-500", color: "text-green-500" },
 ];

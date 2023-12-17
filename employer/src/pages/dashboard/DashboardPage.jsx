@@ -7,8 +7,7 @@ import {
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import LineChart from "../../components/LineChart";
-import PieChart from "../../components/PieChart";
+import { LineChart, PieChart } from "../../components/charts";
 import { Avatar, Button, Input, Typography } from "@material-tailwind/react";
 import {
   tableHeadApplyJobDashboard,
@@ -16,9 +15,14 @@ import {
   typeChartRowOptions,
   typeTimeChartOptions,
 } from "../../utils/constants";
-import SelectCustom from "../../components/SelectCustom";
+import {
+  SelectCustom,
+  MyCalendar,
+  Loading,
+  StatisticIndex,
+  Pagination,
+} from "../../components/shares";
 import { icons } from "../../utils/icons";
-import MyCalendar from "../../components/MyCalendar";
 import { setTitle } from "../../redux/features/slices/titleSlice";
 import { Link } from "react-router-dom";
 import {
@@ -26,9 +30,6 @@ import {
   setListApplyJobs,
 } from "../../redux/features/slices/applyJobSlice";
 import { useGetListApplyJobForEmployerQuery } from "../../redux/features/apis/apply";
-import Pagination from "../../components/Pagination";
-import StatisticIndex from "../../components/StatisticIndex";
-import Loading from "../../components/Loading";
 
 const DashboardPage = () => {
   const dispatch = useDispatch();
@@ -221,13 +222,13 @@ const DashboardPage = () => {
               Lịch trình
             </Typography>
             <Link
-              to="/list-resumes"
+              to="/my-schedule"
               className="hover:underline text-blue-500 text-xs font-bold"
             >
               Xem thêm
             </Link>
           </div>
-          <MyCalendar />
+          <MyCalendar isToolbar={false} height={330} />
         </div>
         <div className="col-span-2 bg-white shadow-sm p-2 rounded-md">
           <div className="flex items-center justify-between">
@@ -316,13 +317,13 @@ const DashboardPage = () => {
                               </div>
                             )}
                           </td>
-                          <td className="px-1 text-xs font-bold py-1 text-blue-gray-800">
+                          <td className="px-1 text-xs font-bold py-1 flex justify-center text-blue-gray-800">
                             <Link to={`/list-resumes/${job?._id}`}>
                               <Button
                                 variant="filled"
                                 className="!text-xs capitalize font-bold rounded-full !p-3  bg-blue-gray-900 text-light-blue-600"
                               >
-                                Xem Chi tiết
+                                Chi tiết
                               </Button>
                             </Link>
                           </td>

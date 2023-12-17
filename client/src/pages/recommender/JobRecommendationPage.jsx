@@ -6,10 +6,11 @@ import {
   Loading,
   SelectCustom,
   PaginationOption,
+  Followings,
 } from "../../components/shares";
 import { Link } from "react-router-dom";
 import { Breadcrumbs, Input, Typography } from "@material-tailwind/react";
-import { JobCard } from "../../components/jobs";
+import { JobCard, JobCardSmall } from "../../components/jobs";
 import { useDebounce } from "../../hooks";
 import { icons } from "../../utils/icons";
 import { orderByOptions, sortByOptions } from "../../utils/constants";
@@ -54,7 +55,7 @@ const JobRecommendationPage = () => {
           Đề xuất công việc phù hợp
         </Link>
       </Breadcrumbs>
-      <div className="grid grid-cols-12 gap-2">
+      <div className="grid grid-cols-12 gap-8">
         <div className="col-span-8 flex flex-col gap-2">
           <div className="w-full bg-gradient-to-r from-[#304352] to-[#cbd5e1] rounded-md px-10 py-5">
             <Typography className="text-2xl font-bold text-white">
@@ -119,13 +120,17 @@ const JobRecommendationPage = () => {
               >
                 {recommentJobsData?.data?.length > 0 &&
                   recommentJobsData?.data?.map((jobItem) => {
-                    return <JobCard jobItem={jobItem} key={jobItem?._id} />;
+                    return (
+                      <JobCardSmall jobItem={jobItem} key={jobItem?._id} />
+                    );
                   })}
               </div>
             </div>
           </div>
         </div>
-        <div className="col-span-4"></div>
+        <div className="col-span-4">
+          <Followings />
+        </div>
       </div>
     </div>
   );
