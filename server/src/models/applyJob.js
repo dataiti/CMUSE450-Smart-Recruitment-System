@@ -17,6 +17,10 @@ const applyJobSchema = new mongoose.Schema(
       ref: "Employer",
       required: true,
     },
+    resumeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Resume",
+    },
     CVName: {
       type: String,
       required: true,
@@ -28,6 +32,7 @@ const applyJobSchema = new mongoose.Schema(
     information: {
       type: String,
     },
+
     status: {
       type: String,
       default: "pending",

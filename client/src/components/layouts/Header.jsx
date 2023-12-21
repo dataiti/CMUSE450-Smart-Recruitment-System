@@ -186,7 +186,6 @@ const Header = () => {
                 ) : (
                   <Link
                     to={item.path}
-                    target={`${item.id === 3 ? "_blank" : ""}`}
                     className={`font-bold text-sm uppercase ${
                       item.id === indexNavbar
                         ? "text-light-blue-500"
@@ -317,37 +316,7 @@ const Header = () => {
                   isLoading={isLoadingNotification}
                 />
               )}
-              {/* {isOpenNotification && (
-                <ul className="absolute bg-white p-2 shadow-2xl rounded-md top-[120%] left-[50%] -translate-x-[50%] col-span-4 flex flex-col gap-1 w-[360px] h-[400px] overflow-y-auto">
-                  {listNotifications.length > 0 ? (
-                    listNotifications.map((item) => (
-                      <li key={item?._id}>
-                        <Link
-                          to={item?.url}
-                          className={` flex items-center gap-4 !hover:bg-blue-100 p-2 rounded-md  ${
-                            item?.isViewed
-                              ? "bg-green-50 border-l-4 border-green-500"
-                              : "bg-blue-50 border-l-4 border-blue-500"
-                          }`}
-                        >
-                          <div className="flex items-center gap-2">
-                            <Avatar
-                              src={item?.employerId?.companyLogo}
-                              alt=""
-                              className="flex-none bg-blue-gray-600 !w-10 !h-10 object-contain !rounded-md"
-                            />
-                            <div className="flex flex-col text-start gap-1">
-                              <Typography className="mb-1 text-sm font-bold name text-black">
-                                {item?.title}
-                              </Typography>
-                              <Typography className="mb-1 text-xs font-medium name text-gray-500">
-                                {item?.content}
-                              </Typography>
-                            </div>
-                          </div>
-                        </Link>
-                      </li>
-                    ))
+              {/* 
                   ) : (
                     <div className="flex flex-col items-center justify-center gap-4 absolute bg-white p-2 shadow-2xl rounded-md top-[120%] left-[50%] -translate-x-[50%] col-span-4 w-[360px] h-[400px]">
                       <img src={images.notifications} alt="" className="w-28" />

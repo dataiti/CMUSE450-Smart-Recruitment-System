@@ -39,7 +39,7 @@ const SidebarProfile = () => {
           <Avatar
             src={user?.avatar}
             alt="avatar"
-            className="w-[100px] h-[100px] border-2 border-black"
+            className="w-[100px] h-[100px] p-2 bg-blue-gray-100"
           />
         </div>
         <div className="flex items-center gap-4">

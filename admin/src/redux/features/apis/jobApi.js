@@ -53,10 +53,10 @@ const jobApi = rootApi.injectEndpoints({
         };
       },
     }),
-    toggleHiringStatusJob: builder.mutation({
-      query: ({ userId, employerId, jobId }) => {
+    toggleLockJob: builder.mutation({
+      query: ({ userId, jobId }) => {
         return {
-          url: `/job/toggle-hiring-satus/${userId}/${employerId}/${jobId}`,
+          url: `/job/toggle-lock-job/admin/${userId}/${jobId}`,
           method: "PUT",
         };
       },
@@ -70,5 +70,5 @@ export const {
   useCreateJobMutation,
   useDeleteJobMutation,
   useEditJobMutation,
-  useToggleHiringStatusJobMutation,
+  useToggleLockJobMutation,
 } = jobApi;

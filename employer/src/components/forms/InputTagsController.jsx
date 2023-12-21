@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IconButton, Typography } from "@material-tailwind/react";
 import { Controller } from "react-hook-form";
 import { icons } from "../../utils/icons";
+import { useEffect } from "react";
 
 const InputTagsController = ({
   name,
@@ -9,9 +10,14 @@ const InputTagsController = ({
   label,
   error,
   isDisabled = false,
+  defaultTags = [],
 }) => {
   const [tags, setTags] = useState([]);
   const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    setTags(defaultTags);
+  }, [defaultTags]);
 
   const handleInputChange = (e) => {
     if (e && e.target) {

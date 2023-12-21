@@ -61,7 +61,7 @@ const MessagePage = () => {
 
   const handleClickEmoji = () => {};
 
-  const handleSendMessage = () => {
+  const sendMessageEvent = () => {
     setInputMessageValue("");
     socket.emit("text_message", {
       sender: "user",
@@ -73,6 +73,16 @@ const MessagePage = () => {
     });
   };
 
+  const handleSendMessage = () => {
+    sendMessageEvent();
+  };
+
+  const handleSendTextMessage = (e) => {
+    if (e.key === "Enter") {
+      sendMessageEvent();
+    }
+  };
+
   return (
     <div className="w-full flex">
       <div className="!w-[460px] h-screen border-r border-gray-500 bg-blue-gray-800">
@@ -81,28 +91,28 @@ const MessagePage = () => {
       <div className="h-screen w-full">
         {currentConversation ? (
           <>
-            <div className="h-[90px] bg-white border-b border-blue-gray-100 flex items-center justify-between gap-3 px-4">
+            <div className="h-[70px] bg-blue-gray-900 border-b border-blue-gray-100 flex items-center justify-between gap-3 px-4">
               <div className="flex items-center gap-2">
                 <Avatar
                   src={currentConversation?.employerId?.companyLogo}
-                  className="border-2 border-gray-500 p-2"
+                  className="h-12 w-12 p-1 bg-blue-gray-100"
                 />
                 <div className="flex flex-col">
-                  <Typography className="text-base font-bold">
+                  <Typography className="text-base font-bold text-white">
                     {currentConversation?.employerId?.companyName}
                   </Typography>
-                  <Typography className="text-sm text-gray-600 italic">
+                  <Typography className="text-sm text-gray-400 italic">
                     {currentConversation?.employerId?.companyEmail}
                   </Typography>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 text-white">
                 <icons.BsCameraVideo size={20} />
                 <icons.BsTelephone size={20} />
                 <icons.FiSearch size={20} />
               </div>
             </div>
-            <div className="h-[calc(100vh-180px)] overflow-auto flex flex-col gap-1 p-4">
+            <div className="h-[calc(100vh-140px)] overflow-auto flex flex-col gap-1 p-4">
               {currentConversation?.messages?.map((el, index) => {
                 switch (el.type) {
                   case "img":
@@ -120,7 +130,7 @@ const MessagePage = () => {
                 }
               })}
             </div>
-            <div className="h-[90px] flex items-center gap-2 justify-center px-8 bg-white border-t border-blue-gray-100">
+            <div className="h-[70px] flex items-center gap-2 justify-center px-8 pr-20 bg-blue-gray-900 border-t border-blue-gray-100">
               <Input
                 label="Nhập tin nhắn"
                 icon={
@@ -129,12 +139,14 @@ const MessagePage = () => {
                     onClick={() => {
                       setOpenPicker(!openPicker);
                     }}
-                    className="cursor-pointer hover:text-blue-gray-400"
+                    className="cursor-pointer hover:text-white text-white"
                   />
                 }
                 values={inputMesssageValue}
                 onChange={(e) => setInputMessageValue(e.target.value)}
-                className="!bg-blue-gray-100/70"
+                onKeyDown={handleSendTextMessage}
+                className="!bg-blue-gray-700 placeholder:text-white text-white font-bold"
+                spellCheck={false}
               />
               <div
                 className={`fixed z-10 ${openPicker ? "inline" : "hidden"}`}

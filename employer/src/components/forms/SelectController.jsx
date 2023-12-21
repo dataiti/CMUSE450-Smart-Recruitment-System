@@ -9,6 +9,7 @@ const SelectController = ({
   error,
   isDisabled = false,
   options = [],
+  defaultValue = "",
 }) => {
   return (
     <div className="flex flex-col relative ml-8 w-full">
@@ -22,7 +23,7 @@ const SelectController = ({
             </label>
             <div className="col-span-2 w-full">
               <Select
-                label={label}
+                label={defaultValue || label}
                 {...field}
                 error={!!error}
                 disabled={isDisabled}

@@ -5,15 +5,14 @@ import {
   jobSelect,
   removeJobItem,
   setListJobs,
-  updateHiringStatusJob,
+  updateToggleLockJob,
 } from "../../redux/features/slices/jobSlice";
 import {
   useDeleteJobMutation,
   useGetListOfJobsForAdminQuery,
-  useToggleHiringStatusJobMutation,
+  useToggleLockJobMutation,
 } from "../../redux/features/apis/jobApi";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import parse from "html-react-parser";
 import {
   desiredSalaryOptions,
   experiens,
@@ -21,20 +20,17 @@ import {
   tableHeadJob,
 } from "../../utils/constants";
 import { covertToDate } from "../../utils/fn";
-import {
-  Button,
-  Drawer,
-  IconButton,
-  Input,
-  Typography,
-} from "@material-tailwind/react";
+import { Avatar, Drawer, Input, Typography } from "@material-tailwind/react";
 import SelectCustom from "../../components/SelectCustom";
 import { useDebounce } from "../../hooks";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { icons } from "../../utils/icons";
 import { setTitle } from "../../redux/features/slices/titleSlice";
 import Loading from "../../components/Loading";
+import StatusBadge from "../../components/StatusBadge";
+import JobDetail from "./JobDetail";
+import ButtonCustom from "../../components/ButtonCustom";
+import Swal from "sweetalert2";
+import SwitchCustom from "../../components/Switch";
 
 const ManageJob = () => {
   const dispatch = useDispatch();
@@ -45,7 +41,7 @@ const ManageJob = () => {
   const [orderBy, setOrderBy] = useState("asc");
   const [sortBy, setSortBy] = useState("");
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(9);
   const [page, setPage] = useState(1);
   const [experienceSelected, setExperienceSelected] = useState("");
   const [statusJobSelected, setStatusJobSelected] = useState("");
@@ -69,7 +65,8 @@ const ManageJob = () => {
     { refetchOnMountOrArgChange: true }
   );
 
-  const [deleteJob] = useDeleteJobMutation();
+  const [deleteJob, { isLoadingDelete }] = useDeleteJobMutation();
+  const [toggleLockJob, { isLoadingToggle }] = useToggleLockJobMutation();
 
   useEffect(() => {
     if (listJobsData && listJobsData.success) {
@@ -117,17 +114,44 @@ const ManageJob = () => {
 
   const handleRemoveJobItem = async ({ _id, addressId }) => {
     try {
-      const response = await deleteJob({
+      setOpen(false);
+      Swal.fire({
+        title: "Bạn có chắc không ?",
+        text: "Bạn sẽ không thể hoàn tác điều này!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#0B5345 ",
+        cancelButtonColor: "#A93226",
+        confirmButtonText: "Vâng, xoá !",
+        cancelButtonText: "Huỷ",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await deleteJob({
+            userId: user?._id,
+            employerId: user?.ownerEmployerId?._id,
+            jobId: _id,
+            addressId,
+          });
+          if (response && response.data && response.data.success) {
+            dispatch(removeJobItem({ _id }));
+            toast.success("Xoá tin tuyển dụng thành công !");
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleToggleLockJob = async ({ _id }) => {
+    try {
+      const response = await toggleLockJob({
         userId: user?._id,
-        employerId: user?.ownerEmployerId?._id,
         jobId: _id,
-        addressId,
       });
 
       if (response && response.data && response.data.success) {
-        dispatch(removeJobItem({ _id }));
-        setOpen(false);
-        toast.success("Xoá tin tuyển dụng thành công !");
+        dispatch(updateToggleLockJob(response.data));
       }
     } catch (error) {
       console.log(error);
@@ -135,8 +159,8 @@ const ManageJob = () => {
   };
 
   return (
-    <div className="mx-[30px] my-[30px]">
-      {isFetching && <Loading />}
+    <div className="m-[10px]">
+      {(isFetching || isLoadingDelete || isLoadingToggle) && <Loading />}
       <div className="flex flex-col gap-2 bg-white p-2 rounded-md">
         <div className="flex items-center gap-3">
           <SelectCustom label="Sắp xếp theo" options={desiredSalaryOptions} />
@@ -161,11 +185,6 @@ const ManageJob = () => {
             value={search}
             onChange={handleChangeSearch}
           />
-          <Link to="/create-recruitment-job">
-            <Button className="capitalize bg-[#164e63] whitespace-nowrap">
-              Thêm tin tuyển dụng
-            </Button>
-          </Link>
         </div>
         <div className="">
           <table className="w-full text-sm font-bold text-left cursor-pointer border border-blue-gray-100 !rounded-md">
@@ -192,65 +211,63 @@ const ManageJob = () => {
                       className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                       key={job?._id || index}
                     >
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800 whitespace-nowrap">
-                        ... {job?._id.slice(-4)}
+                      <td className="flex justify-center px-2 text-xs font-bold py-1 text-blue-gray-800 whitespace-nowrap">
+                        <SwitchCustom
+                          _id={job?._id}
+                          isChecked={job?.isLocked}
+                          onChange={() =>
+                            handleToggleLockJob({ _id: job?._id })
+                          }
+                        />
                       </td>
-                      <td className="px-2 text-sm font-bold py-1 text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
                         <div className="flex items-center gap-2">
-                          <img
+                          <Avatar
                             src={job?.employerId?.companyLogo}
                             alt=""
-                            className="rounded-md w-10"
+                            className="rounded-full w-[41px] h-[41px] p-1 bg-blue-gray-100"
                           />
                           <div className="flex flex-col">
-                            <Typography className="text-sm font-bold">
+                            <Typography className="text-xs font-bold">
                               {job?.employerId?.companyName}
                             </Typography>
-                            <Typography className="text-sm font-bold">
+                            <Typography className="text-xs font-bold">
                               {job?.employerId?.companyEmail}
                             </Typography>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 text-sm font-bold py-3 text-blue-gray-800 whitespace-pre-wrap">
-                        {job?.recruitmentCampaignName}
-                      </td>
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
                         {job?.industry}
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         {job?.appliedIds?.length}
                       </td>
-                      <td className="py-3 text-center text-blue-gray-800">
-                        {job.status === "pending" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-blue-50 text-blue-500">
-                            Chờ phê duyệt
-                          </div>
-                        ) : job.status === "active" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-green-50 text-green-500">
-                            Đang hoạt động
-                          </div>
-                        ) : job.status === "expired" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-yellow-50 text-yellow-500">
-                            Đã hết hạn
-                          </div>
-                        ) : (
-                          <div className="p-2 rounded-md text-[10px] bg-red-50 text-red-500">
-                            Bị từ chối
-                          </div>
-                        )}
+                      <td className="py-1 text-center text-blue-gray-800">
+                        <StatusBadge status={job.status} />
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         {covertToDate(job?.createdAt)}
                       </td>
-                      <td className="px-1 text-sm font-bold py-3 text-blue-gray-800">
-                        <Button
+                      <td className="px-1 text-xs font-bold py-1 text-blue-gray-800 flex items-center justify-center gap-1">
+                        <ButtonCustom
                           variant="filled"
                           onClick={() => handleViewJobDetail({ _id: job?._id })}
-                          className="text-xs capitalize font-bold rounded-full !px-4 !py-3 bg-blue-gray-900 text-light-blue-600"
+                          className="text-xs capitalize font-bold rounded-md min-w-[90px] bg-blue-50 text-blue-500"
                         >
-                          Xem thêm
-                        </Button>
+                          Xem
+                        </ButtonCustom>
+                        <ButtonCustom
+                          className="text-xs capitalize font-bold rounded-md min-w-[90px] !p-3 bg-red-50 text-red-500"
+                          onClick={() =>
+                            handleRemoveJobItem({
+                              _id: jobDetailData?._id,
+                              addressId: jobDetailData?.workRegion?._id,
+                            })
+                          }
+                        >
+                          Xoá
+                        </ButtonCustom>
                       </td>
                     </tr>
                   );
@@ -258,15 +275,13 @@ const ManageJob = () => {
             </tbody>
           </table>
         </div>
-        <div className="">
-          <Pagination
-            totalPage={totalPage}
-            handlePageChange={handlePageChange}
-            page={page}
-            limit={limit}
-            setLimit={setLimit}
-          />
-        </div>
+        <Pagination
+          totalPage={totalPage}
+          handlePageChange={handlePageChange}
+          page={page}
+          limit={limit}
+          setLimit={setLimit}
+        />
       </div>
       <Drawer
         placement="right"
@@ -276,105 +291,7 @@ const ManageJob = () => {
         className="p-4 bg-[#e8edf2] h-[calc(100vh-200px)] overflow-auto"
         transition={{ type: "spring", duration: 0.5 }}
       >
-        <div className="w-full bg-white rounded-md fixed top-0 z-20">
-          <div className="w-full flex items-center gap-3 p-4">
-            <Button
-              className="bg-[#7f1d1d] capitalize ro"
-              onClick={() =>
-                handleRemoveJobItem({
-                  _id: jobDetailData?._id,
-                  addressId: jobDetailData?.workRegion?._id,
-                })
-              }
-            >
-              Xoá
-            </Button>
-            <Button className="bg-[#164e63] capitalize">Chỉnh sửa</Button>
-            <Button className="bg-[#134e4a] capitalize">
-              Danh sách CV ứng tuyển
-            </Button>
-            <Button
-              className="bg-[#374151] capitalize"
-              onClick={() => setOpen(false)}
-            >
-              Đóng
-            </Button>
-          </div>
-        </div>
-        <div className="flex flex-col gap-1 mt-[70px]">
-          <div className="flex flex-col gap-4 bg-white p-4 rounded-md ">
-            <Typography className="uppercase text-[#212f3f] font-bold text-lg">
-              {jobDetailData?.recruitmentTitle}
-            </Typography>
-            <div className="grid grid-cols-3">
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillDollarCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography className="text-sm font-bold">
-                    Mức lương
-                  </Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.HiLocationMarker size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Địa điểm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.workRegion?.province}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillClockCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Kinh nghiệm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Mô tả công việc
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.jobDescription &&
-                parse(jobDetailData.jobDescription)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Yêu cầu ứng viên
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.candidateRequirements &&
-                parse(jobDetailData.candidateRequirements)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Phúc lợi ứng viên
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.candidateBenefits &&
-                parse(jobDetailData.candidateBenefits)) ||
-                ""}
-            </div>
-          </div>
-        </div>
+        <JobDetail jobDetailData={jobDetailData} />
       </Drawer>
     </div>
   );

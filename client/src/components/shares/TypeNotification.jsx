@@ -4,7 +4,7 @@ import { icons } from "../../utils/icons";
 
 const MessageType = ({ el = {} }) => {
   return (
-    <div className="border-l-4 border-blue-500 p-3 bg-blue-50 flex flex-col gap-2">
+    <div className="rounded-md p-2 bg-orange-50/30 hover:bg-orange-100/30 border border-orange-200 flex flex-col gap-2 transition-all">
       <div className="flex items-center gap-2">
         <Avatar
           src={el?.employerId?.companyLogo}
@@ -36,7 +36,7 @@ const InvitedType = ({ el = {} }) => {
   };
 
   return (
-    <div className="border-l-4 border-green-500 p-3 bg-green-50 flex flex-col gap-2">
+    <div className="rounded-md p-2 bg-indigo-50 hover:bg-indigo-100 transition-all border border-indigo-200 flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Avatar
           src={el?.employerId?.companyLogo}
@@ -54,14 +54,14 @@ const InvitedType = ({ el = {} }) => {
       </div>
       <div className="flex items-center justify-center gap-2">
         <ButtonCustom
-          className="bg-green-500 !w-[150px]"
+          className="text-green-500 bg-green-50 hover:bg-green-100 !w-[150px]"
           onClick={handleAcceptedInterviewIntivion}
         >
           <icons.BsCheckCircleFill size={20} />
           Chấp nhận
         </ButtonCustom>
         <ButtonCustom
-          className="bg-red-500 !w-[150px]"
+          className="text-red-500 bg-red-50 hover:bg-red-100 !w-[150px]"
           onClick={handleRejectedInterviewIntivion}
         >
           <icons.IoCloseCircleSharp size={20} />

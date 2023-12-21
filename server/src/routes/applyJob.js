@@ -22,16 +22,20 @@ router.get(
   getListApplyJobForEmployer
 );
 router.get(
-  "/get-apply-job-detail/:userId/:applyId/:employerId",
+  "/get-apply-job-detail/:userId/:applyJobId/:employerId",
   getApplyJobDetail
 );
-router.post("/apply-job", uploadMemo.single("CVpdf"), applyJob);
+router.post(
+  "/apply-job/:userId/:jobId/:employerId",
+  uploadMemo.single("CVpdf"),
+  applyJob
+);
 
 ///:userId/:jobId/:employerId
 
 router.param("jobId", jobById);
 router.param("employerId", employerById);
-router.param("applyId", applyJobById);
+router.param("applyJobId", applyJobById);
 router.param("userId", userById);
 
 module.exports = router;

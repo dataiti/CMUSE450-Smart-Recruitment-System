@@ -34,12 +34,12 @@ const jobSlice = createSlice({
         state.listJobs[jobIndex] = action.payload.data;
       }
     },
-    updateHiringStatusJob: (state, action) => {
+    updateToggleLockJob: (state, action) => {
       const jobId = action.payload.data._id;
       const jobIndex = state.listJobs.findIndex((item) => item._id === jobId);
 
       if (jobIndex !== -1) {
-        state.listJobs[jobIndex].isHiring = !state.listJobs[jobIndex].isHiring;
+        state.listJobs[jobIndex].isLocked = !state.listJobs[jobIndex].isLocked;
       }
     },
   },
@@ -53,7 +53,7 @@ export const {
   updateJobItem,
   setListJobs,
   addJob,
-  updateHiringStatusJob,
+  updateToggleLockJob,
 } = jobSlice.actions;
 
 export default jobSlice.reducer;

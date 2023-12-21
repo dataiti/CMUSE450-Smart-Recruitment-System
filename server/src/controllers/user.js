@@ -119,6 +119,22 @@ const toggleWishListItem = asyncHandler(async (req, res) => {
   });
 });
 
+const toggleLockUser = asyncHandler(async (req, res) => {
+  const findUser = await User.findOne({ _id: req.user._id });
+
+  if (!findUser) throw new Error("User is not find");
+
+  findUser.isLocked = !findUser.isLocked;
+
+  await findUser.save();
+
+  return res.status(200).json({
+    success: true,
+    messsage: "Toggle lock user is successfully",
+    data: findUser,
+  });
+});
+
 const userViewedJobs = asyncHandler(async (req, res) => {
   if (
     req.user.viewedJobs.some(
@@ -212,6 +228,7 @@ module.exports = {
   deleteUser,
   replacePassword,
   toggleWishListItem,
+  toggleLockUser,
   userViewedJobs,
   getListUserForAdmin,
   getListFollowings,

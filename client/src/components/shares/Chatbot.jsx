@@ -4,7 +4,7 @@ import React from "react";
 
 const Chatbot = ({
   isLoading,
-  question,
+  chatbotCoversation,
   answer,
   inputMessageValue,
   setInputMessageValue,
@@ -15,29 +15,34 @@ const Chatbot = ({
       <Typography className="uppercase font-bold text-white">
         Chat bot
       </Typography>
-      <div className="h-full w-full rounded-md overflow-y-auto text-white">
-        {question && (
-          <div className="flex justify-end">
-            <Typography className=" bg-teal-700 rounded-xl p-3 font-bold text-sm max-w-[80%]">
-              {question}
-            </Typography>
-          </div>
-        )}
-        <div className="flex justify-center my-4">
-          {isLoading && <Spinner className="h-8 w-8" />}
-        </div>
-        {answer && (
-          <div className="flex justify-start bg-blue-gray-800 p-3 rounded-xl mt-2">
-            <Markdown
-              options={{
-                wrapper: "aside",
-                forceWrapper: true,
-              }}
+      <div className="h-full w-full overflow-y-auto">
+        {chatbotCoversation?.map((conversation) => {
+          return (
+            <div
+              className="h-full w-full rounded-md text-white"
+              key={conversation?._id}
             >
-              {answer}
-            </Markdown>
-          </div>
-        )}
+              <div className="flex justify-end">
+                <Typography className=" bg-teal-700 rounded-xl p-3 font-bold text-sm max-w-[80%]">
+                  {conversation?.prompt}
+                </Typography>
+              </div>
+              {/* <div className="flex justify-center ">
+                {isLoading && <Spinner className="h-8 w-8" />}
+              </div> */}
+              <div className="flex justify-start bg-blue-gray-800 p-3 rounded-xl">
+                <Markdown
+                  options={{
+                    wrapper: "aside",
+                    forceWrapper: true,
+                  }}
+                >
+                  {conversation?.text}
+                </Markdown>
+              </div>
+            </div>
+          );
+        })}
       </div>
       <input
         className="outline-none border-none px-4 py-3 rounded-full bg-blue-gray-800 text-white"

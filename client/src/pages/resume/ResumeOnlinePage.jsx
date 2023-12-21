@@ -10,17 +10,19 @@ import { Link } from "react-router-dom";
 import { socket } from "../../socket";
 import { Chatbot } from "../../components/shares";
 import Iconic from "../../components/CVs/templates/Iconic";
+import { useSelector } from "react-redux";
+import { authSelect } from "../../redux/features/slices/authSlice";
 
 const ResumeOnlinePage = () => {
+  const { user } = useSelector(authSelect);
+
   const [inputMessageValue, setInputMessageValue] = useState("");
-  const [question, setQuestion] = useState("");
   const [color, setColor] = useState({
     backgound: "bg-green-500",
     color: "text-green-500",
   });
-  const [answer, setAnswer] = useState(
-    "Hãy gửi một hỏi, tôi sẽ trả lời giúp bạn"
-  );
+  const [chatbotCoversation, setChatbotCoversation] = useState([]);
+  const [question, setQuestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [contentMenu, setContentMenu] = useState(
     () => images.listCVTemplateImage
@@ -38,28 +40,30 @@ const ResumeOnlinePage = () => {
   }, [typeMenu]);
 
   useEffect(() => {
+    socket?.emit("chatbot_conversation", { userId: user?._id });
+
     const handleUserGetAnswer = (message) => {
       setIsLoading(true);
       if (message.success) {
-        setAnswer(message.message);
+        setChatbotCoversation(message.message);
         setIsLoading(false);
       }
     };
 
-    socket?.on("get_answer", handleUserGetAnswer);
+    socket?.on("get_chatbot_conversation", handleUserGetAnswer);
 
     return () => {
-      socket?.off("get_answer", handleUserGetAnswer);
+      socket?.off("get_chatbot_conversation", handleUserGetAnswer);
     };
-  }, []);
+  }, [user?._id]);
 
   const handleSendMessageChatbot = async (e) => {
     if (e.key === "Enter") {
       setIsLoading(true);
       setQuestion(inputMessageValue);
-      setAnswer("");
       setInputMessageValue("");
       socket.emit("send_question", {
+        userId: user?._id,
         prompt: inputMessageValue,
       });
     }
@@ -147,7 +151,7 @@ const ResumeOnlinePage = () => {
         </div>
         <div className="w-[36%] h-screen">
           <Chatbot
-            answer={answer}
+            chatbotCoversation={chatbotCoversation}
             question={question}
             isLoading={isLoading}
             setInputMessageValue={setInputMessageValue}

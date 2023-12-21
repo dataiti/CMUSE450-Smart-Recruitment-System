@@ -11,7 +11,7 @@ const Pagination = ({
   className = "",
 }) => {
   return (
-    <div className={`p-1 flex items-center justify-between ${className}`}>
+    <div className={`p-[2px] flex items-center justify-between ${className}`}>
       <ReactPaginate
         pageCount={totalPage}
         onPageChange={handlePageChange}

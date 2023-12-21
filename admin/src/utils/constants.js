@@ -159,9 +159,8 @@ export const levelOptions = [
 ];
 
 export const tableHeadJob = [
-  { id: 1, name: "ID" },
+  { id: 1, name: "Khoá" },
   { id: 2, name: "Nhà tuyển dụng" },
-  { id: 3, name: "Tên chiến dịch" },
   { id: 5, name: "Danh mục" },
   { id: 6, name: "Đã ứng tuyển" },
   { id: 7, name: "Trạng thái" },
@@ -170,18 +169,17 @@ export const tableHeadJob = [
 ];
 
 export const tableHeadEmployer = [
-  { id: 1, name: "ID" },
+  { id: 1, name: "Khoá" },
   { id: 2, name: "Thông tin chung" },
   { id: 3, name: "Lĩnh vực" },
   { id: 5, name: "Quy mô" },
-  { id: 6, name: "Địa điểm" },
   { id: 7, name: "Trạng thái" },
   { id: 8, name: "Ngày đăng" },
   { id: 9, name: "Hành động" },
 ];
 
 export const tableHeadUser = [
-  { id: 1, name: "ID" },
+  { id: 1, name: "Khoá" },
   { id: 2, name: "Thông tin chung" },
   { id: 3, name: "Quyền hạn" },
   { id: 5, name: "Nhà tuyển dụng" },

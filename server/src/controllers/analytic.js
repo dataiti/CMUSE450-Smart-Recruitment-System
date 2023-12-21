@@ -27,7 +27,7 @@ const getOveviewStatistics = asyncHandler(async (req, res) => {
 
   const numberOfApplyJobsNotViewed = await ApplyJob.countDocuments({
     employerId: req.employer._id,
-    status: "notviewed",
+    status: "pending",
   });
 
   return res.status(200).json({

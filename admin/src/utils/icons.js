@@ -14,6 +14,7 @@ import {
   IoSettingsSharp,
   IoArrowRedoCircleOutline,
   IoArrowUndoCircleOutline,
+  IoLocationSharp,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -22,6 +23,7 @@ import {
   MdKeyboardArrowUp,
   MdImagesearchRoller,
   MdPayment,
+  MdPhoneInTalk,
 } from "react-icons/md";
 import {
   BsFillImageFill,
@@ -32,7 +34,7 @@ import {
   BsCameraFill,
 } from "react-icons/bs";
 import { FaUserAlt, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
-import { BiSolidPhoneCall } from "react-icons/bi";
+import { BiSolidPhoneCall, BiSolidBuildingHouse } from "react-icons/bi";
 import { HiLocationMarker } from "react-icons/hi";
 import {
   FaCircleChevronUp,
@@ -53,6 +55,9 @@ import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 import { TbCategoryFilled } from "react-icons/tb";
 
 const icons = {
+  BiSolidBuildingHouse,
+  IoLocationSharp,
+  MdPhoneInTalk,
   TbCategoryFilled,
   MdPayment,
   FaSignOutAlt,

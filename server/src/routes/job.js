@@ -12,6 +12,7 @@ const {
   getListJobForAdmin,
   getListJobsForHomePage,
   getListJobsByCompany,
+  toggleLockJob,
 } = require("../controllers/job");
 const { userById } = require("../controllers/user");
 const { addressById } = require("../controllers/address");
@@ -26,6 +27,13 @@ router.get(
   isAdminSystem,
   getListJobForAdmin
 );
+router.put(
+  "/toggle-lock-job/admin/:userId/:jobId",
+  verifyToken,
+  isAdminSystem,
+  toggleLockJob
+);
+
 router.get("/get-list-search-jobs", getListSearchJobs);
 router.get("/get-list-jobs/company", getListJobsByCompany);
 router.get("/get-list-jobs/homepage/:userId", getListJobsForHomePage);

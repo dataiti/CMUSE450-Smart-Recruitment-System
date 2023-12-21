@@ -24,7 +24,7 @@ const TextareaController = ({
                 label={label}
                 {...field}
                 error={!!error}
-                className="col-span-3 bg-white w-full"
+                className="col-span-3 bg-white w-full h-[250px]"
                 disabled={isDisabled}
               />
               {!!error && (

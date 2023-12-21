@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { JobCard } from "../../components/jobs";
+import { JobCardSmall } from "../../components/jobs";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
@@ -22,7 +22,7 @@ const WishListPage = () => {
       <div className="grid grid-cols-3 gap-2">
         {user?.wishlistIds?.length > 0 &&
           user?.wishlistIds?.map((jobItem) => {
-            return <JobCard jobItem={jobItem} key={jobItem?._id} />;
+            return <JobCardSmall jobItem={jobItem} key={jobItem?._id} />;
           })}
       </div>
     </div>

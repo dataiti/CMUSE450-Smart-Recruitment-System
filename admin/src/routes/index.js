@@ -8,6 +8,7 @@ import {
   ManageTransaction,
   ManageEmployer,
   ManageUser,
+  CreateEmployer,
 } from "../pages";
 import ProtectedRoutes from "../components/ProtectedRoutes";
 
@@ -57,6 +58,10 @@ const routers = [
           {
             path: "/user-management",
             element: <ManageUser />,
+          },
+          {
+            path: "/create-employer",
+            element: <CreateEmployer />,
           },
         ],
       },

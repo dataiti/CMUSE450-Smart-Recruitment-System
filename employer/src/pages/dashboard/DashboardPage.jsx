@@ -21,6 +21,8 @@ import {
   Loading,
   StatisticIndex,
   Pagination,
+  JobStatusBadge,
+  ButtonCustom,
 } from "../../components/shares";
 import { icons } from "../../utils/icons";
 import { setTitle } from "../../redux/features/slices/titleSlice";
@@ -143,7 +145,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="my-3 mx-5 flex flex-col gap-2">
+    <div className="m-[10px] flex flex-col gap-2">
       {(isFetchingOveviewStatistics ||
         isFetchingLineChart ||
         isFetchingPieChart ||
@@ -268,15 +270,15 @@ const DashboardPage = () => {
                           className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                           key={job?._id || index}
                         >
-                          <td className="px-2 text-sm font-bold py-1 text-blue-gray-800 whitespace-nowrap">
-                            ... {job?._id.slice(-4)}
+                          <td className="px-2 text-xs font-bold py-1 text-blue-gray-800 whitespace-nowrap">
+                            {job?._id.slice(-4)}
                           </td>
                           <td className="px-3 text-sm font-bold py-1 text-blue-gray-800">
                             <div className="flex items-center gap-2">
                               <Avatar
                                 src={job?.candidateId?.avatar}
                                 alt="avatar"
-                                className="!h-10 !w-10 border border-r-gray-200"
+                                className="h-10 w-10 border p-1 bg-blue-gray-100"
                               />
                               <div className="flex flex-col">
                                 <Typography className="text-xs font-bold">
@@ -284,47 +286,23 @@ const DashboardPage = () => {
                                     " " +
                                     job?.candidateId?.firstName}
                                 </Typography>
-                                <Typography className="text-xs font-bold">
+                                <Typography className="text-xs font-semibold text-gray-500 ">
                                   {job?.candidateId?.email}
                                 </Typography>
                               </div>
                             </div>
                           </td>
                           <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
-                            {job?.jobId?.recruitmentCampaignName}
+                            {job?.jobId?.recruitmentTitle}
                           </td>
-
                           <td className="py-1 text-center text-blue-gray-800">
-                            {job.status === "notviewed" ? (
-                              <div className="p-2 rounded-md text-[10px] bg-blue-50 text-blue-500">
-                                Chưa xem
-                              </div>
-                            ) : job.status === "viewed" ? (
-                              <div className="p-2 rounded-md text-[10px] bg-green-50 text-green-500">
-                                Đã xem
-                              </div>
-                            ) : job.status === "accepted" ? (
-                              <div className="p-2 rounded-md text-[10px] bg-yellow-50 text-yellow-500">
-                                Được chấp nhận
-                              </div>
-                            ) : job.status === "rejected" ? (
-                              <div className="p-2 rounded-md text-[10px] bg-red-50 text-red-500">
-                                Bị từ chối
-                              </div>
-                            ) : (
-                              <div className="p-2 rounded-md text-[10px] bg-indigo-50 text-indigo-500">
-                                Đang tiến triển
-                              </div>
-                            )}
+                            <JobStatusBadge status={job.status} />
                           </td>
                           <td className="px-1 text-xs font-bold py-1 flex justify-center text-blue-gray-800">
                             <Link to={`/list-resumes/${job?._id}`}>
-                              <Button
-                                variant="filled"
-                                className="!text-xs capitalize font-bold rounded-full !p-3  bg-blue-gray-900 text-light-blue-600"
-                              >
+                              <ButtonCustom className="text-xs capitalize font-bold rounded-md min-w-[90px] bg-blue-50 text-blue-500">
                                 Chi tiết
-                              </Button>
+                              </ButtonCustom>
                             </Link>
                           </td>
                         </tr>

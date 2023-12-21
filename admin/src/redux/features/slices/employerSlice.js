@@ -15,17 +15,19 @@ const employerSlice = createSlice({
       state.currentPage = action.payload.currentPage;
       state.count = action.payload.count;
     },
-    // addEmployer: (state, action) => {
-    //   state.listEmployers.unshift(action.action.data);
-    // },
-    // removeEmployerItem: (state, action) => {
-    //   const EmployerId = action.payload._id;
-    //   const EmployerIndex = state.listEmployers.findIndex((item) => item._id === EmployerId);
+    addEmployer: (state, action) => {
+      state.listEmployers.unshift(action.action.data);
+    },
+    removeEmployerItem: (state, action) => {
+      const employerId = action.payload._id;
+      const employerIndex = state.listEmployers.findIndex(
+        (item) => item._id === employerId
+      );
 
-    //   if (EmployerIndex !== -1) {
-    //     state.listEmployers.splice(EmployerIndex, 1);
-    //   }
-    // },
+      if (employerIndex !== -1) {
+        state.listEmployers.splice(employerIndex, 1);
+      }
+    },
     // updateEmployerItem: (state, action) => {
     //   const EmployerId = action.payload.data._id;
     //   const EmployerIndex = state.listEmployers.findIndex((item) => item._id === EmployerId);
@@ -34,14 +36,17 @@ const employerSlice = createSlice({
     //     state.listEmployers[EmployerIndex] = action.payload.data;
     //   }
     // },
-    // updateHiringStatusEmployer: (state, action) => {
-    //   const EmployerId = action.payload.data._id;
-    //   const EmployerIndex = state.listEmployers.findIndex((item) => item._id === EmployerId);
+    updateToggleLockEmployer: (state, action) => {
+      const employerId = action.payload.data._id;
+      const employerIndex = state.listEmployers.findIndex(
+        (item) => item._id === employerId
+      );
 
-    //   if (EmployerIndex !== -1) {
-    //     state.listEmployers[EmployerIndex].isHiring = !state.listEmployers[EmployerIndex].isHiring;
-    //   }
-    // },
+      if (employerIndex !== -1) {
+        state.listEmployers[employerIndex].isLocked =
+          !state.listEmployers[employerIndex].isLocked;
+      }
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -50,10 +55,10 @@ export const employerSelect = (state) => state.employer;
 
 export const {
   setListEmployers,
-  // removeEmployerItem,
+  removeEmployerItem,
   // updateEmployerItem,
-  // addEmployer,
-  // updateHiringStatusEmployer,
+  addEmployer,
+  updateToggleLockEmployer,
 } = employerSlice.actions;
 
 export default employerSlice.reducer;

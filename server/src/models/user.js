@@ -107,10 +107,14 @@ const userSchema = new mongoose.Schema(
     status: {
       type: String,
       default: "active",
-      enum: ["active", "locked", "online"],
+      enum: ["active", "locked"],
     },
     socketId: {
       type: String,
+    },
+    isLocked: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

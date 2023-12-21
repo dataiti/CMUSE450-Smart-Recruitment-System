@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useGetJobDetailQuery } from "../../redux/features/apis/jobApi";
 import { Link, useParams } from "react-router-dom";
 import {
-  Avatar,
   Breadcrumbs,
   Button,
   IconButton,
@@ -35,19 +34,20 @@ import {
   Tag,
   EmploymentInfo,
 } from "../../components/shares";
-import { ApplyJobForm } from "../../components/forms";
+import { ApplyJobForm, LoginForm } from "../../components/forms";
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
   const dispatch = useDispatch();
 
-  const { user } = useSelector(authSelect);
+  const { user, isLoggedIn } = useSelector(authSelect);
 
   const [isFollowCompany, setIsFollowCompany] = useState(false);
   const [openApplyModal, setOpenApplyModal] = useState(false);
   const [openEvaluateJobModal, setOpenEvaluateJobModal] = useState(false);
   const [isBoxChatOpen, setIsBoxChatOpen] = useState(false);
   const [isBoxChatBubble, setIsBoxChatBubble] = useState(false);
+  const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
 
   const { data: jobDetailData, isFetching } = useGetJobDetailQuery({ jobId });
   const [userViewedJob] = useUserViewedJobMutation();
@@ -64,20 +64,28 @@ const JobDetailPage = () => {
   }, []);
 
   useEffect(() => {
-    const userViewedJobApi = async () => {
-      await userViewedJob({
-        userId: user?._id,
-        jobId,
-      });
-    };
-    userViewedJobApi();
-  }, [jobId, user?._id, userViewedJob]);
+    if (!isLoggedIn) {
+      setIsOpenLoginModal(true);
+    } else {
+      const userViewedJobApi = async () => {
+        await userViewedJob({
+          userId: user?._id,
+          jobId,
+        });
+      };
+      userViewedJobApi();
+    }
+  }, [jobId, user?._id, userViewedJob, isLoggedIn]);
 
   useEffect(() => {
-    setIsFollowCompany(
-      jobDetailData?.data?.employerId?.followerIds?.includes(user?._id)
-    );
-  }, [jobDetailData?.data?.employerId?.followerIds, user?._id]);
+    if (!isLoggedIn) {
+      setIsOpenLoginModal(true);
+    } else {
+      setIsFollowCompany(
+        jobDetailData?.data?.employerId?.followerIds?.includes(user?._id)
+      );
+    }
+  }, [jobDetailData?.data?.employerId?.followerIds, user?._id, isLoggedIn]);
 
   useEffect(() => {
     const handleUserGetMessage = (message) => {
@@ -93,28 +101,40 @@ const JobDetailPage = () => {
   }, [dispatch]);
 
   const handleUnfollowCompany = () => {
-    socket?.emit("unfollow_employer", {
-      employerId: jobDetailData?.data?.employerId?._id,
-      userId: user?._id,
-    });
-    setIsFollowCompany(false);
+    if (!isLoggedIn) {
+      setIsOpenLoginModal(true);
+    } else {
+      socket?.emit("unfollow_employer", {
+        employerId: jobDetailData?.data?.employerId?._id,
+        userId: user?._id,
+      });
+      setIsFollowCompany(false);
+    }
   };
 
   const handleFollowCompany = () => {
-    socket?.emit("follow_employer", {
-      employerId: jobDetailData?.data?.employerId?._id,
-      userId: user?._id,
-    });
-    setIsFollowCompany(true);
+    if (!isLoggedIn) {
+      setIsOpenLoginModal(true);
+    } else {
+      socket?.emit("follow_employer", {
+        employerId: jobDetailData?.data?.employerId?._id,
+        userId: user?._id,
+      });
+      setIsFollowCompany(true);
+    }
   };
 
   const handleStartConversation = () => {
-    setIsBoxChatOpen(true);
-    setIsBoxChatBubble(false);
-    socket?.emit("start_conversation", {
-      employerId: jobDetailData?.data?.employerId?._id,
-      userId: user?._id,
-    });
+    if (!isLoggedIn) {
+      setIsOpenLoginModal(true);
+    } else {
+      setIsBoxChatOpen(true);
+      setIsBoxChatBubble(false);
+      socket?.emit("start_conversation", {
+        employerId: jobDetailData?.data?.employerId?._id,
+        userId: user?._id,
+      });
+    }
   };
 
   return (
@@ -212,7 +232,11 @@ const JobDetailPage = () => {
                 className="bg-[#212f3f] !px-20 hover:bg-blue-gray-700 transition-all flex items-center  gap-2"
                 onClick={(e) => {
                   e.preventDefault();
-                  setOpenApplyModal(true);
+                  if (!isLoggedIn) {
+                    setIsOpenLoginModal(true);
+                  } else {
+                    setOpenApplyModal(true);
+                  }
                 }}
               >
                 <icons.IoMdSend size={24} />
@@ -222,7 +246,11 @@ const JobDetailPage = () => {
                 className="bg-[#212f3f] !px-20 hover:bg-blue-gray-700 transition-all flex items-center  gap-2"
                 onClick={(e) => {
                   e.preventDefault();
-                  setOpenEvaluateJobModal(true);
+                  if (!isLoggedIn) {
+                    setIsOpenLoginModal(true);
+                  } else {
+                    setOpenEvaluateJobModal(true);
+                  }
                 }}
               >
                 <icons.PiChartDonutFill size={24} />
@@ -438,6 +466,7 @@ const JobDetailPage = () => {
           data={evaluateSuitableJobQueryData}
         />
       </Modal>
+      <LoginForm open={isOpenLoginModal} handleOpen={setIsOpenLoginModal} />
     </div>
   );
 };

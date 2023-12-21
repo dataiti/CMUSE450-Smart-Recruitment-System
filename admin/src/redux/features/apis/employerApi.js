@@ -10,7 +10,47 @@ const employerApi = rootApi.injectEndpoints({
         };
       },
     }),
+    registerEmployerForAdmin: builder.mutation({
+      query: ({ formData, userId }) => {
+        return {
+          url: `/employer/register-employer/admin/${userId}`,
+          method: "POST",
+          body: formData,
+        };
+      },
+    }),
+    editEmployer: builder.mutation({
+      query: ({ data, userId, employerId }) => {
+        return {
+          url: `/employer/edit-employer/${userId}/${employerId}`,
+          method: "PUT",
+          body: data,
+        };
+      },
+    }),
+    deleteEmployer: builder.mutation({
+      query: ({ userId, employerId, addressId }) => {
+        return {
+          url: `/employer/delete-employer/${userId}/${employerId}/${addressId}`,
+          method: "DELETE",
+        };
+      },
+    }),
+    toggleLockEmployer: builder.mutation({
+      query: ({ userId, employerId }) => {
+        return {
+          url: `/employer/toggle-lock-employer/admin/${userId}/${employerId}`,
+          method: "PUT",
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetListOfEmployerForAdminQuery } = employerApi;
+export const {
+  useGetListOfEmployerForAdminQuery,
+  useRegisterEmployerForAdminMutation,
+  useDeleteEmployerMutation,
+  useEditEmployerMutation,
+  useToggleLockEmployerMutation,
+} = employerApi;

@@ -1,4 +1,5 @@
 const Employer = require("../models/employer");
+const User = require("../models/user");
 const Address = require("../models/address");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
@@ -33,7 +34,82 @@ const getEmployerDetail = asyncHandler(async (req, res) => {
   });
 });
 
+const registerEmployerForAdmin = asyncHandler(async (req, res) => {
+  const { firstName, lastName, email, password } = req.body;
+
+  if (!firstName || !lastName || !email || !password)
+    throw new Error("All fields are required");
+
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) throw new Error("User is existing");
+
+  const newUser = new User({
+    firstName,
+    lastName,
+    email,
+    password,
+  });
+
+  await newUser.save();
+
+  const companyLogo = req.file.path;
+  const publicId = req.file.filename;
+
+  const {
+    companyName,
+    companyEmail,
+    companyPhoneNumber,
+    websiteUrl,
+    companyIndustry,
+    companySize,
+    companyLocation,
+    companyDescription,
+  } = req.body;
+
+  const newAddress = new Address({
+    province: req.body.province,
+    ward: req.body.ward,
+    district: req.body.district,
+    exactAddress: req.body.exactAddress,
+  });
+
+  await newAddress.save();
+
+  if (!newAddress) throw new Error("Create job is fail");
+
+  const newEmployer = new Employer({
+    ownerId: newUser._id,
+    addressId: newAddress._id,
+    companyLogo,
+    publicId,
+    companyName,
+    companyEmail,
+    companyPhoneNumber,
+    websiteUrl,
+    companyIndustry,
+    companySize,
+    companyLocation,
+    companyDescription,
+  });
+
+  await newEmployer.save();
+
+  if (!newEmployer) throw new Error("Register employer is fail");
+
+  newUser.ownerEmployerId = newEmployer._id;
+  await newUser.save();
+
+  return res.status(200).json({
+    success: true,
+    message: "Register employer is successfully",
+    data: newEmployer,
+  });
+});
+
 const registerEmployer = asyncHandler(async (req, res) => {
+  console.log(req.body);
+
   const companyLogo = req.file.path;
   const publicId = req.file.filename;
 
@@ -116,15 +192,37 @@ const editEmployer = asyncHandler(async (req, res) => {
 });
 
 const deleteEmployer = asyncHandler(async (req, res) => {
-  const deleteCandidate = await Candidate.findOneAndDelete({
-    _id: req.candidate.candidateId,
+  const deleteAddress = await Address.findOneAndDelete({
+    _id: req.address._id,
   });
 
-  if (!deleteCandidate) throw new Error("Delete candidate is fail");
+  if (!deleteAddress) throw new Error("Delete address is fail");
+
+  const removeEmployer = await Employer.findOneAndDelete({
+    _id: req.employer._id,
+  });
+
+  if (!removeEmployer) throw new Error("Delete emplpyer is fail");
 
   return res.status(200).json({
     success: true,
-    message: "Delete candidate is successfully",
+    message: "Delete emplpyer is successfully",
+  });
+});
+
+const toggleLockEmployer = asyncHandler(async (req, res) => {
+  const findEmployer = await Employer.findOne({ _id: req.employer._id });
+
+  if (!findEmployer) throw new Error("Employer is not find");
+
+  findEmployer.isLocked = !findEmployer.isLocked;
+
+  await findEmployer.save();
+
+  return res.status(200).json({
+    success: true,
+    messsage: "Toggle lock employer is successfully",
+    data: findEmployer,
   });
 });
 
@@ -191,5 +289,7 @@ module.exports = {
   registerEmployer,
   editEmployer,
   deleteEmployer,
+  toggleLockEmployer,
   getListOfEmployerForAdmin,
+  registerEmployerForAdmin,
 };

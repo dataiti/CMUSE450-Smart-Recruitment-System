@@ -1,3 +1,4 @@
 import useDebounce from "./useDebounce";
+import useWorkLocations from "./useWorkLocations ";
 
-export { useDebounce };
+export { useDebounce, useWorkLocations };

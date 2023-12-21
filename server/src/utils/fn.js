@@ -107,16 +107,16 @@ const evaluateSuitableJob = async ({ candidate, job }) => {
       : (candidateExperience / requiredExperience) * 100;
 
   const findCategories = await Category.find();
-  const jobPositionPercentage =
-    candidateJobPosition === requiredJobPosition
-      ? 100
-      : findCategories.some((category) =>
-          category.subcategories.some((item) =>
-            [candidateJobPosition, requiredJobPosition].includes(item.name)
-          )
-        )
-      ? 20
-      : 0;
+  const jobPositionPercentage = 0;
+  // candidateJobPosition === requiredJobPosition
+  //   ? 100
+  //   : findCategories.some((category) =>
+  //       category.subcategories.some((item) =>
+  //         [candidateJobPosition, requiredJobPosition].includes(item.name)
+  //       )
+  //     )
+  //   ? 20
+  //   : 0;
 
   let salaryPercentage = 0;
 
@@ -140,64 +140,28 @@ const evaluateSuitableJob = async ({ candidate, job }) => {
   return overallPercentage.toFixed(2);
 };
 
-const handleCVStatusChange = async ({
-  message,
-  applyStatus,
-  candidateStatus,
-}) => {
-  const { userId, employerId, applyJobId } = message;
+function calculateSkillMatchPercentage({
+  cvSkills,
+  jobSkills,
+  jobExperience,
+  cvExperience,
+}) {
+  const commonSkills =
+    cvSkills?.filter((skill) => jobSkills.includes(skill)) || [];
+  const matchPercentage = (commonSkills.length / jobSkills.length) * 100;
 
-  try {
-    const applyJob = await ApplyJob.findById(applyJobId);
-    const user = await User.findById(userId);
-    const employer = await Employer.findById(employerId);
+  const experiencePercentage =
+    cvExperience >= jobExperience || jobExperience === 0
+      ? 100
+      : (cvExperience / jobExperience) * 100;
 
-    if (!user || !applyJob || !employer) return;
-
-    await ApplyJob.findByIdAndUpdate(
-      applyJobId,
-      { $set: { applyStatus, candidateStatus } },
-      { new: true }
-    );
-
-    const notificationContent =
-      newStatus === "viewed"
-        ? `${employer?.companyName} đã xem CV mà bạn đã ứng tuyển. Xem ngay`
-        : newStatus === "rejected"
-        ? `${employer?.companyName} đã từ chối CV mà bạn đã ứng tuyển. Xem ngay`
-        : `${employer?.companyName} đã gửi lời mời phỏng vấn mà bạn đã ứng tuyển. Xem ngay`;
-
-    const newNotification = new Notification({
-      userId,
-      employerId,
-      title: "Thông báo kết quả CV của bạn",
-      content: notificationContent,
-      type: "message",
-    });
-
-    await newNotification.save();
-
-    const listNotifications = await Notification.find({ userId })
-      .sort("-_id")
-      .populate("userId", "firstName lastName _id avatar email status")
-      .populate(
-        "employerId",
-        "companyLogo companyName companyEmail _id companyPhoneNumber"
-      );
-
-    io.to(user?.socketId).emit("user_get_list_notifications", {
-      success: true,
-      message: listNotifications,
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
+  return ((matchPercentage + experiencePercentage) / 2).toFixed(2);
+}
 
 module.exports = {
   parseArrayQueryParam,
   calculateSimilarity,
   sortObject,
   evaluateSuitableJob,
-  handleCVStatusChange,
+  calculateSkillMatchPercentage,
 };

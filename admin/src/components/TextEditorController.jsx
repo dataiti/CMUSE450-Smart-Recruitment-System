@@ -27,7 +27,9 @@ const TextEditorController = ({
                 value={field.value || ""}
                 theme="snow"
                 modules={{}}
-                className={`w-full ${!!error ? "border-red-500" : ""}`}
+                className={`w-full h-[250px] ${
+                  !!error ? "border-red-500" : ""
+                }`}
                 readOnly={isDisabled}
                 style={{ borderRadius: "10px" }}
               />

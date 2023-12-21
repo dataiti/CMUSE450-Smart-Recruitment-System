@@ -14,6 +14,11 @@ const JobStatusBadge = ({ status }) => {
       textColor = "text-green-500";
       label = "Đã phản hồi";
       break;
+    case "active":
+      backgroundColor = "bg-green-50";
+      textColor = "text-green-500";
+      label = "Hoạt động";
+      break;
     case "pending":
       backgroundColor = "bg-orange-50";
       textColor = "text-orange-500";
@@ -42,7 +47,7 @@ const JobStatusBadge = ({ status }) => {
 
   return (
     <div
-      className={`p-2 rounded-md text-[10px] ${backgroundColor} ${textColor} mx-2`}
+      className={`p-2 rounded-md text-[12px] ${backgroundColor} ${textColor} mx-2`}
     >
       {label}
     </div>

@@ -17,11 +17,15 @@ const categorySchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    subcategories: [
-      {
-        name: String,
-      },
-    ],
+    subcategories: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "SubCategory",
+        },
+      ],
+      default: [],
+    },
     isActive: {
       type: Boolean,
       default: true,

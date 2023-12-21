@@ -16,6 +16,7 @@ import ToolbarCV from "./ToolbarCV";
 import JobStatusBadge from "./JobStatusBadge";
 import CirculeProgress from "./CirculeProgress";
 import ListNotification from "./ListNotification";
+import EvaluateSuitableCV from "./EvaluateSuitableCV";
 
 export {
   ButtonCustom,
@@ -36,4 +37,5 @@ export {
   JobStatusBadge,
   CirculeProgress,
   ListNotification,
+  EvaluateSuitableCV,
 };

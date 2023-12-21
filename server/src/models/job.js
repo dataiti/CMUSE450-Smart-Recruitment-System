@@ -123,6 +123,10 @@ const jobSchema = new mongoose.Schema(
       max: 5,
       default: 4.5,
     },
+    isLocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

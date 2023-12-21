@@ -181,6 +181,22 @@ const toggleHiringStatusJob = asyncHandler(async (req, res) => {
   });
 });
 
+const toggleLockJob = asyncHandler(async (req, res) => {
+  const findJob = await Job.findOne({ _id: req.job._id });
+
+  if (!findJob) throw new Error("Job is not find");
+
+  findJob.isLocked = !findJob.isLocked;
+
+  await findJob.save();
+
+  return res.status(200).json({
+    success: true,
+    messsage: "Toggle lock job is successfully",
+    data: findJob,
+  });
+});
+
 const getListSearchJobs = asyncHandler(async (req, res) => {
   const { query } = req;
   const search = query.search ? query.search : null;
@@ -200,6 +216,7 @@ const getListSearchJobs = asyncHandler(async (req, res) => {
     ],
     isHiring: true,
     status: "active",
+    isLocked: false,
   };
 
   const countJobs = await Job.countDocuments(filterArgs);
@@ -261,6 +278,7 @@ const getListJobsByKeyword = asyncHandler(async (req, res) => {
     ],
     isHiring: true,
     status: "active",
+    isLocked: false,
   };
 
   if (industryArr !== -1) filterArgs.industry = { $in: industryArr };
@@ -318,7 +336,7 @@ const getListJobs = asyncHandler(async (req, res) => {
   const limit = query.limit > 0 ? Number(query.limit) : 6;
   const page = query.page > 0 ? Number(query.page) : 1;
   const skip = (page - 1) * limit;
-  const candidateId = query.candidateId;
+  const candidateId = query.candidateId ? query.candidateId : "";
 
   const industryArr = parseArrayQueryParam("industry", query);
   const jobTypeArr = parseArrayQueryParam("jobType", query);
@@ -345,6 +363,7 @@ const getListJobs = asyncHandler(async (req, res) => {
     ],
     isHiring: true,
     status: "active",
+    isLocked: false,
   };
 
   if (industryArr !== -1) filterArgs.industry = { $in: industryArr };
@@ -374,16 +393,7 @@ const getListJobs = asyncHandler(async (req, res) => {
   const totalPage = Math.ceil(countJobs / limit);
 
   let listJobs;
-  if (!candidateId) {
-    listJobs = await Job.find(filterArgs)
-      .sort({ [sortBy]: orderBy, _id: -1 })
-      .skip(skip)
-      .limit(limit)
-      .populate("workRegion")
-      // .populate("categoryId", "name")
-      .populate("employerId");
-  }
-  if (candidateId) {
+  if (candidate) {
     const listJobsWithEvaluation = await Job.find(filterArgs)
       .sort({ [sortBy]: orderBy, _id: -1 })
       .skip(skip)
@@ -399,6 +409,14 @@ const getListJobs = asyncHandler(async (req, res) => {
         return { ...job, percentage };
       })
     );
+  } else {
+    listJobs = await Job.find(filterArgs)
+      .sort({ [sortBy]: orderBy, _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("workRegion")
+      // .populate("categoryId", "name")
+      .populate("employerId");
   }
 
   return res.status(200).json({
@@ -615,6 +633,7 @@ module.exports = {
   editJob,
   deleteJob,
   toggleHiringStatusJob,
+  toggleLockJob,
   getListSearchJobs,
   getListJobs,
   getListJobForEmployer,

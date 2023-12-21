@@ -11,7 +11,7 @@ const ListNotification = ({ listNotifications = [], isLoading = false }) => {
   return (
     <div className="absolute bg-white p-2 shadow-2xl rounded-md top-[120%] left-[50%] -translate-x-[50%] col-span-4 flex flex-col gap-1 w-[360px] h-[400px] overflow-y-auto">
       {isLoading ? (
-        <div className="h-full flex items-center justify-center">
+        <div className="h-full flex items-center justify-center py-2">
           <Spinner className="h-8 w-8" />
         </div>
       ) : (

@@ -68,7 +68,7 @@ const CategoriesPage = () => {
       rating: rating,
       salaryFrom,
       salaryTo,
-      candidateId: user?.candidateId,
+      candidateId: user?.candidateId || "",
     },
     { refetchOnMountOrArgChange: true }
   );

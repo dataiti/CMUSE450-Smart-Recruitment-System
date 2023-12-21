@@ -10,7 +10,13 @@ import {
   tableHeadCategory,
 } from "../../utils/constants";
 import { covertToDate } from "../../utils/fn";
-import { Button, Drawer, Input, Typography } from "@material-tailwind/react";
+import {
+  Avatar,
+  Button,
+  Drawer,
+  Input,
+  Typography,
+} from "@material-tailwind/react";
 import SelectCustom from "../../components/SelectCustom";
 import { useDebounce } from "../../hooks";
 import { toast } from "react-toastify";
@@ -28,6 +34,8 @@ import {
 } from "../../redux/features/slices/categorySlice";
 import SwitchCustom from "../../components/Switch";
 import { Link } from "react-router-dom";
+import CategoryDetail from "./CategoryDetail";
+import ButtonCustom from "../../components/ButtonCustom";
 
 const ManageCategory = () => {
   const dispatch = useDispatch();
@@ -136,7 +144,7 @@ const ManageCategory = () => {
   };
 
   return (
-    <div className="mx-[30px] my-[30px]">
+    <div className="mx-[10px] my-[10px]">
       {(isFetching || isLoading) && <Loading />}
       <div className="flex flex-col gap-2 bg-white p-2 rounded-md">
         <div className="grid grid-cols-5 gap-3">
@@ -166,7 +174,7 @@ const ManageCategory = () => {
                     <th
                       key={id}
                       scope="col"
-                      className="px-6 py-3 text-xs text-center"
+                      className="px-6 py-1 text-xs text-center"
                     >
                       {name}
                     </th>
@@ -182,7 +190,7 @@ const ManageCategory = () => {
                       className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                       key={category?._id || index}
                     >
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
                         <SwitchCustom
                           _id={category?._id}
                           isChecked={category?.isActive}
@@ -193,64 +201,51 @@ const ManageCategory = () => {
                           }
                         />
                       </td>
-                      <td className="px-2 text-sm text-center font-bold py-3 text-blue-gray-800 whitespace-nowrap">
+                      <td className="px-2 text-xs text-center font-bold py-1 text-blue-gray-800 whitespace-nowrap">
                         ... {category?._id.slice(-4)}
                       </td>
-                      <td className="px-2 text-sm text-center font-bold py-2 text-blue-gray-800">
+                      <td className="px-2 text-xs text-center font-bold py-1 text-blue-gray-800">
                         <div className="flex justify-center">
-                          <img
+                          <Avatar
                             src={category?.image}
                             alt=""
-                            className="rounded-full w-12 border-2 border-cyan-500 "
+                            className="rounded-full w-12 h-12 bg-blue-gray-100 p-1"
                           />
                         </div>
                       </td>
-                      <td className="px-2 text-sm text-center font-bold py-3 text-blue-gray-800 whitespace-pre-wrap">
+                      <td className="px-2 text-xs text-center font-bold py-1 text-blue-gray-800 whitespace-pre-wrap">
                         {category?.name}
                       </td>
-                      <td className="py-3 text-center text-blue-gray-800">
+                      <td className="py-1 text-center text-blue-gray-800">
                         {category?.isActive ? (
-                          <div className="p-2 rounded-md text-[10px] bg-green-50 text-green-500">
+                          <div className="p-2 rounded-md text-[12px] bg-green-50 text-green-500">
                             Đang hoạt động
                           </div>
                         ) : (
-                          <div className="p-2 rounded-md text-[10px] bg-red-50 text-red-500">
+                          <div className="p-2 rounded-md text-[12px] bg-red-50 text-red-500">
                             Đã tắt
                           </div>
                         )}
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         {covertToDate(category?.createdAt)}
                       </td>
-                      <td className="px-1 text-sm text-center font-bold py-3 text-blue-gray-800">
+                      <td className="px-1 text-xs text-center font-bold py-1 flex items-center justify-center gap-1 text-blue-gray-800">
                         <div className="flex items-center gap-2">
-                          <Button
-                            variant="filled"
+                          <ButtonCustom
                             onClick={() =>
                               handleViewJobDetail({ _id: category?._id })
                             }
-                            className="text-xs capitalize font-bold rounded-full min-w-[90px] !p-3 bg-blue-gray-900 text-light-blue-600"
+                            className="text-xs capitalize font-bold rounded-md min-w-[90px] bg-red-50 text-red-500"
                           >
                             Xoá
-                          </Button>
-                          <Button
-                            variant="filled"
-                            onClick={() =>
-                              handleViewJobDetail({ _id: category?._id })
-                            }
-                            className="text-xs capitalize font-bold rounded-full min-w-[90px] !p-3 bg-blue-gray-900 text-light-blue-600"
-                          >
-                            Xem thêm
-                          </Button>
-                          <Button
-                            variant="filled"
-                            onClick={() =>
-                              handleViewJobDetail({ _id: category?._id })
-                            }
-                            className="text-xs capitalize font-bold rounded-full min-w-[90px] !p-3 bg-blue-gray-900 text-light-blue-600"
-                          >
-                            Cập nhật
-                          </Button>
+                          </ButtonCustom>
+                          <ButtonCustom className="text-xs capitalize font-bold rounded-md min-w-[90px] bg-blue-50 text-blue-500">
+                            Xem
+                          </ButtonCustom>
+                          <ButtonCustom className="text-xs capitalize font-bold rounded-md min-w-[90px] bg-green-50 text-green-500">
+                            Sửa
+                          </ButtonCustom>
                         </div>
                       </td>
                     </tr>
@@ -277,105 +272,7 @@ const ManageCategory = () => {
         className="p-4 bg-[#e8edf2] h-[calc(100vh-200px)] overflow-auto"
         transition={{ type: "spring", duration: 0.5 }}
       >
-        {/* <div className="w-full bg-white rounded-md fixed top-0 z-20">
-          <div className="w-full flex items-center gap-3 p-4">
-            <Button
-              className="bg-[#7f1d1d] capitalize ro"
-              onClick={() =>
-                handleRemoveJobItem({
-                  _id: jobDetailData?._id,
-                  addressId: jobDetailData?.workRegion?._id,
-                })
-              }
-            >
-              Xoá
-            </Button>
-            <Button className="bg-[#164e63] capitalize">Chỉnh sửa</Button>
-            <Button className="bg-[#134e4a] capitalize">
-              Danh sách CV ứng tuyển
-            </Button>
-            <Button
-              className="bg-[#374151] capitalize"
-              onClick={() => setOpen(false)}
-            >
-              Đóng
-            </Button>
-          </div>
-        </div>
-        <div className="flex flex-col gap-1 mt-[70px]">
-          <div className="flex flex-col gap-4 bg-white p-4 rounded-md ">
-            <Typography className="uppercase text-[#212f3f] font-bold text-lg">
-              {jobDetailData?.recruitmentTitle}
-            </Typography>
-            <div className="grid grid-cols-3">
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillDollarCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography className="text-sm font-bold">
-                    Mức lương
-                  </Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.HiLocationMarker size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Địa điểm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.workRegion?.province}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillClockCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Kinh nghiệm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Mô tả công việc
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.jobDescription &&
-                parse(jobDetailData.jobDescription)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Yêu cầu ứng viên
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.candidateRequirements &&
-                parse(jobDetailData.candidateRequirements)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Phúc lợi ứng viên
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.candidateBenefits &&
-                parse(jobDetailData.candidateBenefits)) ||
-                ""}
-            </div>
-          </div>
-        </div> */}
+        <CategoryDetail />
       </Drawer>
     </div>
   );

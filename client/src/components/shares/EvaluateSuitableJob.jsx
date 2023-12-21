@@ -3,15 +3,28 @@ import { RadarChart } from "../charts";
 import { DialogBody, DialogHeader, Typography } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
 import { CirculeProgress, Tag, ProgressCustom } from "../shares";
+import { authSelect } from "../../redux/features/slices/authSlice";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const EvaluateSuitableJob = ({ setOpen = () => {}, data = {} }) => {
+  const { user } = useSelector(authSelect);
+
   return (
-    <div className=" h-full rounded-md !text-black bg-blue-gray-900">
+    <div className="h-full rounded-md !text-black bg-blue-gray-900">
       <DialogHeader>
         <div className="flex items-center justify-between w-full">
           <Typography className="uppercase text-sm font-bold text-light-blue-600">
             Đánh giá mức độ phù hợp công việc
           </Typography>
+          {!user?.candidateId && (
+            <Typography className="text-red-500 text-sm font-bold">
+              Vui lòng đăng ký ứng cử viên để xem đánh giá.{" "}
+              <Link className="text-blue-500 underline" to="/candidate">
+                Đánh giá ngay
+              </Link>
+            </Typography>
+          )}
           <span
             className="text-teal-600 hover:opacity-90 cursor-pointer transition-all"
             onClick={() => setOpen(false)}

@@ -18,6 +18,7 @@ import {
   IoSettingsSharp,
   IoArrowRedoCircleOutline,
   IoArrowUndoCircleOutline,
+  IoCloseCircleSharp,
   IoAlertSharp,
 } from "react-icons/io5";
 import {
@@ -37,6 +38,7 @@ import {
   BsCameraFill,
   BsCameraVideo,
   BsTelephone,
+  BsFillCheckCircleFill,
 } from "react-icons/bs";
 import { FaUserAlt, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { BiSolidPhoneCall } from "react-icons/bi";
@@ -60,6 +62,8 @@ import {
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 
 const icons = {
+  IoCloseCircleSharp,
+  BsFillCheckCircleFill,
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
   IoAlertSharp,

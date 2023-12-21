@@ -4,11 +4,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 
-const CirculeProgress = ({ percentage = 25 }) => {
+const CirculeProgress = ({ percentage = 25, className = "" }) => {
   const { user } = useSelector(authSelect);
 
   return (
-    <div className="rounded-full bg-white">
+    <div className={`rounded-full bg-white ${className}`}>
       {user && (
         <CircularProgressbar
           className="h-[55px] w-[55px] "

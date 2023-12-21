@@ -5,11 +5,12 @@ import { authSelect } from "../../redux/features/slices/authSlice";
 import { useSelector } from "react-redux";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { Avatar, Typography } from "@material-tailwind/react";
-import { ButtonCustom, Loading, Modal } from "../shares";
+import { ButtonCustom, EvaluateSuitableCV, Loading, Modal } from "../shares";
 import { InterviewIntivitionForm, SendNotificationForm } from "../forms";
 import { icons } from "../../utils/icons";
 import { socket } from "../../socket";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const ToolbarCV = () => {
   const { applyJobId } = useParams();
@@ -29,12 +30,25 @@ const ToolbarCV = () => {
 
   const handleRejectedCVEnvent = async () => {
     try {
-      socket?.emit("employer_reject_CV", {
-        userId: applyJobDetailData?.data?.candidateId?._id,
-        employerId: user?.ownerEmployerId?._id,
-        applyJobId,
+      Swal.fire({
+        title: "Bạn có chắc không ?",
+        text: "Bạn sẽ không thể hoàn tác điều này!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#0B5345 ",
+        cancelButtonColor: "#A93226",
+        confirmButtonText: "Vâng, Từ chối!",
+        cancelButtonText: "Huỷ",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          socket?.emit("employer_reject_CV", {
+            userId: applyJobDetailData?.data?.candidateId?._id,
+            employerId: user?.ownerEmployerId?._id,
+            applyJobId,
+          });
+          toast.success("Đã gửi thông báo đến ứng viên !");
+        }
       });
-      toast.success("Đã gửi thông báo đến ứng viên !");
     } catch (error) {}
   };
 
@@ -43,6 +57,22 @@ const ToolbarCV = () => {
   return (
     <div className="w-[620px] flex flex-col gap-3 bg-white h-[calc(100vh-60px)] border-l border-blue-gray-100 p-4">
       {isFetching && <Loading />}
+      <div className="flex items-center gap-1 justify-center">
+        <ButtonCustom
+          onClick={handleRejectedCVEnvent}
+          className="bg-red-50 text-red-500 hover:bg-red-100 !px-5"
+        >
+          <icons.AiFillCloseCircle size={20} />
+          Từ chối
+        </ButtonCustom>
+        <ButtonCustom
+          onClick={() => setOpenScheduleModal(!openScheduleModal)}
+          className="bg-green-50 text-green-500 hover:bg-green-100 !px-5"
+        >
+          <icons.BsCheckCircleFill size={20} />
+          Chấp nhận & Gửi lời mời phỏng vấn
+        </ButtonCustom>
+      </div>
       <div className="flex flex-col gap-2 items-center bg-gray-300 p-4 rounded-md">
         <div className="flex items-center gap-2">
           <Avatar
@@ -79,21 +109,9 @@ const ToolbarCV = () => {
           </Modal>
         </div>
       </div>
-      <div className="flex items-center gap-1 justify-center">
-        <ButtonCustom
-          onClick={handleRejectedCVEnvent}
-          className="bg-red-500 hover:bg-red-600 !px-5"
-        >
-          <icons.AiFillCloseCircle size={20} />
-          Từ chối
-        </ButtonCustom>
-        <ButtonCustom
-          onClick={() => setOpenScheduleModal(!openScheduleModal)}
-          className="bg-green-500 hover:bg-green-600 !px-5"
-        >
-          <icons.BsCheckCircleFill size={20} />
-          Chấp nhận & Gửi lời mời phỏng vấn
-        </ButtonCustom>
+
+      <div>
+        <EvaluateSuitableCV applyJobData={applyJobDetailData} />
       </div>
       <Modal open={openCVResultModal} handleOpen={setOpenCVResultModal}>
         <SendNotificationForm

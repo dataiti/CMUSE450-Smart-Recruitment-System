@@ -10,14 +10,12 @@ import { icons } from "../../utils/icons";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useApplyJobMutation } from "../../redux/features/apis/applyJobApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import Loading from "../shares/Loading";
 
 const ApplyJobForm = ({ jobItem, setOpen = () => {} }) => {
-  const dispatch = useDispatch();
-
   const { user } = useSelector(authSelect);
 
   const [namePDFFile, setNamePDFFile] = useState("");

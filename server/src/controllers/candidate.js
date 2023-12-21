@@ -79,20 +79,19 @@ const editCandidate = asyncHandler(async (req, res) => {
     experience,
     workLocation,
     desiredSalary,
-    skills,
     yourWishes,
     introduceYourself,
   } = req.body;
 
   const updateCandiate = await Candidate.findOneAndUpdate(
-    { _id: req.candidate.candidateId, userId: req.user._id },
+    { _id: req.candidate._id },
     {
       $set: {
         jobPosition,
         experience,
         workLocation,
-        desiredSalary,
-        skills,
+        desiredSalary: Number(desiredSalary),
+        skills: JSON.parse(req.body.skills),
         yourWishes,
         introduceYourself,
       },
@@ -100,7 +99,7 @@ const editCandidate = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  if (!updateCandiate) throw new Error("Edit candidate is fail");
+  if (!updateCandiate) throw new Error("Update candidate is Fail");
 
   return res.status(200).json({
     success: true,

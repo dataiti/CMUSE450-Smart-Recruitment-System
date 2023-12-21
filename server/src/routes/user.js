@@ -6,6 +6,7 @@ const {
   deleteUser,
   replacePassword,
   toggleWishListItem,
+  toggleLockUser,
   userViewedJobs,
   getListFollowings,
   getListUserForAdmin,
@@ -21,6 +22,13 @@ router.get(
   isAdminSystem,
   getListUserForAdmin
 );
+router.put(
+  "/toggle-lock-user/admin/:userId",
+  verifyToken,
+  isAdminSystem,
+  toggleLockUser
+);
+
 router.get("/get-followings/:userId", getListFollowings);
 router.get("/get-user-detail/:userId", getUserDetail);
 router.put("/edit-user/:userId", editUser);

@@ -46,6 +46,18 @@ export const menuItems = [
   },
 ];
 
+export const sortByOptions = [
+  { id: 1, text: "Tăng dần", value: "asc" },
+  { id: 2, text: "Giảm dần", value: "desc" },
+];
+
+export const orderByOptions = [
+  { id: 1, text: "Mới nhất", value: "_id" },
+  { id: 2, text: "Tên công việc", value: "recruitmentTitle" },
+  { id: 3, text: "Lương từ", value: "salaryFrom" },
+  { id: 4, text: "Lương đến", value: "salaryTo" },
+];
+
 export const sexOptions = [
   {
     id: 1,

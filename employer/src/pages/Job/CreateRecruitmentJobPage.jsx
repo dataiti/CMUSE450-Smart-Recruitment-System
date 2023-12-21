@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { icons } from "../../utils/icons";
 import axiosClient from "../../configs/axiosConfig";
-import { useCreateJobMutation } from "../../redux/features/apis/jobApi";
+import {
+  useCreateJobMutation,
+  useGetJobDetailQuery,
+} from "../../redux/features/apis/jobApi";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import {
   currencyTypeOptions,
@@ -38,6 +42,7 @@ import { setTitle } from "../../redux/features/slices/titleSlice";
 import { Loading, IconButtonCustom } from "../../components/shares";
 import { useGetListOfCategoriesQuery } from "../../redux/features/apis/categoryApi";
 import { videos } from "../../assets/videos";
+import { useWorkLocations } from "../../hooks";
 
 const schema = yup.object().shape({
   recruitmentCampaignName: yup
@@ -95,15 +100,19 @@ const schema = yup.object().shape({
 const CreateRecruitmentJobPage = () => {
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
   const { user } = useSelector(authSelect);
+
+  const [salaryTypeState, SetSalaryTypeState] = useState(1);
+  const [jobId, setJobId] = useState("");
 
   const [createJob, { isLoading }] = useCreateJobMutation();
   const { data: listCategoriesData } = useGetListOfCategoriesQuery();
-
-  const [salaryTypeState, SetSalaryTypeState] = useState(1);
-  const [provincesValue, setProvincesValue] = useState([]);
-  const [districtsValue, setDistrictsValue] = useState([]);
-  const [wardsValue, setWardsValue] = useState([]);
+  const { data: jobDetailData, isFetching } = useGetJobDetailQuery(
+    { jobId },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const {
     control,
@@ -142,61 +151,61 @@ const CreateRecruitmentJobPage = () => {
   });
 
   const salaryType = watch("salaryType");
-  const province = watch("province");
-  const district = watch("district");
+  const provinceWatch = watch("province");
+  const districtWatch = watch("district");
+
+  const { provincesValue, districtsValue, wardsValue } = useWorkLocations(
+    provinceWatch,
+    districtWatch
+  );
 
   useEffect(() => {
-    const parsedSalaryType = salaryType && JSON.parse(salaryType);
-    SetSalaryTypeState(
-      parsedSalaryType.id >= 1 && parsedSalaryType.id <= 3
-        ? parsedSalaryType.id
-        : 4
-    );
-  }, [salaryType]);
+    reset({
+      recruitmentCampaignName: jobDetailData?.data?.recruitmentCampaignName,
+      jobPosition: jobDetailData?.data?.jobPosition,
+      province: jobDetailData?.data?.workRegion?.province,
+      district: jobDetailData?.data?.workRegion?.district,
+      ward: jobDetailData?.data?.workRegion?.ward,
+      exactAddress: jobDetailData?.data?.workRegion?.exactAddress,
+      recruitmentTitle: jobDetailData?.data?.recruitmentTitle,
+      industry: jobDetailData?.data?.industry,
+      vacancyCount: jobDetailData?.data?.vacancyCount,
+      jobType: jobDetailData?.data?.jobType,
+      gender: jobDetailData?.data?.gender,
+      level: jobDetailData?.data?.level,
+      experience: jobDetailData?.data?.experience,
+      currencyType: jobDetailData?.data?.currencyType,
+      salaryType: jobDetailData?.data?.salaryType,
+      jobDescription: jobDetailData?.data?.jobDescription,
+      skills: jobDetailData?.data?.skills,
+      candidateRequirements: jobDetailData?.data?.candidateRequirements,
+      candidateBenefits: jobDetailData?.data?.candidateBenefits,
+      applicationDeadline: jobDetailData?.data?.applicationDeadline,
+      receiverFullName: jobDetailData?.data?.receiverFullName,
+      receiverEmail: jobDetailData?.data?.receiverEmail,
+      receiverPhone: jobDetailData?.data?.receiverPhone,
+    });
+  }, [jobId, reset, jobDetailData?.data]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const paramValue = queryParams.get("jobId");
+
+    if (paramValue) setJobId(paramValue);
+  }, [location.search]);
+
+  // useEffect(() => {
+  //   const parsedSalaryType = salaryType && JSON?.parse(salaryType);
+  //   SetSalaryTypeState(
+  //     parsedSalaryType?.id >= 1 && parsedSalaryType?.id <= 3
+  //       ? parsedSalaryType?.id
+  //       : 4
+  //   );
+  // }, [salaryType]);
 
   useEffect(() => {
     dispatch(setTitle("Thêm tin tuyển dụng"));
   }, [dispatch]);
-
-  useEffect(() => {
-    const fetchWorkLocationsApi = async () => {
-      try {
-        const response = await axiosClient.get("/province");
-        if (response && response.data && response.data.results) {
-          const provinceNames = response.data.results.map((item) => ({
-            id: item.province_id,
-            value: item.province_name,
-          }));
-          setProvincesValue(provinceNames);
-        }
-        if (JSON.parse(province).id) {
-          const response = await axiosClient.get(
-            `/province/district/${JSON.parse(province).id}`
-          );
-          if (response && response.data && response.data.results) {
-            const districtNames = response.data.results.map((item) => ({
-              id: item.district_id,
-              value: item.district_name,
-            }));
-            setDistrictsValue(districtNames);
-          }
-        }
-        if (JSON.parse(district).id) {
-          const response = await axiosClient.get(
-            `/province/ward/${JSON.parse(district).id}`
-          );
-          if (response && response.data && response.data.results) {
-            const wardNames = response.data.results.map((item) => ({
-              id: item.ward_id,
-              value: item.ward_name,
-            }));
-            setWardsValue(wardNames);
-          }
-        }
-      } catch (error) {}
-    };
-    fetchWorkLocationsApi();
-  }, [province, district]);
 
   const handleSubmitRegisterEmployer = async (data) => {
     try {
@@ -218,23 +227,24 @@ const CreateRecruitmentJobPage = () => {
           }
         }
       }
-      const response = await createJob({
-        data: formatData,
-        userId: user?._id,
-        employerId: user?.ownerEmployerId?._id,
-      });
+      console.log(formatData);
+      // const response = await createJob({
+      //   data: formatData,
+      //   userId: user?._id,
+      //   employerId: user?.ownerEmployerId?._id,
+      // });
 
-      if (response && response.data && response.data.success) {
-        toast.success("Tạo tin tuyển dụng thành công !");
-        dispatch(addJob({ data: response.data.data }));
-        reset();
-      }
+      // if (response && response.data && response.data.success) {
+      //   toast.success("Tạo tin tuyển dụng thành công !");
+      //   dispatch(addJob({ data: response.data.data }));
+      //   reset();
+      // }
     } catch (error) {}
   };
 
   return (
     <div className="flex flex-col gap-2 px-[100px] py-5 w-full">
-      {isLoading && <Loading />}
+      {(isLoading || isFetching) && <Loading />}
       <div className="flex gap-4 w-full p-2 rounded-md bg-gradient-to-r from-[#304352] to-[#cbd5e1]">
         <video className="w-[20%] rounded-lg" autoPlay loop>
           <source src={videos.CVSearching} type="video/mp4" />
@@ -293,53 +303,6 @@ const CreateRecruitmentJobPage = () => {
                 variant="h5"
                 className="text-base font-bold text-light-blue-600 uppercase"
               >
-                Khu vực làm việc
-              </Typography>
-            </TimelineHeader>
-            <TimelineBody className="pb-8 flex flex-col gap-5">
-              <div className="flex flex-col gap-6">
-                <SelectController
-                  control={control}
-                  name="province"
-                  label="Tỉnh / Thành Phố"
-                  error={errors?.province}
-                  options={provincesValue}
-                />
-                <SelectController
-                  control={control}
-                  name="district"
-                  label="Quận / Huyện"
-                  error={errors?.district}
-                  options={districtsValue}
-                />
-                <SelectController
-                  control={control}
-                  name="ward"
-                  label="Phường / Xã"
-                  error={errors?.ward}
-                  options={wardsValue}
-                />
-                <InputController
-                  control={control}
-                  name="exactAddress"
-                  label="Địa chỉ chính xác"
-                  error={errors?.exactAddress}
-                />
-              </div>
-            </TimelineBody>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineConnector />
-            <TimelineHeader>
-              <TimelineIcon className="!p-0">
-                <IconButtonCustom>
-                  <icons.BsCheckCircleFill />
-                </IconButtonCustom>
-              </TimelineIcon>
-              <Typography
-                variant="h5"
-                className="text-base font-bold text-light-blue-600 uppercase"
-              >
                 Tiêu đề tin tuyển dụng
               </Typography>
             </TimelineHeader>
@@ -366,6 +329,57 @@ const CreateRecruitmentJobPage = () => {
                 variant="h5"
                 className="text-base font-bold text-light-blue-600 uppercase"
               >
+                Khu vực làm việc
+              </Typography>
+            </TimelineHeader>
+            <TimelineBody className="pb-8 flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
+                <SelectController
+                  control={control}
+                  name="province"
+                  label="Tỉnh / Thành Phố"
+                  defaultValue={jobDetailData?.data?.workRegion?.province}
+                  error={errors?.province}
+                  options={provincesValue}
+                />
+                <SelectController
+                  control={control}
+                  name="district"
+                  label="Quận / Huyện"
+                  defaultValue={jobDetailData?.data?.workRegion?.district}
+                  error={errors?.district}
+                  options={districtsValue}
+                />
+                <SelectController
+                  control={control}
+                  name="ward"
+                  label="Phường / Xã"
+                  defaultValue={jobDetailData?.data?.workRegion?.ward}
+                  error={errors?.ward}
+                  options={wardsValue}
+                />
+                <InputController
+                  control={control}
+                  name="exactAddress"
+                  defaultValue={jobDetailData?.data?.workRegion?.exactAddress}
+                  label="Địa chỉ chính xác"
+                  error={errors?.exactAddress}
+                />
+              </div>
+            </TimelineBody>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineConnector />
+            <TimelineHeader>
+              <TimelineIcon className="!p-0">
+                <IconButtonCustom>
+                  <icons.BsCheckCircleFill />
+                </IconButtonCustom>
+              </TimelineIcon>
+              <Typography
+                variant="h5"
+                className="text-base font-bold text-light-blue-600 uppercase"
+              >
                 Ngành nghề & Lĩnh vực
               </Typography>
             </TimelineHeader>
@@ -375,6 +389,7 @@ const CreateRecruitmentJobPage = () => {
                   control={control}
                   name="industry"
                   label="Ngành nghề chính"
+                  defaultValue={jobDetailData?.data?.industry}
                   error={errors?.industry}
                   options={listCategoriesData?.data}
                 />
@@ -382,6 +397,7 @@ const CreateRecruitmentJobPage = () => {
                   control={control}
                   name="jobPosition"
                   label="Vị trí tuyển dụng"
+                  defaultValue={jobDetailData?.data?.jobPosition}
                   error={errors?.jobPosition}
                   options={jobPositionOptions}
                 />
@@ -409,6 +425,7 @@ const CreateRecruitmentJobPage = () => {
                   type="number"
                   control={control}
                   name="vacancyCount"
+                  defaultValue={jobDetailData?.data?.vacancyCount}
                   label="Số lượng tuyển"
                   error={errors?.vacancyCount}
                 />
@@ -416,6 +433,7 @@ const CreateRecruitmentJobPage = () => {
                   control={control}
                   name="jobType"
                   label="Loại công việc"
+                  defaultValue={jobDetailData?.data?.jobType}
                   error={errors?.jobType}
                   options={jobTypeOptions}
                 />
@@ -423,6 +441,7 @@ const CreateRecruitmentJobPage = () => {
                   control={control}
                   name="gender"
                   label="Giới tính"
+                  defaultValue={jobDetailData?.data?.gender}
                   error={errors?.gender}
                   options={sexOptions}
                 />
@@ -430,6 +449,7 @@ const CreateRecruitmentJobPage = () => {
                   control={control}
                   name="level"
                   label="Cấp bậc"
+                  defaultValue={jobDetailData?.data?.level}
                   error={errors?.level}
                   options={levelOptions}
                 />
@@ -437,6 +457,7 @@ const CreateRecruitmentJobPage = () => {
                   control={control}
                   name="experience"
                   label="Kinh nghiệm"
+                  defaultValue={jobDetailData?.data?.experience}
                   error={errors?.experience}
                   options={experiens}
                 />
@@ -444,6 +465,7 @@ const CreateRecruitmentJobPage = () => {
                   control={control}
                   name="currencyType"
                   label="Loại tiền tệ"
+                  defaultValue={jobDetailData?.data?.currencyType}
                   error={errors?.currencyType}
                   options={currencyTypeOptions}
                 />
@@ -451,6 +473,7 @@ const CreateRecruitmentJobPage = () => {
                   control={control}
                   name="salaryType"
                   label="Kiểu lương"
+                  defaultValue={jobDetailData?.data?.salaryType}
                   error={errors?.salaryType}
                   options={salaryTypeOptions}
                 />
@@ -545,6 +568,7 @@ const CreateRecruitmentJobPage = () => {
                   name="skills"
                   label="Kỹ năng"
                   error={errors?.candidateRequirements}
+                  defaultTags={jobDetailData?.data?.skills}
                 />
               </div>
             </TimelineBody>

@@ -10,6 +10,7 @@ const InputController = ({
   isDisabel = false,
   type = "text",
   isField = false,
+  defaultValue = "",
 }) => {
   return (
     <div className="flex flex-col relative ml-8 w-full">
@@ -32,7 +33,7 @@ const InputController = ({
             >
               <Input
                 type={type}
-                label={label}
+                label={defaultValue || label}
                 {...field}
                 error={!!error}
                 disabled={isDisabel}

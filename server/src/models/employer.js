@@ -78,6 +78,10 @@ const employerSchema = new mongoose.Schema(
       default: "active",
       enum: ["pendding", "active", "locked"],
     },
+    isLocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -91,7 +91,7 @@ const ParentType = ({
               }`}
             />
           </div>
-          <div className={`h-[2px] w-full ${color.backgound}`}></div>
+          <div className={`h-[2px] w-full bg-blue-gray-100`}></div>
           <div>{children}</div>
         </div>
       </div>

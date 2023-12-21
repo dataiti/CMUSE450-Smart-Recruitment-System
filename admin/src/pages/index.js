@@ -5,6 +5,9 @@ import ManageJob from "./Job/ManageJob";
 import ManageTransaction from "./transaction/ManageTransaction";
 import ManageEmployer from "./employer/ManageEmployer";
 import ManageUser from "./user/ManageUser";
+import CreateCategory from "./category/CreateCategory";
+import CreateEmployer from "./employer/CreateEmployer";
+import EmployerDetail from "./employer/EmployerDetail";
 
 export {
   LoginPage,
@@ -14,4 +17,7 @@ export {
   ManageTransaction,
   ManageEmployer,
   ManageUser,
+  CreateCategory,
+  CreateEmployer,
+  EmployerDetail,
 };

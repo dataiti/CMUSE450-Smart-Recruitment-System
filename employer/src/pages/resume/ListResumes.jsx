@@ -4,6 +4,7 @@ import {
   Loading,
   JobStatusBadge,
   CirculeProgress,
+  ButtonCustom,
 } from "../../components/shares";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,7 +28,7 @@ const ListResumes = () => {
   const { user } = useSelector(authSelect);
 
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(7);
+  const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
 
   const debouncedValue = useDebounce(search, 500);
@@ -73,7 +74,7 @@ const ListResumes = () => {
   };
 
   return (
-    <div className="mx-[30px] my-[26px]">
+    <div className="m-[10px]">
       {isFetching && <Loading />}
       <div className="flex flex-col gap-2 bg-white p-2 rounded-md">
         <div className="flex items-center gap-3">
@@ -149,16 +150,16 @@ const ListResumes = () => {
                         {covertToDate(job?.createdAt)}
                       </td>
                       <td className="py-1 text-center text-blue-gray-800">
-                        <CirculeProgress />
+                        <CirculeProgress
+                          percentage={job?.percentage}
+                          className="h-[52px] w-[52px]"
+                        />
                       </td>
                       <td className="px-1 text-xs font-bold py-1 text-blue-gray-800">
                         <Link to={`/cv-processing/${job?._id}`}>
-                          <Button
-                            variant="filled"
-                            className="text-xs capitalize font-bold rounded-full !p-3  bg-blue-gray-900 text-light-blue-600"
-                          >
+                          <ButtonCustom className="text-xs capitalize font-bold rounded-md min-w-[90px] bg-blue-50 text-blue-500">
                             Chi tiết
-                          </Button>
+                          </ButtonCustom>
                         </Link>
                       </td>
                     </tr>
@@ -167,15 +168,13 @@ const ListResumes = () => {
             </tbody>
           </table>
         </div>
-        <div className="">
-          <Pagination
-            totalPage={totalPage}
-            handlePageChange={handlePageChange}
-            page={page}
-            limit={limit}
-            setLimit={setLimit}
-          />
-        </div>
+        <Pagination
+          totalPage={totalPage}
+          handlePageChange={handlePageChange}
+          page={page}
+          limit={limit}
+          setLimit={setLimit}
+        />
       </div>
     </div>
   );

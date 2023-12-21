@@ -7,11 +7,10 @@ import { authSelect } from "../../redux/features/slices/authSlice";
 import {
   desiredSalaryOptions,
   statusOptions,
-  tableHeadEmployer,
   tableHeadUser,
 } from "../../utils/constants";
 import { covertToDate } from "../../utils/fn";
-import { Button, Drawer, Input, Typography } from "@material-tailwind/react";
+import { Avatar, Drawer, Input, Typography } from "@material-tailwind/react";
 import SelectCustom from "../../components/SelectCustom";
 import { useDebounce } from "../../hooks";
 import { toast } from "react-toastify";
@@ -22,6 +21,9 @@ import {
   setListUsers,
   userSelect,
 } from "../../redux/features/slices/userSlice";
+import StatusBadge from "../../components/StatusBadge";
+import ButtonCustom from "../../components/ButtonCustom";
+import SwitchCustom from "../../components/Switch";
 
 const ManageUser = () => {
   const dispatch = useDispatch();
@@ -32,7 +34,7 @@ const ManageUser = () => {
   const [orderBy, setOrderBy] = useState("asc");
   const [sortBy, setSortBy] = useState("");
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(9);
   const [page, setPage] = useState(1);
   const [statusSelected, setStatusSelected] = useState("");
   const [jobDetailData, setJobDetailData] = useState({});
@@ -114,8 +116,10 @@ const ManageUser = () => {
     }
   };
 
+  const handleToggleSwitchLockUser = async () => {};
+
   return (
-    <div className="mx-[30px] my-[30px]">
+    <div className="mx-[10px] my-[10px]">
       {isFetching && <Loading />}
       <div className="flex flex-col gap-2 bg-white p-2 rounded-md">
         <div className="grid grid-cols-5 gap-3">
@@ -160,76 +164,79 @@ const ManageUser = () => {
                       className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                       key={user?._id || index}
                     >
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800 whitespace-nowrap">
-                        ... {user?._id.slice(-4)}
+                      <td className="flex justify-center px-2 text-xs font-bold py-1 text-blue-gray-800 whitespace-nowrap">
+                        <SwitchCustom
+                          _id={user?._id}
+                          isChecked={user?.isLocked}
+                          onChange={() =>
+                            handleToggleSwitchLockUser({
+                              _id: user?._id,
+                            })
+                          }
+                        />
                       </td>
-                      <td className="px-2 text-sm font-bold py-1 text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
                         <div className="flex items-center gap-2">
-                          <img
+                          <Avatar
                             src={user?.avatar}
                             alt=""
-                            className="rounded-md w-10 border-2 border-cyan-500"
+                            className="rounded-full h-11 w-11 p-1 bg-blue-gray-100"
                           />
                           <div className="flex flex-col">
-                            <Typography className="text-sm font-bold">
+                            <Typography className="text-xs font-bold">
                               {user?.firstName} {user?.lastName}
                             </Typography>
-                            <Typography className="text-sm font-medium text-gray-500 italic">
+                            <Typography className="text-xs font-medium text-gray-500 italic">
                               {user?.email}
                             </Typography>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 text-sm font-bold py-3 text-blue-gray-800 whitespace-pre-wrap">
-                        {user?.permission}
+                      <td className="px-6 text-xs font-bold py-1 text-blue-gray-800 whitespace-pre-wrap">
+                        {user?.ownerEmployerId && "Doanh Nghiệp"}
+                        {user?.permission === "user" && " | Người Dùng"}
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800">
                         {user?.ownerEmployerId ? (
                           <div className="flex items-center gap-2">
-                            <img
+                            <Avatar
                               src={user?.ownerEmployerId?.companyLogo}
                               alt=""
-                              className="rounded-md w-10"
+                              className="rounded-full h-11 w-11 p-1 bg-blue-gray-100"
                             />
                             <div className="flex flex-col">
-                              <Typography className="text-sm font-bold">
+                              <Typography className="text-xs font-bold">
                                 {user?.ownerEmployerId?.companyName}
                               </Typography>
-                              <Typography className="text-sm font-medium text-gray-500 italic">
+                              <Typography className="text-xs font-medium text-gray-500 italic">
                                 {user?.ownerEmployerId?.companyEmail}
                               </Typography>
                             </div>
                           </div>
                         ) : (
-                          <Typography className="text-center font-bold">
+                          <Typography className="font-bold text-xs">
                             Không
                           </Typography>
                         )}
                       </td>
-                      <td className="py-3 text-center text-blue-gray-800">
-                        {user.status === "active" ? (
-                          <div className="p-2 rounded-md text-[10px] bg-green-50 text-green-500">
-                            Đang hoạt động
-                          </div>
-                        ) : (
-                          <div className="p-2 rounded-md text-[10px] bg-red-50 text-red-500">
-                            Đã bị khoá
-                          </div>
-                        )}
+                      <td className="py-1 text-center text-blue-gray-800">
+                        <StatusBadge status={user?.status} />
                       </td>
-                      <td className="px-2 text-sm font-bold py-3 text-center text-blue-gray-800">
+                      <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         {covertToDate(user?.createdAt)}
                       </td>
-                      <td className="px-1 text-sm font-bold py-3 text-blue-gray-800">
-                        <Button
-                          variant="filled"
+                      <td className="px-1 text-xs font-bold py-1 text-blue-gray-800 flex items-center justify-center gap-2">
+                        <ButtonCustom
                           onClick={() =>
                             handleViewJobDetail({ _id: user?._id })
                           }
-                          className="text-xs capitalize font-bold rounded-full !px-4 !py-3 bg-blue-gray-900 text-light-blue-600"
+                          className="text-xs capitalize font-bold rounded-md min-w-[90px] bg-blue-50 text-blue-500"
                         >
-                          Xem thêm
-                        </Button>
+                          Xem
+                        </ButtonCustom>
+                        <ButtonCustom className="text-xs capitalize font-bold rounded-md min-w-[90px] bg-red-50 text-red-500">
+                          Xoá
+                        </ButtonCustom>
                       </td>
                     </tr>
                   );
@@ -237,15 +244,13 @@ const ManageUser = () => {
             </tbody>
           </table>
         </div>
-        <div className="">
-          <Pagination
-            totalPage={totalPage}
-            handlePageChange={handlePageChange}
-            page={page}
-            limit={limit}
-            setLimit={setLimit}
-          />
-        </div>
+        <Pagination
+          totalPage={totalPage}
+          handlePageChange={handlePageChange}
+          page={page}
+          limit={limit}
+          setLimit={setLimit}
+        />
       </div>
       <Drawer
         placement="right"
@@ -254,107 +259,7 @@ const ManageUser = () => {
         onClose={closeDrawer}
         className="p-4 bg-[#e8edf2] h-[calc(100vh-200px)] overflow-auto"
         transition={{ type: "spring", duration: 0.5 }}
-      >
-        {/* <div className="w-full bg-white rounded-md fixed top-0 z-20">
-          <div className="w-full flex items-center gap-3 p-4">
-            <Button
-              className="bg-[#7f1d1d] capitalize ro"
-              onClick={() =>
-                handleRemoveJobItem({
-                  _id: jobDetailData?._id,
-                  addressId: jobDetailData?.workRegion?._id,
-                })
-              }
-            >
-              Xoá
-            </Button>
-            <Button className="bg-[#164e63] capitalize">Chỉnh sửa</Button>
-            <Button className="bg-[#134e4a] capitalize">
-              Danh sách CV ứng tuyển
-            </Button>
-            <Button
-              className="bg-[#374151] capitalize"
-              onClick={() => setOpen(false)}
-            >
-              Đóng
-            </Button>
-          </div>
-        </div>
-        <div className="flex flex-col gap-1 mt-[70px]">
-          <div className="flex flex-col gap-4 bg-white p-4 rounded-md ">
-            <Typography className="uppercase text-[#212f3f] font-bold text-lg">
-              {jobDetailData?.recruitmentTitle}
-            </Typography>
-            <div className="grid grid-cols-3">
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillDollarCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography className="text-sm font-bold">
-                    Mức lương
-                  </Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.HiLocationMarker size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Địa điểm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.workRegion?.province}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillClockCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Kinh nghiệm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Mô tả công việc
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.jobDescription &&
-                parse(jobDetailData.jobDescription)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Yêu cầu ứng viên
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.candidateRequirements &&
-                parse(jobDetailData.candidateRequirements)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] uppercase text-sm font-bold pb-1">
-              Phúc lợi ứng viên
-            </Typography>
-            <div className="text-sm font-bold py-2">
-              {(jobDetailData.candidateBenefits &&
-                parse(jobDetailData.candidateBenefits)) ||
-                ""}
-            </div>
-          </div>
-        </div> */}
-      </Drawer>
+      ></Drawer>
     </div>
   );
 };

@@ -8,7 +8,7 @@ const ProfileLayout = () => {
       <div className="w-full h-[80px] fixed z-50">
         <Header />
       </div>
-      <div className="py-4 mt-[80px] bg-[#e8edf2]">
+      <div className="py-4 mt-[80px] bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9]">
         <div className="px-[110px]">
           <div className="fixed ">
             <SidebarProfile />

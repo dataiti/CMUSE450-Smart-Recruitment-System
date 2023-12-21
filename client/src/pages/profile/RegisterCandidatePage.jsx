@@ -16,7 +16,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { experiens, jobPositionOptions } from "../../utils/constants";
 import axiosClient from "../../configs/axiosConfig";
 import { Link } from "react-router-dom";
-import { useCreateCandidateMutation } from "../../redux/features/apis/candidateApi";
+import {
+  useCreateCandidateMutation,
+  useEditCandidateMutation,
+  useGetCandidateDetailQuery,
+} from "../../redux/features/apis/candidateApi";
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { toast } from "react-toastify";
@@ -33,10 +37,10 @@ import {
 } from "../../components/shares";
 
 const schema = yup.object().shape({
-  // jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),
-  // experience: yup.string().required("Vui lòng chọn trình độ kinh nghiệm"),
-  // workLocation: yup.string().required("Vui lòng nhập địa điểm làm việc"),
-  // desiredSalary: yup.string().required("Vui lòng nhập mức lương mong muốn"),
+  jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),
+  experience: yup.string().required("Vui lòng chọn trình độ kinh nghiệm"),
+  workLocation: yup.string().required("Vui lòng nhập địa điểm làm việc"),
+  desiredSalary: yup.string().required("Vui lòng nhập mức lương mong muốn"),
 });
 
 const RegisterCandidatePage = () => {
@@ -44,7 +48,16 @@ const RegisterCandidatePage = () => {
 
   const [workLocationsValue, setWorkLocationsValue] = useState([]);
 
-  const [createCandidate, { isLoading }] = useCreateCandidateMutation();
+  const [createCandidate, { isLoadingCreate }] = useCreateCandidateMutation();
+  const [editCandidate, { isLoadingEdit }] = useEditCandidateMutation();
+
+  const { data: candidateDetailData } = useGetCandidateDetailQuery(
+    {
+      userId: user?._id,
+      candidateId: user?.candidateId,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const {
     control,
@@ -54,16 +67,16 @@ const RegisterCandidatePage = () => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      jobPosition: "",
-      experience: "",
-      workLocation: "",
-      desiredSalary: 0,
-      skills: [],
-      yourWishes: "",
-      introduceYourself: "",
+      ...candidateDetailData?.data,
     },
     resolver: yupResolver(schema),
   });
+
+  console.log(user?.candidateId);
+
+  useEffect(() => {
+    reset({ ...candidateDetailData?.data });
+  }, [candidateDetailData?.data, reset]);
 
   useEffect(() => {
     const fetchWorkLocationsApi = async () => {
@@ -103,14 +116,27 @@ const RegisterCandidatePage = () => {
       }
       console.log(formatData);
 
-      const response = await createCandidate({
-        data: formatData,
-        userId: user?._id,
-      });
+      let response;
 
-      console.log(response);
+      if (user?.candidateId) {
+        response = await editCandidate({
+          data: formatData,
+          userId: user?._id,
+          candidateId: user?.candidateId,
+        });
+      } else {
+        response = await createCandidate({
+          data: formatData,
+          userId: user?._id,
+        });
+      }
+
       if (response && response.data && response.data.success) {
-        toast.success("Đăng ký ứng cử viên thành công !");
+        toast.success(
+          `${
+            user?.candidateId ? " Đăng ký" : "Cập nhật"
+          } ứng cử viên thành công !`
+        );
         reset();
       }
     } catch (error) {
@@ -120,7 +146,7 @@ const RegisterCandidatePage = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      {isLoading && <Loading />}
+      {(isLoadingCreate || isLoadingEdit) && <Loading />}
       <Breadcrumbs fullWidth className="!bg-white">
         <Link to="/" className="text-light-blue-500 text-sm font-bold">
           Trang chủ
@@ -152,6 +178,7 @@ const RegisterCandidatePage = () => {
                   control={control}
                   name="jobPosition"
                   label="Vị trí công việc"
+                  defaultValue={candidateDetailData?.data?.jobPosition}
                   error={errors?.jobPosition}
                   options={jobPositionOptions}
                 />
@@ -159,6 +186,7 @@ const RegisterCandidatePage = () => {
                   control={control}
                   name="experience"
                   label="Kinh nghiệm"
+                  defaultValue={candidateDetailData?.data?.experience}
                   error={errors?.experience}
                   options={experiens}
                 />
@@ -166,6 +194,7 @@ const RegisterCandidatePage = () => {
                   control={control}
                   name="workLocation"
                   label="Địa điểm làm việc"
+                  defaultValue={candidateDetailData?.data?.workLocation}
                   error={errors?.workLocation}
                   options={workLocationsValue}
                 />
@@ -180,6 +209,7 @@ const RegisterCandidatePage = () => {
                   name="skills"
                   label="Kỹ năng"
                   error={errors?.skills}
+                  defaultTags={candidateDetailData?.data?.skills}
                 />
               </div>
             </TimelineBody>
@@ -224,7 +254,7 @@ const RegisterCandidatePage = () => {
                 Hoàn thành
               </Typography>
               <ButtonCustom type="submit" className="ml-20">
-                Đăng ký ứng viên
+                {user?.candidateId ? "Cập nhật" : "Đăng ký ứng viên"}
               </ButtonCustom>
             </TimelineHeader>
           </TimelineItem>
