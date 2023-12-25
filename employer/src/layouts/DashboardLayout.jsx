@@ -12,7 +12,7 @@ const DashboardLayout = () => {
         <div className="w-[270px] fixed max-h-[calc(100vh-80px)] flex-none pt-[60px]">
           <Sidebar />
         </div>
-        <div className="pl-[270px] min-h-screen w-full bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9] pt-[60px]">
+        <div className="pl-[270px] min-h-screen bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9] pt-[60px]">
           <Outlet />
         </div>
       </div>

@@ -148,12 +148,13 @@ const applyJob = asyncHandler(async (req, res) => {
     const data = await pdf(req.file.buffer);
     const cvText = data.text.toLowerCase();
 
-    const prompt = `${cvText}. Generate a JSON format number of year work experience and skills in CV, skills is Array contains String . Example: { "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}`;
+    const prompt = `${cvText}. Generate a json format number of year work experience and skills in CV, skills is Array contains String . Example format: "{ "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}", no json before {`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let jsonString = JSON.parse(JSON.stringify(response.text()));
-    jsonString = jsonString.replace(/^```\s*([\s\S]*)\s*```$/, "$1");
+
+    jsonString = jsonString.replace(/^[^{]*([\s\S]*?)[^}]*$/, "$1");
 
     let CVJSON = {};
 
@@ -325,6 +326,42 @@ const getListApplyJobForCandidate = asyncHandler(async (req, res) => {
   });
 });
 
+const testCV = asyncHandler(async (req, res) => {
+  const data = await pdf(req.file.buffer);
+  const cvText = data.text.toLowerCase().trim();
+
+  console.log(cvText, req.body);
+
+  const prompt = `${cvText}. Generate a json format number of year work experience and skills in CV, skills is Array contains String . Example format: "{ "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}", no json before {`;
+
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  let jsonString = JSON.parse(JSON.stringify(response.text()));
+
+  jsonString = jsonString.replace(/^[^{]*([\s\S]*?)[^}]*$/, "$1");
+
+  let CVJSON = {};
+
+  console.log(jsonString);
+
+  try {
+    const parsedResult = JSON.parse(jsonString);
+    if (parsedResult && typeof parsedResult === "object") {
+      CVJSON = parsedResult;
+    }
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+
+  console.log(CVJSON);
+
+  return res.status(200).json({
+    success: true,
+    message: "Register candidate is successfully",
+    data: jsonString,
+  });
+});
+
 module.exports = {
   applyJobById,
   getApplyJobDetail,
@@ -335,4 +372,5 @@ module.exports = {
   responseEmployerForApplyJob,
   getListApplyJobForEmployer,
   getListApplyJobForCandidate,
+  testCV,
 };

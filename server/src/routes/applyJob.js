@@ -5,6 +5,7 @@ const {
   getApplyJobDetail,
   getListApplyJobForEmployer,
   getListApplyJobForCandidate,
+  testCV,
 } = require("../controllers/applyJob");
 const { userById } = require("../controllers/user");
 const { jobById } = require("../controllers/job");
@@ -30,6 +31,8 @@ router.post(
   uploadMemo.single("CVpdf"),
   applyJob
 );
+
+router.post("/testCV", uploadMemo.single("CVpdf"), testCV);
 
 ///:userId/:jobId/:employerId
 

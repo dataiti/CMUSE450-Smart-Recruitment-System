@@ -12,6 +12,7 @@ const recommenderRouter = require("./recommender");
 const transactionRouter = require("./transaction");
 const searchRouter = require("./search");
 const scheduleRouter = require("./schedule");
+const workPositionRequiredRouter = require("./workPositionRequired");
 
 const router = (app) => {
   app.use("/api/v1/auth", authRouter);
@@ -28,6 +29,7 @@ const router = (app) => {
   app.use("/api/v1/transaction", transactionRouter);
   app.use("/api/v1/search", searchRouter);
   app.use("/api/v1/schedule", scheduleRouter);
+  app.use("/api/v1/workPositionRequired", workPositionRequiredRouter);
 };
 
 module.exports = router;

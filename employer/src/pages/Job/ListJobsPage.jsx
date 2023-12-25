@@ -60,9 +60,7 @@ const ListJobsPage = () => {
   const { data: listJobsData, isFetching } = useGetListOfJobsForEmployerQuery(
     {
       userId: user?._id,
-      employerId: user?.ownerEmployerId?._id
-        ? user?.ownerEmployerId?._id
-        : skipToken,
+      employerId: user?.ownerEmployerId?._id,
       search: debouncedValue,
       sortBy,
       orderBy,

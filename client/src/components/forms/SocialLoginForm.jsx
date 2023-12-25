@@ -1,7 +1,4 @@
-import React, { memo, useEffect } from "react";
-// import { GoogleLogin } from "react-google-login";
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import { icons } from "../../utils/icons";
+import React, { memo } from "react";
 import {
   authSelect,
   setCredentials,
@@ -92,24 +89,30 @@ const SocialLoginForm = () => {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <GoogleOAuthProvider clientId="401289267989-9mb2gnrnml6ru7gfjbjq9ete1j5h0ukm.apps.googleusercontent.com">
-        <GoogleLogin
-          onSuccess={onSuccess}
-          onError={() => {
-            console.log("Login Failed");
+      <div className="w-full">
+        <GoogleOAuthProvider clientId="401289267989-9mb2gnrnml6ru7gfjbjq9ete1j5h0ukm.apps.googleusercontent.com">
+          <GoogleLogin
+            onSuccess={onSuccess}
+            onError={() => {
+              toast.success("Đăng nhập thất bại !");
+              console.log("Login Failed");
+            }}
+            width="100%"
+          />
+        </GoogleOAuthProvider>
+      </div>
+      <div className="w-full">
+        <LoginSocialFacebook
+          appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+          onResolve={onFacebookSuccess}
+          onReject={(error) => {
+            toast.success("Đăng nhập thất bại !");
+            console.log(error);
           }}
-        />
-      </GoogleOAuthProvider>
-
-      <LoginSocialFacebook
-        appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-        onResolve={onFacebookSuccess}
-        onReject={(error) => {
-          console.log(error);
-        }}
-      >
-        <FacebookLoginButton />
-      </LoginSocialFacebook>
+        >
+          <FacebookLoginButton />
+        </LoginSocialFacebook>
+      </div>
     </div>
   );
 };

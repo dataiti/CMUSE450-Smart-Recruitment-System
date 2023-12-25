@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -12,6 +12,11 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRegisterMutation } from "../../redux/features/apis/authApi";
+import { Loading } from "../shares";
+import SocialLoginForm from "./SocialLoginForm";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../redux/features/slices/authSlice";
+import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
   firstName: yup.string().required("Tên không được bỏ trống"),
@@ -27,11 +32,16 @@ const schema = yup.object().shape({
 });
 
 const RegisterForm = ({ open, handleOpen }) => {
+  const dispatch = useDispatch();
+
   const [register, { isLoading }] = useRegisterMutation();
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -48,7 +58,19 @@ const RegisterForm = ({ open, handleOpen }) => {
     try {
       if (data) {
         const response = await register(data);
-        console.log(response);
+        if (response && response.data && response.data.success) {
+          dispatch(
+            setCredentials({
+              user: response?.data?.data,
+              accessToken: response?.data?.accessToken,
+              refreshToken: response?.data?.refreshToken,
+            })
+          );
+          toast.success("Đăng ký thành công !");
+          reset();
+        } else if (response && response.data && !response.data.success) {
+          setErrorMessage("Email đã tồn tại");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -63,14 +85,15 @@ const RegisterForm = ({ open, handleOpen }) => {
       className="bg-transparent shadow-none"
       aria-labelledby="customized-dialog-title"
     >
+      {isLoading && <Loading />}
       <form
-        className="bg-white py-8 rounded-3xl mx-auto w-full max-w-[24rem]"
+        className="bg-white p-4 rounded-3xl mx-auto w-full max-w-[24rem]"
         onSubmit={handleSubmit(onSubmitRegister)}
       >
-        <Typography variant="h3" color="black" className="text-center">
+        <Typography className="text-center text-3xl text-black font-extrabold">
           Đăng Ký
         </Typography>
-        <CardBody className="flex flex-col gap-6">
+        <CardBody className="flex flex-col gap-5">
           <div className="flex flex-col relative">
             <Controller
               name="lastName"
@@ -80,7 +103,10 @@ const RegisterForm = ({ open, handleOpen }) => {
               )}
             />
             {!!errors.lastName && (
-              <Typography color="red" className="absolute -bottom-6 text-sm">
+              <Typography
+                color="red"
+                className="absolute font-bold -bottom-4 text-xs"
+              >
                 {errors.lastName?.message}
               </Typography>
             )}
@@ -94,7 +120,10 @@ const RegisterForm = ({ open, handleOpen }) => {
               )}
             />
             {!!errors.firstName && (
-              <Typography color="red" className="absolute -bottom-6 text-sm">
+              <Typography
+                color="red"
+                className="absolute font-bold -bottom-4 text-xs"
+              >
                 {errors.firstName?.message}
               </Typography>
             )}
@@ -108,7 +137,10 @@ const RegisterForm = ({ open, handleOpen }) => {
               )}
             />
             {!!errors.email && (
-              <Typography color="red" className="absolute -bottom-6 text-sm">
+              <Typography
+                color="red"
+                className="absolute font-bold -bottom-4 text-xs"
+              >
                 {errors.email?.message}
               </Typography>
             )}
@@ -127,7 +159,10 @@ const RegisterForm = ({ open, handleOpen }) => {
               )}
             />
             {!!errors.password && (
-              <Typography color="red" className="absolute -bottom-6 text-sm">
+              <Typography
+                color="red"
+                className="absolute font-bold -bottom-4 text-xs"
+              >
                 {errors.password?.message}
               </Typography>
             )}
@@ -147,10 +182,11 @@ const RegisterForm = ({ open, handleOpen }) => {
               Đăng nhập ngay
             </Link>
           </Typography>
+          <Typography className="text-center text-sm text-black font-bold">
+            Hoặc đăng nhập bằng
+          </Typography>
+          <SocialLoginForm />
         </CardFooter>
-        <Typography className="text-center text-sm text-black font-bold">
-          Hoặc đăng nhập bằng
-        </Typography>
       </form>
     </Dialog>
   );

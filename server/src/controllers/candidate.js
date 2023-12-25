@@ -1,6 +1,6 @@
 const Candidate = require("../models/candidate");
 const User = require("../models/user");
-const Resume = require("../models/resume");
+const WorkPositionRequired = require("../models/workPositionRequired");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const {
@@ -8,14 +8,13 @@ const {
   ref,
   getDownloadURL,
   uploadBytesResumable,
-  deleteObject,
 } = require("firebase/storage");
-const firebaseConfig = require("../configs/firebaseConfig");
 const pdf = require("pdf-parse");
-const { MODEL_NAME, client, model } = require("../configs/googleAIConfig");
+const { model } = require("../configs/googleAIConfig");
 const {
-  calculateSkillMatchPercentage,
-  processStringArray,
+  calculateTotalScore,
+  calculateExperienceScore,
+  calculateSkillsScore,
 } = require("../utils/fn");
 
 const candidateById = asyncHandler(async (req, res, next, id) => {
@@ -65,14 +64,15 @@ const registerCandidate = asyncHandler(async (req, res) => {
   const data = await pdf(req.file.buffer);
   const cvText = data.text.toLowerCase();
 
-  console.log(cvText, req.body);
-
-  const prompt = `${cvText}. Generate a JSON format number of year work experience and skills in CV, skills is Array contains String . Example: { "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}`;
+  const prompt = `${cvText}. Generate a json format number of year work experience and skills in CV, skills is Array contains String . Example format: "{ "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}", no json before {`;
 
   const result = await model.generateContent(prompt);
   const response = await result.response;
   let jsonString = JSON.parse(JSON.stringify(response.text()));
-  jsonString = jsonString.replace(/^```\s*([\s\S]*)\s*```$/, "$1");
+
+  console.log(jsonString);
+
+  jsonString = jsonString.replace(/^[^{]*([\s\S]*?)[^}]*$/, "$1");
 
   let CVJSON = {};
 
@@ -176,10 +176,75 @@ const deleteCandidate = asyncHandler(async (req, res) => {
   });
 });
 
+const suggestedCandidates = asyncHandler(async (req, res) => {
+  const workPositions = await WorkPositionRequired.find({
+    employerId: req.employer._id,
+  });
+
+  if (!workPositions || workPositions.length === 0) {
+    throw new Error("No work positions found for the employer");
+  }
+
+  const suggestedCandidatesByPosition = [];
+
+  for (const workPosition of workPositions) {
+    const {
+      jobPosition,
+      experienceWeight,
+      skillsWeight,
+      experienceRequire,
+      skillsRequire,
+      milestonePercent,
+    } = workPosition;
+
+    const candidates = await Candidate.find({ jobPosition })
+      .populate("userId", "lastName firstName email avatar")
+      .lean();
+
+    const suggestedCandidates = candidates.map((candidate) => {
+      const experienceScore = calculateExperienceScore(
+        candidate.experience,
+        experienceRequire
+      );
+      const skillsScore = calculateSkillsScore(candidate.skills, skillsRequire);
+      const totalScore = calculateTotalScore(
+        experienceWeight,
+        skillsWeight,
+        experienceScore,
+        skillsScore
+      );
+
+      return { candidate, totalScore };
+    });
+
+    suggestedCandidates.sort((a, b) => b.totalScore - a.totalScore);
+
+    const suggestedCandidatesWithPercentage = suggestedCandidates.map(
+      ({ candidate, totalScore }) => ({
+        ...candidate,
+        totalScore: totalScore.toFixed(2),
+        isPassed: totalScore >= milestonePercent,
+      })
+    );
+
+    suggestedCandidatesByPosition.push({
+      workPosition,
+      listCandidates: suggestedCandidatesWithPercentage,
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list canddiates for job position is successfully",
+    data: suggestedCandidatesByPosition,
+  });
+});
+
 module.exports = {
   candidateById,
   getCandidateDetail,
   registerCandidate,
   editCandidate,
   deleteCandidate,
+  suggestedCandidates,
 };

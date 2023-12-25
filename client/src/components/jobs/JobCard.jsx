@@ -15,27 +15,28 @@ import {
   setWishlists,
 } from "../../redux/features/slices/authSlice";
 import { useToggleWishListItemMutation } from "../../redux/features/apis/userApi";
-import { ApplyJobForm } from "../forms";
+import { ApplyJobForm, LoginForm } from "../forms";
 
 const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
   const dispatch = useDispatch();
 
-  const { user } = useSelector(authSelect);
+  const { user, isLoggedIn } = useSelector(authSelect);
 
   const [open, setOpen] = useState(false);
   const [isWishlist, setIsWishlist] = useState(false);
+  const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
 
   const [toggleWishListItem] = useToggleWishListItemMutation();
 
   useEffect(() => {
-    if (user?.wishlistIds) {
+    if (user?.wishlistIds && isLoggedIn) {
       setIsWishlist(
         user?.wishlistIds?.some(
           (wishlistId) => wishlistId?._id === jobItem?._id
         )
       );
     }
-  }, [jobItem?._id, user?.wishlistIds]);
+  }, [jobItem?._id, user?.wishlistIds, isLoggedIn]);
 
   return (
     <>
@@ -149,7 +150,11 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
               className="bg-[#212f3f] shadow-none hover:shadow-none !py-2"
               onClick={(e) => {
                 e.preventDefault();
-                setOpen(true);
+                if (!isLoggedIn) {
+                  setIsOpenLoginModal(true);
+                } else {
+                  setOpen(true);
+                }
               }}
             >
               Ứng tuyển
@@ -171,6 +176,7 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
       <Modal open={open} handleOpen={() => setOpen(!open)}>
         <ApplyJobForm jobItem={jobItem} setOpen={setOpen} />
       </Modal>
+      <LoginForm open={isOpenLoginModal} handleOpen={setIsOpenLoginModal} />
     </>
   );
 };

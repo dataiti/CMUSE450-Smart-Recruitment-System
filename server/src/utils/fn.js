@@ -202,6 +202,54 @@ const CVAnalysic = async (cvText) => {
   return CVJSON;
 };
 
+function calculateExperienceScore(candidateExperience, requiredExperience) {
+  // Tính toán phần trăm tương đồng về kinh nghiệm
+  const experienceSimilarity = Math.min(
+    1,
+    candidateExperience / requiredExperience
+  );
+
+  // Chuyển đổi thành điểm (đặt ví dụ là 100 điểm là trải qua đúng yêu cầu)
+  const experienceScore = experienceSimilarity * 100;
+
+  return experienceScore;
+}
+
+function calculateSkillsScore(candidateSkills, requiredSkills) {
+  // Đếm số lượng kỹ năng chung giữa ứng viên và yêu cầu
+  const commonSkillsCount = candidateSkills.filter((skill) =>
+    requiredSkills.includes(skill)
+  ).length;
+
+  // Tính toán phần trăm tương đồng về kỹ năng (đặt ví dụ là 100 điểm là trải qua đúng yêu cầu)
+  const skillsSimilarity = Math.min(
+    1,
+    commonSkillsCount / requiredSkills.length
+  );
+
+  // Chuyển đổi thành điểm
+  const skillsScore = skillsSimilarity * 100;
+
+  return skillsScore;
+}
+
+function calculateTotalScore(
+  experienceWeight,
+  skillsWeight,
+  experienceScore,
+  skillsScore
+) {
+  const adjustedExperienceWeight = experienceWeight || 1;
+  const adjustedSkillsWeight = skillsWeight || 1;
+
+  const totalScore =
+    (experienceScore * adjustedExperienceWeight +
+      skillsScore * adjustedSkillsWeight) /
+    (adjustedExperienceWeight + adjustedSkillsWeight);
+
+  return totalScore;
+}
+
 module.exports = {
   parseArrayQueryParam,
   calculateSimilarity,
@@ -210,4 +258,7 @@ module.exports = {
   calculateSkillMatchPercentage,
   processStringArray,
   CVAnalysic,
+  calculateTotalScore,
+  calculateExperienceScore,
+  calculateSkillsScore,
 };

@@ -260,7 +260,7 @@ const CreateRecruitmentJobPage = () => {
         </div>
       </div>
       <form
-        className="bg-white py-4   px-10 w-full rounded-md shadow-sm"
+        className="bg-white py-4 px-10 w-full rounded-md shadow-sm"
         onSubmit={handleSubmit(handleSubmitRegisterEmployer)}
       >
         <Timeline>

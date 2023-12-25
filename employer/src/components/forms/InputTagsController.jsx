@@ -15,9 +15,9 @@ const InputTagsController = ({
   const [tags, setTags] = useState([]);
   const [inputValue, setInputValue] = useState("");
 
-  useEffect(() => {
-    setTags(defaultTags);
-  }, [defaultTags]);
+  // useEffect(() => {
+  //   setTags(defaultTags);
+  // }, [defaultTags]);
 
   const handleInputChange = (e) => {
     if (e && e.target) {

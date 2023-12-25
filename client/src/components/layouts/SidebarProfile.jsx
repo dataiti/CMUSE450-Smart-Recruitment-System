@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authSelect, logOut } from "../../redux/features/slices/authSlice";
 import { useLogOutMutation } from "../../redux/features/apis/authApi";
 import { icons } from "../../utils/icons";
+import { SwitchCustom } from "../shares";
 
 const SidebarProfile = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const SidebarProfile = () => {
             </Typography>
           </div>
         )}
+        <SwitchCustom checked={true} />
       </div>
       <hr className="my-1 border-gray-400" />
       <List>
