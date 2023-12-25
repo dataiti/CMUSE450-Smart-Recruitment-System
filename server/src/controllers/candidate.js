@@ -1,7 +1,22 @@
 const Candidate = require("../models/candidate");
 const User = require("../models/user");
+const Resume = require("../models/resume");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
+const {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+  deleteObject,
+} = require("firebase/storage");
+const firebaseConfig = require("../configs/firebaseConfig");
+const pdf = require("pdf-parse");
+const { MODEL_NAME, client, model } = require("../configs/googleAIConfig");
+const {
+  calculateSkillMatchPercentage,
+  processStringArray,
+} = require("../utils/fn");
 
 const candidateById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -34,9 +49,11 @@ const getCandidateDetail = asyncHandler(async (req, res) => {
 });
 
 const registerCandidate = asyncHandler(async (req, res) => {
+  const storage = getStorage();
+  const storageRef = ref(storage, `pdf-files/${req.file.originalname}`);
+
   const {
     jobPosition,
-    experience,
     workLocation,
     desiredSalary,
     yourWishes,
@@ -45,26 +62,64 @@ const registerCandidate = asyncHandler(async (req, res) => {
 
   if (req.user.candidateId) throw new Error("Candidate is registed");
 
-  const newCandidate = new Candidate({
-    userId: req.user._id,
-    jobPosition,
-    experience,
-    workLocation,
-    desiredSalary: Number(desiredSalary),
-    skills: JSON.parse(req.body.skills),
-    yourWishes,
-    introduceYourself,
-  });
+  const data = await pdf(req.file.buffer);
+  const cvText = data.text.toLowerCase();
 
-  await newCandidate.save();
+  console.log(cvText, req.body);
 
-  if (!newCandidate) throw new Error("Register candiate is fail");
+  const prompt = `${cvText}. Generate a JSON format number of year work experience and skills in CV, skills is Array contains String . Example: { "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}`;
 
-  await User.findOneAndUpdate(
-    { _id: req.user._id },
-    { $set: { candidateId: newCandidate._id } },
-    { new: true }
-  );
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  let jsonString = JSON.parse(JSON.stringify(response.text()));
+  jsonString = jsonString.replace(/^```\s*([\s\S]*)\s*```$/, "$1");
+
+  let CVJSON = {};
+
+  try {
+    const parsedResult = JSON.parse(jsonString);
+    if (parsedResult && typeof parsedResult === "object") {
+      CVJSON = parsedResult;
+    }
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+
+  console.log(CVJSON);
+
+  let newCandidate;
+
+  try {
+    const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, {
+      contentType: req.file.mimetype,
+    });
+
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    if (CVJSON) {
+      newCandidate = new Candidate({
+        userId: req.user._id,
+        jobPosition,
+        CVName: req.file.originalname,
+        CVpdf: downloadURL,
+        experience: CVJSON?.experience || 0,
+        workLocation,
+        desiredSalary: Number(desiredSalary),
+        skills: CVJSON?.skills?.map((skill) => skill.toLowerCase()),
+        yourWishes,
+        introduceYourself,
+      });
+
+      await newCandidate.save();
+
+      if (!newCandidate) throw new Error("Register candiate is fail");
+
+      await User.findOneAndUpdate(
+        { _id: req.user._id },
+        { $set: { candidateId: newCandidate._id } },
+        { new: true }
+      );
+    }
+  } catch (error) {}
 
   return res.status(200).json({
     success: true,

@@ -55,7 +55,7 @@ const ToolbarCV = () => {
   const handleSendInterviewIntivionCVEnvent = () => {};
 
   return (
-    <div className="w-[620px] flex flex-col gap-3 bg-white h-[calc(100vh-60px)] border-l border-blue-gray-100 p-4">
+    <div className="w-[720px] flex flex-col gap-3 bg-white h-[calc(100vh-60px)] overflow-y-auto border-l border-blue-gray-100 p-4">
       {isFetching && <Loading />}
       <div className="flex items-center gap-1 justify-center">
         <ButtonCustom
@@ -73,7 +73,7 @@ const ToolbarCV = () => {
           Chấp nhận & Gửi lời mời phỏng vấn
         </ButtonCustom>
       </div>
-      <div className="flex flex-col gap-2 items-center bg-gray-300 p-4 rounded-md">
+      {/* <div className="flex flex-col gap-2 items-center bg-gray-300 p-4 rounded-md">
         <div className="flex items-center gap-2">
           <Avatar
             src={applyJobDetailData?.data?.candidateId?.avatar}
@@ -108,8 +108,7 @@ const ToolbarCV = () => {
             />
           </Modal>
         </div>
-      </div>
-
+      </div> */}
       <div>
         <EvaluateSuitableCV applyJobData={applyJobDetailData} />
       </div>

@@ -33,7 +33,7 @@ const SidebarProfile = () => {
   };
 
   return (
-    <Card className="h-[calc(100vh-110px)] w-full max-w-[20rem] p-2 shadow-xl shadow-blue-gray-900/5 bg-white">
+    <Card className="h-[calc(100vh-110px)] w-[19rem] p-2 shadow-xl shadow-blue-gray-900/5 bg-white">
       <div className="flex flex-col gap-2 p-5">
         <div className="flex justify-center">
           <Avatar

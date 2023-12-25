@@ -6,7 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { icons } from "../../utils/icons";
-import axiosClient from "../../configs/axiosConfig";
 import {
   useCreateJobMutation,
   useGetJobDetailQuery,

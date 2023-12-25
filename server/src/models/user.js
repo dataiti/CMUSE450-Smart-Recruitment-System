@@ -28,14 +28,14 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
       default:
-        "https://res.cloudinary.com/doo78f14s/image/upload/v1677427616/CDIO2-project/dedault_jd3qnu.jpg",
+        "https://res.cloudinary.com/doo78f14s/image/upload/v1703301504/Capstone1-project/x4kejhvw4cx4huqybc7s.png",
     },
     password: {
       type: String,
     },
     publicId: {
       type: String,
-      default: "CDIO2-project/dedault_jd3qnu",
+      default: "Capstone1-project/x4kejhvw4cx4huqybc7s",
     },
     permission: {
       type: String,

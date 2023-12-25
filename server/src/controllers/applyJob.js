@@ -14,7 +14,10 @@ const {
 const firebaseConfig = require("../configs/firebaseConfig");
 const pdf = require("pdf-parse");
 const { MODEL_NAME, client, model } = require("../configs/googleAIConfig");
-const { calculateSkillMatchPercentage } = require("../utils/fn");
+const {
+  calculateSkillMatchPercentage,
+  processStringArray,
+} = require("../utils/fn");
 
 const applyJobById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -54,9 +57,24 @@ const getApplyJobDetail = asyncHandler(async (req, res) => {
 
   console.log({ cvSkills, jobSkills });
 
-  const commonSkills = cvSkills.filter((skill) => jobSkills.includes(skill));
-  const matchPercentage = (commonSkills.length / jobSkills.length) * 100;
+  const extractSkills = (skillString) => {
+    const extractedSkills = skillString.split("(")[0].trim().toLowerCase();
+    return extractedSkills.split(",").map((skill) => skill.trim());
+  };
 
+  const cvSpecificSkills = [].concat(
+    ...cvSkills.map((skill) => extractSkills(skill))
+  );
+  const jobSpecificSkills = [].concat(
+    ...jobSkills.map((skill) => extractSkills(skill))
+  );
+
+  const commonSkills = cvSpecificSkills.filter((skill) =>
+    jobSpecificSkills.includes(skill)
+  );
+
+  const matchPercentage =
+    (commonSkills.length / jobSpecificSkills.length) * 100;
   const experiencePercentage =
     cvExperience >= jobExperience || jobExperience === 0
       ? 100
@@ -79,45 +97,13 @@ const getApplyJobDetail = asyncHandler(async (req, res) => {
       experiencePercentage,
       overallPercentage,
       skillNotMatch,
+      cvSkills,
       skillMatch,
     },
   });
 });
 
 const applyJob = asyncHandler(async (req, res) => {
-  // const data = await pdf(req.file.buffer);
-  // const cvText = data.text;
-  // console.log(cvText);
-
-  // const result = await client.generateText({
-  //   model: MODEL_NAME,
-  //   prompt: {
-  //     text: `${cvText}. Generate a JSON format for number of work year experience and a list of skills as an array. Example: { experience: 2, skills: ['reactjs', 'nodejs', 'mongodb,]}`,
-  //   },
-  // });
-
-  // let CVJSON = {};
-
-  // try {
-  //   const parsedResult = JSON.parse(result[0]?.candidates[0]?.output);
-  //   if (parsedResult && typeof parsedResult === "object") {
-  //     CVJSON = parsedResult;
-  //   }
-  // } catch (error) {
-  //   console.error("Error parsing JSON:", error);
-  // }
-
-  // console.log(CVJSON);
-
-  // const prompt = `${cvText}. Generate a JSON format number of year work experience and skills in CV, skills is Array contains String . Example: { "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}`;
-
-  // const result = await model.generateContent(prompt);
-  // const response = await result.response;
-  // let jsonString = JSON.parse(JSON.stringify(response.text()));
-  // jsonString = jsonString.replace(/^```\s*([\s\S]*)\s*```$/, "$1");
-
-  // console.log(JSON.parse(jsonString));
-
   const storage = getStorage();
   const storageRef = ref(storage, `pdf-files/${req.file.originalname}`);
 
@@ -173,7 +159,7 @@ const applyJob = asyncHandler(async (req, res) => {
 
     try {
       const parsedResult = JSON.parse(jsonString);
-      console.log(parsedResult);
+      // console.log(parsedResult);
       if (parsedResult && typeof parsedResult === "object") {
         CVJSON = parsedResult;
       }
@@ -188,7 +174,9 @@ const applyJob = asyncHandler(async (req, res) => {
         userId: req.user._id,
         applyJobId: newApplyJob._id,
         experience: CVJSON?.experience || 0,
-        skills: CVJSON?.skills?.map((skill) => skill.toLowerCase()),
+        skills: processStringArray(
+          CVJSON?.skills?.map((skill) => skill.toLowerCase())
+        ),
       });
 
       await newResume.save();

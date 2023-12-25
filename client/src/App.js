@@ -16,7 +16,7 @@ const App = () => {
     }
 
     return () => {
-      socket.disconnect();
+      socket?.disconnect();
     };
   }, [user?._id, isLoggedIn]);
 

@@ -17,6 +17,8 @@ import JobStatusBadge from "./JobStatusBadge";
 import CirculeProgress from "./CirculeProgress";
 import ListNotification from "./ListNotification";
 import EvaluateSuitableCV from "./EvaluateSuitableCV";
+import CandidateCard from "./CandidateCard";
+import SettingWorkPosition from "./SettingWorkPosition";
 
 export {
   ButtonCustom,
@@ -38,4 +40,6 @@ export {
   CirculeProgress,
   ListNotification,
   EvaluateSuitableCV,
+  CandidateCard,
+  SettingWorkPosition,
 };

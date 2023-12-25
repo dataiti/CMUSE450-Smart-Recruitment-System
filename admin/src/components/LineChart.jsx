@@ -13,7 +13,7 @@ const LineChart = ({ data = [], className = "", type = "week" }) => {
       : 0.1;
 
   const chartData = {
-    labels: data.map((item) => item?._id?.slice(0, 2) || ""),
+    labels: data.map((item) => item?._id || ""),
     datasets: [
       {
         label: `Biểu đồ cột biểu hiện số lượng ${type}`,

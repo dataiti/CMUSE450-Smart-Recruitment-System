@@ -8,7 +8,7 @@ import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { LineChart, PieChart } from "../../components/charts";
-import { Avatar, Button, Input, Typography } from "@material-tailwind/react";
+import { Avatar, Input, Typography } from "@material-tailwind/react";
 import {
   tableHeadApplyJobDashboard,
   typeChartPercentOptions,

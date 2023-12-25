@@ -8,6 +8,7 @@ import SelectController from "./SelectController";
 import SocialLoginForm from "./SocialLoginForm";
 import TextareaController from "./TextareaController";
 import TextEditorController from "./TextEditorController";
+import InputPDFController from "./InputPDFController";
 
 export {
   ApplyJobForm,
@@ -20,4 +21,5 @@ export {
   SocialLoginForm,
   TextareaController,
   TextEditorController,
+  InputPDFController,
 };

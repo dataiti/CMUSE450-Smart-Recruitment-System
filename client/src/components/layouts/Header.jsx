@@ -25,6 +25,7 @@ import {
   useSaveSearchMutation,
   useGetListJobsByKeywordForUserQuery,
 } from "../../redux/features/apis/searchApi";
+import { skipToken } from "@reduxjs/toolkit/dist/query";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -59,7 +60,10 @@ const Header = () => {
   const inputRef = useRef();
 
   const { data: searchData, isFetching } = useGetListJobsByKeywordForUserQuery(
-    { userId: user?._id, keyword: searchDobouceValue },
+    {
+      userId: user?._id,
+      keyword: searchDobouceValue,
+    },
     { refetchOnMountOrArgChange: true }
   );
 

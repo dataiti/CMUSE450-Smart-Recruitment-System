@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import Loading from "../shares/Loading";
+import { InputPDFController } from "../forms";
 
 const ApplyJobForm = ({ jobItem, setOpen = () => {} }) => {
   const { user } = useSelector(authSelect);
@@ -84,38 +85,12 @@ const ApplyJobForm = ({ jobItem, setOpen = () => {} }) => {
           </Typography>
         </div>
         <div className="flex flex-col gap-2">
-          <Controller
+          <InputPDFController
             control={control}
+            namePDFFile={namePDFFile}
             name="CVpdf"
-            render={({ field: { onChange } }) => (
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-teal-800">
-                  Chọn CV:
-                </label>
-                <label
-                  htmlFor="CVpdf"
-                  className="flex items-center gap-2 border border-gray-400 rounded-md px-4 py-2 w-[220px] cursor-pointer hover:bg-gray-100"
-                >
-                  <icons.BsFiletypePdf size={18} />
-                  <Typography className="text-sm font-bold">
-                    Tải lên CV từ máy tính
-                  </Typography>
-                </label>
-                <input
-                  type="file"
-                  id="CVpdf"
-                  hidden
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    setNamePDFFile(file.name);
-                    return onChange(e.target.files[0]);
-                  }}
-                />
-                <Typography className="text-sm font-bold">
-                  {namePDFFile}
-                </Typography>
-              </div>
-            )}
+            setNamePDFFile={setNamePDFFile}
+            isField
           />
           <Controller
             control={control}

@@ -24,7 +24,7 @@ const PieChart = ({ data = [], type = "" }) => {
 
   return (
     <Doughnut
-      className="p-10"
+      className="p-2"
       data={chartData}
       options={{
         plugins: {

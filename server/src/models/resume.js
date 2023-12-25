@@ -10,6 +10,10 @@ const resumeSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "ApplyJob",
     },
+    candidateId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Candidate",
+    },
     experience: {
       type: Number,
       default: 0,

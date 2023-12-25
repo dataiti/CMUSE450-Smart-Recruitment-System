@@ -20,6 +20,11 @@ export const menuItems = [
     icon: <icons.HiDocumentText size={20} />,
   },
   {
+    to: "/CV-recomendation",
+    label: "Đề xuất CV theo vị trí",
+    icon: <icons.HiDocumentText size={20} />,
+  },
+  {
     to: "/my-schedule",
     label: "Lịch trình",
     icon: <icons.BsCalendar3 size={20} />,

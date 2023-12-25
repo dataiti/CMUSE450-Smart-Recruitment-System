@@ -13,6 +13,7 @@ import DecorationPage from "./decoration/DecorationPage";
 import PaymentPage from "./payment/PaymentPage";
 import RecruitProcessPage from "./resume/RecruitProcessPage";
 import MySchedulePage from "./schedule/MySchedulePage";
+import CVRecomendationPage from "./recomendation/CVRecomendationPage";
 
 export {
   LoginPage,
@@ -30,4 +31,5 @@ export {
   RecruitProcessPage,
   MySchedulePage,
   JobDetail,
+  CVRecomendationPage,
 };

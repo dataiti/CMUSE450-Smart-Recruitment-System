@@ -85,13 +85,13 @@ const MessagePage = () => {
 
   return (
     <div className="w-full flex">
-      <div className="!w-[460px] h-screen border-r border-gray-500 bg-blue-gray-800">
+      <div className="!w-[460px] h-screen bg-blue-gray-800">
         <ListConversations data={listConversations} />
       </div>
       <div className="h-screen w-full">
         {currentConversation ? (
           <>
-            <div className="h-[70px] bg-blue-gray-900 border-b border-blue-gray-100 flex items-center justify-between gap-3 px-4">
+            <div className="h-[70px] bg-blue-gray-900 flex items-center justify-between gap-3 px-4">
               <div className="flex items-center gap-2">
                 <Avatar
                   src={currentConversation?.employerId?.companyLogo}
@@ -130,7 +130,7 @@ const MessagePage = () => {
                 }
               })}
             </div>
-            <div className="h-[70px] flex items-center gap-2 justify-center px-8 pr-20 bg-blue-gray-900 border-t border-blue-gray-100">
+            <div className="h-[70px] flex items-center gap-2 justify-center px-8 pr-20 bg-blue-gray-900">
               <Input
                 label="Nhập tin nhắn"
                 icon={

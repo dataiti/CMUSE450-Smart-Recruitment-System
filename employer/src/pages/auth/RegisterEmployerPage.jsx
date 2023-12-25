@@ -31,6 +31,7 @@ import { useRegisterEmployerMutation } from "../../redux/features/apis/employerA
 import { authSelect, updateUser } from "../../redux/features/slices/authSlice";
 import { setTitle } from "../../redux/features/slices/titleSlice";
 import { toast } from "react-toastify";
+import { useWorkLocations } from "../../hooks";
 
 const schema = yup.object().shape({
   companyName: yup
@@ -67,10 +68,6 @@ const RegisterPage = () => {
 
   const [registerEmployer] = useRegisterEmployerMutation();
 
-  const [provincesValue, setProvincesValue] = useState([]);
-  const [districtsValue, setDistrictsValue] = useState([]);
-  const [wardsValue, setWardsValue] = useState([]);
-
   const {
     control,
     handleSubmit,
@@ -95,52 +92,13 @@ const RegisterPage = () => {
     resolver: yupResolver(schema),
   });
 
-  const province = watch("province");
-  const district = watch("district");
+  const provinceWatch = watch("province");
+  const districtWatch = watch("district");
 
-  useEffect(() => {
-    dispatch(setTitle("Đăng ký nhà tuyển dụng"));
-  }, [dispatch]);
-
-  useEffect(() => {
-    const fetchWorkLocationsApi = async () => {
-      try {
-        const response = await axiosClient.get("/province");
-        if (response && response.data && response.data.results) {
-          const provinceNames = response.data.results.map((item) => ({
-            id: item.province_id,
-            value: item.province_name,
-          }));
-          setProvincesValue(provinceNames);
-        }
-        if (JSON.parse(province).id) {
-          const response = await axiosClient.get(
-            `/province/district/${JSON.parse(province).id}`
-          );
-          if (response && response.data && response.data.results) {
-            const districtNames = response.data.results.map((item) => ({
-              id: item.district_id,
-              value: item.district_name,
-            }));
-            setDistrictsValue(districtNames);
-          }
-        }
-        if (JSON.parse(district).id) {
-          const response = await axiosClient.get(
-            `/province/ward/${JSON.parse(district).id}`
-          );
-          if (response && response.data && response.data.results) {
-            const wardNames = response.data.results.map((item) => ({
-              id: item.ward_id,
-              value: item.ward_name,
-            }));
-            setWardsValue(wardNames);
-          }
-        }
-      } catch (error) {}
-    };
-    fetchWorkLocationsApi();
-  }, [province, district]);
+  const { provincesValue, districtsValue, wardsValue } = useWorkLocations(
+    provinceWatch,
+    districtWatch
+  );
 
   const handleSubmitRegisterEmployer = async (data) => {
     try {

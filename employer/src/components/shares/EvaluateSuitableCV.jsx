@@ -31,7 +31,7 @@ const EvaluateSuitableCV = ({ applyJobData = {} }) => {
         </div>
       </div>
       <div className="flex flex-col gap-2 border border-gray-100 rounded-md p-4">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 flex-wrap">
           <Typography className="text-sm font-bold text-light-blue-600">
             Kỹ năng bạn phù hợp
           </Typography>
@@ -39,8 +39,24 @@ const EvaluateSuitableCV = ({ applyJobData = {} }) => {
             {applyJobData?.data?.skillMatch?.map((skill, index) => (
               <Tag
                 key={index}
-                className="text-green-500 bg-indigo-50 rounded-md !px-6 !py-2 !text-base"
+                className="text-green-500 bg-green-50 rounded-md !px-6 !py-2 !text-base"
                 icon={<icons.BsFillCheckCircleFill />}
+              >
+                {skill}
+              </Tag>
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 flex-wrap">
+          <Typography className="text-sm font-bold text-light-blue-600">
+            Kỹ năng bạn còn thiếu
+          </Typography>
+          <div className="flex items-center gap-2 flex-wrap">
+            {applyJobData?.data?.skillNotMatch?.map((skill, index) => (
+              <Tag
+                key={index}
+                className="text-red-500 bg-red-50 rounded-md !px-6 !py-2 !text-base"
+                icon={<icons.IoCloseCircleSharp />}
               >
                 {skill}
               </Tag>
@@ -49,14 +65,14 @@ const EvaluateSuitableCV = ({ applyJobData = {} }) => {
         </div>
         <div className="flex flex-col gap-2">
           <Typography className="text-sm font-bold text-light-blue-600">
-            Kỹ năng bạn còn thiếu
+            Kỹ năng trong CV
           </Typography>
           <div className="flex items-center gap-2 flex-wrap">
-            {applyJobData?.data?.skillNotMatch?.map((skill, index) => (
+            {applyJobData?.data?.cvSkills?.map((skill, index) => (
               <Tag
                 key={index}
-                className="text-red-500 bg-indigo-50 rounded-md !px-6 !py-2 !text-base"
-                icon={<icons.IoCloseCircleSharp />}
+                className="text-blue-500 bg-blue-50 rounded-md !px-6 !py-2 !text-base"
+                icon={<icons.BsFillCheckCircleFill />}
               >
                 {skill}
               </Tag>

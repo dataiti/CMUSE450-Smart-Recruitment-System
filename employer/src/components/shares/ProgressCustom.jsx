@@ -5,12 +5,16 @@ const ProgressCustom = ({ label = "", value = 0 }) => {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
-        <Typography className="text-xs font-bold text-light-blue-600">
-          {label}
-        </Typography>
-        <Typography className="text-xs font-bold text-light-blue-600">
-          {value} %
-        </Typography>
+        {label && (
+          <Typography className="text-xs font-bold text-light-blue-600">
+            {label}
+          </Typography>
+        )}
+        {label && (
+          <Typography className="text-xs font-bold text-light-blue-600">
+            {value} %
+          </Typography>
+        )}
       </div>
       <Progress value={value} size="md" color="teal" />
     </div>

@@ -22,8 +22,11 @@ const authSlice = createSlice({
       state.refreshToken = null;
     },
     setWishlists: (state, action) => {
-      console.log(action.payload.data);
       state.user.wishlistIds = action.payload.data;
+    },
+    updateCandidate: (state, action) => {
+      console.log(action.payload.data);
+      state.user.user.candidateId = action.payload.data;
     },
   },
   extraReducers: (builder) => {},
@@ -31,6 +34,7 @@ const authSlice = createSlice({
 
 export const authSelect = (state) => state.auth;
 
-export const { setCredentials, logOut, setWishlists } = authSlice.actions;
+export const { setCredentials, logOut, setWishlists, updateCandidate } =
+  authSlice.actions;
 
 export default authSlice.reducer;

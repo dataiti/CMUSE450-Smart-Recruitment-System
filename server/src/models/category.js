@@ -18,12 +18,7 @@ const categorySchema = new mongoose.Schema(
       type: String,
     },
     subcategories: {
-      type: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "SubCategory",
-        },
-      ],
+      type: Array,
       default: [],
     },
     isActive: {

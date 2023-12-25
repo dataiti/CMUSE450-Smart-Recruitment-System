@@ -19,6 +19,14 @@ const candidateSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    CVName: {
+      type: String,
+      required: true,
+    },
+    CVpdf: {
+      type: String,
+      required: true,
+    },
     desiredSalary: {
       type: Number,
       required: true,
@@ -27,13 +35,16 @@ const candidateSchema = new mongoose.Schema(
     skills: {
       type: Array,
       default: [],
-      required: true,
     },
     yourWishes: {
       type: String,
     },
     introduceYourself: {
       type: String,
+    },
+    isActiveApplication: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }

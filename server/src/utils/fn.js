@@ -3,6 +3,7 @@ const Employer = require("../models/employer");
 const User = require("../models/user");
 const Notification = require("../models/notification");
 const ApplyJob = require("../models/applyJob");
+const { model } = require("../configs/googleAIConfig");
 
 const parseArrayQueryParam = (paramName, query) =>
   query[paramName] && query[paramName] !== "[]"
@@ -108,15 +109,15 @@ const evaluateSuitableJob = async ({ candidate, job }) => {
 
   const findCategories = await Category.find();
   const jobPositionPercentage = 0;
-  // candidateJobPosition === requiredJobPosition
-  //   ? 100
-  //   : findCategories.some((category) =>
-  //       category.subcategories.some((item) =>
-  //         [candidateJobPosition, requiredJobPosition].includes(item.name)
-  //       )
-  //     )
-  //   ? 20
-  //   : 0;
+  candidateJobPosition === requiredJobPosition
+    ? 100
+    : findCategories.some((category) =>
+        category.subcategories.some((item) =>
+          [candidateJobPosition, requiredJobPosition].includes(item.name)
+        )
+      )
+    ? 20
+    : 0;
 
   let salaryPercentage = 0;
 
@@ -158,10 +159,55 @@ function calculateSkillMatchPercentage({
   return ((matchPercentage + experiencePercentage) / 2).toFixed(2);
 }
 
+function processStringArray(inputArray) {
+  const processElement = (element) => {
+    const matches = element.match(/\w+\s?\(\w+\)/g);
+    const resultArray = [];
+
+    if (matches) {
+      matches.forEach((match) => {
+        const innerArray = match.match(/\w+/g);
+        resultArray.push(...innerArray);
+      });
+    } else {
+      resultArray.push(element);
+    }
+
+    return resultArray;
+  };
+
+  return inputArray.flatMap(processElement);
+}
+
+const CVAnalysic = async (cvText) => {
+  const prompt = `${cvText}. Generate a JSON format number of year work experience and skills in CV, skills is Array contains String . Example: { "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}`;
+
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  let jsonString = JSON.parse(JSON.stringify(response.text()));
+  jsonString = jsonString.replace(/^```\s*([\s\S]*)\s*```$/, "$1");
+
+  let CVJSON = {};
+
+  try {
+    const parsedResult = JSON.parse(jsonString);
+    console.log(parsedResult);
+    if (parsedResult && typeof parsedResult === "object") {
+      CVJSON = parsedResult;
+    }
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+
+  return CVJSON;
+};
+
 module.exports = {
   parseArrayQueryParam,
   calculateSimilarity,
   sortObject,
   evaluateSuitableJob,
   calculateSkillMatchPercentage,
+  processStringArray,
+  CVAnalysic,
 };
