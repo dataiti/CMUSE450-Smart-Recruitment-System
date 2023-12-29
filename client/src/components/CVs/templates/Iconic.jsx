@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import ParentType from "../shares/ParentType";
-import Project from "../parts/Project";
-import Skills from "../parts/Skills";
-import Modal from "../../shares/Modal";
+import { Modal } from "../../shares";
 import { Typography } from "@material-tailwind/react";
 import { icons } from "../../../utils/icons";
-import ProfessionalProfile from "../parts/ProfessionalProfile";
-import WorkExperience from "../parts/WorkExperience";
+import { WorkExperience, ProfessionalProfile, Project, Skills } from "../parts";
+import { images } from "../../../assets/images";
+import {
+  AvatarType,
+  SkillType,
+  TitleType,
+  ParentType,
+  InfoType,
+} from "../shares";
 
 const Iconic = ({ color }) => {
   const [open, setOpen] = useState(false);
   const [indexAdd, setIndexAdd] = useState(0);
   const [typeAdd, setTypeAdd] = useState("");
   const [divs, setDivs] = useState([
-    { id: 1, type: "contact", content: "" },
     { id: 2, type: "profile", content: "" },
     { id: 3, type: "skill", content: "" },
     { id: 4, type: "experience", content: "" },
@@ -23,6 +26,7 @@ const Iconic = ({ color }) => {
   const [editedContents, setEditedContents] = useState(
     divs.map((div) => div.content)
   );
+  const [avatarPreview, setAvatarPreview] = useState(images.avatardefault);
 
   const handleMoveUp = (index) => {
     if (index > 0) {
@@ -130,6 +134,29 @@ const Iconic = ({ color }) => {
   return (
     <div className="flex flex-col gap-2 w-full h-full">
       <div className="w-full flex flex-col gap-2">
+        <div className="grid grid-cols-12 gap-2 ">
+          <div className="col-span-9 flex flex-col gap-4">
+            <TitleType />
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col gap-1">
+                <InfoType html1="Name" html2="Nguyen Van A" />
+                <InfoType html1="Email" html2="nguyenvana@gmail.com" />
+                <InfoType html1="Phone" html2="0123456789" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <InfoType html1="Birth" html2="01/01/2000" />
+                <InfoType html1="Address" html2="Da Nang, VietNam" />
+                <InfoType html1="Github" html2="https://github.com/vana" />
+              </div>
+            </div>
+          </div>
+          <div className="col-span-3">
+            <AvatarType
+              avatarPreview={avatarPreview}
+              setAvatarPreview={setAvatarPreview}
+            />
+          </div>
+        </div>
         <div className="flex flex-col gap-3">
           {divs.map((div, index) => (
             <div key={div.id}>

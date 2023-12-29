@@ -47,7 +47,7 @@ const schema = yup.object().shape({
     .required("Vui lòng nhập phần trăm cột mốc"),
 });
 
-const SettingWorkPosition = ({ setOpen }) => {
+const SettingWorkPosition = ({ setOpen, setListCandidates }) => {
   const { user } = useSelector(authSelect);
 
   const [createWorkPositionRequired, { isLoading }] =
@@ -98,6 +98,7 @@ const SettingWorkPosition = ({ setOpen }) => {
         employerId: user?.ownerEmployerId?._id,
       });
       if (response && response.data && response.data.success) {
+        setListCandidates(response?.data?.data);
         toast.success("Thiết lập thống số vị trí thành công !");
         setOpen(false);
         reset();

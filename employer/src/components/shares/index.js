@@ -19,6 +19,8 @@ import ListNotification from "./ListNotification";
 import EvaluateSuitableCV from "./EvaluateSuitableCV";
 import CandidateCard from "./CandidateCard";
 import SettingWorkPosition from "./SettingWorkPosition";
+import EvaluateSuitableCandidate from "./EvaluateSuitableCandidate";
+import SkillTags from "./SkillTags";
 
 export {
   ButtonCustom,
@@ -42,4 +44,6 @@ export {
   EvaluateSuitableCV,
   CandidateCard,
   SettingWorkPosition,
+  EvaluateSuitableCandidate,
+  SkillTags,
 };

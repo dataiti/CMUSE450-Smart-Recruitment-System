@@ -9,7 +9,7 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -19,7 +19,6 @@ import {
   companyIndustryOptions,
   companySizesOptions,
 } from "../../utils/constants";
-import axiosClient from "../../configs/axiosConfig";
 import {
   InputFileController,
   TextEditorController,
@@ -122,10 +121,6 @@ const RegisterPage = () => {
         if (formatData.hasOwnProperty(key)) {
           formData.append(key, formatData[key]);
         }
-      }
-
-      for (const value of formData.values()) {
-        console.log(value);
       }
 
       const response = await registerEmployer({ formData, userId: user._id });

@@ -23,7 +23,11 @@ router.post(
   uploadMemo.single("CVpdf"),
   registerCandidate
 );
-router.put("/edit-candidate/:userId/:candidateId", editCandidate);
+router.put(
+  "/edit-candidate/:userId/:candidateId",
+  uploadMemo.single("CVpdf"),
+  editCandidate
+);
 router.delete("/delete-candidate/:userId/:candidateId", deleteCandidate);
 
 router.param("userId", userById);

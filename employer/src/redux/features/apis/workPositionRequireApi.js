@@ -11,15 +11,18 @@ const scheduleApi = rootApi.injectEndpoints({
         };
       },
     }),
-    getListSchedulesForEmployer: builder.query({
-      query: ({ userId, employerId }) => {
+    deleteWorkPositionRequiredbuilder: builder.mutation({
+      query: ({ userId, employerId, workPositionRequiredId }) => {
         return {
-          url: `/workPositionRequired/list-schedules/${userId}/${employerId}`,
-          method: "GET",
+          url: `/workPositionRequired/delete-work-position-required/${userId}/${employerId}/${workPositionRequiredId}`,
+          method: "DELETE",
         };
       },
     }),
   }),
 });
 
-export const { useCreateWorkPositionRequiredMutation } = scheduleApi;
+export const {
+  useCreateWorkPositionRequiredMutation,
+  useDeleteWorkPositionRequiredbuilderMutation,
+} = scheduleApi;

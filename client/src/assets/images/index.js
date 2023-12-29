@@ -8,13 +8,12 @@ import banner2 from "./banner2.jpg";
 import banner3 from "./banner3.jpg";
 import startchat from "./startchat.jpg";
 import notifications from "./no-notifications.png";
+import avatardefault from "./avatardefault.jpg";
 
 const listBannerImage = [banner1, banner2, banner3];
 const listCVTemplateImage = [
   { id: 1, value: iconic },
   { id: 1, value: decker },
-  { id: 1, value: cascade },
-  { id: 1, value: simple },
 ];
 
 export const images = {
@@ -30,4 +29,5 @@ export const images = {
   listBannerImage,
   listCVTemplateImage,
   notifications,
+  avatardefault,
 };

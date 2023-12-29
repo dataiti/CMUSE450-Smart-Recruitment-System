@@ -5,6 +5,7 @@ const {
   generateTimeBasedPieChart,
   getTechnicalAndWorkPositionTrendingChart,
   evaluateSuitableJob,
+  evaluateSuitableCandidate,
   getOveviewStatisticsForAdmin,
   generateTimeBasedPieChartForAdmin,
   generateTimeBasedLineChartForAdmin,
@@ -14,6 +15,9 @@ const { employerById } = require("../controllers/employer");
 const { candidateById } = require("../controllers/candidate");
 const { jobById } = require("../controllers/job");
 const { verifyToken, isAdminSystem } = require("../middlewares/verifyToken");
+const {
+  workPositionRequiredById,
+} = require("../controllers/workPositionRequired");
 
 const router = express.Router();
 
@@ -49,11 +53,17 @@ router.get(
   "/evaluate-suitable-job/:userId/:candidateId/:jobId",
   evaluateSuitableJob
 );
+router.get(
+  "/evaluate-suitable-candidate/:userId/:employerId/:candidateId/:workPositionRequiredId",
+  evaluateSuitableCandidate
+);
+
 router.get("/get-technical-trending", getTechnicalAndWorkPositionTrendingChart);
 
 router.param("userId", userById);
 router.param("employerId", employerById);
 router.param("candidateId", candidateById);
 router.param("jobId", jobById);
+router.param("workPositionRequiredId", workPositionRequiredById);
 
 module.exports = router;

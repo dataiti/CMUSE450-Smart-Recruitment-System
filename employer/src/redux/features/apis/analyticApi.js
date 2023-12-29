@@ -26,6 +26,14 @@ const analyticApi = rootApi.injectEndpoints({
         };
       },
     }),
+    getEvaluateSuitableCandidate: builder.query({
+      query: ({ userId, candidateId, employerId, workPositionRequireId }) => {
+        return {
+          url: `/analytic/evaluate-suitable-candidate/${userId}/${employerId}/${candidateId}/${workPositionRequireId}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -33,4 +41,5 @@ export const {
   useGenerateTimeBasedLineChartQuery,
   useGenerateTimeBasedPieChartByIndustryQuery,
   useGetOveviewStatisticsQuery,
+  useGetEvaluateSuitableCandidateQuery,
 } = analyticApi;

@@ -6,6 +6,9 @@ import ProjectType from "./ProjectType";
 import SkillType from "./SkillType";
 import TextEditCustomize from "./TextEditCustomize";
 import TextType from "./TextType";
+import TitleType from "./TitleType";
+import AvatarType from "./AvatarType";
+import InfoType from "./InfoType";
 
 export {
   ActionButtons,
@@ -16,4 +19,7 @@ export {
   SkillType,
   TextEditCustomize,
   TextType,
+  TitleType,
+  AvatarType,
+  InfoType,
 };

@@ -37,7 +37,7 @@ const ParentType = ({
   const updateAbsoluteDivSize = () => {
     if (divRef1.current && absoluteDivRef.current) {
       const width = divRef1.current.offsetWidth + 140;
-      const height = divRef1.current.offsetHeight + 100;
+      const height = divRef1.current.offsetHeight + 94;
 
       absoluteDivRef.current.style.width = `${width}px`;
       absoluteDivRef.current.style.height = `${height}px`;
@@ -89,6 +89,7 @@ const ParentType = ({
               } rounded-none border-2 outline-none ${
                 isFocus ? "border-gray-500" : "border-transparent"
               }`}
+              isHidden
             />
           </div>
           <div className={`h-[2px] w-full bg-blue-gray-100`}></div>

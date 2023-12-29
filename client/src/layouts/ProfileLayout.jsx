@@ -9,7 +9,7 @@ const ProfileLayout = () => {
         <Header />
       </div>
       <div className="py-4 mt-[80px] bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9]">
-        <div className="px-[110px]">
+        <div className="px-[110px] min-h-[calc(100vh-112px)]">
           <div className="fixed ">
             <SidebarProfile />
           </div>

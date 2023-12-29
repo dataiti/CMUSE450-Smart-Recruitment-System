@@ -5,6 +5,14 @@ const Employer = require("../models/employer");
 const asyncHandler = require("express-async-handler");
 const moment = require("moment");
 const User = require("../models/user");
+const {
+  calculateSkillsScore,
+  calculateExperienceScore,
+  calculateSkillMatch,
+  calculateExperiencePercentage,
+  calculateJobPositionPercentage,
+  calculateSalaryPercentage,
+} = require("../utils/fn");
 
 const getOveviewStatistics = asyncHandler(async (req, res) => {
   const numberOfOpenJobs = await Job.countDocuments({
@@ -341,52 +349,31 @@ const evaluateSuitableJob = asyncHandler(async (req, res) => {
     salaryTo,
   } = req.job;
 
-  const skillMatch = candidateSkills.filter((skill) =>
-    requiredSkills.includes(skill)
+  const { skillMatch, skillNotMatch, skillPercentage } = calculateSkillMatch(
+    candidateSkills,
+    requiredSkills
   );
-
-  const skillNotMatch = requiredSkills.filter(
-    (skill) => !candidateSkills.includes(skill)
+  const experiencePercentage = calculateExperiencePercentage(
+    candidateExperience,
+    requiredExperience
   );
-
-  const skillPercentage =
-    (skillMatch.length / requiredSkills.length) * 100 || 0;
-
-  const experiencePercentage =
-    candidateExperience >= requiredExperience || requiredExperience === 0
-      ? 100
-      : (candidateExperience / requiredExperience) * 100;
-
-  const findCategories = await Category.find();
-  const jobPositionPercentage =
-    candidateJobPosition === requiredJobPosition
-      ? 100
-      : findCategories.some((category) =>
-          category.subcategories.some((item) =>
-            [candidateJobPosition, requiredJobPosition].includes(item.name)
-          )
-        )
-      ? 20
-      : 0;
-
-  let salaryPercentage = 0;
-
-  if (salaryType === "Thỏa thuận") {
-    salaryPercentage = 0;
-  } else if (salaryFrom !== undefined && salaryTo !== undefined) {
-    const medianSalary = (salaryFrom + salaryTo) / 2;
-    const absoluteDifference = Math.abs(candidateDesiredSalary - medianSalary);
-    salaryPercentage = (1 - absoluteDifference / medianSalary) * 100;
-  } else if (salaryFrom === undefined && salaryTo !== undefined) {
-    const absoluteDifference = Math.abs(candidateDesiredSalary - salaryTo);
-    salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
-  } else if (salaryFrom !== undefined && salaryTo === undefined) {
-    const absoluteDifference = Math.abs(candidateDesiredSalary - salaryFrom);
-    salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
-  }
+  const jobPositionPercentage = await calculateJobPositionPercentage(
+    candidateJobPosition,
+    requiredJobPosition
+  );
+  const salaryPercentage = calculateSalaryPercentage(
+    salaryType,
+    salaryFrom,
+    salaryTo,
+    candidateDesiredSalary
+  );
 
   const overallPercentage =
-    (skillPercentage + experiencePercentage + jobPositionPercentage) / 3;
+    (skillPercentage +
+      experiencePercentage +
+      jobPositionPercentage +
+      salaryPercentage) /
+    4;
 
   return res.status(200).json({
     success: true,
@@ -402,6 +389,37 @@ const evaluateSuitableJob = asyncHandler(async (req, res) => {
       ],
       skillMatch,
       skillNotMatch,
+    },
+  });
+});
+
+const evaluateSuitableCandidate = asyncHandler(async (req, res) => {
+  const { skills: candidateSkills, experience: candidateExperience } =
+    req.candidate;
+
+  const { skillsRequire, experienceRequire } = req.workPositionRequired;
+
+  const skillsScore = calculateSkillsScore(candidateSkills, skillsRequire);
+
+  const experienceScore = calculateExperienceScore(
+    candidateExperience,
+    experienceRequire
+  );
+
+  return res.status(200).json({
+    success: true,
+    message: "Delete candidate is successfully",
+    data: {
+      percentages: [
+        { title: "Kỹ năng", value: skillsScore.skillsScore.toFixed(2) },
+        { title: "Kinh nghiệm", value: experienceScore.toFixed(2) },
+        //       { title: "Vị trí công việc", value: jobPositionPercentage.toFixed(2) },
+        //       { title: "Lương", value: salaryPercentage.toFixed(2) },
+        //       { title: "Yếu tố khác", value: skillPercentage.toFixed(2) },
+      ],
+      skillMatch: skillsScore.commonSkills,
+      skillNotMatch: skillsScore.skillNotMatch,
+      candidateSkills: skillsScore.candidateSkills,
     },
   });
 });
@@ -598,6 +616,7 @@ module.exports = {
   generateTimeBasedLineChart,
   generateTimeBasedPieChart,
   evaluateSuitableJob,
+  evaluateSuitableCandidate,
   getTechnicalAndWorkPositionTrendingChart,
   getOveviewStatisticsForAdmin,
   generateTimeBasedPieChartForAdmin,

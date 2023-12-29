@@ -3,6 +3,7 @@ const Employer = require("../models/employer");
 const User = require("../models/user");
 const Notification = require("../models/notification");
 const ApplyJob = require("../models/applyJob");
+const Candidate = require("../models/candidate");
 const { model } = require("../configs/googleAIConfig");
 
 const parseArrayQueryParam = (paramName, query) =>
@@ -74,73 +75,6 @@ function sortObject(obj) {
   return sorted;
 }
 
-const evaluateSuitableJob = async ({ candidate, job }) => {
-  const {
-    skills: candidateSkills,
-    experience: candidateExperience,
-    jobPosition: candidateJobPosition,
-    desiredSalary: candidateDesiredSalary,
-  } = candidate;
-
-  const {
-    skills: requiredSkills,
-    experience: requiredExperience,
-    jobPosition: requiredJobPosition,
-    salaryType,
-    salaryFrom,
-    salaryTo,
-  } = job;
-
-  const skillMatch = candidateSkills.filter((skill) =>
-    requiredSkills.includes(skill)
-  );
-
-  const skillNotMatch = requiredSkills.filter(
-    (skill) => !candidateSkills.includes(skill)
-  );
-
-  const skillPercentage =
-    (skillMatch.length / requiredSkills.length) * 100 || 0;
-
-  const experiencePercentage =
-    candidateExperience >= requiredExperience || requiredExperience === 0
-      ? 100
-      : (candidateExperience / requiredExperience) * 100;
-
-  const findCategories = await Category.find();
-  const jobPositionPercentage = 0;
-  candidateJobPosition === requiredJobPosition
-    ? 100
-    : findCategories.some((category) =>
-        category.subcategories.some((item) =>
-          [candidateJobPosition, requiredJobPosition].includes(item.name)
-        )
-      )
-    ? 20
-    : 0;
-
-  let salaryPercentage = 0;
-
-  if (salaryType === "Thỏa thuận") {
-    salaryPercentage = 0;
-  } else if (salaryFrom !== undefined && salaryTo !== undefined) {
-    const medianSalary = (salaryFrom + salaryTo) / 2;
-    const absoluteDifference = Math.abs(candidateDesiredSalary - medianSalary);
-    salaryPercentage = (1 - absoluteDifference / medianSalary) * 100;
-  } else if (salaryFrom === undefined && salaryTo !== undefined) {
-    const absoluteDifference = Math.abs(candidateDesiredSalary - salaryTo);
-    salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
-  } else if (salaryFrom !== undefined && salaryTo === undefined) {
-    const absoluteDifference = Math.abs(candidateDesiredSalary - salaryFrom);
-    salaryPercentage = (1 - absoluteDifference / candidateDesiredSalary) * 100;
-  }
-
-  const overallPercentage =
-    (skillPercentage + experiencePercentage + jobPositionPercentage) / 3;
-
-  return overallPercentage.toFixed(2);
-};
-
 function calculateSkillMatchPercentage({
   cvSkills,
   jobSkills,
@@ -149,14 +83,20 @@ function calculateSkillMatchPercentage({
 }) {
   const commonSkills =
     cvSkills?.filter((skill) => jobSkills.includes(skill)) || [];
-  const matchPercentage = (commonSkills.length / jobSkills.length) * 100;
+  const skillPercentage = (commonSkills.length / jobSkills.length) * 100;
 
   const experiencePercentage =
     cvExperience >= jobExperience || jobExperience === 0
       ? 100
       : (cvExperience / jobExperience) * 100;
 
-  return ((matchPercentage + experiencePercentage) / 2).toFixed(2);
+  return (
+    (skillPercentage +
+      experiencePercentage +
+      jobPositionPercentage +
+      salaryPercentage) /
+    4
+  ).toFixed(2);
 }
 
 function processStringArray(inputArray) {
@@ -203,34 +143,33 @@ const CVAnalysic = async (cvText) => {
 };
 
 function calculateExperienceScore(candidateExperience, requiredExperience) {
-  // Tính toán phần trăm tương đồng về kinh nghiệm
   const experienceSimilarity = Math.min(
     1,
     candidateExperience / requiredExperience
   );
 
-  // Chuyển đổi thành điểm (đặt ví dụ là 100 điểm là trải qua đúng yêu cầu)
   const experienceScore = experienceSimilarity * 100;
 
   return experienceScore;
 }
 
 function calculateSkillsScore(candidateSkills, requiredSkills) {
-  // Đếm số lượng kỹ năng chung giữa ứng viên và yêu cầu
-  const commonSkillsCount = candidateSkills.filter((skill) =>
+  const commonSkills = candidateSkills.filter((skill) =>
     requiredSkills.includes(skill)
-  ).length;
-
-  // Tính toán phần trăm tương đồng về kỹ năng (đặt ví dụ là 100 điểm là trải qua đúng yêu cầu)
-  const skillsSimilarity = Math.min(
-    1,
-    commonSkillsCount / requiredSkills.length
   );
 
-  // Chuyển đổi thành điểm
+  const skillNotMatch = requiredSkills.filter(
+    (skill) => !candidateSkills.includes(skill)
+  );
+
+  const skillsSimilarity = Math.min(
+    1,
+    commonSkills.length / requiredSkills.length
+  );
+
   const skillsScore = skillsSimilarity * 100;
 
-  return skillsScore;
+  return { commonSkills, skillNotMatch, candidateSkills, skillsScore };
 }
 
 function calculateTotalScore(
@@ -250,6 +189,187 @@ function calculateTotalScore(
   return totalScore;
 }
 
+const getSuggestedCandidates = async (workPosition) => {
+  const {
+    jobPosition,
+    experienceWeight,
+    skillsWeight,
+    experienceRequire,
+    skillsRequire,
+    milestonePercent,
+  } = workPosition;
+
+  const candidates = await Candidate.find({ jobPosition })
+    .populate("userId", "lastName firstName email avatar")
+    .lean();
+
+  const suggestedCandidates = candidates.map((candidate) => {
+    const experienceScore = calculateExperienceScore(
+      candidate.experience,
+      experienceRequire
+    );
+    const skillsScore = calculateSkillsScore(candidate.skills, skillsRequire);
+    const totalScore = calculateTotalScore(
+      experienceWeight,
+      skillsWeight,
+      experienceScore,
+      skillsScore.skillsScore
+    );
+
+    return { candidate, totalScore };
+  });
+
+  suggestedCandidates.sort((a, b) => b.totalScore - a.totalScore);
+
+  const suggestedCandidatesWithPercentage = suggestedCandidates.map(
+    ({ candidate, totalScore }) => ({
+      ...candidate,
+      totalScore: totalScore.toFixed(2),
+      isPassed: totalScore >= milestonePercent,
+    })
+  );
+
+  return { workPosition, listCandidates: suggestedCandidatesWithPercentage };
+};
+
+const calculateSkillMatch = (candidateSkills, requiredSkills) => {
+  const skillMatch = candidateSkills.filter((skill) =>
+    requiredSkills.includes(skill)
+  );
+
+  const skillNotMatch = requiredSkills.filter(
+    (skill) => !candidateSkills.includes(skill)
+  );
+
+  const skillPercentage =
+    (skillMatch.length / requiredSkills.length) * 100 || 0;
+
+  return { skillMatch, skillNotMatch, skillPercentage };
+};
+
+const calculateExperiencePercentage = (
+  candidateExperience,
+  requiredExperience
+) => {
+  return candidateExperience >= requiredExperience || requiredExperience === 0
+    ? 100
+    : (candidateExperience / requiredExperience) * 100;
+};
+
+const calculateJobPositionPercentage = async (
+  candidateJobPosition,
+  requiredJobPosition
+) => {
+  const findCategories = await Category.find();
+  return candidateJobPosition === requiredJobPosition
+    ? 100
+    : findCategories.some((category) =>
+        category.subcategories.some((item) =>
+          [candidateJobPosition, requiredJobPosition].includes(item.name)
+        )
+      )
+    ? 20
+    : 0;
+};
+
+const calculateSalaryPercentage = (
+  salaryType,
+  salaryFrom,
+  salaryTo,
+  candidateDesiredSalary
+) => {
+  if (salaryType === "Thỏa thuận") {
+    return 0;
+  } else if (salaryFrom !== undefined && salaryTo !== undefined) {
+    if (
+      candidateDesiredSalary >= salaryFrom &&
+      candidateDesiredSalary <= salaryTo
+    ) {
+      return 100;
+    } else if (candidateDesiredSalary < salaryFrom) {
+      const absoluteDifference = Math.abs(candidateDesiredSalary - salaryFrom);
+      return Math.max(
+        0,
+        (1 - absoluteDifference / candidateDesiredSalary) * 100
+      );
+    } else if (candidateDesiredSalary > salaryTo) {
+      const absoluteDifference = Math.abs(candidateDesiredSalary - salaryTo);
+      return Math.max(
+        0,
+        (1 - absoluteDifference / candidateDesiredSalary) * 100
+      );
+    }
+  } else if (salaryFrom !== undefined && salaryTo === undefined) {
+    if (candidateDesiredSalary >= salaryFrom) {
+      return 100;
+    } else {
+      const absoluteDifference = Math.abs(candidateDesiredSalary - salaryFrom);
+      return Math.max(
+        0,
+        (1 - absoluteDifference / candidateDesiredSalary) * 100
+      );
+    }
+  } else if (salaryFrom === undefined && salaryTo !== undefined) {
+    if (candidateDesiredSalary <= salaryTo) {
+      return 100;
+    } else {
+      const absoluteDifference = Math.abs(candidateDesiredSalary - salaryTo);
+      return Math.max(
+        0,
+        (1 - absoluteDifference / candidateDesiredSalary) * 100
+      );
+    }
+  }
+
+  return 0;
+};
+
+const evaluateSuitableJob = async ({ candidate, job }) => {
+  const {
+    skills: candidateSkills,
+    experience: candidateExperience,
+    jobPosition: candidateJobPosition,
+    desiredSalary: candidateDesiredSalary,
+  } = candidate;
+
+  const {
+    skills: requiredSkills,
+    experience: requiredExperience,
+    jobPosition: requiredJobPosition,
+    salaryType,
+    salaryFrom,
+    salaryTo,
+  } = job;
+
+  const { skillPercentage } = calculateSkillMatch(
+    candidateSkills,
+    requiredSkills
+  );
+  const experiencePercentage = calculateExperiencePercentage(
+    candidateExperience,
+    requiredExperience
+  );
+  const jobPositionPercentage = await calculateJobPositionPercentage(
+    candidateJobPosition,
+    requiredJobPosition
+  );
+  const salaryPercentage = calculateSalaryPercentage(
+    salaryType,
+    salaryFrom,
+    salaryTo,
+    candidateDesiredSalary
+  );
+
+  const overallPercentage =
+    (skillPercentage +
+      experiencePercentage +
+      jobPositionPercentage +
+      salaryPercentage) /
+    4;
+
+  return overallPercentage.toFixed(2);
+};
+
 module.exports = {
   parseArrayQueryParam,
   calculateSimilarity,
@@ -261,4 +381,9 @@ module.exports = {
   calculateTotalScore,
   calculateExperienceScore,
   calculateSkillsScore,
+  getSuggestedCandidates,
+  calculateSkillMatch,
+  calculateExperiencePercentage,
+  calculateSalaryPercentage,
+  calculateJobPositionPercentage,
 };

@@ -14,12 +14,10 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { jobPositionOptions } from "../../utils/constants";
-import axiosClient from "../../configs/axiosConfig";
 import { Link } from "react-router-dom";
 import {
   useCreateCandidateMutation,
   useEditCandidateMutation,
-  useGetCandidateDetailQuery,
 } from "../../redux/features/apis/candidateApi";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -37,8 +35,8 @@ import {
   ButtonCustom,
   IconButtonCustom,
   Loading,
-  Tag,
 } from "../../components/shares";
+import { useWorkLocations } from "../../hooks";
 
 const schema = yup.object().shape({
   jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),
@@ -51,21 +49,16 @@ const RegisterCandidatePage = () => {
 
   const { user } = useSelector(authSelect);
 
-  const [workLocationsValue, setWorkLocationsValue] = useState([]);
+  console.log(user);
+
   const [namePDFFile, setNamePDFFile] = useState("");
+
+  const { provincesValue } = useWorkLocations();
 
   const [createCandidate, { isLoading: isLoadingCreate }] =
     useCreateCandidateMutation();
   const [editCandidate, { isLoading: isLoadingEdit }] =
     useEditCandidateMutation();
-
-  const { data: candidateDetailData } = useGetCandidateDetailQuery(
-    {
-      userId: user?._id,
-      candidateId: user?.candidateId,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
 
   const {
     control,
@@ -84,25 +77,11 @@ const RegisterCandidatePage = () => {
   });
 
   useEffect(() => {
-    reset({ ...candidateDetailData?.data });
-    setNamePDFFile(candidateDetailData?.data?.CVName);
-  }, [candidateDetailData?.data, reset]);
-
-  useEffect(() => {
-    const fetchWorkLocationsApi = async () => {
-      try {
-        const response = await axiosClient.get("/province");
-        if (response && response.data && response.data.results) {
-          const provinceNames = response.data.results.map((item) => ({
-            id: item.province_id,
-            value: item.province_name,
-          }));
-          setWorkLocationsValue(provinceNames);
-        }
-      } catch (error) {}
-    };
-    fetchWorkLocationsApi();
-  }, []);
+    if (user?.candidateId) {
+      reset({ ...user?.candidateId });
+      setNamePDFFile(user?.candidateId?.CVName);
+    }
+  }, [reset, user?.candidateId]);
 
   const handleSubmitRegisterCandidate = async (data) => {
     try {
@@ -130,30 +109,29 @@ const RegisterCandidatePage = () => {
 
       let response;
 
-      if (user?.candidateId) {
+      if (user?.candidateId?._id) {
         response = await editCandidate({
           data: formData,
           userId: user?._id,
-          candidateId: user?.candidateId,
+          candidateId: user?.candidateId?._id,
         });
+        dispatch(updateCandidate({ data: response?.data?.data }));
       } else {
         response = await createCandidate({
           data: formData,
           userId: user?._id,
         });
-        dispatch(updateCandidate(response?.data?._id));
+        dispatch(updateCandidate({ data: response?.data?.data }));
       }
 
-      console.log(response);
-
-      // if (response && response.data && response.data.success) {
-      //   toast.success(
-      //     `${
-      //       user?.candidateId ? " Đăng ký" : "Cập nhật"
-      //     } ứng cử viên thành công !`
-      //   );
-      //   reset();
-      // }
+      if (response?.data?.success) {
+        toast.success(
+          `${
+            user?.candidateId?._id ? " Đăng ký" : "Cập nhật"
+          } ứng cử viên thành công !`
+        );
+        reset();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -193,7 +171,7 @@ const RegisterCandidatePage = () => {
                   control={control}
                   name="jobPosition"
                   label="Vị trí muốn ứng tuyển"
-                  defaultValue={candidateDetailData?.data?.jobPosition}
+                  defaultValue={user?.candidateId?.jobPosition}
                   error={errors?.jobPosition}
                   options={jobPositionOptions}
                 />
@@ -201,14 +179,14 @@ const RegisterCandidatePage = () => {
                   control={control}
                   name="workLocation"
                   label="Địa điểm làm việc"
-                  defaultValue={candidateDetailData?.data?.workLocation}
+                  defaultValue={user?.candidateId?.workLocation}
                   error={errors?.workLocation}
-                  options={workLocationsValue}
+                  options={provincesValue}
                 />
                 <InputController
                   control={control}
                   name="desiredSalary"
-                  defaultValue={candidateDetailData?.data?.desiredSalary}
+                  defaultValue={user?.candidateId?.desiredSalary}
                   label="Mức lương mong muốn"
                   error={errors?.desiredSalary}
                 />
@@ -218,34 +196,32 @@ const RegisterCandidatePage = () => {
                   namePDFFile={namePDFFile}
                   setNamePDFFile={setNamePDFFile}
                 />
-                {candidateDetailData && (
+                {user?.candidateId?.experience && (
                   <InputController
                     control={control}
                     name="experience"
                     label="Kinh nghiệm"
-                    defaultValue={candidateDetailData?.data?.experience}
+                    defaultValue={user?.candidateId?.experience}
                     isDisabel
                   />
                 )}
-                {candidateDetailData && (
+                {user?.candidateId?.skills && (
                   <div className="flex flex-col relative ml-10 w-full">
                     <div className="grid grid-cols-4">
                       <label className="col-span-1 text-base font-bold whitespace-no-wrap text-teal-800">
                         Kỹ năng:{" "}
                       </label>
-                      <div className="col-span-2 w-full flex items-center gap-2 flex-wrap">
-                        {candidateDetailData?.data?.skills.map(
-                          (skill, index) => (
-                            <div
-                              className="text-blue-700 bg-blue-50 name flex whitespace-nowrap items-center gap-2 px-4 py-2 rounded-md"
-                              key={index}
-                            >
-                              <Typography className="text-xs font-bold">
-                                {skill}
-                              </Typography>
-                            </div>
-                          )
-                        )}
+                      <div className="col-span-2 w-full flex items-center gap-1 flex-wrap">
+                        {user?.candidateId?.skills.map((skill, index) => (
+                          <div
+                            className="text-blue-700 bg-blue-50 name flex whitespace-nowrap items-center gap-2 px-4 py-2 rounded-md border border-blue-500"
+                            key={index}
+                          >
+                            <Typography className="text-xs font-bold">
+                              {skill}
+                            </Typography>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>

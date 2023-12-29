@@ -13,12 +13,17 @@ import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
+import { useDeleteWorkPositionRequiredbuilderMutation } from "../../redux/features/apis/workPositionRequireApi";
 
-const CVRecomendationPage = () => {
+const CandidateRecomendationPage = () => {
   const { user } = useSelector(authSelect);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [listCandidates, setListCandidates] = useState([]);
 
+  const [deleteWorkPositionRequiredbuilder, { isLoading: isDeleteLoading }] =
+    useDeleteWorkPositionRequiredbuilderMutation();
   const { data: listCandidatesData, isFetching } = useSuggestedCandidatesQuery(
     {
       userId: user?._id,
@@ -27,7 +32,17 @@ const CVRecomendationPage = () => {
     { refetchOnMountOrArgChange: true }
   );
 
-  const handleRemoveWorkPositionItem = async ({ _id }) => {
+  useEffect(() => {
+    if (listCandidatesData?.data) {
+      setListCandidates(listCandidatesData?.data);
+    }
+  }, [listCandidatesData]);
+
+  const handleUpdateWorkPositionWeight = async ({ _id }) => {
+    setIsOpenModal(true);
+  };
+
+  const handleRemoveWorkPositionWeigh = async ({ _id }) => {
     try {
       Swal.fire({
         title: "Bạn có chắc không ?",
@@ -40,16 +55,15 @@ const CVRecomendationPage = () => {
         cancelButtonText: "Huỷ",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          // const response = await deleteJob({
-          //   userId: user?._id,
-          //   employerId: user?.ownerEmployerId?._id,
-          //   jobId: _id,
-          //   addressId,
-          // });
-          // if (response && response.data && response.data.success) {
-          //   dispatch(removeJobItem({ _id }));
-          //   toast.success("Xoá tin tuyển dụng thành công !");
-          // }
+          const response = await deleteWorkPositionRequiredbuilder({
+            userId: user?._id,
+            employerId: user?.ownerEmployerId?._id,
+            workPositionRequiredId: _id,
+          });
+          if (response && response.data && response.data.success) {
+            setListCandidates(response?.data?.data);
+            toast.success("Xoá tin tuyển dụng thành công !");
+          }
         }
       });
     } catch (error) {
@@ -59,24 +73,31 @@ const CVRecomendationPage = () => {
 
   return (
     <div className="m-[10px]">
-      {isFetching && <Loading />}
+      {(isFetching || isDeleteLoading) && <Loading />}
       <div className="flex gap-2 flex-nowrap w-[calc(100vw-300px)] overflow-x-auto">
-        {listCandidatesData?.data?.map((candidate, index) => {
+        {listCandidates?.map((candidate, index) => {
           return (
             <div className="flex flex-col gap-2 " key={index}>
-              <div className="w-[300px] flex items-center justify-between bg-blue-gray-700 p-3 rounded-full">
-                <Typography className="font-bold text-white whitespace-nowrap">
+              <div className="w-[302px] flex items-center justify-between bg-blue-gray-700 p-3 rounded-full">
+                <Typography className="font-bold text-sm text-white whitespace-nowrap">
                   {candidate?.workPosition?.jobPosition} -{" "}
                   {candidate?.workPosition?.milestonePercent} %
                 </Typography>
                 <div className="flex items-center gap-1">
-                  <button className="text-orange-400">
+                  <button
+                    className="text-orange-400"
+                    onClick={() =>
+                      handleUpdateWorkPositionWeight({
+                        _id: candidate?.workPosition?._id,
+                      })
+                    }
+                  >
                     <icons.IoAddCircle size={24} />
                   </button>
                   <button
                     className="text-red-500"
                     onClick={() =>
-                      handleRemoveWorkPositionItem({
+                      handleRemoveWorkPositionWeigh({
                         _id: candidate?.workPosition?._id,
                       })
                     }
@@ -85,9 +106,15 @@ const CVRecomendationPage = () => {
                   </button>
                 </div>
               </div>
-              <div className="flex flex-col gap-2 h-[calc(100vh-140px)] overflow-y-auto">
+              <div className="flex flex-col gap-2 h-[calc(100vh-180px)] overflow-y-auto">
                 {candidate?.listCandidates?.map((candidateItem, index) => {
-                  return <CandidateCard data={candidateItem} key={index} />;
+                  return (
+                    <CandidateCard
+                      data={candidateItem}
+                      key={index}
+                      workPositionRequire={candidate?.workPosition}
+                    />
+                  );
                 })}
               </div>
             </div>
@@ -103,11 +130,14 @@ const CVRecomendationPage = () => {
           </ButtonCustom>
         </div>
         <Modal open={isOpenModal} handleOpen={setIsOpenModal} size="lg">
-          <SettingWorkPosition setOpen={setIsOpenModal} />
+          <SettingWorkPosition
+            setOpen={setIsOpenModal}
+            setListCandidates={setListCandidates}
+          />
         </Modal>
       </div>
     </div>
   );
 };
 
-export default CVRecomendationPage;
+export default CandidateRecomendationPage;

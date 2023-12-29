@@ -26,7 +26,7 @@ const authSlice = createSlice({
     },
     updateCandidate: (state, action) => {
       console.log(action.payload.data);
-      state.user.user.candidateId = action.payload.data;
+      state.user.candidateId = action.payload.data;
     },
   },
   extraReducers: (builder) => {},

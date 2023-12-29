@@ -62,7 +62,8 @@ const login = asyncHandler(async (req, res) => {
         path: "employerId",
         model: "Employer",
       },
-    });
+    })
+    .populate("candidateId");
 
   if (!findUser) throw new Error("Email is incorrect");
 
@@ -116,7 +117,7 @@ const socialLogin = asyncHandler(async (req, res, next) => {
         },
       },
     ],
-  });
+  }).populate("candidateId");
 
   if (!user) {
     next();
@@ -140,7 +141,7 @@ const socialLoginUpdateInfo = asyncHandler(async (req, res, next) => {
         },
         { $set: { googleId } },
         { new: true }
-      );
+      ).populate("candidateId");
 
       if (!user) {
         const newUser = new User({
@@ -178,7 +179,7 @@ const socialLoginUpdateInfo = asyncHandler(async (req, res, next) => {
           avatar,
           googleId,
           facebookId,
-        });
+        }).populate("candidateId");
 
         await newUser.save();
         req.auth = newUser;

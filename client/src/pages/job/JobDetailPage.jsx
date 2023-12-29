@@ -54,7 +54,7 @@ const JobDetailPage = () => {
   const { data: evaluateSuitableJobQueryData } = useGetEvaluateSuitableJobQuery(
     {
       userId: user?._id,
-      candidateId: user?.candidateId,
+      candidateId: user?.candidateId?._id,
       jobId,
     }
   );
@@ -152,7 +152,7 @@ const JobDetailPage = () => {
       )}
       {isBoxChatBubble && (
         <button
-          className="h-14 w-14 flex items-center justify-center rounded-full bg-[#212f3f] text-light-blue-600 fixed bottom-20 right-5 shadow-2xl z-40"
+          className="h-14 w-14 flex items-center justify-center rounded-full bg-[#212f3f] text-light-blue-600 fixed bottom-5 right-5 shadow-2xl z-40"
           onClick={() => {
             setIsBoxChatBubble(false);
             setIsBoxChatOpen(true);
@@ -221,7 +221,7 @@ const JobDetailPage = () => {
                 jobDetailData?.data?.skills.map((skill, index) => (
                   <Tag
                     key={index}
-                    className="text-indigo-700 bg-indigo-50 !px-6 !py-2 !text-base"
+                    className="text-indigo-700 bg-indigo-50 !px-3 !py-2 border border-indigo-400"
                   >
                     {skill}
                   </Tag>

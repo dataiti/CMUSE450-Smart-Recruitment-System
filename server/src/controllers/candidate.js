@@ -15,6 +15,7 @@ const {
   calculateTotalScore,
   calculateExperienceScore,
   calculateSkillsScore,
+  getSuggestedCandidates,
 } = require("../utils/fn");
 
 const candidateById = asyncHandler(async (req, res, next, id) => {
@@ -129,37 +130,78 @@ const registerCandidate = asyncHandler(async (req, res) => {
 });
 
 const editCandidate = asyncHandler(async (req, res) => {
+  const storage = getStorage();
+  const storageRef = ref(storage, `pdf-files/${req.file.originalname}`);
+
   const {
     jobPosition,
-    experience,
     workLocation,
     desiredSalary,
     yourWishes,
     introduceYourself,
   } = req.body;
 
-  const updateCandiate = await Candidate.findOneAndUpdate(
-    { _id: req.candidate._id },
-    {
-      $set: {
-        jobPosition,
-        experience,
-        workLocation,
-        desiredSalary: Number(desiredSalary),
-        skills: JSON.parse(req.body.skills),
-        yourWishes,
-        introduceYourself,
-      },
-    },
-    { new: true }
-  );
+  const data = await pdf(req.file.buffer);
+  const cvText = data.text.toLowerCase();
 
-  if (!updateCandiate) throw new Error("Update candidate is Fail");
+  const prompt = `${cvText}. Generate a json format number of year work experience and skills in CV, skills is Array contains String . Example format: "{ "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}", no json before {`;
+
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  let jsonString = JSON.parse(JSON.stringify(response.text()));
+
+  console.log(jsonString);
+
+  jsonString = jsonString.replace(/^[^{]*([\s\S]*?)[^}]*$/, "$1");
+
+  let CVJSON = {};
+
+  try {
+    const parsedResult = JSON.parse(jsonString);
+    if (parsedResult && typeof parsedResult === "object") {
+      CVJSON = parsedResult;
+    }
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+
+  console.log(CVJSON);
+
+  let updateCandidate;
+
+  try {
+    const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, {
+      contentType: req.file.mimetype,
+    });
+
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    if (CVJSON) {
+      updateCandidate = await Candidate.findOneAndUpdate(
+        { _id: req.candidate._id },
+        {
+          $set: {
+            jobPosition,
+            CVName: req.file.originalname,
+            CVpdf: downloadURL,
+            experience: CVJSON?.experience || 0,
+            workLocation,
+            desiredSalary: Number(desiredSalary),
+            skills: CVJSON?.skills?.map((skill) => skill.toLowerCase()),
+            yourWishes,
+            introduceYourself,
+          },
+        },
+        { new: true }
+      );
+
+      if (!updateCandidate) throw new Error("Update candiate is fail");
+    }
+  } catch (error) {}
 
   return res.status(200).json({
     success: true,
-    message: "Edit candidate is successfully",
-    data: updateCandiate,
+    message: "Update candidate is successfully",
+    data: updateCandidate,
   });
 });
 
@@ -188,49 +230,8 @@ const suggestedCandidates = asyncHandler(async (req, res) => {
   const suggestedCandidatesByPosition = [];
 
   for (const workPosition of workPositions) {
-    const {
-      jobPosition,
-      experienceWeight,
-      skillsWeight,
-      experienceRequire,
-      skillsRequire,
-      milestonePercent,
-    } = workPosition;
-
-    const candidates = await Candidate.find({ jobPosition })
-      .populate("userId", "lastName firstName email avatar")
-      .lean();
-
-    const suggestedCandidates = candidates.map((candidate) => {
-      const experienceScore = calculateExperienceScore(
-        candidate.experience,
-        experienceRequire
-      );
-      const skillsScore = calculateSkillsScore(candidate.skills, skillsRequire);
-      const totalScore = calculateTotalScore(
-        experienceWeight,
-        skillsWeight,
-        experienceScore,
-        skillsScore
-      );
-
-      return { candidate, totalScore };
-    });
-
-    suggestedCandidates.sort((a, b) => b.totalScore - a.totalScore);
-
-    const suggestedCandidatesWithPercentage = suggestedCandidates.map(
-      ({ candidate, totalScore }) => ({
-        ...candidate,
-        totalScore: totalScore.toFixed(2),
-        isPassed: totalScore >= milestonePercent,
-      })
-    );
-
-    suggestedCandidatesByPosition.push({
-      workPosition,
-      listCandidates: suggestedCandidatesWithPercentage,
-    });
+    const result = await getSuggestedCandidates(workPosition);
+    suggestedCandidatesByPosition.push(result);
   }
 
   return res.status(200).json({
