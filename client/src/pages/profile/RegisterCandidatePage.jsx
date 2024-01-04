@@ -41,7 +41,11 @@ import { useWorkLocations } from "../../hooks";
 const schema = yup.object().shape({
   jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),
   workLocation: yup.string().required("Vui lòng nhập địa điểm làm việc"),
-  desiredSalary: yup.string().required("Vui lòng nhập mức lương mong muốn"),
+  desiredSalary: yup
+    .number()
+    .typeError("Lương phải là số")
+    .positive("Lương phải là số dương")
+    .required("Vui lòng nhập mức lương mong muốn"),
 });
 
 const RegisterCandidatePage = () => {
