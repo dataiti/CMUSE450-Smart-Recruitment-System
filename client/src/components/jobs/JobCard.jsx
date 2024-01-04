@@ -42,7 +42,6 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
     <>
       <Link
         to={`/job-detail/${jobItem?._id}`}
-        key={jobItem?._id}
         className="bg-white p-4 !rounded-md cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
       >
         <div className="w-full flex flex-col gap-2">
@@ -61,6 +60,11 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                   <Typography className="flex items-center gap-2 text-sm font-bold text-blue-gray-900">
                     <icons.BiSolidBuildingHouse size={18} color="#a16207" />
                     {jobItem?.employerId?.companyName}
+                    {jobItem?.employerId?.isBuyedPremium && (
+                      <span className="text-[#20d5ec]">
+                        <icons.BsCheckCircleFill size={18} />
+                      </span>
+                    )}
                   </Typography>
                   •
                   <Typography className="flex items-center gap-2 text-xs font-medium">
@@ -122,11 +126,11 @@ const JobCard = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
               {jobItem?.salaryType === "Trong khoảng"
                 ? `Từ ${formattedAmount(
                     jobItem?.salaryFrom
-                  )} Đến ${formattedAmount(jobItem?.salaryFrom)}`
+                  )} Đến ${formattedAmount(jobItem?.salaryTo)}`
                 : jobItem?.salaryType === "Từ"
                 ? `Từ ${formattedAmount(jobItem?.salaryFrom)}`
                 : jobItem?.salaryType === "Đến"
-                ? `Đến ${formattedAmount(jobItem?.salaryFrom)}`
+                ? `Đến ${formattedAmount(jobItem?.salaryTo)}`
                 : "Thỏa thuận"}
             </Tag>
           </div>

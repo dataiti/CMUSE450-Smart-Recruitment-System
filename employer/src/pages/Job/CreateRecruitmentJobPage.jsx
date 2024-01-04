@@ -8,8 +8,10 @@ import { toast } from "react-toastify";
 import { icons } from "../../utils/icons";
 import {
   useCreateJobMutation,
+  useEditJobMutation,
   useGetJobDetailQuery,
 } from "../../redux/features/apis/jobApi";
+import { format } from "date-fns";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import {
   currencyTypeOptions,
@@ -30,7 +32,7 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import { addJob } from "../../redux/features/slices/jobSlice";
+import { addJob, updateJobItem } from "../../redux/features/slices/jobSlice";
 import {
   InputTagsController,
   InputController,
@@ -106,12 +108,14 @@ const CreateRecruitmentJobPage = () => {
   const [salaryTypeState, SetSalaryTypeState] = useState(1);
   const [jobId, setJobId] = useState("");
 
-  const [createJob, { isLoading }] = useCreateJobMutation();
+  const [createJob, { isLoading: isLoadingCreateJob }] = useCreateJobMutation();
   const { data: listCategoriesData } = useGetListOfCategoriesQuery();
   const { data: jobDetailData, isFetching } = useGetJobDetailQuery(
     { jobId },
     { refetchOnMountOrArgChange: true }
   );
+
+  const [editJob, { isLoading: isLoadingEditJob }] = useEditJobMutation();
 
   const {
     control,
@@ -162,9 +166,9 @@ const CreateRecruitmentJobPage = () => {
     reset({
       recruitmentCampaignName: jobDetailData?.data?.recruitmentCampaignName,
       jobPosition: jobDetailData?.data?.jobPosition,
-      province: jobDetailData?.data?.workRegion?.province,
-      district: jobDetailData?.data?.workRegion?.district,
-      ward: jobDetailData?.data?.workRegion?.ward,
+      province: jobDetailData?.data?.workRegion?.province || "{}",
+      district: jobDetailData?.data?.workRegion?.district || "{}",
+      ward: jobDetailData?.data?.workRegion?.ward || "{}",
       exactAddress: jobDetailData?.data?.workRegion?.exactAddress,
       recruitmentTitle: jobDetailData?.data?.recruitmentTitle,
       industry: jobDetailData?.data?.industry,
@@ -179,7 +183,12 @@ const CreateRecruitmentJobPage = () => {
       skills: jobDetailData?.data?.skills,
       candidateRequirements: jobDetailData?.data?.candidateRequirements,
       candidateBenefits: jobDetailData?.data?.candidateBenefits,
-      applicationDeadline: jobDetailData?.data?.applicationDeadline,
+      applicationDeadline:
+        jobDetailData?.data?.applicationDeadline &&
+        format(
+          new Date(jobDetailData?.data?.applicationDeadline),
+          "yyyy-MM-dd"
+        ),
       receiverFullName: jobDetailData?.data?.receiverFullName,
       receiverEmail: jobDetailData?.data?.receiverEmail,
       receiverPhone: jobDetailData?.data?.receiverPhone,
@@ -226,24 +235,38 @@ const CreateRecruitmentJobPage = () => {
           }
         }
       }
-      console.log(formatData);
-      // const response = await createJob({
-      //   data: formatData,
-      //   userId: user?._id,
-      //   employerId: user?.ownerEmployerId?._id,
-      // });
-
-      // if (response && response.data && response.data.success) {
-      //   toast.success("Tạo tin tuyển dụng thành công !");
-      //   dispatch(addJob({ data: response.data.data }));
-      //   reset();
-      // }
+      let response;
+      if (jobId) {
+        response = await editJob({
+          data: formatData,
+          userId: user?._id,
+          employerId: user?.ownerEmployerId?._id,
+          jobId,
+          addressId: jobDetailData?.data?.workRegion?._id,
+        });
+        if (response && response.data && response.data.success) {
+          toast.success("Sửa tin tuyển dụng thành công !");
+          dispatch(updateJobItem({ data: response.data.data }));
+          reset();
+        }
+      } else {
+        response = await createJob({
+          data: formatData,
+          userId: user?._id,
+          employerId: user?.ownerEmployerId?._id,
+        });
+        if (response && response.data && response.data.success) {
+          toast.success("Tạo tin tuyển dụng thành công !");
+          dispatch(addJob({ data: response.data.data }));
+          reset();
+        }
+      }
     } catch (error) {}
   };
 
   return (
     <div className="flex flex-col gap-2 px-[100px] py-5 w-full">
-      {(isLoading || isFetching) && <Loading />}
+      {(isLoadingCreateJob || isLoadingEditJob || isFetching) && <Loading />}
       <div className="flex gap-4 w-full p-2 rounded-md bg-gradient-to-r from-[#304352] to-[#cbd5e1]">
         <video className="w-[20%] rounded-lg" autoPlay loop>
           <source src={videos.CVSearching} type="video/mp4" />

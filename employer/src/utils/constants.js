@@ -34,11 +34,11 @@ export const menuItems = [
     label: "Tin nhắn",
     icon: <icons.BsMessenger size={20} />,
   },
-  {
-    to: "/decoration",
-    label: "Trang trí trang",
-    icon: <icons.MdImagesearchRoller size={20} />,
-  },
+  // {
+  //   to: "/decoration",
+  //   label: "Trang trí trang",
+  //   icon: <icons.MdImagesearchRoller size={20} />,
+  // },
   {
     to: "/payment",
     label: "Nâng cấp gói",
@@ -51,16 +51,15 @@ export const menuItems = [
   },
 ];
 
-export const sortByOptions = [
+export const orderByOptions = [
   { id: 1, text: "Tăng dần", value: "asc" },
   { id: 2, text: "Giảm dần", value: "desc" },
 ];
 
-export const orderByOptions = [
-  { id: 1, text: "Mới nhất", value: "_id" },
-  { id: 2, text: "Tên công việc", value: "recruitmentTitle" },
-  { id: 3, text: "Lương từ", value: "salaryFrom" },
-  { id: 4, text: "Lương đến", value: "salaryTo" },
+export const sortByOptions = [
+  { id: 1, text: "Mới nhất", value: "createdAt" },
+  { id: 2, text: "Độ phù hợp", value: "percentage" },
+  { id: 3, text: "Tên công việc", value: "recruitmentTitle" },
 ];
 
 export const sexOptions = [
@@ -220,7 +219,6 @@ export const levelOptions = [
 
 export const tableHeadJob = [
   { id: 1, name: "" },
-  { id: 2, name: "ID" },
   { id: 3, name: "Tên chiến dịch" },
   { id: 4, name: "Tên công việc" },
   { id: 5, name: "Ngành nghề" },
@@ -231,18 +229,16 @@ export const tableHeadJob = [
 ];
 
 export const tableHeadApplyJob = [
-  { id: 1, name: "ID" },
   { id: 2, name: "Thông tin ứng cử viên" },
   { id: 3, name: "Tên công việc" },
   { id: 4, name: "Tên CV" },
-  { id: 6, name: "Độ phù hợp" },
-  { id: 5, name: "Ngày ứng tuyển" },
-  { id: 6, name: "Độ phù hợp" },
-  { id: 7, name: "Hành động" },
+  { id: 5, name: "Trạng thái" },
+  { id: 6, name: "Ngày ứng tuyển" },
+  { id: 7, name: "Độ phù hợp" },
+  { id: 8, name: "Hành động" },
 ];
 
 export const tableHeadApplyJobDashboard = [
-  { id: 1, name: "ID" },
   { id: 2, name: "Thông tin ứng cử viên" },
   { id: 3, name: "Tên chiến dịch" },
   { id: 4, name: "Tên CV" },
@@ -263,9 +259,16 @@ export const typeChartRowOptions = [
 
 export const typeChartPercentOptions = [
   { id: 1, text: "Theo ngành nghề", value: "industry" },
-  { id: 2, text: "Theo danh mục việc làm", value: "category" },
   { id: 2, text: "Theo Tỉnh/Thành phố", value: "workRegion" },
-  { id: 2, text: "Theo loại công việc", value: "jobType" },
+  { id: 3, text: "Theo loại công việc", value: "jobType" },
+];
+
+export const statusApplyJobOptions = [
+  { id: 1, text: "Tất cả", value: "" },
+  { id: 1, text: "Từ chối", value: "rejected" },
+  { id: 1, text: "Đã phản hồi", value: "invited" },
+  { id: 2, text: "Trong tiến độ", value: "progressing" },
+  { id: 3, text: "Đã vỏng phấn", value: "interviewed" },
 ];
 
 export const premiumPackageData = [

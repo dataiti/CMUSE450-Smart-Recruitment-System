@@ -13,7 +13,7 @@ const {
 } = require("firebase/storage");
 const firebaseConfig = require("../configs/firebaseConfig");
 const pdf = require("pdf-parse");
-const { MODEL_NAME, client, model } = require("../configs/googleAIConfig");
+const { model } = require("../configs/googleAIConfig");
 const {
   calculateSkillMatchPercentage,
   processStringArray,
@@ -54,8 +54,6 @@ const getApplyJobDetail = asyncHandler(async (req, res) => {
   const jobSkills = req.applyJob.jobId.skills;
   const cvExperience = req.applyJob.resumeId.experience;
   const jobExperience = req.applyJob.jobId.experience;
-
-  console.log({ cvSkills, jobSkills });
 
   const extractSkills = (skillString) => {
     const extractedSkills = skillString.split("(")[0].trim().toLowerCase();
@@ -160,7 +158,6 @@ const applyJob = asyncHandler(async (req, res) => {
 
     try {
       const parsedResult = JSON.parse(jsonString);
-      // console.log(parsedResult);
       if (parsedResult && typeof parsedResult === "object") {
         CVJSON = parsedResult;
       }
@@ -244,18 +241,13 @@ const getListApplyJobForEmployer = asyncHandler(async (req, res) => {
   const filterArgs = {
     $or: [{ CVName: { $regex: regex, $options: "i" } }],
     employerId: req.employer._id,
-    // status: status,
   };
 
-  const countApplyJobs = await ApplyJob.countDocuments(filterArgs);
-
-  const totalPage = Math.ceil(countApplyJobs / limit);
+  if (status) filterArgs.status = status;
 
   let listApplyJobs = [];
   const listApplyJobsWithEvaluation = await ApplyJob.find(filterArgs)
     .sort("-_id")
-    .skip(skip)
-    .limit(limit)
     .populate("candidateId", "firstName lastName email avatar")
     .populate("jobId", "skills recruitmentTitle experience")
     .populate("resumeId", "skills experience")
@@ -274,6 +266,18 @@ const getListApplyJobForEmployer = asyncHandler(async (req, res) => {
     });
     return { ...apply, percentage };
   });
+
+  if (req.query.sortBy === "percentage") {
+    listApplyJobs.sort((a, b) =>
+      req.query.orderBy === "desc"
+        ? b.percentage - a.percentage
+        : a.percentage - b.percentage
+    );
+  }
+
+  const countApplyJobs = listApplyJobs.length;
+  const totalPage = Math.ceil(countApplyJobs / limit);
+  listApplyJobs = listApplyJobs.slice(skip, skip + limit);
 
   return res.status(200).json({
     success: true,
@@ -299,8 +303,9 @@ const getListApplyJobForCandidate = asyncHandler(async (req, res) => {
   const filterArgs = {
     $or: [{ CVName: { $regex: regex, $options: "i" } }],
     candidateId: req.user._id,
-    // status: status,
   };
+
+  if (status) filterArgs.status = status;
 
   const countApplyJobs = await ApplyJob.countDocuments(filterArgs);
 
@@ -330,8 +335,6 @@ const testCV = asyncHandler(async (req, res) => {
   const data = await pdf(req.file.buffer);
   const cvText = data.text.toLowerCase().trim();
 
-  console.log(cvText, req.body);
-
   const prompt = `${cvText}. Generate a json format number of year work experience and skills in CV, skills is Array contains String . Example format: "{ "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}", no json before {`;
 
   const result = await model.generateContent(prompt);
@@ -342,8 +345,6 @@ const testCV = asyncHandler(async (req, res) => {
 
   let CVJSON = {};
 
-  console.log(jsonString);
-
   try {
     const parsedResult = JSON.parse(jsonString);
     if (parsedResult && typeof parsedResult === "object") {
@@ -352,8 +353,6 @@ const testCV = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error("Error parsing JSON:", error);
   }
-
-  console.log(CVJSON);
 
   return res.status(200).json({
     success: true,

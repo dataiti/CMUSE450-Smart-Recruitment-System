@@ -42,7 +42,7 @@ const jobApi = rootApi.injectEndpoints({
     getListOfJobsForHomaPage: builder.query({
       query: ({ userId, limit }) => {
         return {
-          url: `/job/get-list-jobs/homepage/${userId}?limit=${limit}`,
+          url: `/job/get-list-jobs/homepage?limit=${limit}&userId=${userId}`,
           method: "GET",
         };
       },
@@ -51,6 +51,14 @@ const jobApi = rootApi.injectEndpoints({
       query: ({ employerId, limit }) => {
         return {
           url: `/job/get-list-jobs/company?limit=${limit}&employerId=${employerId}`,
+          method: "GET",
+        };
+      },
+    }),
+    getListSimilarJobs: builder.query({
+      query: ({ jobId, industry }) => {
+        return {
+          url: `/job/get-list-similar-jobs?industry=${industry}&jobId=${jobId}`,
           method: "GET",
         };
       },
@@ -64,4 +72,5 @@ export const {
   useGetListOfJobsQuery,
   useGetListOfJobsForHomaPageQuery,
   useGetListJobsByCompanyQuery,
+  useGetListSimilarJobsQuery,
 } = jobApi;

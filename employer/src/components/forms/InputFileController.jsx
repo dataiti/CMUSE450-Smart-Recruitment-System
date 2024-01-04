@@ -50,7 +50,6 @@ const InputController = ({ name, control, label, error, imgUrlPreview }) => {
                 hidden
                 onChange={(e) => {
                   const file = e.target.files[0];
-                  console.log(file);
                   field.onChange(file);
                   setImagePreview(URL.createObjectURL(file));
                 }}

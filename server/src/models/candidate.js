@@ -42,7 +42,7 @@ const candidateSchema = new mongoose.Schema(
     introduceYourself: {
       type: String,
     },
-    isActiveApplication: {
+    isApplyAuto: {
       type: Boolean,
       default: true,
     },

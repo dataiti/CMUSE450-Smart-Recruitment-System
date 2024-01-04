@@ -22,7 +22,6 @@ const SocialLoginForm = () => {
   const onSuccess = async (response) => {
     try {
       const details = jwtDecode(response.credential);
-      console.log(details);
       if (!details) {
         toast.warning("Đăng nhập thất bại");
         return;
@@ -54,7 +53,6 @@ const SocialLoginForm = () => {
   const onFacebookSuccess = async (response) => {
     try {
       const details = response.data;
-      console.log(details);
       if (!details) {
         toast.warning("Đăng nhập thất bại");
         return;
@@ -95,7 +93,6 @@ const SocialLoginForm = () => {
             onSuccess={onSuccess}
             onError={() => {
               toast.success("Đăng nhập thất bại !");
-              console.log("Login Failed");
             }}
             width="100%"
           />
@@ -107,7 +104,6 @@ const SocialLoginForm = () => {
           onResolve={onFacebookSuccess}
           onReject={(error) => {
             toast.success("Đăng nhập thất bại !");
-            console.log(error);
           }}
         >
           <FacebookLoginButton />

@@ -17,10 +17,13 @@ export const covertToDate = (dateString) => {
 };
 
 export const formattedAmount = (amount) => {
-  if (amount > 900000) return numeral(amount / 1000000).format("0") + " Triệu";
-  else if (amount < 1000000 && amount > 99000) {
-    return numeral(amount / 100).format("0") + " Trăm";
-  } else return numeral(amount).format("0.0");
+  if (amount >= 1000000) {
+    return numeral(amount / 1000000).format("0") + " Triệu";
+  } else if (amount >= 1000) {
+    return numeral(amount / 1000).format("0") + " Nghìn";
+  } else {
+    return numeral(amount).format("0");
+  }
 };
 
 export const formatRemainingTime = (deadline) => {

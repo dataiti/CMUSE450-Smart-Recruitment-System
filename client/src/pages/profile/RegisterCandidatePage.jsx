@@ -49,8 +49,6 @@ const RegisterCandidatePage = () => {
 
   const { user } = useSelector(authSelect);
 
-  console.log(user);
-
   const [namePDFFile, setNamePDFFile] = useState("");
 
   const { provincesValue } = useWorkLocations();
@@ -115,22 +113,18 @@ const RegisterCandidatePage = () => {
           userId: user?._id,
           candidateId: user?.candidateId?._id,
         });
-        dispatch(updateCandidate({ data: response?.data?.data }));
+        if (response?.data?.success) {
+          dispatch(updateCandidate({ data: response?.data?.data }));
+          toast.success("Cập nhật ứng viên thành công");
+        }
       } else {
         response = await createCandidate({
           data: formData,
           userId: user?._id,
         });
-        dispatch(updateCandidate({ data: response?.data?.data }));
-      }
-
-      if (response?.data?.success) {
-        toast.success(
-          `${
-            user?.candidateId?._id ? " Đăng ký" : "Cập nhật"
-          } ứng cử viên thành công !`
-        );
-        reset();
+        if (response?.data?.success)
+          dispatch(updateCandidate({ data: response?.data?.data }));
+        toast.success("Đăng ký ứng viên thành công");
       }
     } catch (error) {
       console.log(error);
@@ -196,7 +190,7 @@ const RegisterCandidatePage = () => {
                   namePDFFile={namePDFFile}
                   setNamePDFFile={setNamePDFFile}
                 />
-                {user?.candidateId?.experience && (
+                {user?.candidateId && (
                   <InputController
                     control={control}
                     name="experience"

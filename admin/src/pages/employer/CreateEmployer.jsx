@@ -141,10 +141,6 @@ const CreateEmployer = () => {
         }
       }
 
-      for (const value of formData.values()) {
-        console.log(value);
-      }
-
       const response = await registerEmployerForAdmin({
         formData,
         userId: user._id,

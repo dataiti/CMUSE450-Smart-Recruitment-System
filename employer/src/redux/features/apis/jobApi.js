@@ -38,9 +38,9 @@ const jobApi = rootApi.injectEndpoints({
       },
     }),
     editJob: builder.mutation({
-      query: ({ data, userId, jobId }) => {
+      query: ({ data, userId, employerId, jobId, addressId }) => {
         return {
-          url: `/job/edit-job/${userId}/${jobId}`,
+          url: `/job/edit-job/${userId}/${employerId}/${jobId}/${addressId}`,
           method: "PUT",
           body: data,
         };

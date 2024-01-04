@@ -32,7 +32,6 @@ const applyJobSchema = new mongoose.Schema(
     information: {
       type: String,
     },
-
     status: {
       type: String,
       default: "pending",

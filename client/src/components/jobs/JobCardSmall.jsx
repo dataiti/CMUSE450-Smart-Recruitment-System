@@ -1,4 +1,4 @@
-import { Card, CardBody, Typography } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import {
   formattedAmount,
   formattedProvinceNames,
@@ -36,13 +36,9 @@ const JobCardSmall = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
 
   return (
     <>
-      <Link
-        to={`/job-detail/${jobItem?._id}`}
-        key={jobItem?._id}
-        className="bg-white !rounded-md cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all"
-      >
-        <Card className="!shadow-none flex flex-col">
-          <CardBody className="w-full flex flex-col gap-2 !p-2">
+      <Link to={`/job-detail/${jobItem?._id}`} key={jobItem?._id} className="">
+        <div className="!shadow-none flex flex-col bg-white border border-blue-gray-200 !rounded-md cursor-pointer hover:opacity-90 hover:-translate-y-[2px] transition-all">
+          <div className="w-full flex flex-col gap-2 !p-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <img
@@ -138,8 +134,8 @@ const JobCardSmall = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                   </Tag>
                 ))}
             </div>
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </Link>
     </>
   );

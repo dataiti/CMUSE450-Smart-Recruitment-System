@@ -22,7 +22,7 @@ const useWorkLocations = (province, district) => {
           setProvincesValue(provinceNames);
         }
 
-        if (JSON.parse(province).id) {
+        if (province && JSON.parse(province).id) {
           const districtResponse = await axiosClient.get(
             `/province/district/${JSON.parse(province).id}`
           );
@@ -39,7 +39,7 @@ const useWorkLocations = (province, district) => {
           }
         }
 
-        if (JSON.parse(district).id) {
+        if (district && JSON.parse(district).id) {
           const wardResponse = await axiosClient.get(
             `/province/ward/${JSON.parse(district).id}`
           );

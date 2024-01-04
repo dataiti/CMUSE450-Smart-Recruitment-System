@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useGetJobDetailQuery } from "../../redux/features/apis/jobApi";
+import {
+  useGetJobDetailQuery,
+  useGetListSimilarJobsQuery,
+} from "../../redux/features/apis/jobApi";
 import { Link, useParams } from "react-router-dom";
 import {
   Breadcrumbs,
@@ -35,6 +38,7 @@ import {
   EmploymentInfo,
 } from "../../components/shares";
 import { ApplyJobForm, LoginForm } from "../../components/forms";
+import JobCardSmall from "../../components/jobs/JobCardSmall";
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
@@ -58,6 +62,12 @@ const JobDetailPage = () => {
       jobId,
     }
   );
+
+  const { data: getListSimilarJobsData, isFetching: isFetchingSimilarJobs } =
+    useGetListSimilarJobsQuery({
+      jobId,
+      industry: jobDetailData?.data?.industry,
+    });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -161,7 +171,7 @@ const JobDetailPage = () => {
           <icons.BsMessenger size={28} />
         </button>
       )}
-      {isFetching && <Loading />}
+      {(isFetching || isFetchingSimilarJobs) && <Loading />}
       <Breadcrumbs fullWidth className="bg-white">
         <Link to="/" className="text-light-blue-500 text-sm font-bold">
           Trang chủ
@@ -196,11 +206,11 @@ const JobDetailPage = () => {
                 {jobDetailData?.data?.salaryType === "Trong khoảng"
                   ? `Từ ${formattedAmount(
                       jobDetailData?.data?.salaryFrom
-                    )} Đến ${formattedAmount(jobDetailData?.data?.salaryFrom)}`
+                    )} Đến ${formattedAmount(jobDetailData?.data?.salaryTo)}`
                   : jobDetailData?.data?.salaryType === "Từ"
                   ? `Từ ${formattedAmount(jobDetailData?.data?.salaryFrom)}`
                   : jobDetailData?.data?.salaryType === "Đến"
-                  ? `Đến ${formattedAmount(jobDetailData?.data?.salaryFrom)}`
+                  ? `Đến ${formattedAmount(jobDetailData?.data?.salaryTo)}`
                   : "Thỏa thuận"}
               </EmploymentInfo>
               <EmploymentInfo
@@ -309,6 +319,21 @@ const JobDetailPage = () => {
               </div>
             </div>
           </Container>
+          <Container>
+            <Typography className="flex items-center gap-2 font-bold text-teal-800">
+              <IconButtonCustom>
+                <icons.FaCircleInfo size={24} />
+              </IconButtonCustom>
+              Việc làm liên quan
+            </Typography>
+            {getListSimilarJobsData?.data?.length > 0 && (
+              <div className="grid grid-cols-2 gap-2">
+                {getListSimilarJobsData?.data?.map((job) => {
+                  return <JobCardSmall key={job?.id} jobItem={job} />;
+                })}
+              </div>
+            )}
+          </Container>
         </div>
         <div className="col-span-4 flex flex-col gap-2">
           <Container className="flex flex-col gap-2">
@@ -319,34 +344,47 @@ const JobDetailPage = () => {
               Thông tin công ty
             </Typography>
             <div className="flex items-center gap-2">
-              <img
-                src={jobDetailData?.data?.employerId?.companyLogo}
-                alt={jobDetailData?.data?.employerId?.companyName}
-                className="w-14 h-14 flex-none rounded-lg bg-blue-gray-500 object-contain"
-              />
-              <Typography className="uppercase font-bold text-light-blue-600">
-                Công ty{" "}
-                {jobDetailData?.data?.employerId?.companyIndustry +
-                  " " +
-                  jobDetailData?.data?.employerId?.companyName}
-              </Typography>
+              <Link
+                to={`/company-profile/${jobDetailData?.data?.employerId?._id}`}
+              >
+                <img
+                  src={jobDetailData?.data?.employerId?.companyLogo}
+                  alt={jobDetailData?.data?.employerId?.companyName}
+                  className="w-14 h-14 flex-none rounded-lg bg-blue-gray-500 object-contain"
+                />
+              </Link>
+              <div className="flex flex-col ">
+                <div className="flex items-center gap-2 ">
+                  <Link
+                    to={`/company-profile/${jobDetailData?.data?.employerId?._id}`}
+                    className="uppercase font-bold text-light-blue-600"
+                  >
+                    {jobDetailData?.data?.employerId?.companyName}
+                  </Link>
+                  {jobDetailData?.data?.employerId?.isBuyedPremium && (
+                    <span className="text-[#20d5ec]">
+                      <icons.BsCheckCircleFill size={18} />
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Typography className="flex items-center gap-2 font-bold text-xs">
+                    <span className="p-2 rounded-full bg-green-50 text-green-800">
+                      <icons.MdEmail />
+                    </span>
+                    {jobDetailData?.data?.employerId?.companyEmail}
+                  </Typography>
+                  |
+                  <Typography className="flex items-center gap-2 font-bold text-xs">
+                    <span className="p-2 rounded-full bg-green-50 text-green-800">
+                      <icons.MdPhoneInTalk />
+                    </span>
+                    {jobDetailData?.data?.employerId?.companyPhoneNumber}
+                  </Typography>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Typography className="flex items-center gap-2 font-bold text-xs">
-                <span className="p-2 rounded-full bg-green-50 text-green-800">
-                  <icons.MdEmail />
-                </span>
-                {jobDetailData?.data?.employerId?.companyEmail}
-              </Typography>
-              |
-              <Typography className="flex items-center gap-2 font-bold text-xs">
-                <span className="p-2 rounded-full bg-green-50 text-green-800">
-                  <icons.MdPhoneInTalk />
-                </span>
-                {jobDetailData?.data?.employerId?.companyPhoneNumber}
-              </Typography>
-            </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 justify-center">
               {isFollowCompany ? (
                 <ButtonCustom
                   className="bg-gray-300 hover:bg-gray-400 text-black flex items-center gap-2"

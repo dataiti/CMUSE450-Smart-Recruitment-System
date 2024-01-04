@@ -10,9 +10,14 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { menuItems } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { authSelect, logOut } from "../../redux/features/slices/authSlice";
+import {
+  authSelect,
+  logOut,
+  updateApplyAuto,
+} from "../../redux/features/slices/authSlice";
 import { useLogOutMutation } from "../../redux/features/apis/authApi";
 import { icons } from "../../utils/icons";
+import { useToggleApplyAutoMutation } from "../../redux/features/apis/candidateApi";
 import { SwitchCustom } from "../shares";
 
 const SidebarProfile = () => {
@@ -20,6 +25,7 @@ const SidebarProfile = () => {
   const { user, refreshToken } = useSelector(authSelect);
 
   const [logout] = useLogOutMutation();
+  const [toggleApplyAuto] = useToggleApplyAutoMutation();
 
   const handleLogout = async () => {
     try {
@@ -33,9 +39,23 @@ const SidebarProfile = () => {
     }
   };
 
+  const handleToggleSwitchApplyAuto = async ({ _id }) => {
+    try {
+      const response = await toggleApplyAuto({
+        userId: user?._id,
+        candidateId: _id,
+      });
+      if (response && response.data && response.data.success) {
+        dispatch(updateApplyAuto(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Card className="h-[calc(100vh-110px)] w-[19rem] p-2 shadow-xl shadow-blue-gray-900/5 bg-white">
-      <div className="flex flex-col gap-2 p-5">
+    <Card className="h-[calc(100vh-110px)] w-[310px] p-2 shadow-xl shadow-blue-gray-900/5 bg-white">
+      <div className="flex flex-col gap-2 p-3">
         <div className="flex justify-center">
           <Avatar
             src={user?.avatar}
@@ -44,26 +64,50 @@ const SidebarProfile = () => {
           />
         </div>
         <div className="flex items-center gap-4">
-          <icons.FaUserCircle size={24} />
-          <Typography className="text-sm font-medium">{`${user?.lastName} ${user?.firstName}`}</Typography>
+          <span className="text-green-500 bg-green-50 p-2 rounded-full">
+            <icons.FaUserCircle size={18} />
+          </span>
+          <Typography className="text-sm font-bold">{`${user?.lastName} ${user?.firstName}`}</Typography>
         </div>
         <div className="flex items-center gap-4">
-          <icons.MdEmail size={24} />
-          <Typography className="text-sm font-medium">{user?.email}</Typography>
+          <span className="text-green-500 bg-green-50 p-2 rounded-full">
+            <icons.MdEmail size={18} />
+          </span>
+          <Typography className="text-sm font-bold">{user?.email}</Typography>
         </div>
         {user?.phone && (
           <div className="flex items-center gap-4">
-            <icons.FaUserCircle />
-            <Typography className="text-sm font-medium">
-              {user?.phone}
-            </Typography>
+            <span className="text-green-500 bg-green-50 p-2 rounded-full">
+              <icons.FaUserCircle size={18} />
+            </span>
+            <Typography className="text-sm font-bold">{user?.phone}</Typography>
           </div>
         )}
-        <SwitchCustom checked={true} />
+        {user?.candidateId && (
+          <>
+            <div className="flex items-center gap-2">
+              <SwitchCustom
+                isChecked={user?.candidateId?.isApplyAuto}
+                onChange={() =>
+                  handleToggleSwitchApplyAuto({ _id: user?.candidateId?._id })
+                }
+              />
+              <Typography className="text-sm font-bold">
+                {`Đang ${
+                  user?.candidateId?.isApplyAuto ? "Bật" : "Tắt"
+                } tự động ứng tuyển`}
+              </Typography>
+            </div>
+            <Typography className="text-xs text-gray-600 font-semibold">
+              Bật tìm việc giúp hồ sơ của bạn nổi bật hơn và được chú ý nhiều
+              hơn trong danh sách tìm kiếm của NTD.
+            </Typography>
+          </>
+        )}
       </div>
-      <hr className="my-1 border-gray-400" />
+      <hr className="border-gray-400" />
       <List>
-        <ul className="col-span-4 flex w-full flex-col gap-1">
+        <ul className="col-span-4 flex w-full flex-col">
           {menuItems.map(({ id, title, icon, path }) => (
             <li key={id}>
               <Link to={path}>

@@ -36,7 +36,7 @@ const ListConversations = ({ data = [] }) => {
         className="px-4 py-3 bg-light-blue-50 rounded-full placeholder:text-sm outline-none border-none"
       />
       <hr className="my-2 border-blue-gray-100" />
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-1 h-[calc(100vh-216px)] overflow-y-auto">
         {data?.map((item) => {
           return (
             <div

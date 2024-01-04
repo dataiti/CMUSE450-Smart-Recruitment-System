@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar, Typography } from "@material-tailwind/react";
 import { useState } from "react";
 import {
@@ -7,21 +7,67 @@ import {
   CirculeProgress,
   ButtonCustom,
   EvaluateSuitableCandidate,
+  BoxChat,
 } from "../shares";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { icons } from "../../utils/icons";
+import { socket } from "../../socket";
+import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
 
 const CandidateCard = ({ data = {}, workPositionRequire = {} }) => {
+  const dispatch = useDispatch();
+
   const { user } = useSelector(authSelect);
 
   const [openEvaluateJobModal, setOpenEvaluateJobModal] = useState(false);
+  const [isBoxChatOpen, setIsBoxChatOpen] = useState(false);
+  const [isBoxChatBubble, setIsBoxChatBubble] = useState(false);
 
-  const handleStartConversation = () => {};
+  useEffect(() => {
+    const handleUserGetMessage = (message) => {
+      if (message.success)
+        dispatch(setCurrentConversation({ data: message.message }));
+    };
+
+    socket?.on("start_chat", handleUserGetMessage);
+
+    return () => {
+      socket?.off("start_chat", handleUserGetMessage);
+    };
+  }, [dispatch]);
+
+  const handleStartConversation = () => {
+    setIsBoxChatOpen(true);
+    setIsBoxChatBubble(false);
+    socket?.emit("start_conversation", {
+      employerId: user?.ownerEmployerId?._id,
+      userId: data?.userId?._id,
+    });
+  };
 
   return (
     <>
+      {isBoxChatOpen && (
+        <BoxChat
+          isBoxChatOpen={isBoxChatOpen}
+          setIsBoxChatOpen={setIsBoxChatOpen}
+          setIsBoxChatBubble={setIsBoxChatBubble}
+          isBoxChatBubble={isBoxChatBubble}
+        />
+      )}
+      {isBoxChatBubble && (
+        <button
+          className="h-14 w-14 flex items-center justify-center rounded-full bg-[#212f3f] text-light-blue-600 fixed bottom-5 right-5 shadow-2xl z-40"
+          onClick={() => {
+            setIsBoxChatBubble(false);
+            setIsBoxChatOpen(true);
+          }}
+        >
+          <icons.BsMessenger size={28} />
+        </button>
+      )}
       {data?.isPassed && (
         <div className="flex flex-col gap-2 px-3 pb-3 rounded-md bg-white transition-all hover:-translate-y-1 cursor-pointer">
           <ProgressCustom value={data?.totalScore} />

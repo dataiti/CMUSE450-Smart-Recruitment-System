@@ -12,9 +12,7 @@ import {
   useToggleHiringStatusJobMutation,
 } from "../../redux/features/apis/jobApi";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import { skipToken } from "@reduxjs/toolkit/dist/query";
 import {
-  desiredSalaryOptions,
   experiens,
   orderByOptions,
   sortByOptions,
@@ -191,7 +189,6 @@ const ListJobsPage = () => {
             value={orderBy}
             onChange={(e) => setOrderBy(e)}
           />
-          <SelectCustom label="Mức lương" options={desiredSalaryOptions} />
           <SelectCustom
             label="Trạng thái"
             options={statusOptions}
@@ -257,9 +254,6 @@ const ListJobsPage = () => {
                           }
                         />
                       </td>
-                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800 whitespace-nowrap">
-                        ... {job?._id.slice(-4)}
-                      </td>
                       <td
                         colSpan={1}
                         className="px-2 text-xs font-bold py-1 text-blue-gray-800"
@@ -286,8 +280,8 @@ const ListJobsPage = () => {
                           className="text-xs capitalize font-bold rounded-md min-w-[90px] !p-3 bg-red-50 text-red-500"
                           onClick={() =>
                             handleRemoveJobItem({
-                              _id: jobDetailData?._id,
-                              addressId: jobDetailData?.workRegion?._id,
+                              _id: job?._id,
+                              addressId: job?.workRegion?._id,
                             })
                           }
                         >

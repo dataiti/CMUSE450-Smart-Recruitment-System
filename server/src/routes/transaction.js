@@ -2,7 +2,7 @@ const express = require("express");
 const {
   transactionById,
   createPayment,
-  createTransaction,
+  VNPayReturn,
   getListTransactionsForEmployer,
   getListTransactionsForAdmin,
 } = require("../controllers/transaction");
@@ -13,7 +13,7 @@ const { verifyToken, isAdminSystem } = require("../middlewares/verifyToken");
 const router = express.Router();
 
 router.get(
-  "/get-list-transactions/admin/:employerById",
+  "/get-list-transactions/admin/:userId",
   verifyToken,
   isAdminSystem,
   getListTransactionsForAdmin
@@ -23,7 +23,7 @@ router.get(
   getListTransactionsForEmployer
 );
 router.post("/create-payment/:userId/:employerId", createPayment);
-router.post("/create-transaction/:userId/:employerId", createTransaction);
+router.get("/vnpay-return/:userId/:employerId", VNPayReturn);
 
 router.param("userId", userById);
 router.param("transactionId", transactionById);

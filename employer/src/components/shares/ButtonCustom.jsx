@@ -26,7 +26,7 @@ const ButtonCustom = ({
           {children}
         </Button>
       ) : (
-        <Link to={to} target={`${isBlank ? "_blank" : ""}`}>
+        <Link to={to} target={isBlank ? "_blank" : ""}>
           <Button
             type={type}
             variant={variant}

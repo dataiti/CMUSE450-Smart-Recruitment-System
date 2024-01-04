@@ -17,6 +17,7 @@ import SocialLoginForm from "./SocialLoginForm";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/features/slices/authSlice";
 import { toast } from "react-toastify";
+import { icons } from "../../utils/icons";
 
 const schema = yup.object().shape({
   firstName: yup.string().required("Tên không được bỏ trống"),
@@ -37,6 +38,7 @@ const RegisterForm = ({ open, handleOpen }) => {
   const [register, { isLoading }] = useRegisterMutation();
 
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     control,
@@ -53,6 +55,10 @@ const RegisterForm = ({ open, handleOpen }) => {
     },
     resolver: yupResolver(schema),
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const onSubmitRegister = async (data) => {
     try {
@@ -90,7 +96,7 @@ const RegisterForm = ({ open, handleOpen }) => {
         className="bg-white p-4 rounded-3xl mx-auto w-full max-w-[24rem]"
         onSubmit={handleSubmit(onSubmitRegister)}
       >
-        <Typography className="text-center text-3xl text-black font-extrabold">
+        <Typography className="text-center uppercase text-xl font-extrabold">
           Đăng Ký
         </Typography>
         <CardBody className="flex flex-col gap-5">
@@ -99,7 +105,12 @@ const RegisterForm = ({ open, handleOpen }) => {
               name="lastName"
               control={control}
               render={({ field }) => (
-                <Input label="Họ" {...field} error={!!errors.lastName} />
+                <Input
+                  label="Họ"
+                  {...field}
+                  error={!!errors.lastName}
+                  color="blue"
+                />
               )}
             />
             {!!errors.lastName && (
@@ -116,7 +127,12 @@ const RegisterForm = ({ open, handleOpen }) => {
               name="firstName"
               control={control}
               render={({ field }) => (
-                <Input label="Tên" {...field} error={!!errors.firstName} />
+                <Input
+                  label="Tên"
+                  {...field}
+                  error={!!errors.firstName}
+                  color="blue"
+                />
               )}
             />
             {!!errors.firstName && (
@@ -133,7 +149,12 @@ const RegisterForm = ({ open, handleOpen }) => {
               name="email"
               control={control}
               render={({ field }) => (
-                <Input label="Email" {...field} error={!!errors.email} />
+                <Input
+                  label="Email"
+                  {...field}
+                  error={!!errors.email}
+                  color="blue"
+                />
               )}
             />
             {!!errors.email && (
@@ -151,13 +172,29 @@ const RegisterForm = ({ open, handleOpen }) => {
               control={control}
               render={({ field }) => (
                 <Input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   label="Mật khẩu"
                   {...field}
                   error={!!errors.password}
+                  color="blue"
                 />
               )}
             />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
+            >
+              {showPassword ? (
+                <span>
+                  <icons.IoMdEyeOff size={18} />
+                </span>
+              ) : (
+                <span>
+                  <icons.IoEye size={18} />
+                </span>
+              )}
+            </button>
             {!!errors.password && (
               <Typography
                 color="red"
@@ -169,9 +206,19 @@ const RegisterForm = ({ open, handleOpen }) => {
           </div>
         </CardBody>
         <CardFooter className="pt-0">
-          <Button type="submit" variant="gradient" fullWidth>
-            Đăng ký
-          </Button>
+          <div className="relative">
+            <Button type="submit" variant="gradient" fullWidth>
+              Đăng ký
+            </Button>
+            {errorMessage && (
+              <Typography
+                className="w-full absolute -bottom-5 text-xs font-bold"
+                color="red"
+              >
+                {errorMessage}
+              </Typography>
+            )}
+          </div>
           <Typography variant="small" className="mt-6 flex justify-center">
             Bạn đã có tài khoản?
             <Link

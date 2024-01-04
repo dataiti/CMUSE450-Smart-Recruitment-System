@@ -437,6 +437,7 @@ const socket = async (socket, io) => {
         interviewerEmail,
         interviewerPhoneNumber,
         status: typeMeeting === "online" ? "online" : "offline",
+        type: "pending",
         start: startDateTime,
         end: endDateTime,
         location,
@@ -551,6 +552,31 @@ const socket = async (socket, io) => {
       io.to(user?.socketId).emit("user_get_list_notifications", {
         success: true,
         message: listNotifications,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("update_status_apply_job", async (message) => {
+    const { userId, employerId, applyJobId, status } = message;
+    try {
+      console.log(message);
+      const applyJob = await ApplyJob.findById(applyJobId);
+      const user = await User.findById(userId);
+      const employer = await Employer.findById(employerId);
+
+      if (!user || !applyJob || !employer) return;
+
+      const updateApplyJob = await ApplyJob.findByIdAndUpdate(
+        applyJobId,
+        { $set: { status } },
+        { new: true }
+      );
+
+      socket.emit("employer_get_status_apply_job", {
+        success: true,
+        message: updateApplyJob.status,
       });
     } catch (error) {
       console.error(error);

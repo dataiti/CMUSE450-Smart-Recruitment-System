@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  useGeneratePreviousYearTimeBasedLineChartQuery,
   useGenerateTimeBasedLineChartQuery,
   useGenerateTimeBasedPieChartByIndustryQuery,
   useGetOveviewStatisticsQuery,
@@ -53,10 +54,8 @@ const DashboardPage = () => {
     isFetching: isFetchingOveviewStatistics,
   } = useGetOveviewStatisticsQuery(
     {
-      userId: user?._id ? user?._id : skipToken,
-      employerId: user?.ownerEmployerId?._id
-        ? user?.ownerEmployerId?._id
-        : skipToken,
+      userId: user?._id,
+      employerId: user?.ownerEmployerId?._id,
     },
     { refetchOnMountOrArgChange: true }
   );
@@ -64,10 +63,21 @@ const DashboardPage = () => {
   const { data: lineChartData, isFetching: isFetchingLineChart } =
     useGenerateTimeBasedLineChartQuery(
       {
-        userId: user?._id ? user?._id : skipToken,
-        employerId: user?.ownerEmployerId?._id
-          ? user?.ownerEmployerId?._id
-          : skipToken,
+        userId: user?._id,
+        employerId: user?.ownerEmployerId?._id,
+        startDay,
+        endDay,
+        type,
+        typeTime,
+      },
+      { refetchOnMountOrArgChange: true }
+    );
+
+  const { data: previousYearLineChartData, isFetching } =
+    useGeneratePreviousYearTimeBasedLineChartQuery(
+      {
+        userId: user?._id,
+        employerId: user?.ownerEmployerId?._id,
         startDay,
         endDay,
         type,
@@ -79,10 +89,8 @@ const DashboardPage = () => {
   const { data: pieChartData, isFetching: isFetchingPieChart } =
     useGenerateTimeBasedPieChartByIndustryQuery(
       {
-        userId: user?._id ? user?._id : skipToken,
-        employerId: user?.ownerEmployerId?._id
-          ? user?.ownerEmployerId?._id
-          : skipToken,
+        userId: user?._id,
+        employerId: user?.ownerEmployerId?._id,
         type: typePieChart,
       },
       { refetchOnMountOrArgChange: true }
@@ -92,9 +100,7 @@ const DashboardPage = () => {
     useGetListApplyJobForEmployerQuery(
       {
         userId: user?._id,
-        employerId: user?.ownerEmployerId?._id
-          ? user?.ownerEmployerId?._id
-          : skipToken,
+        employerId: user?.ownerEmployerId?._id,
         search: "",
         page,
         limit,
@@ -211,7 +217,11 @@ const DashboardPage = () => {
       </div>
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-8 p-2 bg-white shadow-sm rounded-md flex flex-col gap-2">
-          <LineChart data={lineChartData?.data} type={typeTime} />
+          <LineChart
+            data={lineChartData?.data}
+            type={typeTime}
+            previousYearData={previousYearLineChartData?.data}
+          />
         </div>
         <div className="col-span-4 p-2 bg-white shadow-sm rounded-md">
           <PieChart data={pieChartData?.data} />

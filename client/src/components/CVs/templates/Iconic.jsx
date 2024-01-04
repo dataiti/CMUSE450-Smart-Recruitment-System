@@ -4,13 +4,7 @@ import { Typography } from "@material-tailwind/react";
 import { icons } from "../../../utils/icons";
 import { WorkExperience, ProfessionalProfile, Project, Skills } from "../parts";
 import { images } from "../../../assets/images";
-import {
-  AvatarType,
-  SkillType,
-  TitleType,
-  ParentType,
-  InfoType,
-} from "../shares";
+import { AvatarType, TitleType, ParentType, InfoType } from "../shares";
 
 const Iconic = ({ color }) => {
   const [open, setOpen] = useState(false);
@@ -136,7 +130,7 @@ const Iconic = ({ color }) => {
       <div className="w-full flex flex-col gap-2">
         <div className="grid grid-cols-12 gap-2 ">
           <div className="col-span-9 flex flex-col gap-4">
-            <TitleType />
+            <TitleType color={color} />
             <div className="grid grid-cols-2 gap-2">
               <div className="flex flex-col gap-1">
                 <InfoType html1="Name" html2="Nguyen Van A" />

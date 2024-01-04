@@ -1,7 +1,6 @@
 import {
   Avatar,
   Breadcrumbs,
-  Button,
   Input,
   Typography,
 } from "@material-tailwind/react";
@@ -18,7 +17,13 @@ import {
   Pagination,
   Loading,
   JobStatusBadge,
+  ButtonCustom,
+  DrawerCustom,
+  JobDetailDrawer,
+  Modal,
 } from "../../components/shares";
+import { useCallback } from "react";
+import { FeedbackForm } from "../../components/forms";
 
 const ListMyApplyJobs = () => {
   const { user } = useSelector(authSelect);
@@ -27,6 +32,9 @@ const ListMyApplyJobs = () => {
   const [limit, setLimit] = useState(7);
   const [page, setPage] = useState(1);
   const [statusSelected, setStatusSelected] = useState("");
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+  const [isOpenFeedbackModal, setIsOpenFeedbackModal] = useState(true);
+  const [jobDetailData, setJobDetailData] = useState({});
 
   const debouncedValue = useDebounce(search, 500);
 
@@ -42,6 +50,9 @@ const ListMyApplyJobs = () => {
       { refetchOnMountOrArgChange: true }
     );
 
+  const openDrawer = () => setIsOpenDrawer(true);
+  const closeDrawer = () => setIsOpenDrawer(false);
+
   const handleChangeSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -53,6 +64,14 @@ const ListMyApplyJobs = () => {
   const handleSelectedStatus = (e) => {
     setStatusSelected(e);
   };
+
+  const handleViewApplyJobDetail = useCallback(
+    ({ _id }) => {
+      openDrawer();
+      setJobDetailData(listApplyJobsData.data.find((job) => job._id === _id));
+    },
+    [listApplyJobsData?.data]
+  );
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -108,15 +127,12 @@ const ListMyApplyJobs = () => {
                       className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                       key={job?._id || index}
                     >
-                      <td className="px-2 text-xs font-bold py-1 text-blue-gray-800 whitespace-nowrap">
-                        ... {job?._id.slice(-4)}
-                      </td>
                       <td className="px-3 text-xs font-bold py-1 text-blue-gray-800">
                         <div className="flex items-center gap-2">
                           <Avatar
                             src={job?.employerId?.companyLogo}
                             alt="avatar"
-                            className="h-12 w-12 p-1 bg-blue-gray-100"
+                            className="h-12 w-12 p-1 bg-blue-gray-100 flex-none"
                           />
                           <div className="flex flex-col">
                             <Typography className="text-xs font-bold">
@@ -143,15 +159,24 @@ const ListMyApplyJobs = () => {
                       <td className="px-2 text-xs font-bold py-1 text-center text-blue-gray-800">
                         {covertToDate(job?.createdAt)}
                       </td>
-                      <td className="px-1 text-xs font-bold py-1 text-blue-gray-800">
-                        <Link to={`/list-resumes/${job?._id}`}>
-                          <Button
-                            variant="filled"
-                            className="text-xs capitalize font-bold rounded-full !p-3  bg-blue-gray-900 text-light-blue-600"
-                          >
-                            Chi tiết
-                          </Button>
-                        </Link>
+                      <td className="px-1 text-xs flex gap-1 font-bold py-1 text-blue-gray-800">
+                        <ButtonCustom
+                          isDisabled={
+                            job?.status === "interviewed" ? false : true
+                          }
+                          className="whitespace-nowrap text-xs capitalize font-bold rounded-full !p-3  bg-blue-50 text-blue-500 hover:bg-blue-100"
+                          onClick={() => setIsOpenFeedbackModal(true)}
+                        >
+                          Đánh giá
+                        </ButtonCustom>
+                        <ButtonCustom
+                          className="whitespace-nowrap text-xs capitalize font-bold rounded-full !p-3  bg-blue-50 text-blue-500 hover:bg-blue-100"
+                          onClick={() =>
+                            handleViewApplyJobDetail({ _id: job?._id })
+                          }
+                        >
+                          Chi tiết
+                        </ButtonCustom>
                       </td>
                     </tr>
                   );
@@ -167,6 +192,20 @@ const ListMyApplyJobs = () => {
           setLimit={setLimit}
         />
       </div>
+      <DrawerCustom
+        open={isOpenDrawer}
+        setOpen={setIsOpenDrawer}
+        closeDrawer={closeDrawer}
+      >
+        <JobDetailDrawer jobDetailData={jobDetailData?.jobId} />
+      </DrawerCustom>
+      <Modal
+        open={isOpenFeedbackModal}
+        handleOpen={setIsOpenFeedbackModal}
+        size="xs"
+      >
+        <FeedbackForm />
+      </Modal>
     </div>
   );
 };

@@ -25,6 +25,7 @@ const TextareaController = ({
                 {...field}
                 error={!!error}
                 disabled={isDisabled}
+                color="blue"
               />
               {!!error && (
                 <Typography

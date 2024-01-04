@@ -9,14 +9,17 @@ import {
 import { Typography } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
 import { useSuggestedCandidatesQuery } from "../../redux/features/apis/candidateApi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 import { useDeleteWorkPositionRequiredbuilderMutation } from "../../redux/features/apis/workPositionRequireApi";
+import { setTitle } from "../../redux/features/slices/titleSlice";
 
 const CandidateRecomendationPage = () => {
+  const dispatch = useDispatch();
+
   const { user } = useSelector(authSelect);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -31,6 +34,10 @@ const CandidateRecomendationPage = () => {
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  useEffect(() => {
+    dispatch(setTitle("Gợi ý ứng viên theo vị trí"));
+  }, [dispatch]);
 
   useEffect(() => {
     if (listCandidatesData?.data) {

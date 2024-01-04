@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 const WishListPage = () => {
   const { user } = useSelector(authSelect);
-  console.log(user);
 
   return (
     <div className="px-[110px] py-4 flex flex-col gap-2">

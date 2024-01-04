@@ -392,14 +392,11 @@ const getListJobs = asyncHandler(async (req, res) => {
 
   const totalPage = Math.ceil(countJobs / limit);
 
-  let listJobs;
+  let listJobs = [];
+
   if (candidate) {
     const listJobsWithEvaluation = await Job.find(filterArgs)
-      .sort({ [sortBy]: orderBy, _id: -1 })
-      .skip(skip)
-      .limit(limit)
       .populate("workRegion")
-      // .populate("categoryId", "name")
       .populate("employerId")
       .lean();
 
@@ -409,13 +406,26 @@ const getListJobs = asyncHandler(async (req, res) => {
         return { ...job, percentage };
       })
     );
+
+    if (sortBy !== "percentage") {
+      listJobs.sort((a, b) =>
+        orderBy === "desc" ? b[sortBy] - a[sortBy] : a[sortBy] - b[sortBy]
+      );
+    } else {
+      listJobs.sort((a, b) =>
+        orderBy === "desc"
+          ? b.percentage - a.percentage
+          : a.percentage - b.percentage
+      );
+    }
+
+    listJobs = listJobs.slice(skip, skip + limit);
   } else {
     listJobs = await Job.find(filterArgs)
       .sort({ [sortBy]: orderBy, _id: -1 })
       .skip(skip)
       .limit(limit)
       .populate("workRegion")
-      // .populate("categoryId", "name")
       .populate("employerId");
   }
 
@@ -594,19 +604,23 @@ const getListJobsByCompany = asyncHandler(async (req, res) => {
 });
 
 const getListJobsForHomePage = asyncHandler(async (req, res) => {
-  const { limit } = req.query;
+  const { limit, userId } = req.query;
 
   const allJobs = await Job.find()
     .limit(limit)
     .populate("workRegion")
     .populate("employerId");
 
-  const followingsJobs = await Job.find({
-    employerId: { $in: req.user.followingIds },
-  })
-    .limit(limit)
-    .populate("workRegion")
-    .populate("employerId");
+  let followingsJobs = [];
+
+  if (userId) {
+    followingsJobs = await Job.find({
+      employerId: { $in: userId.followingIds },
+    })
+      .limit(limit)
+      .populate("workRegion")
+      .populate("employerId");
+  }
 
   return res.status(200).json({
     cuccess: true,
@@ -626,6 +640,20 @@ const getListJobsForHomePage = asyncHandler(async (req, res) => {
   });
 });
 
+const getListSimilarJobs = asyncHandler(async (req, res) => {
+  const { industry, jobId } = req.query;
+
+  const listJobs = await Job.find({ industry, _id: { $ne: jobId } })
+    .populate("workRegion")
+    .populate("employerId");
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list similar jobs is successfully",
+    data: listJobs,
+  });
+});
+
 module.exports = {
   jobById,
   getJobDetail,
@@ -640,4 +668,5 @@ module.exports = {
   getListJobForAdmin,
   getListJobsForHomePage,
   getListJobsByCompany,
+  getListSimilarJobs,
 };

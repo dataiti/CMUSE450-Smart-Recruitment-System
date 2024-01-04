@@ -75,7 +75,12 @@ const RegisterForm = ({ open, handleOpen }) => {
             name="lastName"
             control={control}
             render={({ field }) => (
-              <Input label="Họ" {...field} error={!!errors.lastName} />
+              <Input
+                label="Họ"
+                {...field}
+                error={!!errors.lastName}
+                color="blue"
+              />
             )}
           />
           {!!errors.lastName && (
@@ -89,7 +94,12 @@ const RegisterForm = ({ open, handleOpen }) => {
             name="firstName"
             control={control}
             render={({ field }) => (
-              <Input label="Tên" {...field} error={!!errors.firstName} />
+              <Input
+                label="Tên"
+                {...field}
+                error={!!errors.firstName}
+                color="blue"
+              />
             )}
           />
           {!!errors.firstName && (
@@ -103,7 +113,12 @@ const RegisterForm = ({ open, handleOpen }) => {
             name="email"
             control={control}
             render={({ field }) => (
-              <Input label="Email" {...field} error={!!errors.email} />
+              <Input
+                label="Email"
+                {...field}
+                error={!!errors.email}
+                color="blue"
+              />
             )}
           />
           {!!errors.email && (
@@ -122,6 +137,7 @@ const RegisterForm = ({ open, handleOpen }) => {
                 label="Mật khẩu"
                 {...field}
                 error={!!errors.password}
+                color="blue"
               />
             )}
           />

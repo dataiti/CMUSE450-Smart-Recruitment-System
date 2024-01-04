@@ -27,7 +27,6 @@ const searchById = asyncHandler(async (req, res, next, id) => {
 const saveSearch = asyncHandler(async (req, res) => {
   const { keyword } = req.body;
 
-  console.log(keyword);
   if (!keyword) throw new Error("Keyword field is required");
 
   const newSearch = new Search({

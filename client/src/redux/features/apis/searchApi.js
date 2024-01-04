@@ -4,7 +4,6 @@ const searchApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     saveSearch: builder.mutation({
       query: ({ userId, keyword }) => {
-        console.log(userId, keyword);
         return {
           url: `/search/save-search/${userId}`,
           method: "POST",

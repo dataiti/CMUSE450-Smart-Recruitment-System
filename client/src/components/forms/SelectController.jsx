@@ -31,6 +31,7 @@ const SelectController = ({
                 labelProps={{
                   className: "w-full",
                 }}
+                color="blue"
                 value=""
               >
                 {options?.map(({ text, value, id }) => {

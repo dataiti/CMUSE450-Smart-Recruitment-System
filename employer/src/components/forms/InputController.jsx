@@ -33,7 +33,7 @@ const InputController = ({
             >
               <Input
                 type={type}
-                label={defaultValue || label}
+                label={defaultValue.toString() || label.toString()}
                 {...field}
                 error={!!error}
                 disabled={isDisabel}
@@ -41,6 +41,7 @@ const InputController = ({
                 labelProps={{
                   className: "w-full",
                 }}
+                color="blue"
               />
               {!!error && (
                 <Typography

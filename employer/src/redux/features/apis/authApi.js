@@ -18,7 +18,6 @@ const authApi = rootApi.injectEndpoints({
     }),
     logOut: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: "/auth/logout",
           method: "POST",

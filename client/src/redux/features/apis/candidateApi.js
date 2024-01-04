@@ -36,6 +36,14 @@ const candidateApi = rootApi.injectEndpoints({
         };
       },
     }),
+    toggleApplyAuto: builder.mutation({
+      query: ({ userId, candidateId }) => {
+        return {
+          url: `/candidate/toggle-apply-auto/${userId}/${candidateId}`,
+          method: "PUT",
+        };
+      },
+    }),
   }),
 });
 
@@ -44,4 +52,5 @@ export const {
   useGetCandidateDetailQuery,
   useDeleteCandidateMutation,
   useEditCandidateMutation,
+  useToggleApplyAutoMutation,
 } = candidateApi;

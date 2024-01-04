@@ -16,6 +16,7 @@ import { useLogInMutation } from "../../redux/features/apis/authApi";
 import { setCredentials } from "../../redux/features/slices/authSlice";
 import { ButtonCustom, Loading } from "../shares";
 import { SocialLoginForm } from "../forms";
+import { icons } from "../../utils/icons";
 
 const schema = yup.object().shape({
   email: yup
@@ -33,6 +34,7 @@ const LoginForm = ({ open, handleOpen }) => {
 
   const [login, { isLoading }] = useLogInMutation();
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     control,
@@ -47,6 +49,10 @@ const LoginForm = ({ open, handleOpen }) => {
     },
     resolver: yupResolver(schema),
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const onSubmitLogin = async (data) => {
     try {
@@ -87,7 +93,7 @@ const LoginForm = ({ open, handleOpen }) => {
         >
           <Typography
             color="black"
-            className="text-center uppercase text-xl font-bold"
+            className="text-center uppercase text-xl font-extrabold"
           >
             Đăng Nhập
           </Typography>
@@ -102,6 +108,7 @@ const LoginForm = ({ open, handleOpen }) => {
                     {...field}
                     error={!!errors.email}
                     spellCheck={false}
+                    color="blue"
                   />
                 )}
               />
@@ -120,13 +127,29 @@ const LoginForm = ({ open, handleOpen }) => {
                 control={control}
                 render={({ field }) => (
                   <Input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     label="Mật khẩu"
                     {...field}
                     error={!!errors.password}
+                    color="blue"
                   />
                 )}
               />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
+              >
+                {showPassword ? (
+                  <span>
+                    <icons.IoMdEyeOff size={18} />
+                  </span>
+                ) : (
+                  <span>
+                    <icons.IoEye size={18} />
+                  </span>
+                )}
+              </button>
               {!!errors.password && (
                 <Typography
                   color="red"

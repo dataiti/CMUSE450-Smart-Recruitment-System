@@ -13,6 +13,7 @@ const {
   getListJobsForHomePage,
   getListJobsByCompany,
   toggleLockJob,
+  getListSimilarJobs,
 } = require("../controllers/job");
 const { userById } = require("../controllers/user");
 const { addressById } = require("../controllers/address");
@@ -34,9 +35,10 @@ router.put(
   toggleLockJob
 );
 
+router.get("/get-list-similar-jobs", getListSimilarJobs);
 router.get("/get-list-search-jobs", getListSearchJobs);
 router.get("/get-list-jobs/company", getListJobsByCompany);
-router.get("/get-list-jobs/homepage/:userId", getListJobsForHomePage);
+router.get("/get-list-jobs/homepage", getListJobsForHomePage);
 router.get("/get-list-jobs", getListJobs);
 router.get(
   "/get-list-jobs/employer/:userId/:employerId",
@@ -44,6 +46,7 @@ router.get(
 );
 router.get("/get-job-detail/:jobId", getJobDetail);
 router.post("/create-job/:userId/:employerId", createJob);
+router.put("/edit-job/:userId/:employerId/:jobId/:addressId", editJob);
 router.delete("/delete-job/:userId/:employerId/:jobId/:addressId", deleteJob);
 router.put(
   "/toggle-hiring-satus/:userId/:employerId/:jobId",

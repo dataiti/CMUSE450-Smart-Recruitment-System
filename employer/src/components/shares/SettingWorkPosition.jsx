@@ -73,7 +73,6 @@ const SettingWorkPosition = ({ setOpen, setListCandidates }) => {
 
   const handleSetupWorkPositionRequire = async (data) => {
     try {
-      console.log(data);
       let formatData = { ...data };
       for (const key in formatData) {
         if (formatData.hasOwnProperty(key)) {

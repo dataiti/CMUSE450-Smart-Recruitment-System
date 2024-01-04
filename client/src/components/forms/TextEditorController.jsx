@@ -30,6 +30,7 @@ const TextEditorController = ({
                 className={`w-full ${!!error ? "border-red-500" : ""}`}
                 readOnly={isDisabled}
                 style={{ borderRadius: "10px" }}
+                color="blue"
               />
 
               {!!error && (

@@ -32,6 +32,7 @@ const SelectController = ({
                 labelProps={{
                   className: "w-full",
                 }}
+                color="blue"
               >
                 {options?.map(({ text, value, name, id }) => {
                   return (

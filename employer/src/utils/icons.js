@@ -20,6 +20,8 @@ import {
   IoArrowUndoCircleOutline,
   IoCloseCircleSharp,
   IoAlertSharp,
+  IoRemove,
+  IoClose,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -39,6 +41,7 @@ import {
   BsCameraVideo,
   BsTelephone,
   BsFillCheckCircleFill,
+  BsArrowsFullscreen,
 } from "react-icons/bs";
 import { FaUserAlt, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { BiSolidPhoneCall } from "react-icons/bi";
@@ -62,6 +65,9 @@ import {
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 
 const icons = {
+  IoClose,
+  IoRemove,
+  BsArrowsFullscreen,
   PiChartDonutFill,
   IoCloseCircleSharp,
   BsFillCheckCircleFill,

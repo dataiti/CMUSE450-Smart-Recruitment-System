@@ -71,8 +71,6 @@ const registerCandidate = asyncHandler(async (req, res) => {
   const response = await result.response;
   let jsonString = JSON.parse(JSON.stringify(response.text()));
 
-  console.log(jsonString);
-
   jsonString = jsonString.replace(/^[^{]*([\s\S]*?)[^}]*$/, "$1");
 
   let CVJSON = {};
@@ -85,8 +83,6 @@ const registerCandidate = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error("Error parsing JSON:", error);
   }
-
-  console.log(CVJSON);
 
   let newCandidate;
 
@@ -130,79 +126,106 @@ const registerCandidate = asyncHandler(async (req, res) => {
 });
 
 const editCandidate = asyncHandler(async (req, res) => {
-  const storage = getStorage();
-  const storageRef = ref(storage, `pdf-files/${req.file.originalname}`);
-
-  const {
-    jobPosition,
-    workLocation,
-    desiredSalary,
-    yourWishes,
-    introduceYourself,
-  } = req.body;
-
-  const data = await pdf(req.file.buffer);
-  const cvText = data.text.toLowerCase();
-
-  const prompt = `${cvText}. Generate a json format number of year work experience and skills in CV, skills is Array contains String . Example format: "{ "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}", no json before {`;
-
-  const result = await model.generateContent(prompt);
-  const response = await result.response;
-  let jsonString = JSON.parse(JSON.stringify(response.text()));
-
-  console.log(jsonString);
-
-  jsonString = jsonString.replace(/^[^{]*([\s\S]*?)[^}]*$/, "$1");
-
-  let CVJSON = {};
-
   try {
-    const parsedResult = JSON.parse(jsonString);
-    if (parsedResult && typeof parsedResult === "object") {
-      CVJSON = parsedResult;
+    const {
+      jobPosition,
+      workLocation,
+      desiredSalary,
+      yourWishes,
+      introduceYourself,
+    } = req.body;
+
+    let CVName;
+    let CVpdf;
+    let CVJSON = {};
+
+    if (req.file && req.file.originalname) {
+      const storage = getStorage();
+      const storageRef = ref(storage, `pdf-files/${req.file.originalname}`);
+
+      const data = await pdf(req.file.buffer);
+      const cvText = data.text.toLowerCase();
+
+      const prompt = `${cvText}. Generate a json format number of year work experience and skills in CV, skills is Array contains String. Example format: "{ "experience": 2, skills: ['reactjs', 'nodejs', 'mongodb,]}", no json before {`;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      let jsonString = JSON.parse(JSON.stringify(response.text()));
+
+      jsonString = jsonString.replace(/^[^{]*([\s\S]*?)[^}]*$/, "$1");
+
+      try {
+        const parsedResult = JSON.parse(jsonString);
+        if (parsedResult && typeof parsedResult === "object") {
+          CVJSON = parsedResult;
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+
+      try {
+        const snapshot = await uploadBytesResumable(
+          storageRef,
+          req.file.buffer,
+          {
+            contentType: req.file.mimetype,
+          }
+        );
+
+        CVpdf = await getDownloadURL(snapshot.ref);
+        CVName = req.file.originalname;
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        throw new Error("File upload failed");
+      }
+    } else {
+      CVName = req.body.CVName;
+      CVpdf = req.body.CVpdf;
     }
-  } catch (error) {
-    console.error("Error parsing JSON:", error);
-  }
 
-  console.log(CVJSON);
+    let updateCandidate;
 
-  let updateCandidate;
-
-  try {
-    const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, {
-      contentType: req.file.mimetype,
-    });
-
-    const downloadURL = await getDownloadURL(snapshot.ref);
-    if (CVJSON) {
-      updateCandidate = await Candidate.findOneAndUpdate(
-        { _id: req.candidate._id },
-        {
-          $set: {
-            jobPosition,
-            CVName: req.file.originalname,
-            CVpdf: downloadURL,
-            experience: CVJSON?.experience || 0,
-            workLocation,
-            desiredSalary: Number(desiredSalary),
-            skills: CVJSON?.skills?.map((skill) => skill.toLowerCase()),
-            yourWishes,
-            introduceYourself,
+    try {
+      if (CVpdf) {
+        updateCandidate = await Candidate.findOneAndUpdate(
+          { _id: req.candidate._id },
+          {
+            $set: {
+              jobPosition,
+              CVName,
+              CVpdf,
+              experience: CVJSON?.experience || 0,
+              workLocation,
+              desiredSalary: Number(desiredSalary),
+              skills: CVJSON?.skills?.map((skill) => skill.toLowerCase()),
+              yourWishes,
+              introduceYourself,
+            },
           },
-        },
-        { new: true }
-      );
+          { new: true }
+        );
 
-      if (!updateCandidate) throw new Error("Update candiate is fail");
+        if (!updateCandidate) {
+          throw new Error("Update candidate is fail");
+        }
+      }
+    } catch (error) {
+      console.error("Error updating candidate:", error);
+      throw new Error("Update candidate failed");
     }
-  } catch (error) {}
 
-  return res.status(200).json({
-    success: true,
-    message: "Update candidate is successfully",
-    data: updateCandidate,
-  });
+    return res.status(200).json({
+      success: true,
+      message: "Update candidate is successful",
+      data: updateCandidate,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 const deleteCandidate = asyncHandler(async (req, res) => {
@@ -241,6 +264,22 @@ const suggestedCandidates = asyncHandler(async (req, res) => {
   });
 });
 
+const toggleApplyAuto = asyncHandler(async (req, res) => {
+  const findCandidate = await Candidate.findOne({ _id: req.candidate._id });
+
+  if (!findCandidate) throw new Error("Candidate is not find");
+
+  findCandidate.isApplyAuto = !findCandidate.isApplyAuto;
+
+  await findCandidate.save();
+
+  return res.status(200).json({
+    success: true,
+    messsage: "Toggle apply auto is successfully",
+    data: findCandidate.isApplyAuto,
+  });
+});
+
 module.exports = {
   candidateById,
   getCandidateDetail,
@@ -248,4 +287,5 @@ module.exports = {
   editCandidate,
   deleteCandidate,
   suggestedCandidates,
+  toggleApplyAuto,
 };

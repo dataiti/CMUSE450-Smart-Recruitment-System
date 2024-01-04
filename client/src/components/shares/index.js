@@ -26,6 +26,7 @@ import MyCalendar from "./MyCalendar";
 import Followings from "./Followings";
 import ListNotification from "./ListNotification";
 import JobStatusBadge from "./JobStatusBadge";
+import JobDetailDrawer from "./JobDetailDrawer";
 
 export {
   JobStatusBadge,
@@ -56,4 +57,5 @@ export {
   MyCalendar,
   Followings,
   ListNotification,
+  JobDetailDrawer,
 };

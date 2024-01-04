@@ -9,6 +9,7 @@ import SocialLoginForm from "./SocialLoginForm";
 import TextareaController from "./TextareaController";
 import TextEditorController from "./TextEditorController";
 import InputPDFController from "./InputPDFController";
+import FeedbackForm from "./FeedbackForm";
 
 export {
   ApplyJobForm,
@@ -22,4 +23,5 @@ export {
   TextareaController,
   TextEditorController,
   InputPDFController,
+  FeedbackForm,
 };

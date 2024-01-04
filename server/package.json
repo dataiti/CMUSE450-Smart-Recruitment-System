@@ -46,6 +46,7 @@
     "pdfjs-dist": "^3.11.174",
     "qs": "^6.11.2",
     "socket.io": "^4.7.2",
+    "tesseract.js": "^5.0.4",
     "textrazor": "^2.1.0"
   },
   "devDependencies": {

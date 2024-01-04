@@ -21,6 +21,8 @@ import CandidateCard from "./CandidateCard";
 import SettingWorkPosition from "./SettingWorkPosition";
 import EvaluateSuitableCandidate from "./EvaluateSuitableCandidate";
 import SkillTags from "./SkillTags";
+import ZoomMeeting from "./ZoomMeeting";
+import BoxChat from "./BoxChat";
 
 export {
   ButtonCustom,
@@ -46,4 +48,6 @@ export {
   SettingWorkPosition,
   EvaluateSuitableCandidate,
   SkillTags,
+  ZoomMeeting,
+  BoxChat,
 };

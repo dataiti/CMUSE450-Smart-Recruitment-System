@@ -1,23 +1,34 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
-const LineChart = ({ data = [], className = "", type = "week" }) => {
+const LineChart = ({
+  data = [],
+  previousYearData = [],
+  className = "",
+  type = "week",
+}) => {
   const barPercentage =
     type === "week"
       ? 0.2
       : type === "month"
       ? 0.7
       : type === "year"
-      ? 0.3
+      ? 0.5
       : 0.1;
 
   const chartData = {
     labels: data.map((item) => item?._id?.slice(0, 2) || ""),
     datasets: [
       {
-        label: `Biểu đồ cột biểu hiện số lượng ${type}`,
-        data: data.map((item) => item?.value || 0),
+        label: "Năm trước",
+        data: previousYearData.map((item) => item?.value || 0),
         backgroundColor: ["#0f172a"],
+        barPercentage: barPercentage,
+      },
+      {
+        label: "Năm nay",
+        data: data.map((item) => item?.value || 0),
+        backgroundColor: ["#115e59"],
         barPercentage: barPercentage,
       },
     ],

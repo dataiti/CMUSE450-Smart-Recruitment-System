@@ -108,8 +108,6 @@ const registerEmployerForAdmin = asyncHandler(async (req, res) => {
 });
 
 const registerEmployer = asyncHandler(async (req, res) => {
-  console.log(req.body);
-
   const companyLogo = req.file.path;
   const publicId = req.file.filename;
 

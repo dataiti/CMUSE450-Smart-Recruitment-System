@@ -69,7 +69,12 @@ const editSchedule = asyncHandler(async (req, res, next) => {});
 const getListSchedulesForUser = asyncHandler(async (req, res, next) => {});
 
 const getListSchedulesForEmployer = asyncHandler(async (req, res, next) => {
-  const listSchedules = await Schedule.find({ employerId: req.employer._id });
+  const currentDatetime = new Date();
+
+  const listSchedules = await Schedule.find({
+    employerId: req.employer._id,
+    end: { $gt: currentDatetime },
+  });
 
   return res.status(200).json({
     success: true,

@@ -136,12 +136,6 @@ export const menuItems = [
     icon: <icons.BsCalendar3 size={20} />,
   },
   {
-    id: 4,
-    path: "/meeting",
-    title: "Cuộc họp",
-    icon: <icons.HiOutlineVideoCamera size={20} />,
-  },
-  {
     id: 5,
     path: "/change-password",
     title: "Đổi mật khẩu",
@@ -231,7 +225,6 @@ export const statusOptions = [
 ];
 
 export const tableHeadApplyJob = [
-  { id: 1, name: "ID" },
   { id: 2, name: "công ty" },
   { id: 3, name: "Tên chiến dịch" },
   { id: 4, name: "Tên CV" },
@@ -260,17 +253,6 @@ export const categoriesBarItems = [
       { id: 5, value: "Học máy và Trí tuệ nhân tạo" },
       { id: 6, value: "Quản lý dự án phần mềm" },
       { id: 7, value: "Lập trình di động" },
-    ],
-  },
-  {
-    id: 3,
-    display: "Giới tính",
-    type: "gender",
-    icon: <icons.IoBriefcaseOutline size={20} />,
-    childrens: [
-      { id: 1, value: "Nam" },
-      { id: 2, value: "Nữ" },
-      { id: 3, value: "Không yêu cầu" },
     ],
   },
   {
@@ -323,16 +305,15 @@ export const sexOptions = [
   { id: 3, value: "Không xác định" },
 ];
 
-export const sortByOptions = [
+export const orderByOptions = [
   { id: 1, text: "Tăng dần", value: "asc" },
   { id: 2, text: "Giảm dần", value: "desc" },
 ];
 
-export const orderByOptions = [
-  { id: 1, text: "Mới nhất", value: "_id" },
-  { id: 2, text: "Tên công việc", value: "recruitmentTitle" },
-  { id: 3, text: "Lương từ", value: "salaryFrom" },
-  { id: 4, text: "Lương đến", value: "salaryTo" },
+export const sortByOptions = [
+  { id: 1, text: "Mới nhất", value: "createdAt" },
+  { id: 2, text: "Độ phù hợp", value: "percentage" },
+  { id: 3, text: "Tên công việc", value: "recruitmentTitle" },
 ];
 
 export const experiens = [

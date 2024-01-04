@@ -2,6 +2,7 @@ import {
   IoMdSend,
   IoIosArrowDroprightCircle,
   IoIosArrowDropleftCircle,
+  IoMdEyeOff,
 } from "react-icons/io";
 import { PiBellRingingFill, PiChartDonutFill } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
@@ -23,6 +24,7 @@ import {
   IoBookmarkOutline,
   IoAlertSharp,
   IoRemove,
+  IoEye,
   IoClose,
 } from "react-icons/io5";
 import {
@@ -100,6 +102,8 @@ import { ImTable2 } from "react-icons/im";
 import { TbExternalLink } from "react-icons/tb";
 
 const icons = {
+  IoEye,
+  IoMdEyeOff,
   BsFileTextFill,
   FaListUl,
   TbExternalLink,

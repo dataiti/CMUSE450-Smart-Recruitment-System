@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getOveviewStatistics,
   generateTimeBasedLineChart,
+  generatePreviousYearTimeBasedLineChart,
   generateTimeBasedPieChart,
   getTechnicalAndWorkPositionTrendingChart,
   evaluateSuitableJob,
@@ -44,6 +45,10 @@ router.get("/get-oveview-statistics/:userId/:employerId", getOveviewStatistics);
 router.get(
   "/generate-time-based-line-chart/:userId/:employerId",
   generateTimeBasedLineChart
+);
+router.get(
+  "/generate-time-based-line-chart/previous-year/:userId/:employerId",
+  generatePreviousYearTimeBasedLineChart
 );
 router.get(
   "/generate-time-based-pie-chart/:userId/:employerId",

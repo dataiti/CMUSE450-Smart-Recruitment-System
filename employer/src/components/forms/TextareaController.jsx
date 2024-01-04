@@ -35,6 +35,7 @@ const TextareaController = ({
                 error={!!error}
                 className="col-span-3 bg-white w-full"
                 disabled={isDisabled}
+                color="blue"
               />
               {!!error && (
                 <Typography

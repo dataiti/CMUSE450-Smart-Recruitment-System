@@ -10,11 +10,9 @@ const ProtectedRoutes = () => {
   useEffect(() => {
     if (isLoggedIn && user && user.ownerEmployerId) {
       navigate("/dashboard");
-    }
-    if (!isLoggedIn) {
+    } else if (!isLoggedIn) {
       navigate("/login");
-    }
-    if (user && !user.ownerEmployerId) {
+    } else if (user && !user.ownerEmployerId) {
       navigate("/register-employer");
     }
   }, [isLoggedIn]);

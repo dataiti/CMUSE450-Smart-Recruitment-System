@@ -4,6 +4,7 @@ const querystring = require("qs");
 const crypto = require("crypto");
 const { sortObject } = require("../utils/fn");
 const Transaction = require("../models/transaction");
+const Employer = require("../models/employer");
 
 const transactionById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -37,8 +38,7 @@ const createPayment = asyncHandler(async (req, res, next) => {
   var tmnCode = process.env.TMNCODE;
   var secretKey = process.env.SETCRETKEY;
   var vnpUrl = process.env.VNPURL;
-  var returnUrl = process.env.RETURNURL;
-
+  var returnUrl = `${process.env.RETURNURL}/${req.user._id}/${req.employer._id}`;
   var date = new Date();
   var createDate = moment(date).format("YYYYMMDDHHmmss");
   var orderId = moment(date).format("HHmmss");
@@ -82,27 +82,54 @@ const createPayment = asyncHandler(async (req, res, next) => {
   res.status(200).json({ redirectUrl: vnpUrl });
 });
 
-const createTransaction = asyncHandler(async (req, res) => {
-  const { orderId, bank, amount, orderInfo } = req.body;
+const vnpayipn = asyncHandler(async (req, res) => {});
 
-  if (!orderId || !bank || !amount || !orderInfo)
-    throw new Error("All fields are required");
+const VNPayReturn = asyncHandler(async (req, res) => {
+  var vnp_Params = req.query;
 
-  const newTransaction = new Transaction({
-    employerId: req.employer._id,
-    orderId,
-    bank,
-    amount,
-    orderInfo,
-  });
+  var tmnCode = process.env.TMNCODE;
+  var secretKey = process.env.SETCRETKEY;
 
-  await newTransaction.save();
+  var secureHash = vnp_Params["vnp_SecureHash"];
 
-  return res.status(200).json({
-    success: true,
-    message: "Create transaction is successfully",
-    data: newTransaction,
-  });
+  delete vnp_Params["vnp_SecureHash"];
+  delete vnp_Params["vnp_SecureHashType"];
+
+  vnp_Params = sortObject(vnp_Params);
+
+  var signData = querystring.stringify(vnp_Params, { encode: false });
+  var hmac = crypto.createHmac("sha512", secretKey);
+  var signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
+
+  if (secureHash === signed) {
+    const newTransaction = new Transaction({
+      employerId: req.employer._id,
+      transactionNo: vnp_Params.vnp_TransactionNo,
+      amount: Number(vnp_Params.vnp_Amount),
+      bankCode: vnp_Params.vnp_BankCode,
+      bankTranNo: vnp_Params.vnp_BankTranNo,
+      orderInfo: vnp_Params.vnp_OrderInfo,
+      cardType: vnp_Params.vnp_CardType,
+      status: vnp_Params.vnp_TransactionStatus === "00" ? "success" : "failure",
+    });
+
+    await newTransaction.save();
+
+    req.employer.isBuyedPremium = true;
+
+    await req.employer.save();
+
+    res.redirect(
+      `http://localhost:3001/dashboard?vnp_Amount=${vnp_Params.vnp_Amount}&vnp_BankCode=${vnp_Params.vnp_BankCode}&vnp_BankTranNo=${vnp_Params.vnp_BankTranNo}&vnp_CardType=${vnp_Params.vnp_CardType}&vnp_OrderInfo=${vnp_Params.vnp_OrderInfo}&vnp_PayDate=${vnp_Params.vnp_PayDate}&vnp_ResponseCode=${vnp_Params.vnp_ResponseCode}&vnp_TmnCode=${vnp_Params.vnp_TmnCode}&vnp_TransactionNo=${vnp_Params.vnp_TransactionNo}&${vnp_Params.vnp_TransactionStatus}=00&vnp_TxnRef=${vnp_Params.vnp_TxnRef}&vnp_SecureHash=${vnp_Params.vnp_SecureHash}`
+    );
+
+    return res.status(200).json({
+      success: vnp_Params["vnp_ResponseCode"] === "00" ? true : false,
+      data: "",
+    });
+  } else {
+    return res.status(200).json({ success: false });
+  }
 });
 
 const getListTransactionsForEmployer = asyncHandler(async (req, res) => {
@@ -150,7 +177,7 @@ const getListTransactionsForEmployer = asyncHandler(async (req, res) => {
     message: "Get list of transactions are successfully",
     currentPage: page,
     totalPage,
-    countUser,
+    countTransaction,
     data: listTransactions,
   });
 });
@@ -208,7 +235,8 @@ const getListTransactionsForAdmin = asyncHandler(async (req, res) => {
 module.exports = {
   transactionById,
   createPayment,
-  createTransaction,
   getListTransactionsForEmployer,
   getListTransactionsForAdmin,
+  vnpayipn,
+  VNPayReturn,
 };

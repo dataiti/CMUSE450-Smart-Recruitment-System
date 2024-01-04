@@ -25,7 +25,6 @@ import {
   companySizesOptions,
 } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetEmployerDetailQuery } from "../../redux/features/apis/employerApi";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { setTitle } from "../../redux/features/slices/titleSlice";
 
@@ -64,33 +63,44 @@ const schema = yup.object().shape({
 const CompanyProfilePage = () => {
   const { user } = useSelector(authSelect);
 
-  const { data: employerData } = useGetEmployerDetailQuery({
-    userId: user?._id,
-    employerId: user?.ownerEmployerId?._id,
-  });
-
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      companyLogo: employerData?.data?.companyLogo,
-      companyName: employerData?.data?.companyName,
-      companyEmail: employerData?.data?.companyEmail,
-      companyPhoneNumber: employerData?.data?.companyPhoneNumber,
-      websiteUrl: employerData?.data?.websiteUrl,
-      companyIndustry: employerData?.data?.companyIndustry,
-      companySize: employerData?.data?.companySize,
-      companyLocation: employerData?.data?.companyLocation,
-      companyDescription: employerData?.data?.companyDescription,
+      companyLogo: "",
+      companyName: "",
+      companyEmail: "",
+      companyPhoneNumber: "",
+      websiteUrl: "",
+      companyIndustry: "",
+      companySize: "",
+      companyLocation: "",
+      companyDescription: "",
     },
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (user?.ownerEmployerId) {
+      reset({
+        companyLogo: user?.ownerEmployerId?.companyLogo,
+        companyName: user?.ownerEmployerId?.companyName,
+        companyEmail: user?.ownerEmployerId?.companyEmail,
+        companyPhoneNumber: user?.ownerEmployerId?.companyPhoneNumber,
+        websiteUrl: user?.ownerEmployerId?.websiteUrl,
+        companyIndustry: user?.ownerEmployerId?.companyIndustry,
+        companySize: user?.ownerEmployerId?.companySize,
+        companyLocation: user?.ownerEmployerId?.companyLocation,
+        companyDescription: user?.ownerEmployerId?.companyDescription,
+      });
+    }
+  }, [user?.ownerEmployerId, reset]);
 
   useEffect(() => {
     dispatch(setTitle("Thông tin công ty"));
@@ -135,7 +145,7 @@ const CompanyProfilePage = () => {
                   control={control}
                   name="companyLogo"
                   label="Logo công ty"
-                  imgUrlPreview={employerData?.data?.companyLogo}
+                  imgUrlPreview={user?.ownerEmployerId?.companyLogo}
                   error={errors?.companyLogo}
                 />
                 <InputController
@@ -166,6 +176,7 @@ const CompanyProfilePage = () => {
                   control={control}
                   name="companyIndustry"
                   label="Lĩnh vực hoạt động"
+                  defaultValue={user?.ownerEmployerId?.companyIndustry}
                   error={errors?.companyIndustry}
                   options={companyIndustryOptions}
                 />
@@ -173,6 +184,7 @@ const CompanyProfilePage = () => {
                   control={control}
                   name="companySize"
                   label="Quy mô công ty"
+                  defaultValue={user?.ownerEmployerId?.companySize}
                   error={errors?.companySize}
                   options={companySizesOptions}
                 />

@@ -7,25 +7,30 @@ const transactionSchema = new mongoose.Schema(
       ref: "Employer",
       required: true,
     },
-    orderId: {
+    transactionNo: {
       type: String,
-      required: true,
     },
-    bank: {
+    bankCode: {
       type: String,
-      required: true,
     },
     amount: {
       type: Number,
-      required: true,
     },
     orderInfo: {
       type: String,
-      required: true,
+    },
+    bankTranNo: {
+      type: String,
+    },
+    bankCode: {
+      type: String,
+    },
+    cardType: {
+      type: String,
     },
     status: {
       type: String,
-      enum: ["pending", "success", "failure"],
+      enum: ["success", "failure"],
       default: "pending",
     },
   },

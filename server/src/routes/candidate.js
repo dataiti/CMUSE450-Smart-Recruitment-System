@@ -6,6 +6,7 @@ const {
   editCandidate,
   deleteCandidate,
   suggestedCandidates,
+  toggleApplyAuto,
 } = require("../controllers/candidate");
 const { userById } = require("../controllers/user");
 const { uploadMemo } = require("../configs/cloudinaryConfig");
@@ -23,6 +24,7 @@ router.post(
   uploadMemo.single("CVpdf"),
   registerCandidate
 );
+router.put("/toggle-apply-auto/:userId/:candidateId", toggleApplyAuto);
 router.put(
   "/edit-candidate/:userId/:candidateId",
   uploadMemo.single("CVpdf"),

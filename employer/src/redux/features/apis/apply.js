@@ -3,9 +3,18 @@ import { rootApi } from "../../../configs/rootApi";
 const applyApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     getListApplyJobForEmployer: builder.query({
-      query: ({ userId, employerId, search = "", status, limit, page }) => {
+      query: ({
+        userId,
+        employerId,
+        search = "",
+        status,
+        limit,
+        page,
+        orderBy,
+        sortBy,
+      }) => {
         return {
-          url: `/applyJob/get-list-apply-jobs/${userId}/${employerId}?search=${search}&page=${page}&limit=${limit}&status=${status}`,
+          url: `/applyJob/get-list-apply-jobs/${userId}/${employerId}?search=${search}&page=${page}&orderBy=${orderBy}&sortBy=${sortBy}&limit=${limit}&status=${status}`,
           method: "GET",
         };
       },

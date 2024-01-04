@@ -1,8 +1,5 @@
 const Category = require("../models/category");
-const Employer = require("../models/employer");
-const User = require("../models/user");
-const Notification = require("../models/notification");
-const ApplyJob = require("../models/applyJob");
+const Job = require("../models/job");
 const Candidate = require("../models/candidate");
 const { model } = require("../configs/googleAIConfig");
 
@@ -90,13 +87,7 @@ function calculateSkillMatchPercentage({
       ? 100
       : (cvExperience / jobExperience) * 100;
 
-  return (
-    (skillPercentage +
-      experiencePercentage +
-      jobPositionPercentage +
-      salaryPercentage) /
-    4
-  ).toFixed(2);
+  return ((skillPercentage + experiencePercentage) / 2).toFixed(2);
 }
 
 function processStringArray(inputArray) {
@@ -131,7 +122,6 @@ const CVAnalysic = async (cvText) => {
 
   try {
     const parsedResult = JSON.parse(jsonString);
-    console.log(parsedResult);
     if (parsedResult && typeof parsedResult === "object") {
       CVJSON = parsedResult;
     }
@@ -199,7 +189,10 @@ const getSuggestedCandidates = async (workPosition) => {
     milestonePercent,
   } = workPosition;
 
-  const candidates = await Candidate.find({ jobPosition })
+  const candidates = await Candidate.find({
+    jobPosition,
+    isApplyAuto: true,
+  })
     .populate("userId", "lastName firstName email avatar")
     .lean();
 
@@ -253,7 +246,9 @@ const calculateExperiencePercentage = (
 ) => {
   return candidateExperience >= requiredExperience || requiredExperience === 0
     ? 100
-    : (candidateExperience / requiredExperience) * 100;
+    : candidateExperience > 0
+    ? (candidateExperience / requiredExperience) * 100
+    : 0;
 };
 
 const calculateJobPositionPercentage = async (
@@ -280,48 +275,57 @@ const calculateSalaryPercentage = (
 ) => {
   if (salaryType === "Thỏa thuận") {
     return 0;
-  } else if (salaryFrom !== undefined && salaryTo !== undefined) {
-    if (
-      candidateDesiredSalary >= salaryFrom &&
-      candidateDesiredSalary <= salaryTo
-    ) {
-      return 100;
-    } else if (candidateDesiredSalary < salaryFrom) {
-      const absoluteDifference = Math.abs(candidateDesiredSalary - salaryFrom);
-      return Math.max(
-        0,
-        (1 - absoluteDifference / candidateDesiredSalary) * 100
-      );
-    } else if (candidateDesiredSalary > salaryTo) {
-      const absoluteDifference = Math.abs(candidateDesiredSalary - salaryTo);
-      return Math.max(
-        0,
-        (1 - absoluteDifference / candidateDesiredSalary) * 100
-      );
-    }
+  } else if (
+    salaryFrom >= candidateDesiredSalary ||
+    salaryTo >= candidateDesiredSalary
+  ) {
+    return 100;
   } else if (salaryFrom !== undefined && salaryTo === undefined) {
-    if (candidateDesiredSalary >= salaryFrom) {
-      return 100;
-    } else {
-      const absoluteDifference = Math.abs(candidateDesiredSalary - salaryFrom);
-      return Math.max(
-        0,
-        (1 - absoluteDifference / candidateDesiredSalary) * 100
-      );
-    }
-  } else if (salaryFrom === undefined && salaryTo !== undefined) {
-    if (candidateDesiredSalary <= salaryTo) {
-      return 100;
-    } else {
-      const absoluteDifference = Math.abs(candidateDesiredSalary - salaryTo);
-      return Math.max(
-        0,
-        (1 - absoluteDifference / candidateDesiredSalary) * 100
-      );
-    }
+    return (salaryFrom / candidateDesiredSalary) * 100;
+  } else if (salaryTo !== undefined && salaryFrom === undefined) {
+    return (salaryTo / candidateDesiredSalary) * 100;
+  } else if (salaryFrom !== undefined && salaryTo !== undefined) {
+    return ((salaryFrom + salaryTo) / 2 / candidateDesiredSalary) * 100;
   }
 
   return 0;
+};
+
+function calculateTrendPercentage(rankTrends, candidateSkills) {
+  const totalRankValue = rankTrends.reduce(
+    (total, trend, index) => total + trend.value * (index + 1),
+    0
+  );
+
+  const candidateTrendValue = candidateSkills.reduce((total, skill) => {
+    const trend = rankTrends.find((trend) => trend._id === skill);
+    if (trend) {
+      const weight = rankTrends.findIndex((t) => t._id === skill) + 1;
+      return total + trend.value * weight;
+    }
+    return total;
+  }, 0);
+
+  const percentage = (candidateTrendValue / totalRankValue) * 100;
+
+  return percentage;
+}
+
+const calculateStatistics = ({ arrs = [] }) => {
+  const n = arrs.length;
+  // trung bình
+  const average = arrs.reduce((sum, x) => sum + x, 0) / n;
+
+  // phương sai
+  const variance =
+    arrs.reduce((sum, x) => sum + Math.pow(x - average, 2), 0) / (n - 1);
+
+  // độ lệch chuẩn
+  const standardDeviation = Math.sqrt(variance);
+
+  console.log({ average, variance, standardDeviation });
+
+  return standardDeviation.toFixed(1);
 };
 
 const evaluateSuitableJob = async ({ candidate, job }) => {
@@ -360,12 +364,30 @@ const evaluateSuitableJob = async ({ candidate, job }) => {
     candidateDesiredSalary
   );
 
+  const trends = await Job.aggregate([
+    {
+      $unwind: "$skills",
+    },
+    {
+      $group: {
+        _id: "$skills",
+        value: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { value: -1, _id: 1 },
+    },
+  ]);
+
+  const trendPercentage = calculateTrendPercentage(trends, candidateSkills);
+
   const overallPercentage =
     (skillPercentage +
       experiencePercentage +
       jobPositionPercentage +
-      salaryPercentage) /
-    4;
+      salaryPercentage +
+      trendPercentage) /
+    5;
 
   return overallPercentage.toFixed(2);
 };
@@ -386,4 +408,6 @@ module.exports = {
   calculateExperiencePercentage,
   calculateSalaryPercentage,
   calculateJobPositionPercentage,
+  calculateTrendPercentage,
+  calculateStatistics,
 };

@@ -96,7 +96,12 @@ const LoginForm = ({ handleOpen }) => {
               name="email"
               control={control}
               render={({ field }) => (
-                <Input label="Email" {...field} error={!!errors.email} />
+                <Input
+                  label="Email"
+                  {...field}
+                  error={!!errors.email}
+                  color="blue"
+                />
               )}
             />
             {!!errors.email && (
@@ -115,6 +120,7 @@ const LoginForm = ({ handleOpen }) => {
                   label="Mật khẩu"
                   {...field}
                   error={!!errors.password}
+                  color="blue"
                 />
               )}
             />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ListConversations } from "../../components/shares";
 import {
   MediaMessage,
@@ -34,9 +34,18 @@ const MessagePage = () => {
   const [openPicker, setOpenPicker] = useState(false);
   const [inputMesssageValue, setInputMessageValue] = useState("");
 
+  const scrollContainerRef = useRef(null);
+
   useEffect(() => {
     dispatch(setTitle("Tin nhắn"));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight;
+    }
+  }, [currentConversation?.messages]);
 
   useEffect(() => {
     if (socket) {
@@ -104,7 +113,10 @@ const MessagePage = () => {
                 <icons.FiSearch size={20} />
               </div>
             </div>
-            <div className="h-[calc(100vh-180px)] overflow-auto flex flex-col gap-1 p-4">
+            <div
+              className="h-[calc(100vh-180px)] overflow-auto flex flex-col gap-1 p-4"
+              ref={scrollContainerRef}
+            >
               {currentConversation?.messages?.map((el, index) => {
                 switch (el.type) {
                   case "img":
@@ -165,7 +177,7 @@ const MessagePage = () => {
           </div>
         )}
       </div>
-      <div className="h-[calc(100vh-60px)] overscroll-y-auto w-[480px] bg-white border-l border-blue-gray-100">
+      <div className=" w-[480px] bg-white border-l border-blue-gray-100">
         <ListConversations data={listConversations} />
       </div>
     </div>

@@ -1,15 +1,9 @@
-import {
-  Breadcrumbs,
-  IconButton,
-  Input,
-  Typography,
-} from "@material-tailwind/react";
+import { Breadcrumbs, Input, Typography } from "@material-tailwind/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { icons } from "../../utils/icons";
 import { CategoryBar } from "../../components/layouts";
 import { orderByOptions, sortByOptions } from "../../utils/constants";
-import parse from "html-react-parser";
 import { useDebounce } from "../../hooks";
 import { useGetListOfJobsQuery } from "../../redux/features/apis/jobApi";
 import { jobSelect, setListJobs } from "../../redux/features/slices/jobSlice";
@@ -22,6 +16,7 @@ import {
   DrawerCustom,
   Loading,
   SelectCustom,
+  JobDetailDrawer,
 } from "../../components/shares";
 import { authSelect } from "../../redux/features/slices/authSlice";
 
@@ -39,8 +34,8 @@ const CategoriesPage = () => {
   const [typeJobFilter, setTypeJobFilter] = useState([]);
   const [levelFilter, setLevelFilter] = useState([]);
   const [experienceFilter, setExperienceFilter] = useState([]);
-  const [sortBy, setSortBy] = useState("asc");
-  const [orderBy, setOrderBy] = useState("_id");
+  const [sortBy, setSortBy] = useState("");
+  const [orderBy, setOrderBy] = useState("");
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
@@ -194,7 +189,7 @@ const CategoriesPage = () => {
           />
         </div>
         <div className="w-[76%] flex flex-col gap-2">
-          <div className="flex gap-4 w-full p-2 rounded-md bg-gradient-to-l from-[#304352] to-[#cbd5e1]">
+          {/* <div className="flex gap-4 w-full p-2 rounded-md bg-gradient-to-l from-[#304352] to-[#cbd5e1]">
             <video className="w-[20%] rounded-lg" autoPlay loop>
               <source src={videos.CVSearching} type="video/mp4" />
             </video>
@@ -212,7 +207,7 @@ const CategoriesPage = () => {
                 <ButtonCustom>Xem gợi ý công việc phù hợp với bạn</ButtonCustom>
               </Link>
             </div>
-          </div>
+          </div> */}
           <div
             className={`grid grid-cols-4 gap-2 bg-white rounded-md p-3 sticky z-20 top-[80px] ${
               isSticky ? "shadow-lg" : "shadow-none"
@@ -263,14 +258,14 @@ const CategoriesPage = () => {
             } gap-2`}
           >
             {listJobs?.length > 0 &&
-              listJobs?.map((jobItem) => {
+              listJobs?.map((jobItem, index) => {
                 return (
                   <JobCard
                     jobItem={jobItem}
                     openDrawer={openDrawer}
                     setOpenDrawer={setOpenDrawer}
                     handleViewJobDetail={handleViewJobDetail}
-                    key={jobItem?._id}
+                    key={index}
                   />
                 );
               })}
@@ -282,78 +277,7 @@ const CategoriesPage = () => {
         setOpen={setOpenDrawer}
         closeDrawer={closeDrawer}
       >
-        <div className="flex flex-col gap-1">
-          <div className="flex flex-col bg-white rounded-md ">
-            <Typography className="uppercase text-[#212f3f] font-bold text-lg">
-              {jobDetailData?.recruitmentTitle}
-            </Typography>
-            <div className="grid grid-cols-3">
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillDollarCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography className="text-sm">Mức lương</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.HiLocationMarker size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Địa điểm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.workRegion?.province}
-                  </Typography>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton className="rounded-full bg-[#fde68a]">
-                  <icons.AiFillClockCircle size={30} />
-                </IconButton>
-                <div className="flex flex-col gap-2">
-                  <Typography>Kinh nghiệm</Typography>
-                  <Typography className="text-xs">
-                    {jobDetailData?.experience}
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-whi rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] font-bold uppercase text-sm pb-1">
-              Mô tả công việc
-            </Typography>
-            <div className="text-sm py-2">
-              {(jobDetailData.jobDescription &&
-                parse(jobDetailData.jobDescription)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-whi rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] font-bold uppercase text-sm pb-1">
-              Yêu cầu ứng viên
-            </Typography>
-            <div className="text-sm py-2">
-              {(jobDetailData.candidateRequirements &&
-                parse(jobDetailData.candidateRequirements)) ||
-                ""}
-            </div>
-          </div>
-          <div className="bg-whi rounded-md ">
-            <Typography className="border-b-4 border-[#164e63] font-bold uppercase text-sm pb-1">
-              Phúc lợi ứng viên
-            </Typography>
-            <div className="text-sm py-2">
-              {(jobDetailData.candidateBenefits &&
-                parse(jobDetailData.candidateBenefits)) ||
-                ""}
-            </div>
-          </div>
-        </div>
+        <JobDetailDrawer jobDetailData={jobDetailData} />
       </DrawerCustom>
     </div>
   );

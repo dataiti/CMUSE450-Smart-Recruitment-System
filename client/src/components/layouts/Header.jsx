@@ -74,7 +74,6 @@ const Header = () => {
   }, [searchData]);
 
   socket?.on("user_get_list_notifications", ({ message }) => {
-    console.log(message);
     setListNotifications(message);
   });
 

@@ -5,16 +5,21 @@ const SelectCustom = ({ label = "", options = [], onChange, value }) => {
   return (
     <Select
       label={label}
-      value={value}
+      value=""
       onChange={onChange}
       className="bg-white w-full col-span-1 text-xs font-bold"
       labelProps={{
         className: "w-full !text-xs font-bold",
       }}
+      color="blue"
     >
       {options?.map(({ value, text, id }) => {
         return (
-          <Option key={id} value={value} className="text-xs font-bold">
+          <Option
+            key={id}
+            value={value.toString()}
+            className="text-xs font-bold"
+          >
             {text || value}
           </Option>
         );

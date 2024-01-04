@@ -9,7 +9,6 @@ import { typeMeetingOptions } from "../../utils/constants";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreateScheduleMutation } from "../../redux/features/apis/scheduleApi";
 import { useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { toast } from "react-toastify";
@@ -17,20 +16,42 @@ import { Typography } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
 import { socket } from "../../socket";
 
-const schema = yup.object().shape({});
+const schema = yup.object().shape({
+  title: yup.string().required("Tiêu đề không được bỏ trống"),
+  interviewerName: yup
+    .string()
+    .required("Tên người phỏng vấn không được bỏ trống"),
+  interviewerEmail: yup
+    .string()
+    .email("Địa chỉ email không hợp lệ")
+    .required("Email người phỏng vấn không được bỏ trống"),
+  interviewerPhoneNumber: yup
+    .string()
+    .matches(/^[0-9]+$/, "Số điện thoại không hợp lệ")
+    .required("Số điện thoại người phỏng vấn không được bỏ trống"),
+  // scheduleDate: yup.date().required("Ngày phỏng vấn không được bỏ trống"),
+  startTime: yup
+    .string()
+    .required("Thời gian bắt đầu phỏng vấn không được bỏ trống"),
+  endTime: yup
+    .string()
+    .required("Thời gian kết thúc phỏng vấn không được bỏ trống"),
+  location: yup.string().required("Địa điểm phỏng vấn không được bỏ trống"),
+  typeMeeting: yup.string().required("Loại cuộc họp không được bỏ trống"),
+  content: yup.string().required("Nội dung thư mời không được bỏ trống"),
+});
 
 const InterviewIntivitionForm = ({ applyJobId, setOpenModal, userId }) => {
   const [isSendEmail, setIsSendEmail] = useState(true);
   const [isSendSystem, setIsSendSystem] = useState(true);
 
-  const [createSchedule, { isLoading }] = useCreateScheduleMutation();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useSelector(authSelect);
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -44,12 +65,14 @@ const InterviewIntivitionForm = ({ applyJobId, setOpenModal, userId }) => {
       endTime: "",
       location: "",
       typeMeeting: "",
+      content: "",
     },
     resolver: yupResolver(schema),
   });
 
   const handleSendInterviewIntivionCVEnvent = async (data) => {
     try {
+      setIsLoading(true);
       let formatData = { ...data, applyJobId };
       for (const key in formatData) {
         if (formatData.hasOwnProperty(key)) {
@@ -69,72 +92,84 @@ const InterviewIntivitionForm = ({ applyJobId, setOpenModal, userId }) => {
         applyJobId,
         data: formatData,
       });
-      // toast.success("Đã gửi thông báo đến ứng viên !");
-      // const response = await createSchedule({
-      //   data: formatData,
-      //   userId: user?._id,
-      //   employerId: user?.ownerEmployerId?._id,
-      // });
-      // if (response && response.data && response.data.success) {
-      //   toast.success("Tạo lịch phỏng vấn thành công !");
-      //   reset();
-      //   setOpenModal(false);
-      // }
-    } catch (error) {}
+      setOpenModal(false);
+      setIsLoading(false);
+      toast.success("Đã gửi thông báo đến ứng viên !");
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
 
   return (
     <>
       {isLoading && <Loading />}
       <form
-        className="flex flex-col gap-3 p-2 !h-[calc(100vh-150px)] overflow-y-auto"
+        className="flex flex-col gap-5 p-2 !h-[calc(100vh-150px)] overflow-y-auto"
         onSubmit={handleSubmit(handleSendInterviewIntivionCVEnvent)}
       >
-        <InputController control={control} name="title" label="Tiêu đề" />
+        <InputController
+          control={control}
+          name="title"
+          label="Tiêu đề"
+          error={errors?.title}
+        />
         <InputController
           control={control}
           name="interviewerName"
           label="Tên người phỏng vấn"
+          error={errors?.interviewerName}
         />
         <InputController
           control={control}
           name="interviewerEmail"
           label="Email"
+          error={errors?.interviewerEmail}
         />
         <InputController
           control={control}
           name="interviewerPhoneNumber"
           label="Số điện thoại"
+          error={errors?.interviewerPhoneNumber}
         />
         <InputController
           type="date"
           control={control}
           name="scheduleDate"
           label="Ngày/tháng/năm"
+          error={errors?.scheduleDate}
         />
         <InputController
           type="time"
           control={control}
           name="startTime"
           label="Thời gian bắt đầu"
+          error={errors?.startTime}
         />
         <InputController
           type="time"
           control={control}
           name="endTime"
           label="Thời gian kết thúc"
+          error={errors?.endTime}
         />
-        <InputController control={control} name="location" label="Địa điểm" />
+        <InputController
+          control={control}
+          name="location"
+          label="Địa điểm"
+          error={errors?.location}
+        />
         <SelectController
           control={control}
           name="typeMeeting"
           label="Loại cuộc họp"
           options={typeMeetingOptions}
+          error={errors?.typeMeeting}
         />
         <TextEditorController
           control={control}
           name="content"
           label="Nội dung lời mời"
+          error={errors?.content}
         />
         <div className="px-10 flex items-center gap-2">
           <SwitchCustom

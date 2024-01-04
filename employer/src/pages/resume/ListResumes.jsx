@@ -5,6 +5,7 @@ import {
   JobStatusBadge,
   CirculeProgress,
   ButtonCustom,
+  SelectCustom,
 } from "../../components/shares";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,9 +13,13 @@ import {
   applyJobSelect,
 } from "../../redux/features/slices/applyJobSlice";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import { skipToken } from "@reduxjs/toolkit/dist/query";
-import { tableHeadApplyJob } from "../../utils/constants";
-import { Avatar, Button, Input, Typography } from "@material-tailwind/react";
+import {
+  orderByOptions,
+  sortByOptions,
+  statusApplyJobOptions,
+  tableHeadApplyJob,
+} from "../../utils/constants";
+import { Avatar, Input, Typography } from "@material-tailwind/react";
 import { useDebounce } from "../../hooks";
 import { Link } from "react-router-dom";
 import { setTitle } from "../../redux/features/slices/titleSlice";
@@ -30,6 +35,9 @@ const ListResumes = () => {
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState("");
+  const [orderBy, setOrderBy] = useState("");
+  const [status, setStatus] = useState("");
 
   const debouncedValue = useDebounce(search, 500);
 
@@ -37,13 +45,13 @@ const ListResumes = () => {
     useGetListApplyJobForEmployerQuery(
       {
         userId: user?._id,
-        employerId: user?.ownerEmployerId?._id
-          ? user?.ownerEmployerId?._id
-          : skipToken,
+        employerId: user?.ownerEmployerId?._id,
         search: debouncedValue,
         page,
+        sortBy,
+        orderBy,
         limit,
-        status: "",
+        status,
       },
       { refetchOnMountOrArgChange: true }
     );
@@ -83,11 +91,30 @@ const ListResumes = () => {
             value={search}
             onChange={handleChangeSearch}
           />
-          <Link to="/create-recruitment-job">
-            <Button className="capitalize bg-[#164e63] whitespace-nowrap">
-              Thêm tin tuyển dụng
-            </Button>
-          </Link>
+          <div>
+            <SelectCustom
+              label="Sắp xếp theo"
+              options={sortByOptions}
+              value={sortBy}
+              onChange={(e) => setSortBy(e)}
+            />
+          </div>
+          <div>
+            <SelectCustom
+              label="Thứ tự theo"
+              options={orderByOptions}
+              value={orderBy}
+              onChange={(e) => setOrderBy(e)}
+            />
+          </div>
+          <div>
+            <SelectCustom
+              label="Trạng thái"
+              options={statusApplyJobOptions}
+              value={status}
+              onChange={(e) => setStatus(e)}
+            />
+          </div>
         </div>
         <div className="">
           <table className="w-full text-sm font-bold text-left cursor-pointer border border-blue-gray-100 !rounded-md">
@@ -114,9 +141,6 @@ const ListResumes = () => {
                       className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                       key={job?._id || index}
                     >
-                      <td className="px-2 text-sm font-bold py-1 text-blue-gray-800 whitespace-nowrap">
-                        {job?._id.slice(-4)}
-                      </td>
                       <td className="px-3 text-xs font-bold py-1 text-blue-gray-800">
                         <div className="flex items-center gap-2">
                           <Avatar
@@ -149,7 +173,7 @@ const ListResumes = () => {
                       <td className="py-1 text-xs text-center text-blue-gray-800">
                         {covertToDate(job?.createdAt)}
                       </td>
-                      <td className="py-1 text-center text-blue-gray-800">
+                      <td className="py-1 flex justify-center text-center text-blue-gray-800">
                         <CirculeProgress
                           percentage={job?.percentage}
                           className="h-[52px] w-[52px]"

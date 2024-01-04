@@ -10,6 +10,14 @@ const analyticApi = rootApi.injectEndpoints({
         };
       },
     }),
+    generatePreviousYearTimeBasedLineChart: builder.query({
+      query: ({ userId, employerId, startDay, endDay, type, typeTime }) => {
+        return {
+          url: `/analytic/generate-time-based-line-chart/previous-year/${userId}/${employerId}?startDay=${startDay}&endDay=${endDay}&type=${type}&typeTime=${typeTime}`,
+          method: "GET",
+        };
+      },
+    }),
     generateTimeBasedPieChartByIndustry: builder.query({
       query: ({ userId, employerId, type }) => {
         return {
@@ -42,4 +50,5 @@ export const {
   useGenerateTimeBasedPieChartByIndustryQuery,
   useGetOveviewStatisticsQuery,
   useGetEvaluateSuitableCandidateQuery,
+  useGeneratePreviousYearTimeBasedLineChartQuery,
 } = analyticApi;

@@ -99,7 +99,6 @@ const CategoryBar = ({
                   <Rating
                     value={rating}
                     onChange={(value) => setRating(value)}
-                    pa
                   />
                   <Typography className="font-medium text-xs">
                     {rating} sao
@@ -135,6 +134,7 @@ const CategoryBar = ({
                                   ? experienceFilter?.includes(itemChild.value)
                                   : false
                               }
+                              className="custom-checkbox"
                             />
                           </ListItemPrefix>
                           <label
