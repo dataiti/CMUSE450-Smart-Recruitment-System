@@ -104,7 +104,7 @@ const DashboardPage = () => {
         search: "",
         page,
         limit,
-        status: "notviewed",
+        status: "pending",
       },
       { refetchOnMountOrArgChange: true }
     );
@@ -280,9 +280,6 @@ const DashboardPage = () => {
                           className="bg-white border-b border-blue-gray-100 hover:bg-gray-100 "
                           key={job?._id || index}
                         >
-                          <td className="px-2 text-xs font-bold py-1 text-blue-gray-800 whitespace-nowrap">
-                            {job?._id.slice(-4)}
-                          </td>
                           <td className="px-3 text-sm font-bold py-1 text-blue-gray-800">
                             <div className="flex items-center gap-2">
                               <Avatar

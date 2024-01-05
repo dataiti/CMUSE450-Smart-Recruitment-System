@@ -1,6 +1,7 @@
 const Employer = require("../models/employer");
 const User = require("../models/user");
 const Address = require("../models/address");
+const Job = require("../models/job");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 
@@ -201,6 +202,8 @@ const deleteEmployer = asyncHandler(async (req, res) => {
   });
 
   if (!removeEmployer) throw new Error("Delete emplpyer is fail");
+
+  await Job.deleteMany({ employerId: req.employer._id });
 
   return res.status(200).json({
     success: true,

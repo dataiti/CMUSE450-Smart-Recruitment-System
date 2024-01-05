@@ -9,6 +9,7 @@ import TextareaController from "./TextareaController";
 import TextEditorController from "./TextEditorController";
 import SendNotificationForm from "./SendNotificationForm";
 import InterviewIntivitionForm from "./InterviewIntivitionForm";
+import AddSettingWorkPositionForm from "./AddSettingWorkPositionForm";
 
 export {
   InputController,
@@ -22,4 +23,5 @@ export {
   TextEditorController,
   SendNotificationForm,
   InterviewIntivitionForm,
+  AddSettingWorkPositionForm,
 };

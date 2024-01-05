@@ -17,7 +17,12 @@ import { authSelect, logOut } from "../../redux/features/slices/authSlice";
 import { images } from "../../assets/images";
 import { menuItems, navbarItems } from "../../utils/constants";
 import { useLogOutMutation } from "../../redux/features/apis/authApi";
-import { ButtonCustom, IconButtonCustom, ListNotification } from "../shares";
+import {
+  ButtonCustom,
+  IconButtonCustom,
+  ListNotification,
+  Modal,
+} from "../shares";
 import { useDebounce } from "../../hooks";
 import { socket } from "../../socket";
 import {
@@ -42,6 +47,7 @@ const Header = () => {
   const [isFocus, setIsFocus] = useState(false);
   const [listNotifications, setListNotifications] = useState([]);
   const [isLoadingNotification, setIsLoadingNotification] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     setIsLoadingNotification(true);
@@ -316,19 +322,10 @@ const Header = () => {
                 <ListNotification
                   listNotifications={listNotifications}
                   isLoading={isLoadingNotification}
+                  setOpenModal={setOpenModal}
+                  setListNotifications={setListNotifications}
                 />
               )}
-              {/* 
-                  ) : (
-                    <div className="flex flex-col items-center justify-center gap-4 absolute bg-white p-2 shadow-2xl rounded-md top-[120%] left-[50%] -translate-x-[50%] col-span-4 w-[360px] h-[400px]">
-                      <img src={images.notifications} alt="" className="w-28" />
-                      <Typography className="font-bold ">
-                        Không có thông báo!
-                      </Typography>
-                    </div>
-                  )}
-                </ul>
-              )} */}
             </button>
             <Link to="/messenger">
               <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">
@@ -404,6 +401,7 @@ const Header = () => {
           </div>
         )}
       </div>
+      <Modal open={openModal}>dasdas</Modal>
     </div>
   );
 };

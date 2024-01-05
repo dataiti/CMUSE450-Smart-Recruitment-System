@@ -66,7 +66,17 @@ const deleteSchedule = asyncHandler(async (req, res, next) => {});
 
 const editSchedule = asyncHandler(async (req, res, next) => {});
 
-const getListSchedulesForUser = asyncHandler(async (req, res, next) => {});
+const getListSchedulesForUser = asyncHandler(async (req, res, next) => {
+  const listSchedules = await Schedule.find({
+    userId: req.user._id,
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list schedules is successfully",
+    data: listSchedules,
+  });
+});
 
 const getListSchedulesForEmployer = asyncHandler(async (req, res, next) => {
   const currentDatetime = new Date();

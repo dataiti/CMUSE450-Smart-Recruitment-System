@@ -374,6 +374,7 @@ const socket = async (socket, io) => {
       const newNotification = new Notification({
         userId,
         employerId,
+        applyJobId,
         title: `Thông báo từ ${employer?.companyName}`,
         content: `${employer?.companyName} đã từ chối CV mà bạn đã ứng tuyển. Xem ngay`,
         type: "message",
@@ -449,6 +450,7 @@ const socket = async (socket, io) => {
       const newNotification = new Notification({
         userId,
         employerId,
+        applyJobId,
         title: `Thông báo từ ${employer?.companyName}`,
         content: `${employer?.companyName} đã gửi lời mời phỏng vấn. Xem ngay`,
         type: "invitation",
@@ -475,7 +477,8 @@ const socket = async (socket, io) => {
   });
 
   socket.on("user_cancel_intiviton_CV", async (message) => {
-    const { userId, employerId, applyJobId } = message;
+    const { userId, employerId, applyJobId, notificationId, scheduleId } =
+      message;
     try {
       const applyJob = await ApplyJob.findById(applyJobId);
       const user = await User.findById(userId);
@@ -490,16 +493,32 @@ const socket = async (socket, io) => {
       );
 
       const newNotification = new Notification({
-        userId,
         employerId,
-        title: `Thông báo từ ${employer?.companyName}`,
-        content: `${employer?.companyName} đã từ chối CV mà bạn đã ứng tuyển. Xem ngay`,
+        title: `Thông báo từ ${user?.firstName} ${user?.lastName} `,
+        content: `${user?.firstName} ${user?.lastName} đã huỷ lời mời phỏng vấn. Xem lịch ngay`,
         type: "message",
       });
 
+      await Schedule.findOneAndDelete({ _id: scheduleId });
+
       await newNotification.save();
+      const updateNotification = await Notification.findOneAndUpdate(
+        { _id: notificationId },
+        { $set: { isViewed: true } }
+      );
 
       const listNotifications = await Notification.find({ userId })
+        .sort("-_id")
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      const listNotificationsEmployer = await Notification.find({
+        employerId,
+        type: { $ne: "invitation" },
+      })
         .sort("-_id")
         .populate("userId", "firstName lastName _id avatar email status")
         .populate(
@@ -511,13 +530,17 @@ const socket = async (socket, io) => {
         success: true,
         message: listNotifications,
       });
+      io.to(employer?.socketId).emit("employer_get_list_notifications", {
+        success: true,
+        message: listNotificationsEmployer,
+      });
     } catch (error) {
       console.error(error);
     }
   });
 
   socket.on("user_accepted_intiviton_CV", async (message) => {
-    const { userId, employerId, applyJobId } = message;
+    const { userId, employerId, applyJobId, notificationId } = message;
     try {
       const applyJob = await ApplyJob.findById(applyJobId);
       const user = await User.findById(userId);
@@ -527,21 +550,35 @@ const socket = async (socket, io) => {
 
       await ApplyJob.findByIdAndUpdate(
         applyJobId,
-        { $set: { status: "invited" } },
+        { $set: { status: "progressing" } },
         { new: true }
       );
 
       const newNotification = new Notification({
-        userId,
         employerId,
-        title: `Thông báo từ ${employer?.companyName}`,
-        content: `${employer?.companyName} đã từ chối CV mà bạn đã ứng tuyển. Xem ngay`,
+        title: `Thông báo từ ${user?.firstName} ${user?.lastName} `,
+        content: `${user?.firstName} ${user?.lastName} đã đồng ý lời mời phỏng vấn. Xem lịch ngay`,
         type: "message",
       });
 
       await newNotification.save();
+      const updateNotification = await Notification.findOneAndUpdate(
+        { _id: notificationId },
+        { $set: { isViewed: true } }
+      );
 
       const listNotifications = await Notification.find({ userId })
+        .sort("-_id")
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      const listNotificationsEmployer = await Notification.find({
+        employerId,
+        type: { $ne: "invitation" },
+      })
         .sort("-_id")
         .populate("userId", "firstName lastName _id avatar email status")
         .populate(
@@ -553,6 +590,10 @@ const socket = async (socket, io) => {
         success: true,
         message: listNotifications,
       });
+      io.to(employer?.socketId).emit("employer_get_list_notifications", {
+        success: true,
+        message: listNotificationsEmployer,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -561,7 +602,6 @@ const socket = async (socket, io) => {
   socket.on("update_status_apply_job", async (message) => {
     const { userId, employerId, applyJobId, status } = message;
     try {
-      console.log(message);
       const applyJob = await ApplyJob.findById(applyJobId);
       const user = await User.findById(userId);
       const employer = await Employer.findById(employerId);
@@ -577,6 +617,33 @@ const socket = async (socket, io) => {
       socket.emit("employer_get_status_apply_job", {
         success: true,
         message: updateApplyJob.status,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on("employer_list_notifications", async (message) => {
+    const { employerId } = message;
+    try {
+      const employer = await Employer.findById(employerId);
+
+      if (!employer) return;
+
+      const listNotifications = await Notification.find({
+        employerId,
+        type: { $ne: "invitation" },
+      })
+        .sort("-_id")
+        .populate("userId", "firstName lastName _id avatar email status")
+        .populate(
+          "employerId",
+          "companyLogo companyName companyEmail _id companyPhoneNumber"
+        );
+
+      socket.emit("employer_get_list_notifications", {
+        success: true,
+        message: listNotifications,
       });
     } catch (error) {
       console.error(error);

@@ -37,10 +37,10 @@ const ListConversations = ({ data = [] }) => {
       />
       <hr className="my-2 border-blue-gray-100" />
       <div className="flex flex-col gap-1 h-[calc(100vh-216px)] overflow-y-auto">
-        {data?.map((item) => {
+        {data?.map((item, index) => {
           return (
             <div
-              key={item?.id}
+              key={index}
               className="w-full flex items-center p-3 gap-3 bg-blue-gray-50 rounded-lg hover:bg-blue-gray-100 transition-all cursor-pointer"
               onClick={() => handleGetMessage({ messageId: item?._id })}
             >

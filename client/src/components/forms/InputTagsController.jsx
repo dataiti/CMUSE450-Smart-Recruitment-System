@@ -51,7 +51,7 @@ const InputTagsController = ({
               {tags.map((tag, index) => (
                 <div
                   key={index}
-                  className="flex items-center bg-teal-800 py-1 px-2 rounded-md text-white"
+                  className="flex items-center bg-blue-50 text-blue-500 border border-blue-500 py-1 px-2 rounded-md"
                 >
                   {tag}
                   <span
@@ -81,6 +81,7 @@ const InputTagsController = ({
                     handleAddTag();
                     field.onChange([...tags, inputValue]);
                   }}
+                  className="bg-teal-900 text-3xl font-bold"
                 >
                   +
                 </IconButton>

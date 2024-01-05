@@ -1,34 +1,36 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { Loading, MyCalendar } from "../../components/shares";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { useGetListSchedulesForUserQuery } from "../../redux/features/apis/scheduleApi";
+import { useSelector } from "react-redux";
+import { authSelect } from "../../redux/features/slices/authSlice";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import { MyCalendar } from "../../components/shares";
-import moment from "moment";
 
 function MyCalendarPage() {
-  const events = [
-    {
-      title: "Event 1",
-      start: moment("2023-12-16T08:00:00").toDate(),
-      end: moment("2023-12-16T11:00:00").toDate(),
-      status: "online",
-    },
-    {
-      title: "Event 2",
-      start: moment("2023-12-14T14:00:00").toDate(),
-      end: moment("2023-12-14T19:00:00").toDate(),
-      status: "offline",
-    },
-    {
-      title: "Event 3",
-      start: moment("2023-12-12T13:00:00").toDate(),
-      end: moment("2023-12-12T16:00:00").toDate(),
-      status: "online",
-    },
-  ];
+  const { user } = useSelector(authSelect);
+
+  const { data: listSchedulesData, isFetching } =
+    useGetListSchedulesForUserQuery({
+      userId: user?._id,
+    });
+
+  const events = useMemo(() => {
+    if (!listSchedulesData || !listSchedulesData.data) {
+      return [];
+    }
+
+    return listSchedulesData?.data.map((schedule) => ({
+      title: `${schedule.title} - ${schedule.location}`,
+      start: new Date(schedule.start),
+      end: new Date(schedule.end),
+      status: schedule.status,
+    }));
+  }, [listSchedulesData]);
 
   return (
     <div className="w-full flex flex-col gap-2">
+      {isFetching && <Loading />}
       <Breadcrumbs fullWidth className="!bg-white">
         <Link to="/" className="text-light-blue-500 text-sm font-bold">
           Trang chủ

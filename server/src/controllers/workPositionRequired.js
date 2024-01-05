@@ -83,6 +83,8 @@ const editWorkPositionRequired = asyncHandler(async (req, res) => {
     milestonePercent,
   } = req.body;
 
+  console.log(req.body);
+
   const updateWorkPositionRequired =
     await WorkPositionRequired.findOneAndUpdate(
       { _id: req.workPositionRequired._id },
@@ -104,10 +106,25 @@ const editWorkPositionRequired = asyncHandler(async (req, res) => {
   if (!updateWorkPositionRequired)
     throw new Error("Edit WorkPositionRequired is failed");
 
+  const workPositions = await WorkPositionRequired.find({
+    employerId: req.employer._id,
+  });
+
+  if (!workPositions || workPositions.length === 0) {
+    throw new Error("No work positions found for the employer");
+  }
+
+  const suggestedCandidatesByPosition = [];
+
+  for (const workPosition of workPositions) {
+    const result = await getSuggestedCandidates(workPosition);
+    suggestedCandidatesByPosition.push(result);
+  }
+
   return res.status(200).json({
     success: true,
     message: "Edit WorkPositionRequired is successfully",
-    data: updateWorkPositionRequired,
+    data: suggestedCandidatesByPosition,
   });
 });
 

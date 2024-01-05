@@ -16,6 +16,8 @@ import Swal from "sweetalert2";
 import { useEffect } from "react";
 import { useDeleteWorkPositionRequiredbuilderMutation } from "../../redux/features/apis/workPositionRequireApi";
 import { setTitle } from "../../redux/features/slices/titleSlice";
+import { useCallback } from "react";
+import { AddSettingWorkPositionForm } from "../../components/forms";
 
 const CandidateRecomendationPage = () => {
   const dispatch = useDispatch();
@@ -23,7 +25,9 @@ const CandidateRecomendationPage = () => {
   const { user } = useSelector(authSelect);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenAddModal, setIsOpenAddModal] = useState(false);
   const [listCandidates, setListCandidates] = useState([]);
+  const [workPosition, setWorkPosition] = useState({});
 
   const [deleteWorkPositionRequiredbuilder, { isLoading: isDeleteLoading }] =
     useDeleteWorkPositionRequiredbuilderMutation();
@@ -45,9 +49,15 @@ const CandidateRecomendationPage = () => {
     }
   }, [listCandidatesData]);
 
-  const handleUpdateWorkPositionWeight = async ({ _id }) => {
-    setIsOpenModal(true);
-  };
+  const handleUpdateWorkPositionWeight = useCallback(
+    ({ _id }) => {
+      setIsOpenModal(true);
+      setWorkPosition(
+        listCandidates?.find((job) => job?.workPosition?._id === _id)
+      );
+    },
+    [listCandidates]
+  );
 
   const handleRemoveWorkPositionWeigh = async ({ _id }) => {
     try {
@@ -120,6 +130,7 @@ const CandidateRecomendationPage = () => {
                       data={candidateItem}
                       key={index}
                       workPositionRequire={candidate?.workPosition}
+                      setListCandidates={setListCandidates}
                     />
                   );
                 })}
@@ -129,7 +140,7 @@ const CandidateRecomendationPage = () => {
         })}
         <div>
           <ButtonCustom
-            onClick={() => setIsOpenModal(true)}
+            onClick={() => setIsOpenAddModal(true)}
             className="rounded-full bg-green-500 hover:bg-green-400 flex items-center gap-2 text-white whitespace-nowrap"
           >
             <icons.IoAddCircle size={24} />
@@ -139,6 +150,13 @@ const CandidateRecomendationPage = () => {
         <Modal open={isOpenModal} handleOpen={setIsOpenModal} size="lg">
           <SettingWorkPosition
             setOpen={setIsOpenModal}
+            setListCandidates={setListCandidates}
+            workPosition={workPosition?.workPosition}
+          />
+        </Modal>
+        <Modal open={isOpenAddModal} handleOpen={setIsOpenAddModal} size="lg">
+          <AddSettingWorkPositionForm
+            setOpen={setIsOpenAddModal}
             setListCandidates={setListCandidates}
           />
         </Modal>

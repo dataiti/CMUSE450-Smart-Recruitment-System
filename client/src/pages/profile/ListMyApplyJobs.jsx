@@ -33,7 +33,7 @@ const ListMyApplyJobs = () => {
   const [page, setPage] = useState(1);
   const [statusSelected, setStatusSelected] = useState("");
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
-  const [isOpenFeedbackModal, setIsOpenFeedbackModal] = useState(true);
+  const [isOpenFeedbackModal, setIsOpenFeedbackModal] = useState(false);
   const [jobDetailData, setJobDetailData] = useState({});
 
   const debouncedValue = useDebounce(search, 500);

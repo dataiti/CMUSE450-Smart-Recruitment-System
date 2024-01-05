@@ -135,8 +135,12 @@ const editCandidate = asyncHandler(async (req, res) => {
       introduceYourself,
     } = req.body;
 
+    console.log(req.body);
+
     let CVName;
     let CVpdf;
+    let experience;
+    let skills;
     let CVJSON = {};
 
     if (req.file && req.file.originalname) {
@@ -174,6 +178,8 @@ const editCandidate = asyncHandler(async (req, res) => {
 
         CVpdf = await getDownloadURL(snapshot.ref);
         CVName = req.file.originalname;
+        skills = CVJSON?.skills?.map((skill) => skill.toLowerCase());
+        experience = CVJSON?.experience || 0;
       } catch (error) {
         console.error("Error uploading file:", error);
         throw new Error("File upload failed");
@@ -181,6 +187,8 @@ const editCandidate = asyncHandler(async (req, res) => {
     } else {
       CVName = req.body.CVName;
       CVpdf = req.body.CVpdf;
+      experience = Number(req.body.experience);
+      skills = JSON.parse(req.body.skills);
     }
 
     let updateCandidate;
@@ -194,10 +202,10 @@ const editCandidate = asyncHandler(async (req, res) => {
               jobPosition,
               CVName,
               CVpdf,
-              experience: CVJSON?.experience || 0,
+              experience,
               workLocation,
               desiredSalary: Number(desiredSalary),
-              skills: CVJSON?.skills?.map((skill) => skill.toLowerCase()),
+              skills,
               yourWishes,
               introduceYourself,
             },

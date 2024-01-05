@@ -39,6 +39,11 @@ const JobStatusBadge = ({ status }) => {
       textColor = "text-purple-500";
       label = "Đã phỏng vấn";
       break;
+    case "canceled":
+      backgroundColor = "bg-red-50";
+      textColor = "text-red-500";
+      label = "Đã huỷ";
+      break;
     default:
       backgroundColor = "bg-gray-50";
       textColor = "text-gray-500";

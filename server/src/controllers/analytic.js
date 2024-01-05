@@ -583,20 +583,25 @@ const evaluateSuitableCandidate = asyncHandler(async (req, res) => {
     experienceRequire
   );
 
+  const overallPercentage = (skillsScore.skillsScore + experienceScore) / 2;
+
+  const standardDeviation = calculateStatistics({
+    arrs: [skillsScore.skillsScore, experienceScore],
+  });
+
   return res.status(200).json({
     success: true,
     message: "Delete candidate is successfully",
     data: {
+      overallPercentage: overallPercentage.toFixed(2),
       percentages: [
         { title: "Kỹ năng", value: skillsScore.skillsScore.toFixed(2) },
         { title: "Kinh nghiệm", value: experienceScore.toFixed(2) },
-        //       { title: "Vị trí công việc", value: jobPositionPercentage.toFixed(2) },
-        //       { title: "Lương", value: salaryPercentage.toFixed(2) },
-        //       { title: "Yếu tố khác", value: skillPercentage.toFixed(2) },
       ],
       skillMatch: skillsScore.commonSkills,
       skillNotMatch: skillsScore.skillNotMatch,
       candidateSkills: skillsScore.candidateSkills,
+      standardDeviation,
     },
   });
 });

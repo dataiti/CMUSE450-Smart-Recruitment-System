@@ -30,6 +30,7 @@ import {
   TextareaController,
   SelectController,
   InputPDFController,
+  InputTagsController,
 } from "../../components/forms";
 import {
   ButtonCustom,
@@ -80,10 +81,19 @@ const RegisterCandidatePage = () => {
 
   useEffect(() => {
     if (user?.candidateId) {
-      reset({ ...user?.candidateId });
+      reset({
+        CVpdf: user?.candidateId?.CVpdf,
+        jobPosition: user?.candidateId?.jobPosition,
+        workLocation: user?.candidateId?.workLocation,
+        desiredSalary: user?.candidateId?.desiredSalary,
+        experience: user?.candidateId?.experience,
+        skills: user?.candidateId?.skills,
+      });
       setNamePDFFile(user?.candidateId?.CVName);
     }
   }, [reset, user?.candidateId]);
+
+  console.log(user?.candidateId);
 
   const handleSubmitRegisterCandidate = async (data) => {
     try {
@@ -92,13 +102,17 @@ const RegisterCandidatePage = () => {
         if (formatData.hasOwnProperty(key)) {
           const value = formatData[key];
 
-          try {
-            const parsedValue = JSON.parse(value);
+          if (key === "skills") {
+            formatData[key] = JSON.stringify(value);
+          } else {
+            try {
+              const parsedValue = JSON.parse(value);
 
-            if (parsedValue.hasOwnProperty("value")) {
-              formatData[key] = parsedValue.value;
-            }
-          } catch (error) {}
+              if (parsedValue.hasOwnProperty("value")) {
+                formatData[key] = parsedValue.value;
+              }
+            } catch (error) {}
+          }
         }
       }
 
@@ -120,6 +134,9 @@ const RegisterCandidatePage = () => {
         if (response?.data?.success) {
           dispatch(updateCandidate({ data: response?.data?.data }));
           toast.success("Cập nhật ứng viên thành công");
+        }
+        for (const value of formData.values()) {
+          console.log(value);
         }
       } else {
         response = await createCandidate({
@@ -164,7 +181,7 @@ const RegisterCandidatePage = () => {
               </Typography>
             </TimelineHeader>
             <TimelineBody className="pb-8 flex flex-col gap-5">
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-6">
                 <SelectController
                   control={control}
                   name="jobPosition"
@@ -200,10 +217,18 @@ const RegisterCandidatePage = () => {
                     name="experience"
                     label="Kinh nghiệm"
                     defaultValue={user?.candidateId?.experience}
-                    isDisabel
                   />
                 )}
                 {user?.candidateId?.skills && (
+                  <InputTagsController
+                    control={control}
+                    name="skills"
+                    label="Kỹ năng"
+                    defaultTags={user?.candidateId?.skills}
+                  />
+                )}
+
+                {/* {user?.candidateId?.skills && (
                   <div className="flex flex-col relative ml-10 w-full">
                     <div className="grid grid-cols-4">
                       <label className="col-span-1 text-base font-bold whitespace-no-wrap text-teal-800">
@@ -223,7 +248,7 @@ const RegisterCandidatePage = () => {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             </TimelineBody>
           </TimelineItem>

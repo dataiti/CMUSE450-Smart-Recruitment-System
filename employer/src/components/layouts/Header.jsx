@@ -16,16 +16,35 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useLogOutMutation } from "../../redux/features/apis/authApi";
-import { ButtonCustom } from "../shares";
+import { ButtonCustom, ListNotification } from "../shares";
+import { useState } from "react";
+import { socket } from "../../socket";
+import { useEffect } from "react";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { name } = useSelector(titleSelect);
+  const [listNotifications, setListNotifications] = useState([]);
+  const [isLoadingNotification, setIsLoadingNotification] = useState(false);
+  const [isOpenNotification, setIsOpenNotification] = useState(false);
 
   const { isLoggedIn, user, refreshToken } = useSelector(authSelect);
 
   const [logout] = useLogOutMutation();
+
+  useEffect(() => {
+    setIsLoadingNotification(true);
+    socket?.emit("employer_list_notifications", {
+      employerId: user?.ownerEmployerId?._id,
+    });
+  }, [user?.ownerEmployerId?._id]);
+
+  socket?.on("employer_get_list_notifications", ({ message }) => {
+    setIsLoadingNotification(true);
+    setListNotifications(message);
+    setIsLoadingNotification(false);
+  });
 
   const handleLogout = async () => {
     try {
@@ -38,6 +57,13 @@ const Header = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleGetNotifications = () => {
+    setIsOpenNotification((prev) => !prev);
+    socket?.emit("employer_list_notifications", {
+      employerId: user?.ownerEmployerId?._id,
+    });
   };
 
   return (
@@ -54,11 +80,22 @@ const Header = () => {
         </Typography>
         {isLoggedIn ? (
           <div className="flex items-center gap-2">
-            <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">
+            <button
+              className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20"
+              onClick={handleGetNotifications}
+            >
               <icons.PiBellRingingFill size={20} />
               <span className="absolute z-30 top-[-3px] right-[-3px] bg-red-500 p-[3px] rounded-full text-white">
                 <icons.IoAlertSharp size={12} />
               </span>
+              {isOpenNotification && (
+                <ListNotification
+                  listNotifications={listNotifications}
+                  isLoading={isLoadingNotification}
+                  // setOpenModal={setOpenModal}
+                  setListNotifications={setListNotifications}
+                />
+              )}
             </button>
             <Link to="/message">
               <button className="shadow-none p-3 rounded-full bg-white text-[#0891b2] relative z-20">

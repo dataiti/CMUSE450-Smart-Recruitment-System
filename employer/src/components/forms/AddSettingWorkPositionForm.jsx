@@ -11,11 +11,9 @@ import {
   SelectController,
 } from "../forms";
 import { jobPositionOptions } from "../../utils/constants";
-import ButtonCustom from "./ButtonCustom";
-import { useEditWorkPositionRequiredMutation } from "../../redux/features/apis/workPositionRequireApi";
-import Loading from "./Loading";
+import { useCreateWorkPositionRequiredMutation } from "../../redux/features/apis/workPositionRequireApi";
+import { Loading, ButtonCustom } from "../shares";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 
 const schema = yup.object().shape({
   jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),
@@ -51,8 +49,8 @@ const schema = yup.object().shape({
 const SettingWorkPosition = ({ setOpen, setListCandidates, workPosition }) => {
   const { user } = useSelector(authSelect);
 
-  const [editWorkPositionRequired, { isLoading }] =
-    useEditWorkPositionRequiredMutation();
+  const [createWorkPositionRequired, { isLoading }] =
+    useCreateWorkPositionRequiredMutation();
 
   const {
     control,
@@ -62,30 +60,15 @@ const SettingWorkPosition = ({ setOpen, setListCandidates, workPosition }) => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      jobPosition: workPosition?._id ? workPosition?.jobPosition : "",
-      experienceWeight: workPosition?._id ? workPosition?.experienceWeight : "",
-      skillsWeight: workPosition?._id ? workPosition?.skillsWeight : "",
-      skillsRequire: workPosition?._id ? workPosition?.skillsRequire : "",
-      experienceRequire: workPosition?._id
-        ? workPosition?.experienceRequire
-        : "",
-      milestonePercent: workPosition?._id ? workPosition?.milestonePercent : "",
+      jobPosition: "",
+      experienceWeight: "",
+      skillsWeight: "",
+      skillsRequire: "",
+      experienceRequire: "",
+      milestonePercent: "",
     },
     resolver: yupResolver(schema),
   });
-
-  useEffect(() => {
-    if (!workPosition?._id) {
-      reset({
-        jobPosition: "",
-        experienceWeight: "",
-        skillsWeight: "",
-        skillsRequire: "",
-        experienceRequire: "",
-        milestonePercent: "",
-      });
-    }
-  }, [workPosition?._id, reset]);
 
   const handleSetupWorkPositionRequire = async (data) => {
     try {
@@ -107,27 +90,24 @@ const SettingWorkPosition = ({ setOpen, setListCandidates, workPosition }) => {
           }
         }
       }
-      let response;
-      if (workPosition?._id) {
-        response = await editWorkPositionRequired({
-          data: formatData,
-          userId: user?._id,
-          employerId: user?.ownerEmployerId?._id,
-          workPositionRequiredId: workPosition?._id,
+
+      const response = await createWorkPositionRequired({
+        data: formatData,
+        userId: user?._id,
+        employerId: user?.ownerEmployerId?._id,
+      });
+      if (response && response.data && response.data.success) {
+        setListCandidates(response?.data?.data);
+        toast.success("Thiết lập thống số vị trí thành công !");
+        setOpen(false);
+        reset({
+          jobPosition: "",
+          experienceWeight: "",
+          skillsWeight: "",
+          skillsRequire: "",
+          experienceRequire: "",
+          milestonePercent: "",
         });
-        if (response && response.data && response.data.success) {
-          reset({
-            jobPosition: "",
-            experienceWeight: "",
-            skillsWeight: "",
-            skillsRequire: "",
-            experienceRequire: "",
-            milestonePercent: "",
-          });
-          setListCandidates(response?.data?.data);
-          toast.success("Cập nhật thống số vị trí thành công !");
-          setOpen(false);
-        }
       }
     } catch (error) {
       console.log(error);
@@ -175,7 +155,6 @@ const SettingWorkPosition = ({ setOpen, setListCandidates, workPosition }) => {
           name="skillsRequire"
           label="Kỹ năng"
           error={errors?.skillsRequire}
-          defaultTags={workPosition?.skillsRequire}
         />
         <InputController
           control={control}

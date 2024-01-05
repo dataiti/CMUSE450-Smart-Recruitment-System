@@ -8,6 +8,7 @@ import {
   ButtonCustom,
   EvaluateSuitableCandidate,
   BoxChat,
+  SettingWorkPosition,
 } from "../shares";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";

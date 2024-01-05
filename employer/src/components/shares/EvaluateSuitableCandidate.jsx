@@ -40,11 +40,33 @@ const EvaluateSuitableCandidate = ({
           <div className="flex flex-col gap-2">
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between border border-gray-100 rounded-md flex-1 p-4">
-                  <Typography className="text-sm font-bold text-light-blue-600">
-                    Đánh giá mức độ phù hợp
-                  </Typography>
-                  <CirculeProgress percentage={data?.data?.overallPercentage} />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2 justify-between border border-gray-100 rounded-md flex-1 p-2">
+                    <Typography className="text-center text-sm font-bold text-light-blue-600">
+                      Đánh giá mức độ phù hợp
+                    </Typography>
+                    <div className="flex items-center justify-center">
+                      <CirculeProgress
+                        percentage={
+                          getEvaluateSuitableCandidateData?.data
+                            ?.overallPercentage
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2 justify-between border border-gray-100 rounded-md flex-1 p-2">
+                    <Typography className="text-center text-sm font-bold text-light-blue-600">
+                      Độ lệch chuẩn
+                    </Typography>
+                    <div className="flex items-center justify-center">
+                      <Typography className="border-[8px] border-light-blue-500 flex items-center justify-center h-[60px] w-[60px] bg-light-blue-50 text-light-blue-500 font-bold rounded-full text-lg">
+                        {
+                          getEvaluateSuitableCandidateData?.data
+                            ?.standardDeviation
+                        }
+                      </Typography>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex flex-col gap-4 p-4 border border-gray-100 rounded-md">
                   {getEvaluateSuitableCandidateData?.data?.percentages?.map(

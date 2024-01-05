@@ -19,10 +19,20 @@ const scheduleApi = rootApi.injectEndpoints({
         };
       },
     }),
+    editWorkPositionRequired: builder.mutation({
+      query: ({ data, userId, employerId, workPositionRequiredId }) => {
+        return {
+          url: `/workPositionRequired/edit-work-position-required/${userId}/${employerId}/${workPositionRequiredId}`,
+          method: "PUT",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
 export const {
   useCreateWorkPositionRequiredMutation,
   useDeleteWorkPositionRequiredbuilderMutation,
+  useEditWorkPositionRequiredMutation,
 } = scheduleApi;

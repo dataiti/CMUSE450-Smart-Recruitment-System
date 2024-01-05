@@ -42,6 +42,7 @@ const applyJobSchema = new mongoose.Schema(
         "rejected",
         "progressing",
         "interviewed",
+        "canceled",
       ],
     },
   },
