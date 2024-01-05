@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
 const AvatarType = ({ avatarPreview, setAvatarPreview }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const fileInput = e.target;
+    const file = fileInput.files[0];
 
     if (file) {
       const reader = new FileReader();
@@ -10,9 +13,13 @@ const AvatarType = ({ avatarPreview, setAvatarPreview }) => {
         setAvatarPreview(reader.result);
       };
       reader.readAsDataURL(file);
+      setSelectedFile(file);
     } else {
       setAvatarPreview(null);
+      setSelectedFile(null);
     }
+
+    fileInput.value = "";
   };
 
   return (
@@ -24,7 +31,13 @@ const AvatarType = ({ avatarPreview, setAvatarPreview }) => {
           className="hover:scale-105 transition-all rounded-md"
         />
       </label>
-      <input type="file" id="avatar" hidden onChange={handleFileChange} />
+      <input
+        type="file"
+        id="avatar"
+        hidden
+        value={selectedFile ? selectedFile.name : ""} // Set giá trị của input
+        onChange={handleFileChange}
+      />
     </div>
   );
 };
