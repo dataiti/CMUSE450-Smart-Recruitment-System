@@ -5,5 +5,5 @@ cd server -> npm install -> npm start
 cd client -> npm install -> npm start
 # đối với employer
 cd employer -> npm install -> npm start
-# đối với server
+# đối với admin
 cd admin -> npm install -> npm start
