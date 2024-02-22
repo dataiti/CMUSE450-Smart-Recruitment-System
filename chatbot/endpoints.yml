@@ -1,9 +1,2 @@
 action_endpoint:
   url: "http://localhost:5055/webhook"
-
-tracker_store:
-  type: mongod
-  url: mongodb+srv://nguyendat16111210:8SZuXNP8TzhjtGgt@cluster0.pj4bngd.mongodb.net/
-  db: Capstone1-project
-  username: nguyendat16111210
-  password: 8SZuXNP8TzhjtGgt
