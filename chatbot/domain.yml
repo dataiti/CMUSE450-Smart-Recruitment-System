@@ -1,0 +1,11 @@
+version: "3.1"
+
+intents:
+  - get_all_users
+
+responses:
+  utter_get_all_users:
+    - text: "Here is the list of all users:\n{user_data}"
+
+actions:
+  - action_get_all_users

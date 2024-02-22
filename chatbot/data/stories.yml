@@ -1,0 +1,5 @@
+stories:
+  - story: show_all_users
+    steps:
+      - intent: get_all_users
+      - action: action_get_all_users

@@ -1,0 +1,5 @@
+rules:
+  - rule: Show all users
+    steps:
+      - intent: get_all_users
+      - action: action_get_all_users

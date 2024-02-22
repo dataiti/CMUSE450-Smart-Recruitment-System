@@ -176,11 +176,6 @@ export const navbarItems = [
     path: "/resume-online",
     title: "Hồ sơ & CV",
   },
-  {
-    id: 4,
-    path: "/blog",
-    title: "Diễn đàn",
-  },
 ];
 
 export const jobPositionOptions = [

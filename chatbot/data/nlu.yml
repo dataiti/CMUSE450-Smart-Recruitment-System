@@ -1,0 +1,6 @@
+nlu:
+  - intent: get_all_users
+    examples: |
+      - Show all users
+      - Display all user data
+      - List all users
