@@ -1,0 +1,44 @@
+version: "3.1"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_goodbye
+- story: Order my pizza
+  steps:
+    - intent: order_pizza
+    - action: utter_order_pizza
+
+- story: Say hi with Dat
+  steps:
+    - intent: say_hi_with_dat
+    - action: utter_say_hi_with_dat
+
+- story: show_all_user
+  steps:
+    - intent: get_all_users
+    - action: action_get_all_users

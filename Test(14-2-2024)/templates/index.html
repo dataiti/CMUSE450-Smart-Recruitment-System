@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Rasa</title>
+    <!-- Link CSS của Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: height 0.3s ease-in-out;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.3);
+        }
+        #chat-box {
+            overflow-y: auto;
+            max-height: 200px;
+            padding: 10px;
+        }
+        .toggle-chat {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-chat" id="toggle-chat">Chat</button>
+
+    <!-- Phần chatbot ẩn đi -->
+    <div id="chat-container" style="display: none;">
+        <div id="chat-box" class="bg-light"></div>
+        <div class="input-group">
+            <input type="text" id="user-input" class="form-control" placeholder="Type a message...">
+            <div class="input-group-append">
+                <button id="send-btn" class="btn btn-primary">Send</button>
+                <button id="close-chat" class="btn btn-danger">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm script của jQuery và Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Thêm script cho tính năng chat -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Hiệu ứng hiển thị/ẩn khi click vào nút "Chat"
+            $('#toggle-chat').click(function() {
+                $('#chat-container').slideToggle();
+            });
+
+            // Gửi tin nhắn khi click vào nút "Send"
+            $('#send-btn').click(function() {
+                sendMessage();
+            });
+
+             // Đóng chat khi click vào nút "Close"
+            $('#close-chat').click(function() {
+                $('#chat-container').slideUp();
+            });
+            // Gửi tin nhắn khi nhấn Enter
+            $('#user-input').keypress(function(e) {
+                if (e.which == 13) {
+                    sendMessage();
+                }
+            });
+
+            function sendMessage() {
+                var userInput = $('#user-input').val();
+                var chatBox = $('#chat-box');
+
+                // Hiển thị tin nhắn của người dùng
+                chatBox.append("<div class='text-right mb-2'>User: " + userInput + "</div>");
+                $('#user-input').val('');
+
+                // Gửi tin nhắn của người dùng đến chatbot Rasa
+                axios.post('/send_message', { message: userInput })
+                .then(function (response) {
+                    // Hiển thị phản hồi từ chatbot
+                    chatBox.append("<div class='text-left mb-2'>Bot: " + response.data + "</div>");
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
