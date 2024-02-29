@@ -129,23 +129,23 @@ nlu:
       - I'm interested in job opportunities in the IT sector.
   - intent: tuyen_dung_Da_Nang
     examples: | 
-      - In Da Nang, are there any IT companies currently looking for new personnel?
-      - Do you have information about IT enterprises currently recruiting in Da Nang?
-      - Are there any IT companies currently in need of recruiting personnel to work in Da Nang?
-      - What information is available about IT organizations in Da Nang expanding their workforce?
-      - Are there any IT companies currently offering job opportunities in Da Nang?
-      - Regarding the IT sector, is there information about companies currently hiring in Da Nang?
-      - Can you mention some businesses in Da Nang that are currently recruiting in IT?
-      - Are there any technology-focused companies currently hiring developers in Da Nang?
-      - What details can you provide about IT companies offering jobs for developers in Da Nang?
-      - Is there information about businesses seeking programmers in Da Nang?
-      - In Da Nang, how many IT companies are currently recruiting new staff?
-      - Are there detailed insights into technology companies currently hiring in Da Nang?
-      - Are there any IT companies in the field currently recruiting staff in Da Nang?
-      - What information is available about IT organizations in Da Nang expanding their workforce?
-      - Are there any IT companies currently offering job opportunities in Da Nang?
-      - For those working in the IT field, is there information about companies currently hiring in Da Nang?
-      - Can you mention some technology companies in Da Nang currently in need of personnel?
+      - In Da Nang City, are there any IT companies currently looking for new personnel?
+      - Do you have information about IT enterprises currently recruiting in Da Nang City?
+      - Are there any IT companies currently in need of recruiting personnel to work in Da Nang City?
+      - What information is available about IT organizations in Da Nang City expanding their workforce?
+      - Are there any IT companies currently offering job opportunities in Da Nang City?
+      - Regarding the IT sector, is there information about companies currently hiring in Da Nang City?
+      - Can you mention some businesses in Da Nang City that are currently recruiting in IT?
+      - Are there any technology-focused companies currently hiring developers in Da Nang City?
+      - What details can you provide about IT companies offering jobs for developers in Da Nang City?
+      - Is there information about businesses seeking programmers in Da Nang City?
+      - In Da Nang City, how many IT companies are currently recruiting new staff?
+      - Are there detailed insights into technology companies currently hiring in Da Nang City?
+      - Are there any IT companies in the field currently recruiting staff in Da Nang City?
+      - What information is available about IT organizations in Da Nang City expanding their workforce?
+      - Are there any IT companies currently offering job opportunities in Da Nang City?
+      - For those working in the IT field, is there information about companies currently hiring in Da Nang City?
+      - Can you mention some technology companies in Da Nang City currently in need of personnel?
   - intent: tuyen_dung_Ha_Noi
     examples: |       
       - In Ha Noi, are there any IT companies currently looking for new personnel?
@@ -242,23 +242,23 @@ nlu:
 
   - intent: tuyen_dung_Mien_Bac
     examples: | 
-      - In South Vietnam, are there any IT companies currently looking for new personnel?
-      - Do you have information about IT enterprises currently recruiting in South Vietnam?
-      - Are there any IT companies currently in need of recruiting personnel to work in South Vietnam?
-      - What information is available about IT organizations in South Vietnam expanding their workforce?
-      - Are there any IT companies currently offering job opportunities in South Vietnam?
-      - Regarding the IT sector, is there information about companies currently hiring in South Vietnam?
-      - Can you mention some businesses in South Vietnam that are currently recruiting in IT?
-      - Are there any technology-focused companies currently hiring developers in South Vietnam?
-      - What details can you provide about IT companies offering jobs for developers in South Vietnam?
-      - Is there information about businesses seeking programmers in South Vietnam?
-      - In South Vietnam, how many IT companies are currently recruiting new staff?
-      - Are there detailed insights into technology companies currently hiring in South Vietnam?
-      - Are there any IT companies in the field currently recruiting staff in South Vietnam?
-      - What information is available about IT organizations in South Vietnam expanding their workforce?
-      - Are there any IT companies currently offering job opportunities in South Vietnam?
-      - For those working in the IT field, is there information about companies currently hiring in South Vietnam?
-      - Can you mention some technology companies in South Vietnam currently in need of personnel?
+      - In North Vietnam, are there any IT companies currently looking for new personnel?
+      - Do you have information about IT enterprises currently recruiting in North Vietnam?
+      - Are there any IT companies currently in need of recruiting personnel to work in North Vietnam?
+      - What information is available about IT organizations in North Vietnam expanding their workforce?
+      - Are there any IT companies currently offering job opportunities in North Vietnam?
+      - Regarding the IT sector, is there information about companies currently hiring in North Vietnam?
+      - Can you mention some businesses in North Vietnam that are currently recruiting in IT?
+      - Are there any technology-focused companies currently hiring developers in North Vietnam?
+      - What details can you provide about IT companies offering jobs for developers in North Vietnam?
+      - Is there information about businesses seeking programmers in North Vietnam?
+      - In North Vietnam, how many IT companies are currently recruiting new staff?
+      - Are there detailed insights into technology companies currently hiring in North Vietnam?
+      - Are there any IT companies in the field currently recruiting staff in North Vietnam?
+      - What information is available about IT organizations in North Vietnam expanding their workforce?
+      - Are there any IT companies currently offering job opportunities in North Vietnam?
+      - For those working in the IT field, is there information about companies currently hiring in North Vietnam?
+      - Can you mention some technology companies in North Vietnam currently in need of personnel?
 
   - intent: vi_tri_tuyen_dung_FE
     examples: |  

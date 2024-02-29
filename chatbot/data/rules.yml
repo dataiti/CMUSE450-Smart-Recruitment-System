@@ -4,6 +4,36 @@ rules:
       - intent: get_all_users
       - action: action_get_all_users
 
+  - rule: Say Hello anytime the user says Hello
+    steps:
+    - intent: xin_chao
+    - action: utter_xin_chao
+
+  - rule: Say Thank you anytime the user says thank you
+    steps:
+    - intent: cam_on
+    - action: utter_cam_on
+
+  - rule: Say bot's name you anytime the user asks bot
+    steps:
+    - intent: hoi_ten_bot
+    - action: utter_hoi_ten_bot
+
+  - rule: Say bot'role anytime the user asks bot's role
+    steps:
+    - intent: hoi_chuc_nang_bot
+    - action: utter_hoi_chuc_nang_bot
+
+  - rule: Say Goodbye you anytime the user says Bye
+    steps:
+    - intent: tam_biet
+    - action: utter_tam_biet
+
+  - rule: Say FE anytime the user says information about FE
+    steps:
+    - intent: vi_tri_tuyen_dung_FE
+    - action: utter_vi_tri_tuyen_dung_FE
+
   - rule: Say FE anytime the user says information about FE
     steps:
     - intent: vi_tri_tuyen_dung_FE
@@ -34,10 +64,35 @@ rules:
     - intent: vi_tri_tuyen_dung_NodeJs
     - action: utter_vi_tri_tuyen_dung_NodeJs
 
-  - rule: Say FE companies anytime the user says information about FE companies
+  - rule: Say companies in Da Nang City anytime the user says informations
     steps:
-    - intent: cong_ty_FE
-    - action: utter_cong_ty_FE
+    - intent: tuyen_dung_Da_Nang
+    - action: utter_tuyen_dung_Da_Nang
+
+  - rule: Say companies in Ha Noi City anytime the user says informations
+    steps:
+    - intent: tuyen_dung_Ha_Noi
+    - action: utter_tuyen_dung_Ha_Noi
+
+  - rule: Say companies in Ho Chi Minh City anytime the user says informations
+    steps:
+    - intent: tuyen_dung_Ho_Chi_Minh
+    - action: utter_tuyen_dung_Ho_Chi_Minh
+
+  - rule: Say companies in Central Region anytime the user says informations
+    steps:
+    - intent: tuyen_dung_Mien_Trung
+    - action: utter_tuyen_dung_Mien_Trung
+
+  - rule: Say companies in South Viet Nam anytime the user says informations
+    steps:
+    - intent: tuyen_dung_Mien_Nam
+    - action: utter_tuyen_dung_Mien_Nam
+
+  - rule: Say companies in North Viet Nam anytime the user says informations
+    steps:
+    - intent: tuyen_dung_Mien_Bac
+    - action: utter_tuyen_dung_Mien_Bac
 
   - rule: Say FE companies anytime the user says information about FE companies
     steps:
@@ -88,6 +143,12 @@ rules:
     steps:
     - intent: phong_van_IT
     - action: utter_phong_van_IT
+
+  - rule: Say about step to edit IT
+    steps:
+    - intent: cac_buoc_gui_CV_cho_nha_tuyen_dung
+    - action: utter_cac_buoc_gui_CV_cho_nha_tuyen_dung
+
 
 
       

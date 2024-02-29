@@ -82,7 +82,7 @@ responses:
   utter_cong_ty_BE:
     - text: "There are many companies which is recruiting for Back-end Developer such as FPT Software, D-Soft, IT Bridge VietNam, LG, RGF,....."
   utter_cong_ty_Java:
-    - text: "There are many companies which is recruiting for Fullstack Developer such as FPT Software, D-Soft, IT Bridge VietNam, LG, RGF,....."
+    - text: "There are many companies which is recruiting for Java Developer such as FPT Software, D-Soft, IT Bridge VietNam, LG, RGF,....."
   utter_cong_ty_Python:
     - text: "There are many companies which is recruiting for Python Developer such as FPT Software, D-Soft, IT Bridge VietNam, LG, RGF,....."
   utter_cong_ty_ReactJs:
