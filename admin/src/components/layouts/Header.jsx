@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { authSelect } from "../redux/features/slices/authSlice";
+import { authSelect } from "../../redux/features/slices/authSlice";
 import { Avatar, Button, Typography } from "@material-tailwind/react";
-import { icons } from "../utils/icons";
-import { titleSelect } from "../redux/features/slices/titleSlice";
+import { icons } from "../../utils/icons";
+import { titleSelect } from "../../redux/features/slices/titleSlice";
 
 const Header = () => {
   const { isLoggedIn, user } = useSelector(authSelect);

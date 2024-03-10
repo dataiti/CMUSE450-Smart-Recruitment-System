@@ -1,6 +1,6 @@
 import React from "react";
-import LineChart from "./LineChart";
-import SelectCustom from "./SelectCustom";
+import { LineChart } from "../charts";
+import { SelectCustom } from "../shares";
 
 const TrendingChartModal = ({ type, setType, data }) => {
   const handleSelectedTypeTimeChart = (e) => {

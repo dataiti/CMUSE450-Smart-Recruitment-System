@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Pagination from "../../components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import {
   jobSelect,
@@ -21,16 +20,19 @@ import {
 } from "../../utils/constants";
 import { covertToDate } from "../../utils/fn";
 import { Avatar, Drawer, Input, Typography } from "@material-tailwind/react";
-import SelectCustom from "../../components/SelectCustom";
 import { useDebounce } from "../../hooks";
 import { toast } from "react-toastify";
 import { setTitle } from "../../redux/features/slices/titleSlice";
-import Loading from "../../components/Loading";
-import StatusBadge from "../../components/StatusBadge";
 import JobDetail from "./JobDetail";
-import ButtonCustom from "../../components/ButtonCustom";
 import Swal from "sweetalert2";
-import SwitchCustom from "../../components/Switch";
+import {
+  StatusBadge,
+  ButtonCustom,
+  SwitchCustom,
+  Loading,
+  SelectCustom,
+  Pagination,
+} from "../../components/shares";
 
 const ManageJob = () => {
   const dispatch = useDispatch();

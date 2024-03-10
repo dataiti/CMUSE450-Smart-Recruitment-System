@@ -1,19 +1,17 @@
 import React, { useState } from "react";
-import { Button, Typography } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import { useLogOutMutation } from "../redux/features/apis/authApi";
+import { useLogOutMutation } from "../../redux/features/apis/authApi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { authSelect, logOut } from "../redux/features/slices/authSlice";
-import Loading from "./Loading";
-import { sidebarItems } from "../utils/constants";
-import IconButtonCustom from "./IconButtonCustom";
-import { images } from "../assets/images";
-import ButtonCustom from "./ButtonCustom";
+import { authSelect, logOut } from "../../redux/features/slices/authSlice";
+import { sidebarItems } from "../../utils/constants";
+import { images } from "../../assets/images";
+import { ButtonCustom, IconButtonCustom, Loading } from "../shares";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const { refreshToken, user } = useSelector(authSelect);
+  const { refreshToken } = useSelector(authSelect);
 
   const [indexSidebar, setIndexSidebar] = useState(1);
 

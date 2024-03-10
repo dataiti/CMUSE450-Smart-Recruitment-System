@@ -1,8 +1,11 @@
 import { Input } from "@material-tailwind/react";
 import React from "react";
-import SelectCustom from "./SelectCustom";
-import { typeChartRowOptions, typeTimeChartOptions } from "../utils/constants";
-import LineChart from "./LineChart";
+import { SelectCustom } from "../shares";
+import {
+  typeChartRowOptions,
+  typeTimeChartOptions,
+} from "../../utils/constants";
+import { LineChart } from "../charts";
 
 const LineChartModal = ({
   setTypeTime,

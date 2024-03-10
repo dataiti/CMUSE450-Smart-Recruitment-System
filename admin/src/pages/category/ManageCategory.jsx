@@ -1,28 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Pagination from "../../components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { removeJobItem } from "../../redux/features/slices/jobSlice";
 import { useDeleteJobMutation } from "../../redux/features/apis/jobApi";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import {
-  desiredSalaryOptions,
-  statusOptions,
-  tableHeadCategory,
-} from "../../utils/constants";
+import { desiredSalaryOptions, tableHeadCategory } from "../../utils/constants";
 import { covertToDate } from "../../utils/fn";
-import {
-  Avatar,
-  Button,
-  Drawer,
-  Input,
-  Typography,
-} from "@material-tailwind/react";
-import SelectCustom from "../../components/SelectCustom";
+import { Avatar, Button, Drawer, Input } from "@material-tailwind/react";
 import { useDebounce } from "../../hooks";
 import { toast } from "react-toastify";
 import { setTitle } from "../../redux/features/slices/titleSlice";
-import Loading from "../../components/Loading";
-
+import {
+  Loading,
+  SelectCustom,
+  ButtonCustom,
+  SwitchCustom,
+  Pagination,
+} from "../../components/shares";
 import {
   useGetListOfCategoriesForAdminQuery,
   useToggleActiveCategoryMutation,
@@ -32,10 +25,8 @@ import {
   setListCategories,
   toggleUpdateActiveCategory,
 } from "../../redux/features/slices/categorySlice";
-import SwitchCustom from "../../components/Switch";
+import { CategoryDetail } from "../../pages";
 import { Link } from "react-router-dom";
-import CategoryDetail from "./CategoryDetail";
-import ButtonCustom from "../../components/ButtonCustom";
 
 const ManageCategory = () => {
   const dispatch = useDispatch();

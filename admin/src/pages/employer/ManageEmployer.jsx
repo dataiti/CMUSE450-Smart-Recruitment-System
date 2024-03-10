@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Pagination from "../../components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import {
@@ -15,12 +14,10 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import SelectCustom from "../../components/SelectCustom";
 import { useDebounce } from "../../hooks";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setTitle } from "../../redux/features/slices/titleSlice";
-import Loading from "../../components/Loading";
 import {
   useDeleteEmployerMutation,
   useGetListOfEmployerForAdminQuery,
@@ -32,11 +29,16 @@ import {
   setListEmployers,
   updateToggleLockEmployer,
 } from "../../redux/features/slices/employerSlice";
-import StatusBadge from "../../components/StatusBadge";
-import ButtonCustom from "../../components/ButtonCustom";
 import { EmployerDetail } from "../../pages";
 import Swal from "sweetalert2";
-import SwitchCustom from "../../components/Switch";
+import {
+  StatusBadge,
+  ButtonCustom,
+  SwitchCustom,
+  Loading,
+  SelectCustom,
+  Pagination,
+} from "../../components/shares";
 
 const ManageEmployer = () => {
   const dispatch = useDispatch();

@@ -8,14 +8,15 @@ import {
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import LineChart from "../../components/LineChart";
-import PieChart from "../../components/PieChart";
 import { icons } from "../../utils/icons";
 import { setTitle } from "../../redux/features/slices/titleSlice";
-import StatisticIndex from "../../components/StatisticIndex";
-import Modal from "../../components/Modal";
-import LineChartModal from "../../components/LineChartModal";
-import TrendingChartModal from "../../components/TrendingChartModal";
+import { StatisticIndex, Modal } from "../../components/shares";
+import {
+  TrendingChartModal,
+  LineChartModal,
+  PieChart,
+  LineChart,
+} from "../../components/charts";
 
 const DashboardPage = () => {
   const dispatch = useDispatch();

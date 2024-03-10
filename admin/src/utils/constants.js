@@ -15,6 +15,65 @@ export const sexOptions = [
   },
 ];
 
+export const sidebarChatbotItems = [
+  {
+    id: 1,
+    path: "/rasa/talk-to-your-bot",
+    title: "Nói chuyện với bot",
+    icon: <icons.IoChatbubbleOutline size={20} />,
+  },
+  {
+    id: 2,
+    path: "/rasa/conversation",
+    title: "Cuộc hội thoại",
+    icon: <icons.IoChatbubblesOutline size={20} />,
+  },
+  {
+    id: 3,
+    path: "/rasa/nlu-inbox",
+    title: "NLU Inbox",
+    icon: <icons.BsInbox size={20} />,
+  },
+  {
+    id: 4,
+    path: "/rasa/model",
+    title: "Model",
+    icon: <icons.RiDashboard3Fill size={20} />,
+  },
+  {
+    id: 5,
+    title: "Traning",
+    icon: <icons.IoChatbubbleOutline size={20} />,
+    childrens: [
+      {
+        id: 1,
+        path: "/training-nlu",
+        title: "NLU Data",
+      },
+      {
+        id: 2,
+        path: "/training-response",
+        title: "Response",
+      },
+      {
+        id: 3,
+        path: "/training-stories",
+        title: "Stories",
+      },
+      {
+        id: 4,
+        path: "/training-rules",
+        title: "Rules",
+      },
+      {
+        id: 5,
+        path: "/rasa/training-domain",
+        title: "Domain",
+      },
+    ],
+  },
+];
+
 export const sidebarItems = [
   {
     id: 1,
@@ -54,6 +113,12 @@ export const sidebarItems = [
   },
   {
     id: 7,
+    path: "/training-stories",
+    title: "Chatbot",
+    icon: <icons.FaRobot size={24} />,
+  },
+  {
+    id: 8,
     type: "button",
     title: "Đăng xuất",
     icon: <icons.IoLogOutOutline size={24} />,
