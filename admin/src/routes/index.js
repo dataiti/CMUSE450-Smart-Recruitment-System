@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { AuthLayout, DashboardLayout } from "../layouts";
+import { AuthLayout, DashboardLayout, ChatbotLayout } from "../layouts";
 import {
   LoginPage,
   DashboardPage,
@@ -9,8 +9,12 @@ import {
   ManageEmployer,
   ManageUser,
   CreateEmployer,
+  NLUTrainingPage,
+  StoriesTrainingPage,
+  DomainTraningPage,
+  RulesTrainingPage,
 } from "../pages";
-import ProtectedRoutes from "../components/ProtectedRoutes";
+import { ProtectedRoutes } from "../components/shares";
 
 const routers = [
   {
@@ -21,6 +25,29 @@ const routers = [
         path: "/login",
         element: <LoginPage />,
         index: true,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <ChatbotLayout />,
+    children: [
+      {
+        path: "training-stories",
+        element: <StoriesTrainingPage />,
+        index: true,
+      },
+      {
+        path: "training-nlu",
+        element: <NLUTrainingPage />,
+      },
+      {
+        path: "training-domain",
+        element: <DomainTraningPage />,
+      },
+      {
+        path: "training-rules",
+        element: <RulesTrainingPage />,
       },
     ],
   },

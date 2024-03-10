@@ -1,7 +1,7 @@
 import { Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
-import { icons } from "../utils/icons";
+import { icons } from "../../utils/icons";
 
 const InputController = ({ name, control, label, error, imgUrlPreview }) => {
   const [imagePreview, setImagePreview] = useState("");

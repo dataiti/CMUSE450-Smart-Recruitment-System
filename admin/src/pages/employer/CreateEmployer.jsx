@@ -22,8 +22,8 @@ import {
   TextEditorController,
   SelectController,
   InputController,
-  Loading,
-} from "../../components";
+} from "../../components/forms";
+import { Loading } from "../../components/shares";
 import { useDispatch, useSelector } from "react-redux";
 import { useRegisterEmployerForAdminMutation } from "../../redux/features/apis/employerApi";
 import { authSelect } from "../../redux/features/slices/authSlice";

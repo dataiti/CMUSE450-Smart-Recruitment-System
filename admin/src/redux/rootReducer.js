@@ -7,6 +7,7 @@ import jobReducer from "./features/slices/jobSlice";
 import titleReducer from "./features/slices/titleSlice";
 import categoryReducer from "./features/slices/categorySlice";
 import userReducer from "./features/slices/userSlice";
+import storiesReducer from "./features/slices/storiesRasaSlice";
 import { rootApi } from "../configs/rootApi";
 
 const rootPersistConfig = {
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   title: titleReducer,
   category: categoryReducer,
   user: userReducer,
+  stories: storiesReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

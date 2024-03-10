@@ -1,6 +1,6 @@
 import { Avatar, Input, Typography } from "@material-tailwind/react";
 import React from "react";
-import { fakeChatListData } from "../utils/constants";
+import { fakeChatListData } from "../../utils/constants";
 
 const ListConversations = () => {
   return (

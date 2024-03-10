@@ -1,4 +1,4 @@
-import { IoMdSend } from "react-icons/io";
+import { IoMdSend, IoIosSave } from "react-icons/io";
 import { PiBellRingingFill } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
 import { FiSearch, FiChevronDown, FiEdit } from "react-icons/fi";
@@ -15,6 +15,8 @@ import {
   IoArrowRedoCircleOutline,
   IoArrowUndoCircleOutline,
   IoLocationSharp,
+  IoChatbubblesOutline,
+  IoChatbubbleOutline,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -24,6 +26,7 @@ import {
   MdImagesearchRoller,
   MdPayment,
   MdPhoneInTalk,
+  MdDeleteForever,
 } from "react-icons/md";
 import {
   BsFillImageFill,
@@ -32,8 +35,14 @@ import {
   BsCalendar3,
   BsBarChartLineFill,
   BsCameraFill,
+  BsInbox,
 } from "react-icons/bs";
-import { FaUserAlt, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaUserAlt,
+  FaUserCircle,
+  FaSignOutAlt,
+  FaLongArrowAltDown,
+} from "react-icons/fa";
 import { BiSolidPhoneCall, BiSolidBuildingHouse } from "react-icons/bi";
 import { HiLocationMarker } from "react-icons/hi";
 import {
@@ -42,6 +51,7 @@ import {
   FaCirclePlus,
   FaCircleXmark,
   FaFaceSmile,
+  FaRobot,
 } from "react-icons/fa6";
 import {
   AiOutlineBold,
@@ -53,8 +63,17 @@ import {
 } from "react-icons/ai";
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 import { TbCategoryFilled } from "react-icons/tb";
+import { RiDashboard3Fill } from "react-icons/ri";
 
 const icons = {
+  FaLongArrowAltDown,
+  IoIosSave,
+  MdDeleteForever,
+  RiDashboard3Fill,
+  IoChatbubblesOutline,
+  IoChatbubbleOutline,
+  BsInbox,
+  FaRobot,
   BiSolidBuildingHouse,
   IoLocationSharp,
   MdPhoneInTalk,

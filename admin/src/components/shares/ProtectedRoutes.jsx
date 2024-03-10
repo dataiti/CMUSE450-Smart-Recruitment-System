@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, Outlet } from "react-router-dom";
-import { authSelect } from "../redux/features/slices/authSlice";
+import { authSelect } from "../../redux/features/slices/authSlice";
 
 const ProtectedRoutes = () => {
   const navigate = useNavigate();

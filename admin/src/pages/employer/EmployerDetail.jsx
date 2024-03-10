@@ -2,7 +2,7 @@ import React from "react";
 import parse from "html-react-parser";
 import { Typography } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
-import { IconButtonCustom } from "../../components";
+import { IconButtonCustom } from "../../components/shares";
 
 const EmployerDetail = ({ employerDetailData = {} }) => {
   return (

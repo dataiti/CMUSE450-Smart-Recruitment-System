@@ -10,9 +10,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRegisterMutation } from "../redux/features/apis/authApi";
+import { useRegisterMutation } from "../../redux/features/apis/authApi";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../redux/features/slices/authSlice";
 
 const schema = yup.object().shape({
   firstName: yup.string().required("Tên không được bỏ trống"),
