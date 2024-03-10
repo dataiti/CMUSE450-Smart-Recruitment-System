@@ -204,4 +204,17 @@ stories:
       - intent: phong_van_IT
       - action: utter_phong_van_IT
 
+  - story:  ask information about Lotte Companies
+    steps:
+      - intent: xin_chao
+      - action: utter_xin_chao
+      - intent: thong_tin_cong_ty_Lotte
+      - action: utter_thong_tin_cong_ty_Lotte
+
+  - story:  ask information about TechLead Companies
+    steps:
+      - intent: xin_chao
+      - action: utter_xin_chao
+      - intent: thong_tin_cong_ty_TechLead
+      - action: utter_thong_tin_cong_ty_TechLead
   

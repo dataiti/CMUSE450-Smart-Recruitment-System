@@ -628,30 +628,6 @@ nlu:
       - Concerning Fullstack Developers, how many businesses are expanding their workforce?
       - Are there notifications from several companies currently in need of individuals for Fullstack roles?
       - The count of companies offering job opportunities for Fullstack Developers is how much?
-  - intent: thong_tin_cong_ty_FPT
-    examples: |
-      - Can you introduce the history of FPT software to me?
-      - Could you provide an overview of FPT software for me?
-      - Can you describe the working culture at FPT software ?
-      - How can one understand FPT software 's mission and core values?
-      - Is there information about the current leadership team and the development of FPT software ?
-      - Does FPT software  have branches or offices elsewhere?
-      - How can I stay updated on new job announcements at FPT software ?
-      - Does FPT software  offer internship programs or career opportunities for students?
-      - Can you provide information about FPT software ?
-      - I want to know about the history and objectives of FPT software .
-      - Are there any open positions at FPT software ?
-      - I'm interested in the working culture at FPT software ; can you share more?
-      - Does FPT software have professional training programs?
-      - Can you introduce the leadership team at FPT software any?
-      - Are there any attractive welfare programs at FPT software ?
-      - What specific industry or focus areas is FPT software concentrating on?
-      - I want to learn about notable awards and achievements of FPT software.
-      - Where are the branches of FPT software located?
-      - Can you introduce notable partners and customers that FPT software is collaborating with?
-      - Can you share about the working environment and the recruitment process at FPT software?
-      - Does FPT software have social projects or community programs?
-      - Are there any training and career development programs at FPT software?
   - intent: edit_CV
     examples: |
       - How can I edit information in my CV?
@@ -727,4 +703,127 @@ nlu:
       - Are there steps to change the password or account information when submitting a CV?
       - How to assess the compatibility of my CV with specific job positions?
       - Is there support for uploading and storing multiple versions of CVs on the website?
+  - intent: thong_tin_cong_ty_FPT
+    examples: |
+      - Can you introduce FPT software company?
+      - overview about FPT software company?
+      - What is FPT software company? 
+      - I want to know about FPT FPT software company
+      - Do you know FPT software company?
+      - give me informations about FPT software company
+      - What kind of services does FPT Software offer?
+      - In which industry does FPT Software operate?
+      - Look up information about FPT software company
+      - I need information about FPT software company
+      - Brief introduction about FPT software company
+      - Services in FPT software company
+      - Fields that FPT software company provides
+      - What are the main offerings of FPT Software in the software development field?
+      - Fields that FPT software company provides
+      - What are the main offerings of FPT Software in the software development field?
+      - The bot can help me answer information about FPT software company
+      - Do you have any information about FPT software company?
+  - intent: thong_tin_cong_ty_Lotte
+    examples: |
+      - Can you introduce Lotte company?
+      - overview about Lotte company?
+      - What is Lotte company? 
+      - I want to know about Lotte company
+      - Do you know Lotte company?
+      - give me informations about Lotte company
+      - What kind of services does Lotte offer?
+      - In which industry does Lotte operate?
+      - Look up information about Lotte company
+      - I need information about Lotte company
+      - Brief introduction about Lotte company
+      - Services in Lotte company
+      - Fields that Lotte company provides
+      - What are the main offerings of Lotte in the software development field?
+      - Fields that Lotte company provides
+      - What are the main offerings of Lotte in the software development field?
+      - The bot can help me answer information about Lotte company
+      - Do you have any information about Lotte company?
+  - intent: thong_tin_cong_ty_TechLead
+    examples: |
+      - Can you introduce TechLead company?
+      - overview about TechLead company?
+      - What is TechLead company? 
+      - I want to know about TechLead company
+      - Do you know TechLead company?
+      - give me informations about TechLead company
+      - What kind of services does TechLead offer?
+      - In which industry does TechLead operate?
+      - Look up information about TechLead company
+      - I need information about TechLead company
+      - Brief introduction about TechLead company
+      - Services in TechLead company
+      - Fields that TechLead company provides
+      - What are the main offerings of TechLead in the software development field?
+      - Fields that TechLead company provides
+      - What are the main offerings of TechLead in the software development field?
+      - The bot can help me answer information about TechLead company
+      - Do you have any information about TechLead company?
+  - intent: thong_tin_cong_ty_BMBSoft
+    examples: |
+      - Can you introduce BMBSoft company?
+      - overview about BMBSoft company?
+      - What is BMBSoft company? 
+      - I want to know about BMBSoft company
+      - Do you know BMBSoft company?
+      - give me informations about BMBSoft company
+      - What kind of services does BMBSoft offer?
+      - In which industry does BMBSoft operate?
+      - Look up information about BMBSoft company
+      - I need information about BMBSoft company
+      - Brief introduction about BMBSoft company
+      - Services in BMBSoft company
+      - Fields that BMBSoft company provides
+      - What are the main offerings of BMBSoft in the software development field?
+      - Fields that BMBSoft company provides
+      - What are the main offerings of BMBSoft in the software development field?
+      - The bot can help me answer information about BMBSoft company
+      - Do you have any information about BMBSoft company?
+  - intent: thong_tin_cong_ty_Gtel
+    examples: |
+      - Can you introduce Gtel company?
+      - overview about Gtel company?
+      - What is Gtel company? 
+      - I want to know about Gtel company
+      - Do you know Gtel company?
+      - give me informations about Gtel company
+      - What kind of services does Gtel offer?
+      - In which industry does Gtel operate?
+      - Look up information about Gtel company
+      - I need information about Gtel company
+      - Brief introduction about Gtel company
+      - Services in Gtel company
+      - Fields that Gtel company provides
+      - What are the main offerings of Gtel in the software development field?
+      - Fields that Gtel company provides
+      - What are the main offerings of Gtel in the software development field?
+      - The bot can help me answer information about Gtel company
+      - Do you have any information about Gtel company?
+  - intent: thong_tin_cong_ty_Gtel
+    examples: |
+      - Can you introduce Rubicon company?
+      - overview about Rubicon company?
+      - What is Rubicon company? 
+      - I want to know about Rubicon company
+      - Do you know Rubicon company?
+      - give me informations about Rubicon company
+      - What kind of services does Rubicon offer?
+      - In which industry does Rubicon operate?
+      - Look up information about Rubicon company
+      - I need information about Rubicon company
+      - Brief introduction about Rubicon company
+      - Services in Rubicon company
+      - Fields that Rubicon company provides
+      - What are the main offerings of Rubicon in the software development field?
+      - Fields that Rubicon company provides
+      - What are the main offerings of Rubicon in the software development field?
+      - The bot can help me answer information about Rubicon company
+      - Do you have any information about Rubicon company?
 
+
+
+     

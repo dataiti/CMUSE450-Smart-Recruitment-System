@@ -29,9 +29,16 @@ intents:
   - cong_ty_NodeJs
   - cong_ty_Fullstack
   - thong_tin_cong_ty_FPT
+  - thong_tin_cong_ty_Lotte
+  - thong_tin_cong_ty_TechLead
+  - thong_tin_cong_ty_BMBSoft
+
   - edit_CV
   - phong_van_IT
   - cac_buoc_gui_CV_cho_nha_tuyen_dung
+
+entities:
+  - company 
   
 responses:
   utter_get_all_users:
@@ -94,6 +101,15 @@ responses:
   utter_thong_tin_cong_ty_FPT:
     - text: "FPT Software is a member company of FPT Group. Established in 1999, FPT Software is currently a company specializing in providing software services and solutions to international customers, with more than 28,000 employees, present in 27 countries globally. 
     For many consecutive years, FPT Software has been voted the Most Popular Employer and among the TOP companies with the best working environments in Asia."
+  utter_thong_tin_cong_ty_Lotte:
+    - text: "Being a boost engine of LOTTE Group which carries out the best performance in business areas of distribution, manufacturing/construction, chemicals, 
+    finance and service, LOTTE DATA COMMUNICATION is a company specialized in IT services and is leading the informatization of 21 C. Since the establishment in 1996, 
+    LOTTE DATA COMMUNICATION is maximizing the business value of our clients by enhancing the level of informatization with our organized IT services including System Management(SM), System Integration(SI), IT consulting and e-biz."
+  utter_thong_tin_cong_ty_TechLead:
+    - text: "TechLead was born with the mission of providing software development solutions to help partners and customers apply 4.0 technology in business activities to optimize processes, personnel, business operations and develop beyond step."
+  utter_thong_tin_cong_ty_BMBSoft:
+    - text: "BMBSOFT was established on August 13, 2018, operating mainly in the European and American software market. From 2020 onwards, BMBSOFT has expanded to Australia and Asia with many diverse fields: Banking, Education, Construction, Cafe...
+    Since its establishment, BMBSOFT started with 2 members. After 5 years of operation, with the trust of partners and customers, BMBSOFT has expanded its staff to nearly 100 employees and is about to open more branches in Ho Chi Minh City."
   utter_edit_CV:
     - text: "Our system supports editing CVs and has many CV templates that you can choose and edit for writing your CV."
   utter_phong_van_IT:
@@ -135,3 +151,6 @@ actions:
   - utter_edit_CV
   - utter_phong_van_IT
   - utter_cac_buoc_gui_CV_cho_nha_tuyen_dung
+  - utter_thong_tin_cong_ty_Lotte
+  - utter_thong_tin_cong_ty_TechLead
+  - utter_thong_tin_cong_ty_BMBSoft
