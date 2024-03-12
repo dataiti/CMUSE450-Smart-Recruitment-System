@@ -32,7 +32,6 @@ intents:
   - thong_tin_cong_ty_Lotte
   - thong_tin_cong_ty_TechLead
   - thong_tin_cong_ty_BMBSoft
-
   - edit_CV
   - phong_van_IT
   - cac_buoc_gui_CV_cho_nha_tuyen_dung

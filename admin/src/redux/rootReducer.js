@@ -8,6 +8,7 @@ import titleReducer from "./features/slices/titleSlice";
 import categoryReducer from "./features/slices/categorySlice";
 import userReducer from "./features/slices/userSlice";
 import storiesReducer from "./features/slices/storiesRasaSlice";
+import rulesReducer from "./features/slices/rulesRasaSlice"
 import { rootApi } from "../configs/rootApi";
 
 const rootPersistConfig = {
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   category: categoryReducer,
   user: userReducer,
   stories: storiesReducer,
+  rules: rulesReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
