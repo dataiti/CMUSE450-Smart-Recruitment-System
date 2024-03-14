@@ -13,6 +13,8 @@ import {
   StoriesTrainingPage,
   DomainTraningPage,
   RulesTrainingPage,
+  ResponseTrainingPage,
+  TalkYourBotPage,
 } from "../pages";
 import { ProtectedRoutes } from "../components/shares";
 
@@ -33,9 +35,13 @@ const routers = [
     element: <ChatbotLayout />,
     children: [
       {
+        path: "/rasa/talk-to-your-bot",
+        element: <TalkYourBotPage />,
+        index: true,
+      },
+      {
         path: "training-stories",
         element: <StoriesTrainingPage />,
-        index: true,
       },
       {
         path: "training-nlu",
@@ -48,6 +54,10 @@ const routers = [
       {
         path: "training-rules",
         element: <RulesTrainingPage />,
+      },
+      {
+        path: "training-response",
+        element: <ResponseTrainingPage />,
       },
     ],
   },

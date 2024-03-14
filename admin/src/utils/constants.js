@@ -19,7 +19,7 @@ export const sidebarChatbotItems = [
   {
     id: 1,
     path: "/rasa/talk-to-your-bot",
-    title: "Nói chuyện với bot",
+    title: "Trò chuyện với bot của bạn",
     icon: <icons.IoChatbubbleOutline size={20} />,
   },
   {
@@ -67,7 +67,7 @@ export const sidebarChatbotItems = [
       },
       {
         id: 5,
-        path: "/rasa/training-domain",
+        path: "/training-domain",
         title: "Domain",
       },
     ],

@@ -12,13 +12,38 @@ import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { sidebarChatbotItems } from "../../utils/constants";
 import { Link } from "react-router-dom";
 import { images } from "../../assets/images";
-import { ButtonCustom } from "../shares";
+import { ButtonCustom, Loading } from "../shares";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const SidebarChatbot = () => {
   const [open, setOpen] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleTrainModel = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_URL_SERVER}/rasa/data-train`
+      );
+
+      if (res && res.data && res.data.data) {
+        const url = `${process.env.REACT_APP_RASA_SERVER_API_URL}/model/train?save_to_default_model_directory=true&force_training=true`;
+
+        setIsLoading(true);
+        const response = await axios.post(url, res.data.data, {});
+        setIsLoading(false);
+        console.log(response.data);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Train model thất bại");
+      console.error("Error:", error.message);
+    }
+  };
 
   return (
     <div className="bg-blue-gray-900 h-screen w-full p-1 shadow-xl shadow-blue-gray-900/5 border-r border-white">
+      {isLoading && <Loading />}
       <div className="p-4 flex flex-col gap-1 items-center">
         <img src={images.chatbotavatar} alt="" className="h-16 w-16" />
         <Typography className="text-sm font-bold text-light-blue-500">
@@ -71,7 +96,12 @@ const SidebarChatbot = () => {
                         );
                       })}
                       <ListItem className="font-bold text-white">
-                        <ButtonCustom className="w-full">Train</ButtonCustom>
+                        <ButtonCustom
+                          className="w-full"
+                          onClick={handleTrainModel}
+                        >
+                          Train
+                        </ButtonCustom>
                       </ListItem>
                     </List>
                   </AccordionBody>

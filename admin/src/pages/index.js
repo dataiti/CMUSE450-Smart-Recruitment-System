@@ -14,6 +14,8 @@ import NLUTrainingPage from "./chatbot/NLUTrainingPage";
 import DomainTraningPage from "./chatbot/DomainTraningPage";
 import RulesTrainingPage from "./chatbot/RulesTrainingPage";
 import StoriesTrainingPage from "./chatbot/StoriesTrainingPage";
+import ResponseTrainingPage from "./chatbot/ResponseTrainingPage";
+import TalkYourBotPage from "./chatbot/TalkYourBotPage";
 
 export {
   LoginPage,
@@ -32,4 +34,6 @@ export {
   DomainTraningPage,
   RulesTrainingPage,
   StoriesTrainingPage,
+  ResponseTrainingPage,
+  TalkYourBotPage,
 };
