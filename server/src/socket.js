@@ -5,6 +5,8 @@ const Notification = require("../src/models/notification");
 const ApplyJob = require("../src/models/applyJob");
 const Schedule = require("../src/models/schedule");
 const Chatbot = require("../src/models/chatbot");
+const RasaConversation = require("../src/models/rasaConversation");
+const RasaMessage = require("../src/models/rasaMessage");
 const { model } = require("./configs/googleAIConfig");
 
 const socket = async (socket, io) => {
@@ -644,6 +646,182 @@ const socket = async (socket, io) => {
       socket.emit("employer_get_list_notifications", {
         success: true,
         message: listNotifications,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  // chatbot rasa
+  socket.on("start_conversation_with_rasa_chatbot", async (data) => {
+    try {
+      const { from, to } = data;
+
+      if (!from || !to) return;
+
+      // Kiểm tra xem trong cuộc trò chuyện đã tồn tại chưa
+      const existingConversation = await RasaConversation.find({
+        participantsIds: { $size: 2, $all: [from, to] },
+      })
+        .populate("participantsIds", "firstName lastName avatar email")
+        .populate({
+          path: "messageIds",
+          populate: {
+            path: "senderId",
+            model: "User",
+            select: "firstName lastName avatar email",
+          },
+        });
+
+      // Nếu cuộc trò chuyện chưa tồn tại, tạo mới to và from
+      if (existingConversation.length === 0) {
+        let newRasaConversation = new RasaConversation({
+          participantsIds: [from, to],
+        });
+        await newRasaConversation.save();
+
+        // Gửi thông tin về cuộc trò chuyện mới được tạo đến client
+        const newConversation = await RasaConversation.findById(
+          newRasaConversation._id
+        )
+          .populate("participantsIds", "firstName lastName avatar email")
+          .populate({
+            path: "messageIds",
+            populate: {
+              path: "senderId",
+              model: "User",
+              select: "firstName lastName avatar email",
+            },
+          });
+
+        socket.emit("conversation_started_with_chatbot", {
+          success: true,
+          data: newConversation,
+        });
+      } else {
+        // Nếu cuộc trò chuyện đã tồn tại, trả về thông tin của cuộc trò chuyện
+        socket.emit("conversation_started_with_chatbot", {
+          success: true,
+          data: existingConversation[0],
+        });
+      }
+    } catch (error) {
+      console.error(
+        "Error handling start_conversation_with_chatbot event:",
+        error
+      );
+    }
+  });
+
+  socket.on("send_question_rasa_chatbot", async (data) => {
+    try {
+      const { from, to, message, conversationId } = data;
+
+      if (!from || !to || !message || !conversationId) return;
+
+      const findFrom = await User.findById(from);
+      const findTo = await User.findById(to);
+
+      // Kiểm tra nếu không có người gửi và người nhận trong DB thì return
+      if (!findFrom || !findTo) return;
+
+      // Tạo mesage mới và lưu
+      const newRasaMessage = new RasaMessage({
+        senderId: from,
+        conversationId,
+        message,
+      });
+
+      await newRasaMessage.save();
+
+      // Tìm và thêm message vừa tạo vào cuộc trò chuyện
+      const findConversation = await RasaConversation.findById({
+        _id: conversationId,
+      })
+        .populate("participantsIds", "firstName lastName avatar email")
+        .populate({
+          path: "messageIds",
+          populate: {
+            path: "senderId",
+            model: "User",
+            select: "firstName lastName avatar email",
+          },
+        });
+
+      findConversation.messageIds.push(newRasaMessage._id);
+
+      await findConversation.save();
+
+      const findMessage = await RasaMessage.findById(
+        newRasaMessage._id
+      ).populate("senderId", "firstName lastName avatar email");
+
+      // gửi tin data lại cho người gửi
+      io.to(findFrom?.socketId).emit("question_sent_to_rasa_chatbot", {
+        success: true,
+        data: findMessage,
+      });
+
+      // gửi tin data lại cho người nhận
+      io.to(findTo?.socketId).emit("question_sent_to_rasa_chatbot", {
+        success: true,
+        data: findMessage,
+      });
+    } catch (error) {}
+  });
+
+  socket.on("list_conversations_rasa_chatbot", async (data) => {
+    try {
+      const { userId } = data;
+
+      if (!userId) return;
+
+      const findUser = await User.findById(userId);
+
+      // Kiểm tra nếu không tìm thấy người dùng trong DB thì return
+      if (!findUser) return;
+
+      // Tìm tất cả cuộc trò chuyện của người dùng
+      const findConversations = await RasaConversation.find({
+        participantsIds: userId,
+      })
+        .populate("participantsIds", "firstName lastName avatar email")
+        .populate("messageIds");
+
+      // Sắp xếp danh sách cuộc trò chuyện theo thời gian mới nhất
+      findConversations.sort((a, b) => {
+        const lastMessageTimeA =
+          a.messageIds.length > 0
+            ? a.messageIds[a.messageIds.length - 1].createdAt
+            : a.createdAt;
+        const lastMessageTimeB =
+          b.messageIds.length > 0
+            ? b.messageIds[b.messageIds.length - 1].createdAt
+            : b.createdAt;
+        return new Date(lastMessageTimeB) - new Date(lastMessageTimeA);
+      });
+
+      // Định dạng lại dữ liệu để trả về
+      const result = findConversations.map((conversation) => {
+        const lastMessage =
+          conversation.messageIds.length > 0
+            ? conversation.messageIds[conversation.messageIds.length - 1]
+            : "Các bạn đã được kết nối";
+        const sender = conversation.participantsIds.find(
+          (participant) => participant._id.toString() !== userId.toString()
+        );
+
+        return {
+          _id: conversation._id,
+          sender,
+          lastMessage,
+        };
+      });
+
+      // Gửi danh sách cuộc trò chuyện về cho người dùng
+      socket.emit("get_list_conversations_rasa_chatbot", {
+        success: true,
+        data: result,
       });
     } catch (error) {
       console.error(error);
