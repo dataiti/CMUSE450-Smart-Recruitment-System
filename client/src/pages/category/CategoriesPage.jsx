@@ -1,32 +1,29 @@
-import { Breadcrumbs, Input, Typography } from "@material-tailwind/react";
+import { Breadcrumbs, Input } from "@material-tailwind/react";
 import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+
+import { useGetListOfJobsQuery } from "../../redux/features/apis/jobApi";
+import { jobSelect, setListJobs } from "../../redux/features/slices/jobSlice";
+import { authSelect } from "../../redux/features/slices/authSlice";
+
 import { icons } from "../../utils/icons";
 import { CategoryBar } from "../../components/layouts";
 import { orderByOptions, sortByOptions } from "../../utils/constants";
 import { useDebounce } from "../../hooks";
-import { useGetListOfJobsQuery } from "../../redux/features/apis/jobApi";
-import { jobSelect, setListJobs } from "../../redux/features/slices/jobSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { JobCard } from "../../components/jobs";
-import { videos } from "../../assets/videos";
 import {
-  ButtonCustom,
   PaginationOption,
   DrawerCustom,
   Loading,
   SelectCustom,
   JobDetailDrawer,
 } from "../../components/shares";
-import { authSelect } from "../../redux/features/slices/authSlice";
 
 const CategoriesPage = () => {
   const dispatch = useDispatch();
-
   const { listJobs, totalPage, count } = useSelector(jobSelect);
   const { user } = useSelector(authSelect);
-
-  const location = useLocation();
 
   const [industryFilter, setIndustryFilter] = useState([]);
   const [rating, setRating] = useState(0);
@@ -48,6 +45,8 @@ const CategoriesPage = () => {
 
   const searchDebouceValue = useDebounce(search, 800);
 
+  const location = useLocation();
+
   const { data: listJobsData, isFetching } = useGetListOfJobsQuery(
     {
       search: searchDebouceValue,
@@ -63,22 +62,24 @@ const CategoriesPage = () => {
       rating: rating,
       salaryFrom,
       salaryTo,
-      candidateId: user?.candidateId?._id || "",
+      candidateId: user.candidateId?._id || "",
     },
-    { refetchOnMountOrArgChange: true }
+    { skip: !user, refetchOnMountOrArgChange: true }
   );
 
+  // Cuộn đến đầu trang khi component được render
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Xử lý thay đổi tham số category trong query string
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const paramValue = queryParams.get("category");
-
     if (paramValue) setIndustryFilter((prev) => [...prev, paramValue]);
   }, [location.search]);
 
+  // Cập nhật danh sách công việc nếu có dữ liệu mới
   useEffect(() => {
     if (listJobsData && listJobsData.success) {
       dispatch(
@@ -92,20 +93,22 @@ const CategoriesPage = () => {
     }
   }, [dispatch, listJobsData]);
 
+  // Cập nhật giới hạn số lượng hiển thị công việc
   useEffect(() => {
     setLimit(!isColumnCard ? 4 : 8);
   }, [isColumnCard]);
 
+  // Lắng nghe sự kiện scroll để cập nhật trạng thái của thanh điều hướng
   useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > 90 ? true : false);
-    };
+    const handleScroll = () => setIsSticky(window.scrollY > 90 ? true : false);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Đóng Drawer khi người dùng click ra ngoài
   const closeDrawer = () => setOpenDrawer(false);
 
+  // Xóa bộ lọc đã chọn
   const clearFilters = () => {
     setIndustryFilter([]);
     setRating(0);
@@ -115,6 +118,7 @@ const CategoriesPage = () => {
     setExperienceFilter([]);
   };
 
+  // Xử lý hiển thị chi tiết công việc khi click vào
   const handleViewJobDetail = useCallback(
     ({ _id }) => {
       setJobDetailData(listJobsData?.data.find((job) => job._id === _id));
@@ -122,10 +126,12 @@ const CategoriesPage = () => {
     [listJobsData?.data]
   );
 
+  // Xử lý thay đổi trang hiện tại
   const handlePageChange = ({ selected }) => {
     setPage(selected + 1);
   };
 
+  // Xử lý thay đổi checkbox theo loại
   const handleCheckboxChangeByType = ({ type, value }) => {
     switch (type) {
       case "industry":
@@ -189,25 +195,6 @@ const CategoriesPage = () => {
           />
         </div>
         <div className="w-[76%] flex flex-col gap-2">
-          {/* <div className="flex gap-4 w-full p-2 rounded-md bg-gradient-to-l from-[#304352] to-[#cbd5e1]">
-            <video className="w-[20%] rounded-lg" autoPlay loop>
-              <source src={videos.CVSearching} type="video/mp4" />
-            </video>
-            <div className="w-[80%] flex flex-col gap-2">
-              <Typography className="text-white font-bold text-base">
-                Hệ thống Gợi ý Công việc kết hợp cả hai thuật toán:
-                Collaborative Filtering và Content-Based Filtering để tạo ra một
-                trải nghiệm cá nhân hóa cho ứng viên. Kết hợp 2 thuật toán trên
-                lại sẽ là Hybrid Filtering, kết quả là một danh sách các công
-                việc được đề xuất dựa trên sở thích và kỹ năng cá nhân của ứng
-                viên, mang lại trải nghiệm gợi ý cá nhân và đa dạng trong sự
-                nghiệp của họ.
-              </Typography>
-              <Link to="/recommender-job">
-                <ButtonCustom>Xem gợi ý công việc phù hợp với bạn</ButtonCustom>
-              </Link>
-            </div>
-          </div> */}
           <div
             className={`grid grid-cols-4 gap-2 bg-white rounded-md p-3 sticky z-20 top-[80px] ${
               isSticky ? "shadow-lg" : "shadow-none"
@@ -225,6 +212,7 @@ const CategoriesPage = () => {
                     </span>
                   )
                 }
+                color="blue"
               />
             </div>
             <div>

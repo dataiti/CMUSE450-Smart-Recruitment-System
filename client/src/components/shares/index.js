@@ -27,8 +27,12 @@ import Followings from "./Followings";
 import ListNotification from "./ListNotification";
 import JobStatusBadge from "./JobStatusBadge";
 import JobDetailDrawer from "./JobDetailDrawer";
+import TypographyCustom from "./TypographyCustom";
+import JobInfoHeader from "./JobInfoHeader";
 
 export {
+  JobInfoHeader,
+  TypographyCustom,
   JobStatusBadge,
   Address,
   BoxChat,
