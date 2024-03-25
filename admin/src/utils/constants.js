@@ -24,7 +24,7 @@ export const sidebarChatbotItems = [
   },
   {
     id: 2,
-    path: "/rasa/conversation",
+    path: "/rasa/conversations",
     title: "Cuộc hội thoại",
     icon: <icons.IoChatbubblesOutline size={20} />,
   },
