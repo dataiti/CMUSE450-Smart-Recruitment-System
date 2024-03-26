@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 import { authSelect } from "../../redux/features/slices/authSlice";
+import { images } from "../../assets/images";
 
 const Message = ({ message }) => {
   const { user } = useSelector(authSelect);
@@ -17,14 +18,22 @@ const Message = ({ message }) => {
       {user?._id !== message?.senderId?._id ? (
         <div className="flex gap-2 w-full">
           <Avatar
-            src={message?.senderId?.avatar}
+            src={
+              message?.senderId === "user"
+                ? images.chatbotavatar
+                : message?.senderId?.avatar
+            }
             alt=""
-            className="h-10 w-10"
+            className={`${
+              message?.senderId === "user"
+                ? "bg-blue-gray-700 p-1 rounded-full"
+                : ""
+            } h-10 w-10`}
           />
           <Typography
-            className={`text-sm font-bold max-w-[70%] p-3 rounded-bl-xl rounded-br-xl ${
+            className={`text-sm font-semibold max-w-[70%] p-3 rounded-bl-xl rounded-br-xl ${
               user?._id !== message?.senderId?._id
-                ? "bg-gray-100 text-blue-gray-400 rounded-tl-sm rounded-tr-xl"
+                ? "bg-white text-black rounded-tl-sm rounded-tr-xl"
                 : "bg-blue-gray-800 text-white rounded-tr-sm rounded-tl-xl"
             }`}
           >
@@ -33,9 +42,9 @@ const Message = ({ message }) => {
         </div>
       ) : (
         <Typography
-          className={`whitespace-pre-line text-sm font-bold max-w-[70%] p-3 rounded-bl-xl rounded-br-xl ${
+          className={`whitespace-pre-line text-sm font-semibold max-w-[70%] p-3 rounded-bl-xl rounded-br-xl ${
             user?._id !== message?.senderId?._id
-              ? "bg-gray-100 text-blue-gray-400 rounded-tl-sm rounded-tr-xl"
+              ? "bg-white text-black rounded-tl-sm rounded-tr-xl"
               : "bg-blue-gray-800 text-white rounded-tr-sm rounded-tl-xl"
           }`}
         >

@@ -390,3 +390,14 @@ export const thongsodata = [
   { id: 4, value: 0, name: "Người theo dõi" },
   { id: 5, value: 0, name: "DCMMM" },
 ];
+
+export const swalConfig = {
+  title: "Bạn có chắc không ?",
+  text: "Bạn sẽ không thể hoàn tác điều này!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#0B5345 ",
+  cancelButtonColor: "#A93226",
+  confirmButtonText: "Vâng, xoá !",
+  cancelButtonText: "Huỷ",
+};

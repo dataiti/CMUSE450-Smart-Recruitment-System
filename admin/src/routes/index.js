@@ -1,5 +1,7 @@
 import { Navigate } from "react-router-dom";
+
 import { AuthLayout, DashboardLayout, ChatbotLayout } from "../layouts";
+import { ProtectedRoutes } from "../components/shares";
 import {
   LoginPage,
   DashboardPage,
@@ -16,8 +18,9 @@ import {
   Response,
   TalkYourBot,
   Conversation,
+  Model,
+  NLUInbox,
 } from "../pages";
-import { ProtectedRoutes } from "../components/shares";
 
 const routers = [
   {
@@ -43,6 +46,14 @@ const routers = [
       {
         path: "/rasa/conversations",
         element: <Conversation />,
+      },
+      {
+        path: "/rasa/nlu-inbox",
+        element: <NLUInbox />,
+      },
+      {
+        path: "/rasa/model",
+        element: <Model />,
       },
       {
         path: "training-stories",

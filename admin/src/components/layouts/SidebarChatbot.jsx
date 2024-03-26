@@ -95,14 +95,6 @@ const SidebarChatbot = () => {
                           </Link>
                         );
                       })}
-                      <ListItem className="font-bold text-white">
-                        <ButtonCustom
-                          className="w-full"
-                          onClick={handleTrainModel}
-                        >
-                          Train
-                        </ButtonCustom>
-                      </ListItem>
                     </List>
                   </AccordionBody>
                 </Accordion>
@@ -117,6 +109,15 @@ const SidebarChatbot = () => {
             </>
           );
         })}
+        <ListItem className="font-bold text-white">
+          <ButtonCustom
+            fullWidth
+            onClick={handleTrainModel}
+            className="bg-light-blue-600"
+          >
+            Train
+          </ButtonCustom>
+        </ListItem>
       </List>
     </div>
   );

@@ -1,5 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { icons } from "../../utils/icons";
+import { ButtonCustom } from "../shares";
 
 const Search = ({
   searchValue,
@@ -12,6 +15,15 @@ const Search = ({
   setUtterValue = () => {},
   setTextValue = () => {},
 }) => {
+  const handleResetForm = () => {
+    setIsAddForm(true);
+    setSelected("");
+    setItem("");
+    setIsEditForm(false);
+    setUtterValue("");
+    setTextValue("");
+  };
+
   return (
     <div className="h-[60px] px-4 border-b border-blue-gray-300 flex items-center gap-3">
       <span className="text-gray-600">
@@ -23,21 +35,27 @@ const Search = ({
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
       />
-      <button
-        className="bg-blue-gray-800 rounded-md px-4 py-2 text-xs font-bold hover:bg-blue-gray-600 text-white transition-all"
-        onClick={() => {
-          setIsAddForm(true);
-          setSelected("");
-          setItem("");
-          setIsEditForm(false);
-          setUtterValue("");
-          setTextValue("");
-        }}
+      <ButtonCustom
+        className="bg-blue-gray-800 text-white"
+        onClick={handleResetForm}
+        size="sm"
       >
         Thêm
-      </button>
+      </ButtonCustom>
     </div>
   );
+};
+
+Search.propTypes = {
+  searchValue: PropTypes.string,
+  placeholder: PropTypes.string,
+  setSearchValue: PropTypes.func,
+  setIsAddForm: PropTypes.func,
+  setSelected: PropTypes.func,
+  setItem: PropTypes.func,
+  setIsEditForm: PropTypes.func,
+  setUtterValue: PropTypes.func,
+  setTextValue: PropTypes.func,
 };
 
 export default Search;

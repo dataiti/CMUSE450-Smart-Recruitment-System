@@ -10,8 +10,17 @@ import {
   useGetNLUDataQuery,
 } from "../../redux/features/apis/rasas/nluApi";
 import { icons } from "../../utils/icons";
-import { InputSelectCustom, Search } from "../../components/chatbot";
-import { Loading } from "../../components/shares";
+import {
+  HeaderChatbot,
+  InputSelectCustom,
+  Search,
+} from "../../components/chatbot";
+import {
+  ButtonCustom,
+  Loading,
+  TypographyCustom,
+} from "../../components/shares";
+import { swalConfig } from "../../utils/constants";
 
 const NLU = () => {
   const [exampleSearchValue, setExampleSearchValue] = useState("");
@@ -39,29 +48,34 @@ const NLU = () => {
     }
   }, [listIntentData]);
 
+  // Hàm xử lý gọi API thêm một intent vào nlu.yml
   const handleAddNewIntent = async () => {
     try {
       const res = await addIntentItem({
         data: { intentName: intentValue, exampleItem: exampleValue },
       });
+
       if (res && res.data) {
-        setExampleValue("");
-        setIntentValue("");
         setListIntent((prev) => {
           if (!prev.includes(res.data.data.intent)) {
             return [res.data.data.intent, ...prev];
           }
           return prev;
         });
+
         setListNLUData((prev) => [
           { example: exampleValue, intent: intentValue },
           ...prev,
         ]);
+
         toast.success("Thêm example thành công !");
       }
+      setExampleValue("");
+      setIntentValue("");
     } catch (error) {}
   };
 
+  // Hàm xử lý gọi API chỉnh sửa một example trong intent vào nlu.yml
   const handleUpdateExampleItem = async ({ exampleItem, intentName }) => {
     try {
       setIsAddExampleForm(true);
@@ -70,47 +84,40 @@ const NLU = () => {
     } catch (error) {}
   };
 
+  // Hàm xử lý gọi API xoá một example của intent trong nlu.yml
   const handleDeleteExampleItem = async ({ exampleItem, intentName }) => {
     try {
-      Swal.fire({
-        title: "Bạn có chắc không ?",
-        text: "Bạn sẽ không thể hoàn tác điều này!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#0B5345 ",
-        cancelButtonColor: "#A93226",
-        confirmButtonText: "Vâng, xoá !",
-        cancelButtonText: "Huỷ",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const res = await deleteExampleItem({ exampleItem, intentName });
-          if (res && res.data && res.data.success) {
-            console.log({ exampleItem, intentName });
-            setListNLUData((prev) => {
-              return prev.filter(
-                (intent) =>
-                  intent.example !== exampleItem && intent.intent !== intentName
-              );
-            });
-            toast.success("Xoá thành công");
-          }
+      const swalResult = await Swal.fire(swalConfig);
+
+      if (swalResult.isConfirmed) {
+        const res = await deleteExampleItem({ exampleItem, intentName });
+
+        if (res && res.data && res.data.success) {
+          setListNLUData((prev) => {
+            return prev.filter(
+              (intent) =>
+                intent.example !== exampleItem && intent.intent !== intentName
+            );
+          });
+
+          toast.success("Xoá thành công");
         }
-      });
+      }
     } catch (error) {}
   };
 
   return (
     <div className="h-screen">
       {(isLoading || isFetching) && <Loading />}
-      <div className="h-[60px] flex items-center w-full px-4 bg-white">
-        <Typography className="font-bold">NLU Training Data</Typography>
-      </div>
+      <HeaderChatbot title="NLU Training Data" />
       <div className="py-7 px-16">
         <div className="relative h-[620px] w-full bg-white rounded-lg">
           <Search
             searchValue={exampleSearchValue}
             setSearchValue={setExampleSearchValue}
             setIsAddForm={setIsAddExampleForm}
+            setSelected={setIntentValue}
+            setItem={setExampleValue}
             placeholder="Tìm kiếm example"
           />
           {isAddExampleForm && (
@@ -120,84 +127,85 @@ const NLU = () => {
                   className="bg-white"
                   value={exampleValue}
                   onChange={(e) => setExampleValue(e.target.value)}
+                  color="blue"
                   label="Thêm một example mới"
                   spellCheck={false}
                 />
               </div>
               <div className="col-span-1 relative">
                 <InputSelectCustom
-                  handleAddNewIntent={handleAddNewIntent}
-                  setIsFocus={setIsFocus}
-                  isFocus={isFocus}
-                  setValue={setIntentValue}
+                  label="Chọn hoặc tạo một intent"
                   value={intentValue}
+                  setValue={setIntentValue}
                   listItem={listIntent}
                   setListItem={setListIntent}
                   setListNLUData={setListNLUData}
-                  label="Chọn hoặc tạo một intent"
+                  handleAddNewIntent={handleAddNewIntent}
+                  setIsFocus={setIsFocus}
+                  isFocus={isFocus}
                 />
               </div>
               <div className="col-span-1 flex justify-end gap-2">
-                <button
-                  className="border-2 border-blue-gray-800 text-blue-gray-800 bg-white rounded-md px-6 py-2 text-xs font-bold hover:bg-blue-gray-100 transition-all"
+                <ButtonCustom
+                  className="border-2 border-blue-gray-800 text-blue-gray-800 bg-white"
                   onClick={() => setIsAddExampleForm(false)}
+                  variant="outlined"
                 >
                   Huỷ
-                </button>
-                <button
-                  className="bg-blue-gray-800 text-white rounded-md px-6 py-2 text-xs font-bold hover:bg-blue-gray-700 transition-all"
+                </ButtonCustom>
+                <ButtonCustom
+                  className="bg-blue-gray-800 text-white"
                   onClick={handleAddNewIntent}
                 >
                   Lưu
-                </button>
+                </ButtonCustom>
               </div>
             </div>
           )}
           <div className="h-[calc(620px-60px)] overflow-y-auto">
             <div className="h-full w-full">
-              <div>
-                {listNLUData?.map((nluItem, index) => {
-                  return (
-                    <div
-                      className="group grid grid-cols-4 hover:bg-gray-100 transition-all cursor-pointer border-b py-2 px-4"
-                      key={`${nluItem.intent}-${index}`}
-                    >
-                      <Typography className="text-sm text-gray-700 font-bold col-span-2">
-                        {nluItem.example}
+              {listNLUData?.map((nluItem, index) => {
+                return (
+                  <div
+                    className="group grid grid-cols-4 hover:bg-gray-100 transition-all cursor-pointer border-b py-2 px-4"
+                    key={`${nluItem.intent}-${index}`}
+                  >
+                    <TypographyCustom
+                      text={nluItem.example}
+                      className="col-span-2"
+                    />
+                    <div className="flex justify-center">
+                      <Typography className="text-center text-xs font-bold text-green-500 py-2 px-6 rounded-md bg-green-50">
+                        {nluItem.intent}
                       </Typography>
-                      <div className="flex justify-center">
-                        <Typography className="text-center text-xs text-green-500 font-bold py-2 px-6 rounded-md bg-green-50">
-                          {nluItem.intent}
-                        </Typography>
-                      </div>
-                      <div className="flex justify-end items-center gap-2">
-                        <button
-                          className="hidden group-hover:inline-block text-gray-600 hover:bg-blue-gray-700 p-2 rounded-md hover:text-white"
-                          onClick={() =>
-                            handleUpdateExampleItem({
-                              exampleItem: nluItem.example,
-                              intentName: nluItem.intent,
-                            })
-                          }
-                        >
-                          <icons.FiEdit size={18} />
-                        </button>
-                        <button
-                          className="hidden group-hover:inline-block text-gray-600 hover:bg-blue-gray-700 p-1 rounded-md hover:text-white"
-                          onClick={() =>
-                            handleDeleteExampleItem({
-                              exampleItem: nluItem.example,
-                              intentName: nluItem.intent,
-                            })
-                          }
-                        >
-                          <icons.MdDeleteForever size={26} />
-                        </button>
-                      </div>
                     </div>
-                  );
-                })}
-              </div>
+                    <div className="flex justify-end items-center gap-2">
+                      <button
+                        className="hidden group-hover:inline-block text-gray-600 hover:bg-blue-gray-700 p-2 rounded-md hover:text-white"
+                        onClick={() =>
+                          handleUpdateExampleItem({
+                            exampleItem: nluItem.example,
+                            intentName: nluItem.intent,
+                          })
+                        }
+                      >
+                        <icons.FiEdit size={18} />
+                      </button>
+                      <button
+                        className="hidden group-hover:inline-block text-gray-600 hover:bg-blue-gray-700 p-1 rounded-md hover:text-white"
+                        onClick={() =>
+                          handleDeleteExampleItem({
+                            exampleItem: nluItem.example,
+                            intentName: nluItem.intent,
+                          })
+                        }
+                      >
+                        <icons.MdDeleteForever size={26} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

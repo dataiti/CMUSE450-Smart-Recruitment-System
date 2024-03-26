@@ -1,6 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { Typography } from "@material-tailwind/react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import jsyaml from "js-yaml";
 
@@ -8,8 +6,8 @@ import {
   useReadDomainDataQuery,
   useWriteDomainDataMutation,
 } from "../../redux/features/apis/rasas/domainApi";
-import { Loading } from "../../components/shares";
-import { YamlEditor } from "../../components/chatbot";
+import { ButtonCustom, Loading } from "../../components/shares";
+import { HeaderChatbot, YamlEditor } from "../../components/chatbot";
 
 const Domain = () => {
   const [yamlValue, setYamlValue] = useState("");
@@ -23,15 +21,7 @@ const Domain = () => {
     }
   }, [domainData]);
 
-  const handleChange = (newValue) => {
-    try {
-      setYamlValue(newValue);
-    } catch (error) {
-      console.error("YAML Error:", error.message);
-      toast.error("Sai cu phap kia");
-    }
-  };
-
+  // Hàm xử lý gọi API ghi file domain.yml
   const handleWriteDomainFile = async () => {
     try {
       const res = await writeDomainData({ data: jsyaml.load(yamlValue) });
@@ -45,25 +35,12 @@ const Domain = () => {
     <div className="h-screen w-full p-10">
       {(isFetching || isLoading) && <Loading />}
       <div className="h-[660px] bg-white rounded-md">
-        <div className="h-[60px] border-b border-blue-gray-300 px-4 flex items-center">
-          <Typography className="text-gray-600 font-bold">
-            domain.yml
-          </Typography>
-        </div>
+        <HeaderChatbot title="domain.yml" />
         <div className="h-[calc(660px-120px)] overflow-y-auto">
-          <YamlEditor
-            yamlValue={yamlValue}
-            setYamlValue={setYamlValue}
-            handleChange={handleChange}
-          />
+          <YamlEditor yamlValue={yamlValue} setYamlValue={setYamlValue} />
         </div>
         <div className="h-[60px] border-t border-blue-gray-300 flex justify-end p-2">
-          <button
-            className="px-6 py-1 rounded-md bg-blue-gray-900 text-sm font-bold text-white"
-            onClick={handleWriteDomainFile}
-          >
-            Lưu
-          </button>
+          <ButtonCustom onClick={handleWriteDomainFile}>Lưu</ButtonCustom>
         </div>
       </div>
     </div>

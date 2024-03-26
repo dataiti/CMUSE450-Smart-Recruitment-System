@@ -2,11 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { Avatar } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 
-import { ListConversation, Message } from "../../components/chatbot";
+import {
+  FooterChatbot,
+  HeaderChatbot,
+  ListConversation,
+  Message,
+} from "../../components/chatbot";
 import { socket } from "../../socket";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { TypographyCustom } from "../../components/shares";
-import { icons } from "../../utils/icons";
 import { images } from "../../assets/images";
 
 const Conversation = () => {
@@ -32,16 +36,35 @@ const Conversation = () => {
     if (socket) {
       handleGetListConversation();
 
-      socket.on(
-        "question_sent_to_rasa_chatbot",
-        handleQuestionSentToRasaChatbot
-      );
+      // Lắng nghe sự kiện bắt đầu cuộc trò chuyện với Rasa Chatbot
+      socket.on("question_sent_to_rasa_chatbot", ({ success, data }) => {
+        try {
+          if (success && selectedConversation?._id === data.conversationId) {
+            setCurrentConversation((prev) => ({
+              ...prev,
+              messageIds: [...prev.messageIds, data],
+            }));
 
-      socket.on(
-        "conversation_started_with_chatbot",
-        handleConversationStartedWithChatbot
-      );
+            handleGetListConversation();
+          }
+          setInputMessage("");
+        } catch (error) {
+          console.error(error);
+        }
+      });
 
+      // Lắng nghe sự kiện nhận câu hỏi từ Rasa Chatbot
+      socket.on("conversation_started_with_chatbot", ({ success, data }) => {
+        try {
+          if (success) {
+            setCurrentConversation(data);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
+
+      // Gửi sự kiện lấy dữ liệu khi bắt đầu một cuộc trò chuyện
       socket.emit("start_conversation_with_rasa_chatbot", {
         from: user?._id,
         to: selectedConversation?.sender?._id,
@@ -51,38 +74,11 @@ const Conversation = () => {
       return () => {
         socket.off("question_sent_to_rasa_chatbot");
         socket.off("conversation_started_with_chatbot");
+        socket.off("get_list_conversations_rasa_chatbot");
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, selectedConversation]);
-
-  // Hàm xử lý sự kiện nhận câu hỏi từ Rasa Chatbot
-  const handleQuestionSentToRasaChatbot = ({ success, data }) => {
-    try {
-      if (success && selectedConversation?._id === data.conversationId) {
-        setCurrentConversation((prev) => ({
-          ...prev,
-          messageIds: [...prev.messageIds, data],
-        }));
-
-        handleGetListConversation();
-        setInputMessage("");
-      } else {
-        console.error("Failed to start conversation:", data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // Hàm xử lý sự kiện bắt đầu cuộc trò chuyện với Rasa Chatbot
-  const handleConversationStartedWithChatbot = ({ success, data }) => {
-    if (success) {
-      setCurrentConversation(data);
-    } else {
-      console.error("Failed to start conversation:", data);
-    }
-  };
 
   // Hàm xử lý lấy danh sách các cuộc trò chuyện
   const handleGetListConversation = () => {
@@ -102,21 +98,21 @@ const Conversation = () => {
 
   // Hàm xử lý gửi message
   const handleSendMessage = async () => {
+    if (!inputMessage) return;
     // sendMessage();
   };
 
   // Hàm xử lý gửi message khi nhấn phím Enter
   const handleEnterMessage = async (e) => {
-    if (e.key === "Enter") {
+    if (!inputMessage) return;
+    else if (e.key === "Enter") {
       // sendMessage();
     }
   };
 
   return (
     <div className="h-screen w-full">
-      <div className="bg-white h-[60px] w-full flex items-center px-8 border-b border-blue-gray-100">
-        <TypographyCustom className="font-bold" text="Cuộc trò chuyện" />
-      </div>
+      <HeaderChatbot title="Cuộc trò chuyện" />
       <div className="w-full flex">
         <ListConversation
           listConversation={listConversation}
@@ -152,22 +148,12 @@ const Conversation = () => {
                   return <Message message={message} key={message?._id} />;
                 })}
             </div>
-            <div className="flex items-center gap-2 px-4 h-[60px] border-t border-blue-gray-100 bg-white">
-              <input
-                className="w-full outline-none border-none p-3 rounded-md text-sm font-bold text-gray-600 bg-blue-gray-50 placeholder:text-sm placeholder:text-light-blue-500 placeholder:font-bold"
-                spellCheck={false}
-                placeholder="Nhập câu trả lời"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyDown={handleEnterMessage}
-              />
-              <button
-                className="bg-blue-gray-900 text-light-blue-500 p-3 rounded-md"
-                onClick={handleSendMessage}
-              >
-                <icons.IoSendSharp size={20} />
-              </button>
-            </div>
+            <FooterChatbot
+              inputMessage={inputMessage}
+              setInputMessage={setInputMessage}
+              onEnterMessage={handleEnterMessage}
+              onSendMessage={handleSendMessage}
+            />
           </div>
         ) : (
           <div className="h-[calc(100vh-60px)] w-[calc(100%-330px)] bg-white p-3 flex items-center justify-center">

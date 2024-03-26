@@ -36,12 +36,7 @@ const FlowStories = ({ steps = [] }) => {
 };
 
 FlowStories.propTypes = {
-  steps: PropTypes.arrayOf(
-    PropTypes.shape({
-      intent: PropTypes.string,
-      action: PropTypes.string,
-    })
-  ),
+  steps: PropTypes.array,
 };
 
 export default FlowStories;

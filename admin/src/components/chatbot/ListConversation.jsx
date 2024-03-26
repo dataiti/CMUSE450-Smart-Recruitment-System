@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar } from "@material-tailwind/react";
+import PropTypes from "prop-types";
 
 import { TypographyCustom } from "../shares";
 import { timeAgo } from "../../utils/fn";
@@ -30,7 +31,7 @@ const ListConversation = ({
                 key={conversation._id}
                 className={`flex items-center gap-3 p-3  transition-all rounded-md cursor-pointer ${
                   conversation?._id === selectedConversation?._id
-                    ? "bg-blue-gray-300"
+                    ? "bg-cyan-900"
                     : "bg-blue-gray-50 hover:bg-blue-gray-100"
                 }`}
                 onClick={() => handleSelectedConversation({ conversation })}
@@ -46,11 +47,17 @@ const ListConversation = ({
                       text={`${conversation?.sender?.firstName} ${conversation?.sender?.lastName}`}
                       className={`${
                         conversation?._id === selectedConversation?._id
-                          ? "font-bold text-light-blue-200"
+                          ? "font-bold text-light-blue-500"
                           : ""
                       }`}
                     />
-                    <span className="text-[10px] text-gray-800 font-semibold">
+                    <span
+                      className={`text-[10px] font-semibold"  ${
+                        conversation?._id === selectedConversation?._id
+                          ? "text-white"
+                          : "text-gray-700"
+                      }`}
+                    >
                       {timeAgo(new Date(conversation?.lastMessage?.createdAt))}
                     </span>
                   </div>
@@ -72,6 +79,12 @@ const ListConversation = ({
       </ul>
     </div>
   );
+};
+
+ListConversation.propTypes = {
+  listConversation: PropTypes.array,
+  selectedConversation: PropTypes.object,
+  setSelectedConversation: PropTypes.func,
 };
 
 export default ListConversation;

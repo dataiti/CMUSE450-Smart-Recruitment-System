@@ -16,6 +16,8 @@ import Stories from "./chatbot/Stories";
 import Response from "./chatbot/Response";
 import TalkYourBot from "./chatbot/TalkYourBot";
 import Conversation from "./chatbot/Conversation";
+import Model from "./chatbot/Model";
+import NLUInbox from "./chatbot/NLUInbox";
 
 export {
   LoginPage,
@@ -36,4 +38,6 @@ export {
   Response,
   TalkYourBot,
   Conversation,
+  Model,
+  NLUInbox,
 };

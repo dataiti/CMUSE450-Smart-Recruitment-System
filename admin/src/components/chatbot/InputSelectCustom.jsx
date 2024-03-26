@@ -1,19 +1,20 @@
-import React from "react";
-import { Input, Typography } from "@material-tailwind/react";
+import React, { useRef, useEffect } from "react";
+import { Input } from "@material-tailwind/react";
+import PropTypes from "prop-types";
+
 import { icons } from "../../utils/icons";
-import { useRef } from "react";
-import { useEffect } from "react";
 import { useDeleteIntentMutation } from "../../redux/features/apis/rasas/nluApi";
+import { TypographyCustom } from "../shares";
 
 const InputSelectCustom = ({
-  setValue,
+  label,
   value,
   listItem,
+  isFocus,
+  setValue,
   setListItem,
   setIsFocus,
-  isFocus,
   setListNLUData,
-  label,
 }) => {
   const [deleteIntent] = useDeleteIntentMutation();
 
@@ -52,10 +53,10 @@ const InputSelectCustom = ({
         className="bg-white"
         label={label}
         icon={<icons.FiChevronDown />}
-        spellCheck="false"
+        spellCheck={false}
         ref={intentRef}
         value={value}
-        // onKeyDown={handleEnterKeywordSearch}
+        color="blue"
         onChange={(e) => {
           setValue(e.target.value);
           setIsFocus(true);
@@ -72,9 +73,7 @@ const InputSelectCustom = ({
                   onClick={() => setValue(item?.utterName || item)}
                   key={`${item || item?.utterName}-${index}`}
                 >
-                  <Typography className="text-sm font-bold text-gray-600 ">
-                    {item?.utterName || item}
-                  </Typography>
+                  <TypographyCustom text={item?.utterName || item} />
                   <button
                     className="text-gray-600 hover:text-gray-800"
                     onClick={() =>
@@ -88,10 +87,7 @@ const InputSelectCustom = ({
             })}
           </ul>
           <div className="border-t">
-            <button
-              className="text-light-blue-500 p-2 font-bold text-sm w-full h-full hover:bg-gray-200"
-              // onClick={handleAddNewIntent}
-            >
+            <button className="text-light-blue-500 p-2 font-bold text-sm w-full h-full hover:bg-gray-200">
               Tạo một intent mới
             </button>
           </div>
@@ -99,6 +95,17 @@ const InputSelectCustom = ({
       )}
     </>
   );
+};
+
+InputSelectCustom.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+  listItem: PropTypes.array,
+  isFocus: PropTypes.bool,
+  setValue: PropTypes.func,
+  setListItem: PropTypes.func,
+  setIsFocus: PropTypes.func,
+  setListNLUData: PropTypes.func,
 };
 
 export default InputSelectCustom;

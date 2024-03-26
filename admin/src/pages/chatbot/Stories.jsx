@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Input, Typography } from "@material-tailwind/react";
+import { Input } from "@material-tailwind/react";
 import jsyaml from "js-yaml";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
-import { FlowStories, Search, YamlEditor } from "../../components/chatbot";
 import {
   useAddStoryMutation,
   useDeleteStoryMutation,
@@ -12,8 +11,16 @@ import {
   useGetStoryQuery,
   useUpdateStoryMutation,
 } from "../../redux/features/apis/rasas/storiesApi";
+
+import {
+  ButtonCustom,
+  Loading,
+  TypographyCustom,
+} from "../../components/shares";
+import { FlowStories, Search, YamlEditor } from "../../components/chatbot";
+
+import { swalConfig } from "../../utils/constants";
 import { icons } from "../../utils/icons";
-import { Loading } from "../../components/shares";
 
 const Stories = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -23,15 +30,16 @@ const Stories = () => {
   const [selectedStory, setSelectedStory] = useState("");
   const [storyItem, setStoryItem] = useState("");
 
-  const { data: storiesData, isFetching } = useGetStoriesDataQuery({});
+  const { data: storiesData, isFetching } = useGetStoriesDataQuery();
   const { data: storyData, isLoading } = useGetStoryQuery(
     { storyName: selectedStory },
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true, skip: !selectedStory }
   );
   const [addStory] = useAddStoryMutation();
   const [deleteStory] = useDeleteStoryMutation();
   const [updateStory] = useUpdateStoryMutation();
 
+  // Lưu stories data vào state khi component được mount lần đầu tiên
   useEffect(() => {
     if (storiesData && storiesData.data) {
       setStoriesValue(storiesData.data);
@@ -40,6 +48,7 @@ const Stories = () => {
     }
   }, [storiesData]);
 
+  // Xử lý set data từ storie.yml khi component được mount
   useEffect(() => {
     try {
       if (storyData && storyData.data) {
@@ -51,16 +60,7 @@ const Stories = () => {
     }
   }, [selectedStory, storyData]);
 
-  const handleChange = (newValue) => {
-    try {
-      jsyaml.load(newValue);
-      setStoryItem(newValue);
-    } catch (error) {
-      console.error("YAML Error:", error.message);
-      toast.error("Sai cu phap kia");
-    }
-  };
-
+  // hàm xử lý goi API lưu story vào stories.yml
   const handleSaveStory = async () => {
     try {
       const data = jsyaml.load(storyItem);
@@ -71,12 +71,15 @@ const Stories = () => {
             if (!prev.find((item) => item?.story === res.data.data.story)) {
               return [...prev, res.data.data];
             }
+
             return prev;
           });
+
           toast.success("Thêm story thành công");
         }
       } else {
         const res = await updateStory({ data, storyName: selectedStory });
+
         if (res && res.data && res.data.success) {
           toast.success("Lưu story thành công");
         }
@@ -84,31 +87,29 @@ const Stories = () => {
     } catch (error) {}
   };
 
+  // hàm xử lý goi API xoá story vào stories.yml
   const handleDeleteStory = async () => {
     try {
-      Swal.fire({
-        title: "Bạn có chắc không ?",
-        text: "Bạn sẽ không thể hoàn tác điều này!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#0B5345 ",
-        cancelButtonColor: "#A93226",
-        confirmButtonText: "Vâng, xoá !",
-        cancelButtonText: "Huỷ",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const res = await deleteStory({ storyName: selectedStory });
-          if (res && res.data && res.data.success) {
-            setStoriesValue((prev) =>
-              prev.filter((item) => item.story !== selectedStory)
-            );
-            setSelectedStory(storiesValue[0] && storiesValue[0].story);
-            setStoryItem("");
-            toast.success("Xoá thành công");
-          }
+      const swalResult = await Swal.fire(swalConfig);
+
+      if (swalResult.isConfirmed) {
+        const res = await deleteStory({ storyName: selectedStory });
+        if (res && res.data && res.data.success) {
+          setStoriesValue((prev) =>
+            prev.filter((item) => item.story !== selectedStory)
+          );
+
+          setSelectedStory(storiesValue[0] && storiesValue[0].story);
+          setStoryItem("");
+          toast.success("Xoá thành công");
         }
-      });
+      }
     } catch (error) {}
+  };
+
+  const handleResetStoryForm = () => {
+    setIsAddStoryForm(false);
+    setSelectedStory(storiesData.data[0].story);
   };
 
   return (
@@ -116,14 +117,14 @@ const Stories = () => {
       {(isFetching || isLoading) && <Loading />}
       <div className="h-[60px] flex w-full border-b border-blue-gray-300">
         <div className="flex items-center justify-center w-[20%] h-full border-r border-blue-gray-300">
-          <Typography className="font-bold">Stories</Typography>
+          <TypographyCustom text="Stories" className="font-bold" />
         </div>
         <div className="w-[80%]">
           <Search
             searchValue={searchValue}
+            placeholder="Tìm kiếm mẫu story"
             setSearchValue={setSearchValue}
             setIsAddForm={setIsAddStoryForm}
-            placeholder="Tìm kiếm mẫu story"
             setSelected={setSelectedStory}
             setItem={setStoryItem}
           />
@@ -143,17 +144,8 @@ const Stories = () => {
                   }`}
                   onClick={() => setSelectedStory(story?.story)}
                 >
-                  <Typography className="text-sm font-bold name">
-                    {story?.story}
-                  </Typography>
-                  <button
-                    className="hidden group-hover:inline-block text-gray-600"
-                    // onClick={() =>
-                    //   handleDeleteUtter({
-                    //     utterName: story?.utterName,
-                    //   })
-                    // }
-                  >
+                  <TypographyCustom text={story?.story} className="name" />
+                  <button className="hidden group-hover:inline-block text-gray-600">
                     <icons.MdDeleteForever size={20} />
                   </button>
                 </li>
@@ -162,36 +154,38 @@ const Stories = () => {
           </ul>
         </div>
         <div className="w-[80%] ">
-          <div className="grid grid-cols-2 h-full ">
-            <div className="h-full border-r border-blue-gray-300">
+          <div className="flex h-full ">
+            <div className="flex-1 h-full border-r border-blue-gray-300">
               <div className="h-[60px] flex items-center gap-2 justify-between px-4 border-b border-blue-gray-300">
                 {isAddStoryForm ? (
                   <Input
                     label="Thêm một story"
+                    color="blue"
                     value={storyValue}
                     onChange={(e) => setStoryValue(e.target.value)}
                   />
                 ) : (
-                  <Typography className="text-sm font-bold text-blue-600">
-                    {selectedStory}
-                  </Typography>
+                  <TypographyCustom
+                    text={selectedStory}
+                    className="text-blue-600 name"
+                  />
                 )}
                 <div className="col-span-1 flex justify-end gap-2">
-                  <button
-                    className="border-2 border-blue-gray-800 text-blue-gray-800 bg-white rounded-md px-6 py-2 text-xs font-bold hover:bg-blue-gray-100 transition-all"
-                    onClick={() => {
-                      setIsAddStoryForm(false);
-                      setSelectedStory(storiesData.data[0].story);
-                    }}
+                  <ButtonCustom
+                    className="border-2 border-blue-gray-800 text-blue-gray-800 "
+                    onClick={handleResetStoryForm}
+                    variant="outlined"
+                    size="sm"
                   >
                     Huỷ
-                  </button>
-                  <button
-                    className="bg-blue-gray-800 text-white rounded-md px-6 py-2 text-xs font-bold hover:bg-blue-gray-700 transition-all"
+                  </ButtonCustom>
+                  <ButtonCustom
+                    className="bg-blue-gray-800 text-white"
                     onClick={handleSaveStory}
+                    size="sm"
                   >
                     Lưu
-                  </button>
+                  </ButtonCustom>
                   <button
                     className="text-gray-600 hover:text-gray-800"
                     onClick={handleDeleteStory}
@@ -201,16 +195,12 @@ const Stories = () => {
                 </div>
               </div>
               <div className="h-[calc(100vh-120px)]">
-                <YamlEditor
-                  yamlValue={storyItem}
-                  setYamlValue={setStoryItem}
-                  handleChange={handleChange}
-                />
+                <YamlEditor yamlValue={storyItem} setYamlValue={setStoryItem} />
               </div>
             </div>
-            <div className="h-full border-r border-blue-gray-300">
-              <div className="h-[60px] flex items-center border-b border-blue-gray-300">
-                <Typography className="text-sm font-bold px-4">Flow</Typography>
+            <div className="flex-1 h-full">
+              <div className="h-[60px] flex items-center justify-center border-b border-blue-gray-300">
+                <TypographyCustom text="Luồng chạy của câu chuyện" />
               </div>
               <div className="h-[calc(100vh-120px)] overflow-y-auto">
                 <FlowStories steps={jsyaml.load(storyItem)?.steps} />

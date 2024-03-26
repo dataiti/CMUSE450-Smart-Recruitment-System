@@ -11,10 +11,20 @@ import {
   useGetUtterItemQuery,
   useUpdateUtterItemMutation,
 } from "../../redux/features/apis/rasas/responseApi";
-import { InputSelectCustom, Search } from "../../components/chatbot";
+
+import {
+  HeaderChatbot,
+  InputSelectCustom,
+  Search,
+} from "../../components/chatbot";
+import {
+  ButtonCustom,
+  Loading,
+  TypographyCustom,
+} from "../../components/shares";
+
 import { icons } from "../../utils/icons";
-import { Loading } from "../../components/shares";
-import { useDebounce } from "../../hooks";
+import { swalConfig } from "../../utils/constants";
 
 const Response = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -23,19 +33,17 @@ const Response = () => {
   const [responseValue, setResponseValue] = useState([]);
   const [isAddResponseForm, setIsAddResponseForm] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
-  const [selectedUtter, setSelectedUtter] = useState("");
-  const [utterItem, setUtterItem] = useState({});
-  const [isEditForm, setIsEditForm] = useState(false);
+  const [selectedUtter, setSelectedUtter] = useState(null);
+  const [utterItem, setUtterItem] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [oldText, setOldText] = useState("");
-
-  const searchDebouceValue = useDebounce(searchValue, 500);
 
   const { data: listUttersData } = useGetListUttersQuery();
   const { data: utterItemData, isFetching } = useGetUtterItemQuery(
     {
       utterName: selectedUtter,
     },
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true, skip: !selectedUtter }
   );
   const [addUtterItem, { isLoading }] = useAddUtterItemMutation();
   const [deleteUtter] = useDeleteUtterMutation();
@@ -55,12 +63,15 @@ const Response = () => {
     }
   }, [selectedUtter, utterItemData]);
 
-  const handleAddNewUtterItem = async () => {
+  // Hàm xử lý gọi API tạo mới hoặc cập nhật một utter trong domain.yml
+  const handleCreateOrUpdateUtter = async () => {
     try {
-      if (isEditForm) {
+      // Nếu state là isEditing thì gọi API cập nhật và ngược lại thì tạo mới
+      if (isEditing) {
         const res = await updateUtterItem({
           data: { utterName: selectedUtter, oldText, newText: textValue },
         });
+
         if (res && res.data && res.data.success) {
           let copiedUtterItem =
             utterItem.utterTexts !== null ? [...utterItem.utterTexts] : [];
@@ -75,10 +86,12 @@ const Response = () => {
         const res = await addUtterItem({
           data: { utterName: utterValue, textContent: textValue },
         });
+
         if (res && res.data && res.data.success) {
           let copiedUtterItem =
             utterItem.utterTexts !== null ? [...utterItem.utterTexts] : [];
           copiedUtterItem.push({ text: textValue });
+
           setUtterItem((prev) => ({ ...prev, utterTexts: copiedUtterItem }));
           setResponseValue((prev) => {
             if (
@@ -94,6 +107,7 @@ const Response = () => {
             }
             return prev;
           });
+
           setUtterValue("");
           setTextValue("");
           toast.success("Thêm thành công");
@@ -102,6 +116,7 @@ const Response = () => {
     } catch (error) {}
   };
 
+  // Hàm xử lý gọi API xoá một utter_text trong domain.yml
   const handleDeleteUtterTextItem = async ({ utterName, textContent }) => {
     try {
       if (
@@ -112,36 +127,31 @@ const Response = () => {
         toast.success("Phải có ít nhất 1 utter text");
         return;
       }
-      Swal.fire({
-        title: "Bạn có chắc không ?",
-        text: "Bạn sẽ không thể hoàn tác điều này!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#0B5345 ",
-        cancelButtonColor: "#A93226",
-        confirmButtonText: "Vâng, xoá !",
-        cancelButtonText: "Huỷ",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const res = await deleteUtterItem({ utterName, textContent });
-          if (res && res.data && res.data.success) {
-            console.log(res.data);
-            setUtterItem((prev) => ({
-              ...prev,
-              utterTexts: prev.utterTexts.filter(
-                (item) => item.text !== res.data.data.textContent
-              ),
-            }));
-            toast.success("Xoá thành công");
-          }
+
+      const swalResult = await Swal.fire(swalConfig);
+
+      if (swalResult.isConfirmed) {
+        const res = await deleteUtterItem({ utterName, textContent });
+
+        if (res && res.data && res.data.success) {
+          setUtterItem((prev) => ({
+            ...prev,
+            utterTexts: prev.utterTexts.filter(
+              (item) => item.text !== res.data.data.textContent
+            ),
+          }));
+
+          toast.success("Xoá thành công");
         }
-      });
+      }
     } catch (error) {}
   };
 
+  // Hàm xử lý gọi API xoá một utter trong domain.yml
   const handleDeleteUtter = async ({ utterName }) => {
     try {
       const res = await deleteUtter({ utterName });
+
       if (res && res.data && res.data.success) {
         setResponseValue((prev) =>
           prev.filter((item) => item.utterName !== utterName)
@@ -151,25 +161,42 @@ const Response = () => {
     } catch (error) {}
   };
 
+  const handleSelectUtter = ({ utterItem }) => {
+    setIsAddResponseForm(false);
+    setTextValue("");
+    setUtterValue("");
+    setSelectedUtter(utterItem?.utterName);
+  };
+
+  const handleClickUtterItem = ({ utter = {} }) => {
+    setIsEditing(true);
+    setIsAddResponseForm(true);
+    setTextValue(utter?.text);
+    setUtterValue(utterItem?.utterName);
+    setOldText(utter?.text);
+  };
+
   return (
     <div className="h-screen">
       {(isLoading || isFetching) && <Loading />}
-      <div className="h-[60px] flex items-center w-full px-4 bg-white">
-        <Typography className="font-bold">Response</Typography>
-      </div>
+      <HeaderChatbot title="Response" />
       <div className="py-7 px-16">
         <div className="relative h-[620px] w-full bg-white rounded-lg">
           <Search
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             setIsAddForm={setIsAddResponseForm}
+            setIsEditForm={setIsEditing}
+            setItem={setUtterItem}
+            setSelected={setSelectedUtter}
+            setTextValue={setTextValue}
+            setUtterValue={setUtterValue}
             placeholder="Tìm kiếm mẫu response"
           />
           {isAddResponseForm && (
             <div className="absolute z-10 w-full p-2 grid grid-cols-4 gap-2 bg-blue-50 shadow-md">
               <div className="col-span-1 relative">
                 <InputSelectCustom
-                  // handleAddNewIntent={handleAddNewIntent}
                   setIsFocus={setIsFocus}
                   isFocus={isFocus}
                   setValue={setUtterValue}
@@ -177,12 +204,12 @@ const Response = () => {
                   listItem={responseValue}
                   setListItem={setResponseValue}
                   label="Tạo hoặc chọn một utter"
-                  // setListNLUData={setListNLUData}
                 />
               </div>
               <div className="col-span-2">
                 <Input
                   className="bg-white"
+                  color="blue"
                   value={textValue}
                   onChange={(e) => setTextValue(e.target.value)}
                   label="Thêm một response text cho mẫu này"
@@ -190,18 +217,18 @@ const Response = () => {
                 />
               </div>
               <div className="col-span-1 flex justify-end gap-2">
-                <button
+                <ButtonCustom
                   className="border-2 border-blue-gray-800 text-blue-gray-800 bg-white rounded-md px-6 py-2 text-xs font-bold hover:bg-blue-gray-100 transition-all"
                   onClick={() => setIsAddResponseForm(false)}
                 >
                   Huỷ
-                </button>
-                <button
+                </ButtonCustom>
+                <ButtonCustom
                   className="bg-blue-gray-800 text-white rounded-md px-6 py-2 text-xs font-bold hover:bg-blue-gray-700 transition-all"
-                  onClick={handleAddNewUtterItem}
+                  onClick={handleCreateOrUpdateUtter}
                 >
                   Lưu
-                </button>
+                </ButtonCustom>
               </div>
             </div>
           )}
@@ -218,16 +245,9 @@ const Response = () => {
                             ? "!bg-blue-gray-100 border-blue-gray-700 text-light-blue-600"
                             : "border-transparent"
                         }`}
-                        onClick={() => {
-                          setIsAddResponseForm(false);
-                          setTextValue("");
-                          setUtterValue("");
-                          setSelectedUtter(utterItem?.utterName);
-                        }}
+                        onClick={() => handleSelectUtter({ utterItem })}
                       >
-                        <Typography className="text-sm font-bold ">
-                          {utterItem?.utterName}
-                        </Typography>
+                        <TypographyCustom text={utterItem?.utterName} />
                         <button
                           className="hidden group-hover:inline-block text-gray-600"
                           onClick={() =>
@@ -251,20 +271,14 @@ const Response = () => {
                         className="group flex justify-between items-center cursor-pointer hover:bg-blue-gray-50 transition-all p-4 border-b"
                         key={index}
                       >
-                        <Typography className="text-sm text-gray-700 font-bold col-span-2">
-                          {utter?.text}
-                        </Typography>
+                        <TypographyCustom
+                          text={utter?.text}
+                          className="col-span-2"
+                        />
                         <div className="flex justify-end items-center gap-2">
                           <button
                             className="hidden group-hover:inline-block text-gray-600 hover:text-gray-800"
-                            //  onClick={() => handleUpdateUtterTextItem({utterName: utterItem?.utterName, oldText: utter?.text})}
-                            onClick={() => {
-                              setIsEditForm(true);
-                              setIsAddResponseForm(true);
-                              setTextValue(utter?.text);
-                              setUtterValue(utterItem?.utterName);
-                              setOldText(utter?.text);
-                            }}
+                            onClick={() => handleClickUtterItem({ utter })}
                           >
                             <icons.FiEdit size={16} />
                           </button>
