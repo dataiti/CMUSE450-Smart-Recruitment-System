@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FlowStories, Search, YamlEditor } from "../../components/rasas";
+import Swal from "sweetalert2";
+import jsyaml from "js-yaml";
+import { toast } from "react-toastify";
+import { Input, Typography } from "@material-tailwind/react";
+
 import {
   useAddRuleMutation,
   useDeleteRuleMutation,
@@ -7,14 +11,11 @@ import {
   useUpdateRuleMutation,
   useGetRuleQuery,
 } from "../../redux/features/apis/rasas/rulesApi";
-import jsyaml from "js-yaml";
-import { toast } from "react-toastify";
-import { Input, Typography } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
 import { Loading } from "../../components/shares";
-import Swal from "sweetalert2";
+import { FlowStories, Search, YamlEditor } from "../../components/chatbot";
 
-const RulesTrainingPage = () => {
+const Rules = () => {
   const [searchValue, setSearchValue] = useState("");
   const [ruleValue, setRuleValue] = useState("");
   const [isAddRuleForm, setIsAddRuleForm] = useState(false);
@@ -222,4 +223,4 @@ const RulesTrainingPage = () => {
   );
 };
 
-export default RulesTrainingPage;
+export default Rules;

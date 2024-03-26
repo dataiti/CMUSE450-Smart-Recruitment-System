@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FlowStories, Search, YamlEditor } from "../../components/rasas";
+import { Input, Typography } from "@material-tailwind/react";
+import jsyaml from "js-yaml";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+
+import { FlowStories, Search, YamlEditor } from "../../components/chatbot";
 import {
   useAddStoryMutation,
   useDeleteStoryMutation,
@@ -7,14 +12,10 @@ import {
   useGetStoryQuery,
   useUpdateStoryMutation,
 } from "../../redux/features/apis/rasas/storiesApi";
-import jsyaml from "js-yaml";
-import { toast } from "react-toastify";
-import { Input, Typography } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
 import { Loading } from "../../components/shares";
-import Swal from "sweetalert2";
 
-const StoriesTrainingPage = () => {
+const Stories = () => {
   const [searchValue, setSearchValue] = useState("");
   const [storyValue, setStoryValue] = useState("");
   const [isAddStoryForm, setIsAddStoryForm] = useState(false);
@@ -128,7 +129,7 @@ const StoriesTrainingPage = () => {
           />
         </div>
       </div>
-      <div className="h-[calc(100vh-60px)] flex w-full">
+      <div className="h-[calc(100vh-60px)] overflow-y-auto flex w-full">
         <div className="w-[20%] h-full border-r border-blue-gray-300">
           <ul>
             {storiesValue?.map((story, index) => {
@@ -142,7 +143,7 @@ const StoriesTrainingPage = () => {
                   }`}
                   onClick={() => setSelectedStory(story?.story)}
                 >
-                  <Typography className="text-sm font-bold ">
+                  <Typography className="text-sm font-bold name">
                     {story?.story}
                   </Typography>
                   <button
@@ -222,4 +223,4 @@ const StoriesTrainingPage = () => {
   );
 };
 
-export default StoriesTrainingPage;
+export default Stories;

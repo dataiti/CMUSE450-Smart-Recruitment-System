@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { icons } from "../../utils/icons";
 
 const FlowStories = ({ steps = [] }) => {
@@ -31,6 +33,15 @@ const FlowStories = ({ steps = [] }) => {
       })}
     </div>
   );
+};
+
+FlowStories.propTypes = {
+  steps: PropTypes.arrayOf(
+    PropTypes.shape({
+      intent: PropTypes.string,
+      action: PropTypes.string,
+    })
+  ),
 };
 
 export default FlowStories;

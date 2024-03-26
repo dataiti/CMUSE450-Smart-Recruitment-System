@@ -1,18 +1,19 @@
 import { Input, Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+
 import {
   useAddIntentItemMutation,
   useDeleteExampleItemMutation,
   useGetListIntensQuery,
   useGetNLUDataQuery,
 } from "../../redux/features/apis/rasas/nluApi";
-import { InputSelectCustom, Search } from "../../components/rasas";
 import { icons } from "../../utils/icons";
-import { toast } from "react-toastify";
-import Swal from "sweetalert2";
+import { InputSelectCustom, Search } from "../../components/chatbot";
 import { Loading } from "../../components/shares";
 
-const NLUTrainingPage = () => {
+const NLU = () => {
   const [exampleSearchValue, setExampleSearchValue] = useState("");
   const [exampleValue, setExampleValue] = useState("");
   const [intentValue, setIntentValue] = useState("");
@@ -205,4 +206,4 @@ const NLUTrainingPage = () => {
   );
 };
 
-export default NLUTrainingPage;
+export default NLU;

@@ -1,16 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { YamlEditor } from "../../components/rasas";
 import { Typography } from "@material-tailwind/react";
+import { toast } from "react-toastify";
+import jsyaml from "js-yaml";
+
 import {
   useReadDomainDataQuery,
   useWriteDomainDataMutation,
 } from "../../redux/features/apis/rasas/domainApi";
 import { Loading } from "../../components/shares";
-import { toast } from "react-toastify";
-import jsyaml from "js-yaml";
+import { YamlEditor } from "../../components/chatbot";
 
-const DomainTraningPage = () => {
+const Domain = () => {
   const [yamlValue, setYamlValue] = useState("");
 
   const { data: domainData, isFetching } = useReadDomainDataQuery();
@@ -69,4 +70,4 @@ const DomainTraningPage = () => {
   );
 };
 
-export default DomainTraningPage;
+export default Domain;

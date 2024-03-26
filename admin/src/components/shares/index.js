@@ -12,6 +12,7 @@ import PDFViewer from "./PDFViewer";
 import StatisticIndex from "./StatisticIndex";
 import StatusBadge from "./StatusBadge";
 import SwitchCustom from "./SwitchCustom";
+import TypographyCustom from "./TypographyCustom";
 
 export {
   ButtonCustom,
@@ -28,4 +29,5 @@ export {
   StatisticIndex,
   StatusBadge,
   SwitchCustom,
+  TypographyCustom,
 };
