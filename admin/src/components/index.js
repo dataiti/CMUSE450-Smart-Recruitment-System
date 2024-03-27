@@ -16,6 +16,7 @@ import Sidebar from "./Sidebar";
 import Switch from "./Switch";
 import TextEditorController from "./TextEditorController";
 import TextareaController from "./TextareaController";
+import TypographyCustom from "./TypographyCustom";
 
 export {
   Header,
@@ -36,4 +37,5 @@ export {
   Switch,
   TextareaController,
   TextEditorController,
+  TypographyCustom,
 };

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlowStories, Search, YamlEditor } from "../../components/rasas";
+import { FlowStories, Search, YamlEditor } from "../../components/chatbot";
 import {
-  useAddRuleMutation,
-  useDeleteRuleMutation,
-  useGetAllRulesDataQuery,
-  useUpdateRuleMutation,
-  useGetRuleQuery,
-} from "../../redux/features/apis/rasas/rulesApi";
+  useAddStoryMutation,
+  useDeleteStoryMutation,
+  useGetStoriesDataQuery,
+  useGetStoryQuery,
+  useUpdateStoryMutation,
+} from "../../redux/features/apis/rasas/storiesApi";
 import jsyaml from "js-yaml";
 import { toast } from "react-toastify";
 import { Input, Typography } from "@material-tailwind/react";
@@ -14,60 +14,60 @@ import { icons } from "../../utils/icons";
 import { Loading } from "../../components/shares";
 import Swal from "sweetalert2";
 
-const RulesTrainingPage = () => {
+const StoriesTrainingPage = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [ruleValue, setRuleValue] = useState("");
-  const [isAddRuleForm, setIsAddRuleForm] = useState(false);
-  const [rulesValue, setRulesValue] = useState([]);
-  const [selectedRule, setSelectedRule] = useState("");
-  const [ruleItem, setRuleItem] = useState("");
+  const [storyValue, setStoryValue] = useState("");
+  const [isAddStoryForm, setIsAddStoryForm] = useState(false);
+  const [storiesValue, setStoriesValue] = useState([]);
+  const [selectedStory, setSelectedStory] = useState("");
+  const [storyItem, setStoryItem] = useState("");
 
-  const { data: rulesData, isFetching } = useGetAllRulesDataQuery({});
-  const { data: ruleData, isLoading } = useGetRuleQuery(
-    { ruleName: selectedRule },
+  const { data: storiesData, isFetching } = useGetStoriesDataQuery({});
+  const { data: storyData, isLoading } = useGetStoryQuery(
+    { storyName: selectedStory },
     { refetchOnMountOrArgChange: true }
   );
-  const [addRule] = useAddRuleMutation();
-  const [deleteRule] = useDeleteRuleMutation();
-  const [updateRule] = useUpdateRuleMutation();
+  const [addStory] = useAddStoryMutation();
+  const [deleteStory] = useDeleteStoryMutation();
+  const [updateStory] = useUpdateStoryMutation();
 
   useEffect(() => {
-    if (rulesData && rulesData.data) {
-      setRulesValue(rulesData.data);
-      setSelectedRule(rulesData.data[0] && rulesData.data[0].rule);
-      setIsAddRuleForm(false);
+    if (storiesData && storiesData.data) {
+      setStoriesValue(storiesData.data);
+      setSelectedStory(storiesData.data[0] && storiesData.data[0].story);
+      setIsAddStoryForm(false);
     }
-  }, [rulesData]);
+  }, [storiesData]);
 
   useEffect(() => {
     try {
-      if (ruleData && ruleData.data) {
-        setIsAddRuleForm(false);
-        setRuleItem(jsyaml.dump(ruleData.data));
+      if (storyData && storyData.data) {
+        setIsAddStoryForm(false);
+        setStoryItem(jsyaml.dump(storyData.data));
       }
     } catch (error) {
       toast.error("Sai cu phap kia");
     }
-  }, [selectedRule, ruleData]);
+  }, [selectedStory, storyData]);
 
   const handleChange = (newValue) => {
     try {
       jsyaml.load(newValue);
-      setRuleItem(newValue);
+      setStoryItem(newValue);
     } catch (error) {
       console.error("YAML Error:", error.message);
       toast.error("Sai cu phap kia");
     }
   };
 
-  const handleSaveRule = async () => {
+  const handleSaveStory = async () => {
     try {
-      const data = jsyaml.load(ruleItem);
-      if (isAddRuleForm) {
-        const res = await addRule({ data });
+      const data = jsyaml.load(storyItem);
+      if (isAddStoryForm) {
+        const res = await addStory({ data });
         if (res && res.data && res.data.success) {
-          setRulesValue((prev) => {
-            if (!prev.find((item) => item?.rule === res.data.data.rule)) {
+          setStoriesValue((prev) => {
+            if (!prev.find((item) => item?.story === res.data.data.story)) {
               return [...prev, res.data.data];
             }
             return prev;
@@ -75,7 +75,7 @@ const RulesTrainingPage = () => {
           toast.success("Thêm story thành công");
         }
       } else {
-        const res = await updateRule({ data, ruleName: selectedRule });
+        const res = await updateStory({ data, storyName: selectedStory });
         if (res && res.data && res.data.success) {
           toast.success("Lưu story thành công");
         }
@@ -83,7 +83,7 @@ const RulesTrainingPage = () => {
     } catch (error) {}
   };
 
-  const handleDeleteRule = async () => {
+  const handleDeleteStory = async () => {
     try {
       Swal.fire({
         title: "Bạn có chắc không ?",
@@ -96,13 +96,13 @@ const RulesTrainingPage = () => {
         cancelButtonText: "Huỷ",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const res = await deleteRule({ ruleName: selectedRule });
+          const res = await deleteStory({ storyName: selectedStory });
           if (res && res.data && res.data.success) {
-            setRulesValue((prev) =>
-              prev.filter((item) => item.rule !== selectedRule)
+            setStoriesValue((prev) =>
+              prev.filter((item) => item.story !== selectedStory)
             );
-            setSelectedRule(rulesValue[0] && rulesValue[0].rule);
-            setRuleItem("");
+            setSelectedStory(storiesValue[0] && storiesValue[0].story);
+            setStoryItem("");
             toast.success("Xoá thành công");
           }
         }
@@ -115,35 +115,35 @@ const RulesTrainingPage = () => {
       {(isFetching || isLoading) && <Loading />}
       <div className="h-[60px] flex w-full border-b border-blue-gray-300">
         <div className="flex items-center justify-center w-[20%] h-full border-r border-blue-gray-300">
-          <Typography className="font-bold">Rules</Typography>
+          <Typography className="font-bold">Stories</Typography>
         </div>
         <div className="w-[80%]">
           <Search
             searchValue={searchValue}
             setSearchValue={setSearchValue}
-            setIsAddForm={setIsAddRuleForm}
-            placeholder="Tìm kiếm mẫu rule"
-            setSelected={setSelectedRule}
-            setItem={setRuleItem}
+            setIsAddForm={setIsAddStoryForm}
+            placeholder="Tìm kiếm mẫu story"
+            setSelected={setSelectedStory}
+            setItem={setStoryItem}
           />
         </div>
       </div>
       <div className="h-[calc(100vh-60px)] flex w-full">
         <div className="w-[20%] h-full border-r border-blue-gray-300">
           <ul>
-            {rulesValue?.map((rule, index) => {
+            {storiesValue?.map((story, index) => {
               return (
                 <li
-                  key={rule?.rule}
+                  key={story?.story}
                   className={`group p-4 flex items-center justify-between border-r-4 text-gray-700 cursor-pointer hover:bg-blue-gray-50 transition-all ${
-                    rule?.rule === selectedRule
+                    story?.story === selectedStory
                       ? "!bg-blue-gray-100 border-blue-gray-700 text-light-blue-600"
                       : "border-transparent"
                   }`}
-                  onClick={() => setSelectedRule(rule?.rule)}
+                  onClick={() => setSelectedStory(story?.story)}
                 >
                   <Typography className="text-sm font-bold ">
-                    {rule?.rule}
+                    {story?.story}
                   </Typography>
                   <button
                     className="hidden group-hover:inline-block text-gray-600"
@@ -164,36 +164,36 @@ const RulesTrainingPage = () => {
           <div className="grid grid-cols-2 h-full ">
             <div className="h-full border-r border-blue-gray-300">
               <div className="h-[60px] flex items-center gap-2 justify-between px-4 border-b border-blue-gray-300">
-                {isAddRuleForm ? (
+                {isAddStoryForm ? (
                   <Input
                     label="Thêm một story"
-                    value={ruleValue}
-                    onChange={(e) => setRuleValue(e.target.value)}
+                    value={storyValue}
+                    onChange={(e) => setStoryValue(e.target.value)}
                   />
                 ) : (
                   <Typography className="text-sm font-bold text-blue-600">
-                    {selectedRule}
+                    {selectedStory}
                   </Typography>
                 )}
                 <div className="col-span-1 flex justify-end gap-2">
                   <button
                     className="border-2 border-blue-gray-800 text-blue-gray-800 bg-white rounded-md px-6 py-2 text-xs font-bold hover:bg-blue-gray-100 transition-all"
                     onClick={() => {
-                      setIsAddRuleForm(false);
-                      setSelectedRule(rulesData.data[0].rule);
+                      setIsAddStoryForm(false);
+                      setSelectedStory(storiesData.data[0].story);
                     }}
                   >
                     Huỷ
                   </button>
                   <button
                     className="bg-blue-gray-800 text-white rounded-md px-6 py-2 text-xs font-bold hover:bg-blue-gray-700 transition-all"
-                    onClick={handleSaveRule}
+                    onClick={handleSaveStory}
                   >
                     Lưu
                   </button>
                   <button
                     className="text-gray-600 hover:text-gray-800"
-                    onClick={handleDeleteRule}
+                    onClick={handleDeleteStory}
                   >
                     <icons.MdDeleteForever size={30} />
                   </button>
@@ -201,8 +201,8 @@ const RulesTrainingPage = () => {
               </div>
               <div className="h-[calc(100vh-120px)]">
                 <YamlEditor
-                  yamlValue={ruleItem}
-                  setYamlValue={setRuleItem}
+                  yamlValue={storyItem}
+                  setYamlValue={setStoryItem}
                   handleChange={handleChange}
                 />
               </div>
@@ -212,7 +212,7 @@ const RulesTrainingPage = () => {
                 <Typography className="text-sm font-bold px-4">Flow</Typography>
               </div>
               <div className="h-[calc(100vh-120px)] overflow-y-auto">
-                <FlowStories steps={jsyaml.load(ruleItem)?.steps} />
+                <FlowStories steps={jsyaml.load(storyItem)?.steps} />
               </div>
             </div>
           </div>
@@ -222,4 +222,4 @@ const RulesTrainingPage = () => {
   );
 };
 
-export default RulesTrainingPage;
+export default StoriesTrainingPage;

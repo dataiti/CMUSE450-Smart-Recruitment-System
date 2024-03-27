@@ -1,6 +1,6 @@
 import { Input, Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
-import { InputSelectCustom, Search } from "../../components/rasas";
+import { InputSelectCustom, Search } from "../../components/chatbot";
 import {
   useAddUtterItemMutation,
   useDeleteUtterItemMutation,

@@ -58,7 +58,7 @@ html:hover *::-webkit-scrollbar {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
-  min-height: 20px;
+  min-height: 18px;
 }
 
 .name-2 {
