@@ -9,10 +9,13 @@ import {
   ManageEmployer,
   ManageUser,
   CreateEmployer,
-  NLUTrainingPage,
-  StoriesTrainingPage,
-  DomainTraningPage,
-  RulesTrainingPage,
+  NLU,
+  Domain,
+  Rules,
+  Stories,
+  Response,
+  TalkYourBot,
+  Conversation,
 } from "../pages";
 import { ProtectedRoutes } from "../components/shares";
 
@@ -33,21 +36,33 @@ const routers = [
     element: <ChatbotLayout />,
     children: [
       {
-        path: "training-stories",
-        element: <StoriesTrainingPage />,
+        path: "/rasa/talk-to-your-bot",
+        element: <TalkYourBot />,
         index: true,
       },
       {
+        path: "/rasa/conversations",
+        element: <Conversation />,
+      },
+      {
+        path: "training-stories",
+        element: <Stories />,
+      },
+      {
         path: "training-nlu",
-        element: <NLUTrainingPage />,
+        element: <NLU />,
       },
       {
         path: "training-domain",
-        element: <DomainTraningPage />,
+        element: <Domain />,
       },
       {
         path: "training-rules",
-        element: <RulesTrainingPage />,
+        element: <Rules />,
+      },
+      {
+        path: "training-response",
+        element: <Response />,
       },
     ],
   },

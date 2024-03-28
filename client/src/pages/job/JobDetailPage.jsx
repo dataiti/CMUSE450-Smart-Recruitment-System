@@ -1,31 +1,33 @@
 import React, { useEffect, useState } from "react";
-import {
-  useGetJobDetailQuery,
-  useGetListSimilarJobsQuery,
-} from "../../redux/features/apis/jobApi";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import parse from "html-react-parser";
 import {
   Breadcrumbs,
   Button,
   IconButton,
   Typography,
 } from "@material-tailwind/react";
-import Loading from "../../components/shares/Loading";
-import Container from "../../components/shares/Container";
-import { icons } from "../../utils/icons";
-import Mapbox from "../../components/shares/Mapbox";
-import parse from "html-react-parser";
+
+// API
+import { socket } from "../../socket";
+import { useGetEvaluateSuitableJobQuery } from "../../redux/features/apis/analyticApi";
+import {
+  useGetJobDetailQuery,
+  useGetListSimilarJobsQuery,
+} from "../../redux/features/apis/jobApi";
+
+// redux
+import { useUserViewedJobMutation } from "../../redux/features/apis/userApi";
+import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
 import {
   formatRemainingTime,
   formattedAmount,
   printExperienceText,
 } from "../../utils/fn";
-import { useDispatch, useSelector } from "react-redux";
+import { icons } from "../../utils/icons";
+
 import { authSelect } from "../../redux/features/slices/authSlice";
-import { socket } from "../../socket";
-import { useGetEvaluateSuitableJobQuery } from "../../redux/features/apis/analyticApi";
-import { useUserViewedJobMutation } from "../../redux/features/apis/userApi";
-import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
 import {
   Address,
   ShareButton,
@@ -36,6 +38,11 @@ import {
   IconButtonCustom,
   Tag,
   EmploymentInfo,
+  Container,
+  Mapbox,
+  Loading,
+  TypographyCustom,
+  JobInfoHeader,
 } from "../../components/shares";
 import { ApplyJobForm, LoginForm } from "../../components/forms";
 import JobCardSmall from "../../components/jobs/JobCardSmall";
@@ -43,7 +50,6 @@ import JobCardSmall from "../../components/jobs/JobCardSmall";
 const JobDetailPage = () => {
   const { jobId } = useParams();
   const dispatch = useDispatch();
-
   const { user, isLoggedIn } = useSelector(authSelect);
 
   const [isFollowCompany, setIsFollowCompany] = useState(false);
@@ -54,25 +60,30 @@ const JobDetailPage = () => {
   const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
 
   const { data: jobDetailData, isFetching } = useGetJobDetailQuery({ jobId });
-  const [userViewedJob] = useUserViewedJobMutation();
   const { data: evaluateSuitableJobQueryData } = useGetEvaluateSuitableJobQuery(
     {
       userId: user?._id,
       candidateId: user?.candidateId?._id,
       jobId,
-    }
+    },
+    { skip: !user }
   );
-
   const { data: getListSimilarJobsData, isFetching: isFetchingSimilarJobs } =
-    useGetListSimilarJobsQuery({
-      jobId,
-      industry: jobDetailData?.data?.industry,
-    });
+    useGetListSimilarJobsQuery(
+      {
+        jobId,
+        industry: jobDetailData?.data?.industry,
+      },
+      { skip: !jobId || !jobDetailData }
+    );
+  const [userViewedJob] = useUserViewedJobMutation();
 
+  // Cuộn đến đầu trang khi component được render
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Xử lý việc người dùng xem công việc và kiểm tra đăng nhập trước khi thực hiện
   useEffect(() => {
     if (!isLoggedIn) {
       setIsOpenLoginModal(true);
@@ -87,6 +98,7 @@ const JobDetailPage = () => {
     }
   }, [jobId, user?._id, userViewedJob, isLoggedIn]);
 
+  // Kiểm tra trạng thái đăng nhập và theo dõi công ty nếu đã đăng nhập
   useEffect(() => {
     if (!isLoggedIn) {
       setIsOpenLoginModal(true);
@@ -97,6 +109,7 @@ const JobDetailPage = () => {
     }
   }, [jobDetailData?.data?.employerId?.followerIds, user?._id, isLoggedIn]);
 
+  // Lắng nghe sự kiện bắt đầu cuộc trò chuyện và cập nhật dữ liệu hiện tại
   useEffect(() => {
     const handleUserGetMessage = (message) => {
       if (message.success)
@@ -110,6 +123,7 @@ const JobDetailPage = () => {
     };
   }, [dispatch]);
 
+  // Xử lý hành động huỷ theo dõi công ty
   const handleUnfollowCompany = () => {
     if (!isLoggedIn) {
       setIsOpenLoginModal(true);
@@ -122,6 +136,7 @@ const JobDetailPage = () => {
     }
   };
 
+  // Xử lý hành động theo dõi công ty
   const handleFollowCompany = () => {
     if (!isLoggedIn) {
       setIsOpenLoginModal(true);
@@ -134,6 +149,7 @@ const JobDetailPage = () => {
     }
   };
 
+  // Xử lý sự kiện người dùng bắt đầu một cuộc trò chuyện mới
   const handleStartConversation = () => {
     if (!isLoggedIn) {
       setIsOpenLoginModal(true);
@@ -189,15 +205,14 @@ const JobDetailPage = () => {
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-8 flex flex-col gap-2">
           <Container className="flex flex-col gap-3 bg-white rounded-md">
-            <Typography className="flex items-center gap-2 font-bold text-teal-800">
-              <IconButtonCustom>
-                <icons.IoBriefcase size={24} />
-              </IconButtonCustom>
-              Thông tin công việc tuyển dụng
-            </Typography>
-            <Typography className="uppercase text-[#212f3f] font-extrabold text-2xl">
-              {jobDetailData?.data?.recruitmentTitle}
-            </Typography>
+            <JobInfoHeader
+              text="Thông tin công việc tuyển dụng"
+              icon={<icons.IoBriefcase size={24} />}
+            />
+            <TypographyCustom
+              text={jobDetailData?.data?.recruitmentTitle}
+              className="uppercase text-[#212f3f] font-extrabold text-2xl"
+            />
             <div className="grid grid-cols-3">
               <EmploymentInfo
                 title="Mức lương"
@@ -272,11 +287,12 @@ const JobDetailPage = () => {
             </div>
           </Container>
           <Container>
-            <Typography className="flex items-center gap-2 font-bold text-teal-800">
-              <IconButtonCustom>
-                <icons.FaCircleInfo size={24} />
-              </IconButtonCustom>
-              Thông tin chi tiết tin tuyển dụng
+            <JobInfoHeader
+              text="Thông tin chi tiết tin tuyển dụng"
+              icon={<icons.FaCircleInfo size={24} />}
+            />
+            <Typography className="uppercase text-[#212f3f] font-extrabold text-2xl">
+              {jobDetailData?.data?.recruitmentTitle}
             </Typography>
             <div className="">
               <Typography className="text-light-blue-600 font-bold uppercase text-sm pb-1">
@@ -320,16 +336,14 @@ const JobDetailPage = () => {
             </div>
           </Container>
           <Container>
-            <Typography className="flex items-center gap-2 font-bold text-teal-800">
-              <IconButtonCustom>
-                <icons.FaCircleInfo size={24} />
-              </IconButtonCustom>
-              Việc làm liên quan
-            </Typography>
+            <JobInfoHeader
+              text="Việc làm liên quan"
+              icon={<icons.FaCircleInfo size={24} />}
+            />
             {getListSimilarJobsData?.data?.length > 0 && (
               <div className="grid grid-cols-2 gap-2">
                 {getListSimilarJobsData?.data?.map((job) => {
-                  return <JobCardSmall key={job?.id} jobItem={job} />;
+                  return <JobCardSmall key={job?._id} jobItem={job} />;
                 })}
               </div>
             )}
@@ -337,12 +351,10 @@ const JobDetailPage = () => {
         </div>
         <div className="col-span-4 flex flex-col gap-2">
           <Container className="flex flex-col gap-2">
-            <Typography className="flex items-center gap-2 font-bold text-teal-800">
-              <IconButtonCustom>
-                <icons.BiSolidBuildingHouse size={24} />
-              </IconButtonCustom>
-              Thông tin công ty
-            </Typography>
+            <JobInfoHeader
+              text="Thông tin công ty"
+              icon={<icons.BiSolidBuildingHouse size={24} />}
+            />
             <div className="flex items-center gap-2">
               <Link
                 to={`/company-profile/${jobDetailData?.data?.employerId?._id}`}
@@ -444,12 +456,10 @@ const JobDetailPage = () => {
             </div>
           </Container>
           <Container className="flex flex-col gap-3">
-            <Typography className="flex items-center gap-2 font-bold text-teal-800">
-              <IconButtonCustom>
-                <icons.FaCirclePlus size={24} />
-              </IconButtonCustom>
-              Thông tin công việc thêm
-            </Typography>
+            <JobInfoHeader
+              text="Thông tin công việc thêm"
+              icon={<icons.FaCirclePlus size={24} />}
+            />
             <div className="flex flex-col gap-2">
               <EmploymentInfo
                 title="Số lượng tuyển"

@@ -1,23 +1,36 @@
 import React from "react";
 import { Typography, Avatar } from "@material-tailwind/react";
+import { images } from "../../assets/images";
 
 export const TextMessage = ({ el, employer }) => {
   return (
     <div
       className={`flex w-full ${
-        el?.sender === "employer" ? "justify-start" : "justify-end"
+        el?.sender === "employer" || el?.sender === "bot"
+          ? "justify-start"
+          : "justify-end"
       } `}
     >
-      {el?.sender === "employer" ? (
+      {el?.sender === "employer" || el?.sender === "bot" ? (
         <div className="flex gap-3 w-full">
           <Avatar
-            src={employer?.companyLogo}
+            src={
+              el?.sender === "employer"
+                ? employer?.companyLogo
+                : images.chatbotavatar
+            }
             alt=""
-            className="h-10 w-10 bg-white p-2"
+            className={`${
+              el?.sender !== "bot"
+                ? "h-10 w-10 bg-white p-2"
+                : "h-12 w-12 bg-[#212f3f] p-2"
+            }`}
           />
           <div
             className={`${
-              el?.sender === "employer" ? "bg-white" : "bg-[#212f3f] text-white"
+              el?.sender === "employer" || el?.sender === "bot"
+                ? "bg-white"
+                : "bg-[#212f3f] text-white"
             } px-4 py-3 rounded-xl  max-w-[70%]`}
           >
             <Typography className="text-sm font-bold">{el?.content}</Typography>
@@ -26,7 +39,9 @@ export const TextMessage = ({ el, employer }) => {
       ) : (
         <div
           className={`${
-            el?.sender === "employer" ? "bg-white" : "bg-[#212f3f] text-white"
+            el?.sender === "employer" || el?.sender === "bot"
+              ? "bg-white"
+              : "bg-[#212f3f] text-white"
           } px-4 py-3 rounded-xl max-w-[70%]`}
         >
           <Typography className="text-sm font-bold">{el?.content}</Typography>

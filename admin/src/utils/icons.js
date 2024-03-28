@@ -1,4 +1,4 @@
-import { IoMdSend, IoIosSave } from "react-icons/io";
+import { IoMdSend, IoIosSave, IoIosCloseCircle } from "react-icons/io";
 import { PiBellRingingFill } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
 import { FiSearch, FiChevronDown, FiEdit } from "react-icons/fi";
@@ -66,6 +66,7 @@ import { TbCategoryFilled } from "react-icons/tb";
 import { RiDashboard3Fill } from "react-icons/ri";
 
 const icons = {
+  IoIosCloseCircle,
   FaLongArrowAltDown,
   IoIosSave,
   MdDeleteForever,

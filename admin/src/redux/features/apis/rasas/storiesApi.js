@@ -1,11 +1,19 @@
-import { rootApi } from "../../../configs/rootApi";
+import { rootApi } from "../../../../configs/rootApi";
 
-const rasaApi = rootApi.injectEndpoints({
+const storiesApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
     getStoriesData: builder.query({
       query: () => {
         return {
           url: "/rasa/stories/get-stories",
+          method: "GET",
+        };
+      },
+    }),
+    getStory: builder.query({
+      query: ({ storyName }) => {
+        return {
+          url: `/rasa/stories/get-story?storyName=${storyName}`,
           method: "GET",
         };
       },
@@ -76,11 +84,16 @@ const rasaApi = rootApi.injectEndpoints({
 
 export const {
   useGetStoriesDataQuery,
+  useGetStoryQuery,
   useAddStoryMutation,
   useDeleteStoryMutation,
   useUpdateStoryMutation,
+<<<<<<< HEAD:admin/src/redux/features/apis/rasaApi.js
   useGetRulesDataQuery,
   useAddRuleMutation,
   useDeleteRuleMutation,
   useUpdateRuleMutation,
 } = rasaApi;
+=======
+} = storiesApi;
+>>>>>>> c0b77fc652333b77d220c7f0f07a50307ff9f19f:admin/src/redux/features/apis/rasas/storiesApi.js

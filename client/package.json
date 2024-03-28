@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5005",
   "dependencies": {
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
@@ -25,6 +26,7 @@
     "markdown-to-jsx": "^7.3.2",
     "moment": "^2.29.4",
     "numeral": "^2.0.6",
+    "rasa-webchat": "^1.0.1",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-big-calendar": "^1.8.2",

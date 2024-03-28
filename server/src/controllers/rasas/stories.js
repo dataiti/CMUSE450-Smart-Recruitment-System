@@ -2,7 +2,7 @@ const fs = require("fs");
 const asyncHandler = require("express-async-handler");
 const yaml = require("js-yaml");
 
-const filePath = "D:/Project/Capstone1-project/chatbot/data/stories.yml";
+const filePath = `${process.env.RASA_DATA_PATH}/data/stories.yml`;
 
 function readStoriesData() {
   const storiesData = fs.readFileSync(filePath, "utf-8");

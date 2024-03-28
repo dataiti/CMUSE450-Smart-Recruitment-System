@@ -9,6 +9,7 @@ import banner3 from "./banner3.jpg";
 import startchat from "./startchat.jpg";
 import notifications from "./no-notifications.png";
 import avatardefault from "./avatardefault.jpg";
+import chatbotavatar from "./chatbotavatar.png";
 
 const listBannerImage = [banner1, banner2, banner3];
 const listCVTemplateImage = [
@@ -30,4 +31,5 @@ export const images = {
   listCVTemplateImage,
   notifications,
   avatardefault,
+  chatbotavatar,
 };

@@ -803,7 +803,7 @@ nlu:
       - What are the main offerings of Gtel in the software development field?
       - The bot can help me answer information about Gtel company
       - Do you have any information about Gtel company?
-  - intent: thong_tin_cong_ty_Gtel
+  - intent: thong_tin_cong_ty_Rubicon
     examples: |
       - Can you introduce Rubicon company?
       - overview about Rubicon company?

@@ -5,12 +5,11 @@ import { Outlet } from "react-router-dom";
 const ChatbotLayout = () => {
   return (
     <div className="flex">
-      <div className="w-[250px] fixed h-screen flex-none">
+      <div className="w-[20%] fixed h-screen flex-none z-10">
         <SidebarChatbot />
       </div>
-      <div className="pl-[250px]  flex flex-col w-full">
-        {/* <div className="h-[60px] w-[calc(100vw-270px)] fixed z-20"></div> */}
-        <div className="min-h-screen w-full bg-[#e8edf2] ">
+      <div className="pl-[20%]  flex flex-col w-full ">
+        <div className="min-h-screen w-full bg-[#e8edf2]">
           <Outlet />
         </div>
       </div>

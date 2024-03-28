@@ -63,3 +63,14 @@ export const printExperienceText = (value) => {
     return experienceItem.text;
   }
 };
+
+export const checkLoggedIn = ({
+  isLoggedIn = false,
+  setIsOpenLoginModal = () => {},
+}) => {
+  if (!isLoggedIn) {
+    setIsOpenLoginModal(true);
+    return false;
+  }
+  return true;
+};
