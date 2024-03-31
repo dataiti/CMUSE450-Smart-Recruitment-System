@@ -10,7 +10,7 @@ import { Loading } from "../../components/shares";
 import { toast } from "react-toastify";
 import jsyaml from "js-yaml";
 
-const DomainTraningPage = () => {
+const Domain = () => {
   const [yamlValue, setYamlValue] = useState("");
 
   const { data: domainData, isFetching } = useReadDomainDataQuery();
@@ -69,4 +69,4 @@ const DomainTraningPage = () => {
   );
 };
 
-export default DomainTraningPage;
+export default Domain;

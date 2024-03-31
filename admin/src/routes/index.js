@@ -10,13 +10,12 @@ import {
   ManageEmployer,
   ManageUser,
   CreateEmployer,
-  NLU,
-  Stories,
-  Domain,
-  Rules,
-  Response,
-  TalkYourBot,
-  Conversation,
+  NLUTrainingPage,
+  StoriesTrainingPage,
+  DomainTraningPage,
+  RulesTrainingPage,
+  ResponseTrainingPage,
+  TalkYourBotPage,
 } from "../pages";
 
 const routers = [
@@ -39,10 +38,6 @@ const routers = [
         path: "/rasa/talk-to-your-bot",
         element: <TalkYourBot />,
         index: true,
-      },
-      {
-        path: "/rasa/conversation",
-        element: <Conversation />,
       },
       {
         path: "training-stories",

@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { Loading } from "../../components/shares";
 
-const NLUTrainingPage = () => {
+const NLU = () => {
   const [exampleSearchValue, setExampleSearchValue] = useState("");
   const [exampleValue, setExampleValue] = useState("");
   const [intentValue, setIntentValue] = useState("");
@@ -205,4 +205,4 @@ const NLUTrainingPage = () => {
   );
 };
 
-export default NLUTrainingPage;
+export default NLU;

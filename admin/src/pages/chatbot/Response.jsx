@@ -1,6 +1,6 @@
 import { Input, Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
-import { InputSelectCustom, Search } from "../../components/chatbot";
+import { InputSelectCustom, Search } from "../../components/rasas";
 import {
   useAddUtterItemMutation,
   useDeleteUtterItemMutation,
@@ -9,13 +9,13 @@ import {
   useGetUtterItemQuery,
   useUpdateUtterItemMutation,
 } from "../../redux/features/apis/rasas/responseApi";
+import { InputSelectCustom, Search } from "../../components/rasas";
 import { icons } from "../../utils/icons";
 import { toast } from "react-toastify";
 import { Loading } from "../../components/shares";
 import { useDebounce } from "../../hooks";
-import Swal from "sweetalert2";
 
-const ResponseTrainingPage = () => {
+const Response = () => {
   const [searchValue, setSearchValue] = useState("");
   const [utterValue, setUtterValue] = useState("");
   const [textValue, setTextValue] = useState("");
@@ -292,4 +292,4 @@ const ResponseTrainingPage = () => {
   );
 };
 
-export default ResponseTrainingPage;
+export default Response;

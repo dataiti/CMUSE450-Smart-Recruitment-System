@@ -8,17 +8,6 @@ import { authSelect } from "./redux/features/slices/authSlice";
 
 const App = () => {
   const routing = useRoutes(routers);
-  const { user, isLoggedIn } = useSelector(authSelect);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      connectSocket({ userId: user?._id });
-    }
-
-    return () => {
-      socket?.disconnect();
-    };
-  }, [user, isLoggedIn]);
 
   return <div className="app">{routing}</div>;
 };

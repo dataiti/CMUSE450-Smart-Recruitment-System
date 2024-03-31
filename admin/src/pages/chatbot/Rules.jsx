@@ -14,7 +14,7 @@ import { icons } from "../../utils/icons";
 import { Loading } from "../../components/shares";
 import Swal from "sweetalert2";
 
-const RulesTrainingPage = () => {
+const Rules = () => {
   const [searchValue, setSearchValue] = useState("");
   const [ruleValue, setRuleValue] = useState("");
   const [isAddRuleForm, setIsAddRuleForm] = useState(false);
@@ -222,4 +222,4 @@ const RulesTrainingPage = () => {
   );
 };
 
-export default RulesTrainingPage;
+export default Rules;

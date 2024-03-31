@@ -14,7 +14,7 @@ import { icons } from "../../utils/icons";
 import { Loading } from "../../components/shares";
 import Swal from "sweetalert2";
 
-const StoriesTrainingPage = () => {
+const Stories = () => {
   const [searchValue, setSearchValue] = useState("");
   const [storyValue, setStoryValue] = useState("");
   const [isAddStoryForm, setIsAddStoryForm] = useState(false);
@@ -222,4 +222,4 @@ const StoriesTrainingPage = () => {
   );
 };
 
-export default StoriesTrainingPage;
+export default Stories;
