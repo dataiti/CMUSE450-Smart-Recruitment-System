@@ -1,5 +1,81 @@
 stories:
-  - story: show_all_users
+  - story: Greet and ask for name
     steps:
-      - intent: get_all_users
-      - action: action_get_all_users
+      - intent: greet
+      - action: utter_greet
+      - intent: give_name
+      - action: utter_acknowledge_name
+
+  - story: Say goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: Search for job
+    steps:
+      - intent: search_job
+      - action: action_search_job
+      - action: utter_search_job
+
+  - story: Inquire about FPT Software
+    steps:
+      - intent: about_fsoft_company
+      - action: utter_about_fsoft_company
+
+  - story: Inquire about industry focus of FPT Software
+    steps:
+      - intent: industry_focus_inquiry
+      - action: utter_fsoft_industry
+
+  - story: Inquire about company size of FPT Software
+    steps:
+      - intent: company_size_inquiry
+      - action: utter_fsoft_company_size
+
+  - story: Greet and do not provide name
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - story: Search for job without specifying salary
+    steps:
+      - intent: search_job
+      - action: action_search_job
+      - action: utter_search_job
+
+  - story: Inquire about FPT Software without mentioning specific details
+    steps:
+      - intent: about_fsoft_company
+      - action: utter_about_fsoft_company
+
+  - story: Say goodbye with a promise to return
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: Search for job inquiring only about job type and location
+    steps:
+      - intent: search_job
+      - action: action_search_job
+      - action: utter_search_job
+  - story: Greet, inquire about FPT Software, inquire about industry focus, and say goodbye
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: about_fsoft_company
+      - action: utter_about_fsoft_company
+      - intent: industry_focus_inquiry
+      - action: utter_fsoft_industry
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: Greet, inquire about FPT Software, inquire about company size, and say goodbye
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: about_fsoft_company
+      - action: utter_about_fsoft_company
+      - intent: company_size_inquiry
+      - action: utter_fsoft_company_size
+      - intent: goodbye
+      - action: utter_goodbye

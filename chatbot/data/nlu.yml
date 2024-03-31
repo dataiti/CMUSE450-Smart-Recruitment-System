@@ -1,6 +1,121 @@
 nlu:
-  - intent: get_all_users
+  - intent: greet
     examples: |
-      - Show all users
-      - Display all user data
-      - List all users
+      - Xin chào
+      - Hi
+      - Chào bạn
+      - Hello
+      - Hey
+      - Xin chào các bạn
+      - Xin chào mọi người
+      - Chào các bạn
+      - Hiện đây có ai không?
+      - Có ai ở đây không?
+  - intent: goodbye
+    examples: |
+      - Tạm biệt
+      - Chào tạm biệt
+      - Bye
+      - Hẹn gặp lại
+      - Goodbye
+      - Tôi phải đi
+      - Chúc bạn một ngày tốt lành
+      - Tôi sẽ quay lại sau
+      - Tạm biệt, hẹn gặp lại
+      - Hẹn gặp lại bạn sau
+  - intent: give_name
+    examples: |
+      - Mình tên là [Đạt](cust_name) nha.
+      - Anh là [Thành Đạt](cust_name) nhé.
+      - Cứ gọi tớ là [đạt](cust_name) là được.
+      - Chị] tên là [Nguyễn Thị Thuỳ Duyên](cust_name).
+      - Biệt danh của [Mình] là [dataiti](cust_name) nha.
+      - Em là [Nguyễn Thành Đạt](cust_name) nhé.
+      - Cứ gọi Anh là [Duyên Thuỳ](cust_name) thôi.
+      - Tớ tên là [Thành](cust_name).
+      - Anh là [Thành Đạt](cust_name), biệt danh là [Dat](cust_name).
+  - intent: search_job
+    examples: >
+      - Tìm một vị trí [lập trình viên](type_job) ở [TP HCM](location) với [mức
+      lương từ 10 triệu](salary)
+
+      - Có công việc nào về [quản trị hệ thống](type_job) ở [Hà Nội](location)
+      với [mức lương từ 15 triệu đồng](salary)?
+
+      - Tìm việc [IT](type_job) với [mức lương từ 12 triệu](salary) ở [Đà
+      Nẵng](location)
+
+      - Tìm công việc [ngành công nghệ thông tin](type_job) với [mức lương từ 20
+      triệu](salary) ở [Hồ Chí Minh](location)
+
+      - Tìm [vị trí phát triển phần mềm](type_job) với [mức lương từ 18 triệu
+      đồng](salary) ở [Hải Phòng](location)
+
+      - Có việc [quản lý dự án](type_job) với [mức lương từ 25 triệu](salary) ở
+      [Cần Thơ](location)
+
+      - Tôi đang tìm kiếm công việc [chuyên viên hỗ trợ kỹ thuật](type_job) ở
+      [Vũng Tàu](location) với [mức lương từ 15 triệu đồng](salary)
+
+      - Tìm [vị trí kỹ sư phần mềm](type_job) ở [Nha Trang](location) với [mức
+      lương từ 18 triệu đồng](salary)
+
+      - Có việc [lập trình web](type_job) với [mức lương từ 20 triệu](salary) ở
+      [Quy Nhơn](location)
+
+      - Tìm công việc [quản trị cơ sở dữ liệu](type_job) ở [Hải Dương](location)
+      với [mức lương từ 22 triệu đồng](salary)
+
+      - Có việc [phát triển ứng dụng di động](type_job) với [mức lương từ 25
+      triệu](salary) ở [Bắc Ninh](location)
+
+      - Tôi cần tìm công việc [lập trình viên Java](type_job) ở [Long
+      An](location) với [mức lương từ 20 triệu đồng](salary)
+
+      - Tìm việc [quản lý sản phẩm](type_job) ở [Thanh Hóa](location) với [mức
+      lương từ 30 triệu đồng](salary)
+
+      - Tìm [vị trí kỹ thuật viên mạng](type_job) ở [Bình Dương](location) với
+      [mức lương từ 18 triệu đồng](salary)
+
+      - Có việc [kiểm thử phần mềm](type_job) với [mức lương từ 20
+      triệu](salary) ở [Hưng Yên](location)
+
+      - Tôi đang tìm [chuyên viên bảo mật thông tin](type_job) ở [Bình
+      Phước](location) với [mức lương từ 25 triệu đồng](salary)
+
+      - Tìm công việc [lập trình viên Ruby](type_job) ở [Đồng Tháp](location)
+      với [mức lương từ 20 triệu đồng](salary)
+
+      - Có việc [quản trị mạng](type_job) với [mức lương từ 22 triệu](salary) ở
+      [An Giang](location)
+
+      - Tôi cần tìm việc làm [chuyên viên hỗ trợ kỹ thuật](type_job) ở [Kiên
+      Giang](location) với [mức lương từ 15 triệu đồng](salary)
+
+      - Tìm [vị trí kỹ sư phần mềm](type_job) ở [Gia Lai](location) với [mức
+      lương từ 18 triệu đồng](salary)
+  - intent: about_dsoft_company
+    examples: |
+      - Giới thiệu về D-Soft.     
+      - Thông tin về D-Soft.      
+      - D-Soft là công ty gì?     
+      - Tìm hiểu về công ty D-Soft.     
+      - Bạn có thể nói thêm về D-Soft không?      
+      - Tôi muốn biết về công ty D-Soft.      
+      - Có gì đặc biệt về D-Soft không?     
+      - Xin thông tin chi tiết về D-Soft.     
+      - D-Soft hoạt động trong lĩnh vực gì?     
+      - Có thông tin gì mới về D-Soft không?# Dsoft
+  - intent: about_dsoft_company
+    examples: |
+      - Giới thiệu về D-Soft.     
+      - Thông tin về D-Soft.      
+      - D-Soft là công ty gì?     
+      - Tìm hiểu về công ty D-Soft.     
+      - Bạn có thể nói thêm về D-Soft không?      
+      - Tôi muốn biết về công ty D-Soft.      
+      - Có gì đặc biệt về D-Soft không?     
+      - Xin thông tin chi tiết về D-Soft.     
+      - D-Soft hoạt động trong lĩnh vực gì?     
+      - Có thông tin gì mới về D-Soft không?

@@ -10,12 +10,12 @@ import {
   ManageEmployer,
   ManageUser,
   CreateEmployer,
-  NLUTrainingPage,
-  StoriesTrainingPage,
-  DomainTraningPage,
-  RulesTrainingPage,
-  ResponseTrainingPage,
-  TalkYourBotPage,
+  NLU,
+  Stories,
+  Domain,
+  Rules,
+  Response,
+  TalkYourBot,
 } from "../pages";
 
 const routers = [

@@ -774,6 +774,13 @@ const socket = async (socket, io) => {
     try {
       const { userId } = data;
 
+      const search = data.search ? data.search : "";
+
+      const searchRegex = search
+        .split(" ")
+        .filter((q) => q)
+        .join("|");
+
       if (!userId) return;
 
       const findUser = await User.findById(userId);
@@ -782,10 +789,53 @@ const socket = async (socket, io) => {
       if (!findUser) return;
 
       // Tìm tất cả cuộc trò chuyện của người dùng
-      const findConversations = await RasaConversation.find({
-        participantsIds: userId,
+      let findConversations = await RasaConversation.aggregate([
+        {
+          $lookup: {
+            from: "users",
+            localField: "participantsIds",
+            foreignField: "_id",
+            as: "participants",
+          },
+        },
+        {
+          $lookup: {
+            from: "rasamessages",
+            localField: "messageIds",
+            foreignField: "_id",
+            as: "messages",
+          },
+        },
+        {
+          $match: {
+            $or: [
+              {
+                "participants.firstName": {
+                  $regex: searchRegex,
+                  $options: "i",
+                },
+              },
+              {
+                "participants.lastName": { $regex: searchRegex, $options: "i" },
+              },
+              { "participants.email": { $regex: searchRegex, $options: "i" } },
+              { "messages.message": { $regex: searchRegex, $options: "i" } },
+            ],
+          },
+        },
+      ]);
+
+      // Lấy ra mảng các _id từ findConversations
+      const conversationIds = findConversations.map((item) => item._id);
+
+      // Thực hiện truy vấn find và populate dữ liệu từ RasaConversation
+      findConversations = await RasaConversation.find({
+        _id: { $in: conversationIds },
       })
-        .populate("participantsIds", "firstName lastName avatar email")
+        .populate({
+          path: "participantsIds",
+          select: "firstName lastName avatar email",
+        })
         .populate("messageIds");
 
       // Sắp xếp danh sách cuộc trò chuyện theo thời gian mới nhất
