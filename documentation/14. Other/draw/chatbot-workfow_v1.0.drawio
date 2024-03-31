@@ -1,0 +1,149 @@
+<mxfile host="app.diagrams.net" modified="2024-03-31T04:25:14.559Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="Gf7QZ0YxNYRFjWx-7pLc" version="24.2.1" type="device">
+  <diagram name="Trang-1" id="cZYtD2zimmagYovUjYHk">
+    <mxGraphModel dx="2131" dy="1850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="--SDgRLrIallsXbPIPOA-1" value="" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="400" y="440" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-2" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="469.8" as="sourcePoint" />
+            <mxPoint x="360" y="469.8" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-3" value="Message" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="200" y="490" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-4" value="Speech" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="200" y="420" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-5" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="--SDgRLrIallsXbPIPOA-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="460" as="sourcePoint" />
+            <mxPoint x="300" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-6" value="send voice" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="--SDgRLrIallsXbPIPOA-5">
+          <mxGeometry x="-0.008" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-8" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="--SDgRLrIallsXbPIPOA-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="480" as="sourcePoint" />
+            <mxPoint x="280" y="445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-9" value="send text" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="--SDgRLrIallsXbPIPOA-8">
+          <mxGeometry x="-0.008" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-10" value="Speech To Text API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="195" y="320" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-11" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="--SDgRLrIallsXbPIPOA-4" target="--SDgRLrIallsXbPIPOA-10">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="470" as="sourcePoint" />
+            <mxPoint x="280" y="445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-12" value="send audio" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="--SDgRLrIallsXbPIPOA-11">
+          <mxGeometry x="-0.008" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-13" value="Google Speech to Text API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="334" y="320" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-14" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.01;entryY=0.396;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1.007;exitY=0.396;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="--SDgRLrIallsXbPIPOA-10" target="--SDgRLrIallsXbPIPOA-13">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="340" as="sourcePoint" />
+            <mxPoint x="150" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-15" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="--SDgRLrIallsXbPIPOA-13" target="--SDgRLrIallsXbPIPOA-10">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="390" as="sourcePoint" />
+            <mxPoint x="343" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-16" value="User Message" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="30" y="412.5" width="100" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-18" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="--SDgRLrIallsXbPIPOA-3" target="--SDgRLrIallsXbPIPOA-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="470" as="sourcePoint" />
+            <mxPoint x="280" y="445" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="80" y="505" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-19" value="send message" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="--SDgRLrIallsXbPIPOA-18">
+          <mxGeometry x="-0.008" y="1" relative="1" as="geometry">
+            <mxPoint x="18" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-20" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=-0.011;exitY=0.415;exitDx=0;exitDy=0;exitPerimeter=0;edgeStyle=elbowEdgeStyle;" edge="1" parent="1" source="--SDgRLrIallsXbPIPOA-10" target="--SDgRLrIallsXbPIPOA-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="210" y="515" as="sourcePoint" />
+            <mxPoint x="110" y="468" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-21" value="send&amp;nbsp;&lt;div&gt;message&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="--SDgRLrIallsXbPIPOA-20">
+          <mxGeometry x="-0.008" y="1" relative="1" as="geometry">
+            <mxPoint x="-2" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-25" value="" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="-90" y="-120" width="380" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-26" value="Intent Classifier" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="-20" y="160" width="100" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-27" value="Entity&lt;div&gt;Extractor&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="160" y="160" width="100" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-28" value="tokenizer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="30" y="330" width="100" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-29" value="Intent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="-20" y="80" width="100" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-30" value="Entities" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="160" y="80" width="100" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-32" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="--SDgRLrIallsXbPIPOA-26" target="--SDgRLrIallsXbPIPOA-29">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-10" y="260" as="sourcePoint" />
+            <mxPoint x="40" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-33" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="--SDgRLrIallsXbPIPOA-27" target="--SDgRLrIallsXbPIPOA-30">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint y="100" as="sourcePoint" />
+            <mxPoint y="75" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-34" value="text featurizer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="30" y="250" width="100" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-35" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="--SDgRLrIallsXbPIPOA-16" target="--SDgRLrIallsXbPIPOA-28">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="220" y="110" as="sourcePoint" />
+            <mxPoint x="220" y="85" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="--SDgRLrIallsXbPIPOA-36" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="--SDgRLrIallsXbPIPOA-28" target="--SDgRLrIallsXbPIPOA-34">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="90" y="423" as="sourcePoint" />
+            <mxPoint x="90" y="385" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
