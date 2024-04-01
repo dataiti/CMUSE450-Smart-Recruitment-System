@@ -1,6 +1,5 @@
-version: "3.1"
-
 intents:
+<<<<<<< HEAD
   - get_all_users
   - xin_chao
   - tam_biet
@@ -153,3 +152,102 @@ actions:
   - utter_thong_tin_cong_ty_Lotte
   - utter_thong_tin_cong_ty_TechLead
   - utter_thong_tin_cong_ty_BMBSoft
+=======
+  - greet
+  - goodbye
+  - give_name
+  - search_job
+  - about_fsoft_company
+  - company_size_inquiry
+  - industry_focus_inquiry
+entities:
+  - cust_name
+  - type_job
+  - location
+  - salary
+slots:
+  cust_name:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: cust_name
+  type_job:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: type_job
+  location:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: location
+  salary:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: salary
+responses:
+  utter_greet:
+    - text: |
+        Xin chào! Chào mừng bạn đến với trang tuyển dụng việc làm IT. Bạn có thể
+        cho tôi biết tên để tiện xưng hô ạ !
+    - text: Chào bạn yêu! Bạn tên gì để tôi tiện xưng hô?
+    - text: |
+        Chào bạn! Rất vui được gặp bạn tại đây. Bạn muốn tìm kiếm công việc gì
+        hôm nay?
+  utter_acknowledge_name:
+    - text: Rất vui được gặp {cust_name}! {cust_name} có muốn hỏi gì không ?
+    - text: Xin chào {cust_name}! Bạn cần hỗ trợ gì không?
+    - text: Chào {cust_name}! Hãy cho tôi biết bạn cần giúp đỡ về vấn đề gì nhé.
+  utter_search_job:
+    - text: |
+        Dưới đây là danh sách công việc phù hợp với yêu cầu của bạn:
+        - Loại công việc: {type_job}
+        - Địa điểm: {location}
+        - Mức lương: {salary}
+  utter_about_fsoft_company:
+    - text: |
+        FPT Software là công ty thành viên của Tập đoàn FPT. Được thành lập từ
+        năm 1999, FPT Software hiện là công ty chuyên cung cấp dịch vụ và giải
+        pháp phần mềm cho khách hàng quốc tế, với hơn 28.000 nhân viên có mặt
+        tại 27 quốc gia trên toàn cầu. Nhiều năm liên tiếp, FPT Software được
+        bình chọn là Nhà tuyển dụng được yêu thích nhất và nằm trong TOP công ty
+        có môi trường làm việc tốt nhất Châu Á.
+  utter_fsoft_company_size:
+    - text: |
+        Quy mô công ty FPT Software:"
+        Số lượng nhân viên: hơn 26.000 người
+        Văn phòng: 63 văn phòng tại 26 quốc gia trên thế giới, bao gồm:
+          - Việt Nam: 26 văn phòng
+          - Châu Á: 19 văn phòng (Nhật Bản, Singapore, Malaysia, Philippines, Thái Lan, Myanmar, Hàn Quốc, Trung Quốc...)
+          - Châu Âu: 12 văn phòng (Pháp, Đức, Slovakia...)
+          - Bắc Mỹ: 4 văn phòng (Mỹ)
+          - Châu Úc: 2 văn phòng (Úc)
+  utter_fsoft_industry:
+    - text: >
+        Công ty FPT Software hoạt động chủ yếu trong ba lĩnh vực:
+          1. Gia công phần mềm:
+            - Tích hợp hệ thống.
+            - Dịch vụ chuyển đổi số.
+            - Dịch vụ bảo mật CNTT.
+          2. Giải pháp phần mềm:
+            - Cho doanh nghiệp.
+            - Cho chính phủ.
+            - Cho cá nhân.
+          3. Ngành dọc:
+            - Tài chính ngân hàng.
+            - Viễn thông.
+            - Y tế.
+            - Sản xuất.
+        Đây là những lĩnh vực chính mà FPT Software tập trung và cung cấp các
+        giải pháp phần mềm cho nhiều loại hình doanh nghiệp khác nhau.
+actions:
+  - utter_greet
+  - utter_goodbye
+  - utter_acknowledge_name
+  - action_search_job
+  - utter_search_job
+  - utter_about_fsoft
+  - utter_fsoft_company_size
+  - utter_fsoft_industry
+>>>>>>> f9dc8c8fd441588746b6f251acfc6afb40797e44

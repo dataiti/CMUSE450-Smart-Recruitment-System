@@ -6,7 +6,7 @@ import {
   useGetListIntensQuery,
   useGetNLUDataQuery,
 } from "../../redux/features/apis/rasas/nluApi";
-import { InputSelectCustom, Search } from "../../components/rasas";
+import { InputSelectCustom, Search } from "../../components/chatbot";
 import { icons } from "../../utils/icons";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 rules:
   - rule: Show all users
     steps:
@@ -152,3 +153,5 @@ rules:
 
 
       
+=======
+>>>>>>> f9dc8c8fd441588746b6f251acfc6afb40797e44

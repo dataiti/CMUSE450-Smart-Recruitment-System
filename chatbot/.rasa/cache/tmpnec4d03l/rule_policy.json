@@ -1,0 +1,26 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"salary_and_benefits\"}}]": "utter_salary_and_benefits",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"salary_and_benefits\"}}, {\"prev_action\": {\"action_name\": \"utter_salary_and_benefits\"}, \"user\": {\"intent\": \"salary_and_benefits\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"job_requirements\"}}]": "utter_job_requirements",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"job_requirements\"}}, {\"prev_action\": {\"action_name\": \"utter_job_requirements\"}, \"user\": {\"intent\": \"job_requirements\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"application_status\"}}]": "utter_application_status",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"application_status\"}}, {\"prev_action\": {\"action_name\": \"utter_application_status\"}, \"user\": {\"intent\": \"application_status\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"apply_job\"}}]": "utter_apply_job_intro",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"apply_job\"}}, {\"prev_action\": {\"action_name\": \"utter_apply_job_intro\"}, \"user\": {\"intent\": \"apply_job\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"get_all_users\"}}]": "utter_get_all_users",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"get_all_users\"}}, {\"prev_action\": {\"action_name\": \"utter_get_all_users\"}, \"user\": {\"intent\": \"get_all_users\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"interview_process\"}}]": "utter_interview_process",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"interview_process\"}}, {\"prev_action\": {\"action_name\": \"utter_interview_process\"}, \"user\": {\"intent\": \"interview_process\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {},
+    "rules_not_in_stories": [
+      "predicting default action with intent restart",
+      "predicting default action with intent session_start",
+      "predicting default action with intent back"
+    ]
+  }
+}

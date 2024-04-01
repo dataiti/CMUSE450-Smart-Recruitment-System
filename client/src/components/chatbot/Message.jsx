@@ -22,7 +22,7 @@ const Message = ({ message }) => {
             className="bg-[#212f3f] p-2 h-10 w-10"
           />
           <Typography
-            className={`text-sm font-bold max-w-[70%] p-3 rounded-bl-xl rounded-br-xl ${
+            className={`whitespace-pre-line text-sm font-bold max-w-[70%] p-3 rounded-bl-xl rounded-br-xl ${
               user?._id !== message?.senderId?._id
                 ? "bg-gray-100 text-blue-gray-400 rounded-tl-sm rounded-tr-xl"
                 : "bg-blue-gray-800 text-white rounded-tr-sm rounded-tl-xl"

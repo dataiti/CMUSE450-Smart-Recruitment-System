@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { YamlEditor } from "../../components/rasas";
+import { YamlEditor } from "../../components/chatbot";
 import { Typography } from "@material-tailwind/react";
 import {
   useReadDomainDataQuery,

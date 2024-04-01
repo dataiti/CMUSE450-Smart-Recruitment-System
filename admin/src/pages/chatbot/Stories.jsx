@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlowStories, Search, YamlEditor } from "../../components/rasas";
+import { FlowStories, Search, YamlEditor } from "../../components/chatbot";
 import {
   useAddStoryMutation,
   useDeleteStoryMutation,
