@@ -34,88 +34,64 @@ nlu:
       - Cứ gọi Anh là [Duyên Thuỳ](cust_name) thôi.
       - Tớ tên là [Thành](cust_name).
       - Anh là [Thành Đạt](cust_name), biệt danh là [Dat](cust_name).
+
+  - intent: list_company_in_system
+    examples: |
+      - Hiện tại trên hệ thống có những công ty nào?
+      - Cho tôi biết danh sách các công ty đang có trên hệ thống.
+      - Xin hãy liệt kê các công ty đang tham gia trên nền tảng này.
+      - Có những doanh nghiệp nào đã đăng ký trong hệ thống?
+      - Tôi muốn biết các công ty hiện đang hoạt động trên hệ thống.
+  - intent: interview_process
+    examples: |
+      - Cho tôi biết về quy trình phỏng vấn tại công ty.
+      - Bạn có thể cung cấp thông tin về quy trình phỏng vấn được không?
+      - Xin mô tả về quy trình phỏng vấn tại công ty.
+      - Làm ơn giải thích về quy trình phỏng vấn hoạt động như thế nào?
+      - Tôi muốn hiểu rõ về quy trình phỏng vấn tại công ty.
+  - intent: find_job_in_system
+    examples: |
+      - Tìm việc làm trên hệ thống
+      - Tìm công việc phù hợp với kỹ năng của tôi
+      - Bạn có thể giúp tôi tìm một công việc phù hợp không?
+      - Cho tôi xem danh sách các công việc đang có
+      - Có công việc nào phù hợp với background của tôi không?
+      - Tôi đang tìm kiếm cơ hội việc làm
+      - Bạn có thể gợi ý cho tôi một số công việc phù hợp không?
+  - intent: recruitment_trend
+    examples: |
+      - Xu hướng tuyển dụng ngành IT
+      - Tôi muốn biết về xu hướng tuyển dụng trong ngành IT
+      - Những công nghệ lập trình nào đang được ưa chuộng trong tuyển dụng IT?
+      - Công việc nào đang có nhiều cơ hội việc làm nhất trong ngành công nghệ thông tin?
+      - Các vị trí công việc hot trong ngành IT là gì?
+
+  - intent: recruitment_trend_on_market
+    examples: |
+      - Xu hướng trên thị trường
+      - Xu hướng tuyển dụng ngành IT trên thị trường trong năm nay như thế nào?
+      - Tôi muốn biết về xu hướng tuyển dụng trong ngành IT trên thị trường
+      - Những công nghệ lập trình nào trên thị trường đang được ưa chuộng trong tuyển dụng IT?
+      - Công việc nào đang có nhiều cơ hội việc làm nhất trên thị trường trong ngành công nghệ thông tin?
+      - Các vị trí công việc hot trên thị trường trong ngành IT là gì?
+
+  - intent: recruitment_trend_in_system
+    examples: |
+      - Xu hướng trên hệ thống
+      - Xu hướng tuyển dụng ngành IT trên hệ thống trong năm nay như thế nào?
+      - Tôi muốn biết về xu hướng tuyển dụng trong ngành IT trên hệ thống
+      - Những công nghệ lập trình nào trên hệ thống đang được ưa chuộng trong tuyển dụng IT?
+      - Công việc nào đang có nhiều cơ hội việc làm nhất trên hệ thống trong ngành công nghệ thông tin?
+      - Các vị trí công việc hot trên hệ thống trong ngành IT là gì?
+
   - intent: search_job
-    examples: >
-      - Tìm một vị trí [lập trình viên](type_job) ở [TP HCM](location) với [mức
-      lương từ 10 triệu](salary)
-
-      - Có công việc nào về [quản trị hệ thống](type_job) ở [Hà Nội](location)
-      với [mức lương từ 15 triệu đồng](salary)?
-
-      - Tìm việc [IT](type_job) với [mức lương từ 12 triệu](salary) ở [Đà
-      Nẵng](location)
-
-      - Tìm công việc [ngành công nghệ thông tin](type_job) với [mức lương từ 20
-      triệu](salary) ở [Hồ Chí Minh](location)
-
-      - Tìm [vị trí phát triển phần mềm](type_job) với [mức lương từ 18 triệu
-      đồng](salary) ở [Hải Phòng](location)
-
-      - Có việc [quản lý dự án](type_job) với [mức lương từ 25 triệu](salary) ở
-      [Cần Thơ](location)
-
-      - Tôi đang tìm kiếm công việc [chuyên viên hỗ trợ kỹ thuật](type_job) ở
-      [Vũng Tàu](location) với [mức lương từ 15 triệu đồng](salary)
-
-      - Tìm [vị trí kỹ sư phần mềm](type_job) ở [Nha Trang](location) với [mức
-      lương từ 18 triệu đồng](salary)
-
-      - Có việc [lập trình web](type_job) với [mức lương từ 20 triệu](salary) ở
-      [Quy Nhơn](location)
-
-      - Tìm công việc [quản trị cơ sở dữ liệu](type_job) ở [Hải Dương](location)
-      với [mức lương từ 22 triệu đồng](salary)
-
-      - Có việc [phát triển ứng dụng di động](type_job) với [mức lương từ 25
-      triệu](salary) ở [Bắc Ninh](location)
-
-      - Tôi cần tìm công việc [lập trình viên Java](type_job) ở [Long
-      An](location) với [mức lương từ 20 triệu đồng](salary)
-
-      - Tìm việc [quản lý sản phẩm](type_job) ở [Thanh Hóa](location) với [mức
-      lương từ 30 triệu đồng](salary)
-
-      - Tìm [vị trí kỹ thuật viên mạng](type_job) ở [Bình Dương](location) với
-      [mức lương từ 18 triệu đồng](salary)
-
-      - Có việc [kiểm thử phần mềm](type_job) với [mức lương từ 20
-      triệu](salary) ở [Hưng Yên](location)
-
-      - Tôi đang tìm [chuyên viên bảo mật thông tin](type_job) ở [Bình
-      Phước](location) với [mức lương từ 25 triệu đồng](salary)
-
-      - Tìm công việc [lập trình viên Ruby](type_job) ở [Đồng Tháp](location)
-      với [mức lương từ 20 triệu đồng](salary)
-
-      - Có việc [quản trị mạng](type_job) với [mức lương từ 22 triệu](salary) ở
-      [An Giang](location)
-
-      - Tôi cần tìm việc làm [chuyên viên hỗ trợ kỹ thuật](type_job) ở [Kiên
-      Giang](location) với [mức lương từ 15 triệu đồng](salary)
-
-      - Tìm [vị trí kỹ sư phần mềm](type_job) ở [Gia Lai](location) với [mức
-      lương từ 18 triệu đồng](salary)
-  - intent: about_dsoft_company
     examples: |
-      - Giới thiệu về D-Soft.     
-      - Thông tin về D-Soft.      
-      - D-Soft là công ty gì?     
-      - Tìm hiểu về công ty D-Soft.     
-      - Bạn có thể nói thêm về D-Soft không?      
-      - Tôi muốn biết về công ty D-Soft.      
-      - Có gì đặc biệt về D-Soft không?     
-      - Xin thông tin chi tiết về D-Soft.     
-      - D-Soft hoạt động trong lĩnh vực gì?     
-      - Có thông tin gì mới về D-Soft không?# Dsoft
-  - intent: about_dsoft_company
-    examples: |
-      - Giới thiệu về D-Soft.     
-      - Thông tin về D-Soft.      
-      - D-Soft là công ty gì?     
-      - Tìm hiểu về công ty D-Soft.     
-      - Bạn có thể nói thêm về D-Soft không?      
-      - Tôi muốn biết về công ty D-Soft.      
-      - Có gì đặc biệt về D-Soft không?     
-      - Xin thông tin chi tiết về D-Soft.     
-      - D-Soft hoạt động trong lĩnh vực gì?     
-      - Có thông tin gì mới về D-Soft không?
+      - Tìm một vị trí [frontend](job_type) ở [TP HCM](location) với mức lương từ [10 triệu](salary) và yêu cầu kỹ năng [ReactJS](skill) và ít nhất [2 năm](experience) kinh nghiệm.
+      - Tìm việc làm [backend developer](job_type) tại [Hà Nội](location) với mức lương từ [15 triệu](salary) và yêu cầu kỹ năng [Node.js](skill) và ít nhất [3 năm](experience) kinh nghiệm.
+      - Tôi đang tìm việc làm [full stack developer](job_type) ở [Đà Nẵng](location) với mức lương tối thiểu [20 triệu](salary) và yêu cầu kỹ năng [AngularJS](skill) và ít nhất [5 năm](experience) kinh nghiệm.
+      - Muốn tìm việc về [DevOps](job_type) ở [TP HCM](location) với mức lương tối thiểu [12 triệu](salary) và yêu cầu kỹ năng [Docker](skill) và ít nhất [2 năm](experience) kinh nghiệm.
+      - Có việc làm [data scientist](job_type) ở [Hà Nội](location) với mức lương từ [20 triệu](salary) và yêu cầu kỹ năng [Python](skill) và ít nhất [3 năm](experience) kinh nghiệm.
+      - Tôi cần tìm vị trí [UI/UX designer](job_type) tại [TP HCM](location) với mức lương từ [18 triệu](salary) và yêu cầu kỹ năng [Sketch](skill) và ít nhất [3 năm](experience) kinh nghiệm.
+      - Tìm việc làm [QA tester](job_type) ở [Đà Nẵng](location) với mức lương từ [12 triệu](salary) và yêu cầu kỹ năng [Selenium](skill) và ít nhất [2 năm](experience) kinh nghiệm.
+      - Tìm một vị trí [backend developer](job_type) ở [Hồ Chí Minh](location) với mức lương từ [15 triệu](salary) và yêu cầu kỹ năng [Java](skill) và ít nhất [3 năm](experience) kinh nghiệm.
+      - Có công việc [frontend developer](job_type) tại [Hà Nội](location) với mức lương từ [10 triệu](salary) và yêu cầu kỹ năng [Vue.js](skill) và ít nhất [2 năm](experience) kinh nghiệm.

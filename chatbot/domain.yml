@@ -2,26 +2,29 @@ intents:
   - greet
   - goodbye
   - give_name
+  - interview_process
+  - list_company_in_system
+  - find_job_in_system
+  - recruitment_trend
+  - recruitment_trend_on_market
+  - recruitment_trend_in_system
   - search_job
-  - about_fsoft_company
-  - company_size_inquiry
-  - industry_focus_inquiry
+
 entities:
   - cust_name
-  - type_job
-  - location
-  - salary
+  - company
+
 slots:
   cust_name:
     type: text
     mappings:
       - type: from_entity
         entity: cust_name
-  type_job:
+  job_type:
     type: text
     mappings:
       - type: from_entity
-        entity: type_job
+        entity: job_type
   location:
     type: text
     mappings:
@@ -32,67 +35,144 @@ slots:
     mappings:
       - type: from_entity
         entity: salary
+  skill:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: skill
+  experience:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: experience
+
 responses:
   utter_greet:
+    - text: "Xin chào! Bạn cần tôi giúp gì? Tên bạn là gì nhỉ ?"
+      buttons:
+        - title: "Tìm việc làm trên hệ thống"
+          payload: "/search_jobs"
+        - title: "Thông tin về các công ty trên hệ thống"
+          payload: "/company_info"
+        - title: "Xu hướng tuyển dụng ngành IT"
+          payload: "/it_recruitment_trends"
+        - title: "Quy trình phỏng vấn"
+          payload: "/interview_process"
+
+    - text: "Chào bạn! Hãy cho tôi biết bạn cần gì nhé."
+      buttons:
+        - title: "Tìm việc làm trên hệ thống"
+          payload: "/search_jobs"
+        - title: "Thông tin về các công ty trên hệ thống"
+          payload: "/company_info"
+        - title: "Xu hướng tuyển dụng ngành IT"
+          payload: "/it_recruitment_trends"
+        - title: "Quy trình phỏng vấn"
+          payload: "/interview_process"
+
+    - text: "Xin chào! Tôi sẵn lòng hỗ trợ bạn. Hãy nói cho tôi biết bạn cần gì."
+      buttons:
+        - title: "Tìm việc làm trên hệ thống"
+          payload: "/search_jobs"
+        - title: "Thông tin về các công ty trên hệ thống"
+          payload: "/company_info"
+        - title: "Xu hướng tuyển dụng ngành IT"
+          payload: "/it_recruitment_trends"
+        - title: "Quy trình phỏng vấn"
+          payload: "/interview_process"
+
+    - text: "Xin chào! Chào mừng bạn đến với hệ thống tuyển dụng IntellIntelligence IT Job Finding. Bạn có thể cho tôi biết tên để tiện xưng hô nhé !"
+      buttons:
+        - title: "Tìm việc làm trên hệ thống"
+          payload: "/search_jobs"
+        - title: "Thông tin về các công ty trên hệ thống"
+          payload: "/company_info"
+        - title: "Xu hướng tuyển dụng ngành IT"
+          payload: "/it_recruitment_trends"
+        - title: "Quy trình phỏng vấn"
+          payload: "/interview_process"
+
+  utter_goodbye:
+    - text: "Tạm biệt! Hẹn gặp lại bạn sau."
+    - text: "Chúc bạn một ngày tốt lành! Hẹn gặp lại!"
+    - text: "Tạm biệt nhé! Rất vui được trò chuyện với bạn."
+    - text: "Xin chào và tạm biệt! Hãy quay lại nếu bạn cần sự trợ giúp."
+    - text: "Hẹn gặp lại bạn! Đừng quên ghé lại nếu bạn có câu hỏi nào khác."
+
+  utter_ask_name:
+    - text: "Xin cho tôi biết tên của bạn là gì?"
+
+  utter_name_received:
+    - text: "Rất vui được gặp bạn, {cust_name}! Bạn đang muốn hỏi gì nào ?"
+      buttons:
+        - title: "Tìm việc làm trên hệ thống"
+          payload: "/search_jobs"
+        - title: "Thông tin về các công ty trên hệ thống"
+          payload: "/company_info"
+        - title: "Xu hướng tuyển dụng ngành IT"
+          payload: "/it_recruitment_trends"
+        - title: "Quy trình phỏng vấn"
+          payload: "/interview_process"
+
+  utter_interview_process:
     - text: |
-        Xin chào! Chào mừng bạn đến với trang tuyển dụng việc làm IT. Bạn có thể
-        cho tôi biết tên để tiện xưng hô ạ !
-    - text: Chào bạn yêu! Bạn tên gì để tôi tiện xưng hô?
+        Quy trình phỏng vấn rất linh hoạt tùy thuộc vào “level” của ứng viên. Những ứng viên Intern hay Fresher (Junior level) quy trình phỏng vấn thường linh hoạt hơn. Các vị trí Senior hay Manager/Tech Lead trở lên thì quy trình chặt chẽ hơn, bao gồm: 
+        1. Tiếp nhận hồ sơ và chọn lọc: Các ứng viên gửi hồ sơ qua email hoặc hệ thống tuyển dụng trực tuyến. Nhà tuyển dụng sẽ xem xét và lọc hồ sơ để chọn ra những ứng viên phù hợp nhất.
+        2. Phỏng vấn điện thoại: Ứng viên có thể được mời tham gia phỏng vấn điện thoại để trao đổi thông tin cơ bản và đánh giá sơ bộ về kỹ năng và kinh nghiệm.
+        3. Phỏng vấn kỹ thuật: Ứng viên có thể tham gia phỏng vấn kỹ thuật để kiểm tra kiến thức chuyên ngành, kỹ năng lập trình và khả năng giải quyết vấn đề. Phỏng vấn này có thể bao gồm câu hỏi lý thuyết, bài kiểm tra mã, hoặc thực hành trực tiếp.
+        4. Phỏng vấn cấp cao: Các ứng viên tiềm năng có thể được mời tham gia phỏng vấn cấp cao với các quản lý cao cấp hoặc nhóm dự án để đánh giá kỹ năng lãnh đạo, khả năng làm việc nhóm và phù hợp với văn hóa tổ chức.
+        5. Phỏng vấn cuối cùng và đề xuất việc làm: Các ứng viên cuối cùng sẽ tham gia phỏng vấn cuối cùng với nhà tuyển dụng hoặc nhà quản lý trực tiếp để thảo luận về các điều khoản công việc, lương bổng và các điều khoản khác.
+        6. Kiểm tra tài liệu và gửi lời mời: Sau khi quyết định chọn ứng viên phù hợp, nhà tuyển dụng sẽ tiến hành kiểm tra tài liệu và gửi lời mời làm việc chính thức.
+        Quy trình phỏng vấn có thể thay đổi tùy thuộc vào từng công ty và vị trí công việc cụ thể, nhưng các bước trên thường là phổ biến trong ngành Công nghệ thông tin.
+
+  utter_find_job_in_system:
+    - text: "Tôi sẽ giúp bạn tìm kiếm công việc phù hợp! Để cung cấp các việc làm phù hợp, bạn có thể cung cấp thêm thông tin về kỹ năng, kinh nghiệm, địa điểm và mức lương mong muốn, ... Hoặc bạn có thể chọn các công việc phổ biến sau đây: "
+      buttons:
+        - title: "Full-stack Developer"
+          payload: "/search_jobs?position=Full-stack Developer"
+        - title: "Front-end Developer"
+          payload: "/search_jobs?position=Front-end Developer"
+        - title: "Back-end Developer"
+          payload: "/search_jobs?position=Back-end Developer"
+        - title: "Tester"
+          payload: "/search_jobs?position=Tester"
+
+    - text: "Có nhiều cơ hội công việc đang chờ đón bạn! Hãy cung cấp thông tin về kỹ năng, kinh nghiệm, địa điểm và mức lương mong muốn, hoặc chọn từ danh sách các công việc phổ biến sau:"
+      buttons:
+        - title: "Full-stack Developer"
+          payload: "/search_jobs?position=Full-stack Developer"
+        - title: "Front-end Developer"
+          payload: "/search_jobs?position=Front-end Developer"
+        - title: "Back-end Developer"
+          payload: "/search_jobs?position=Back-end Developer"
+        - title: "Tester"
+          payload: "/search_jobs?position=Tester"
+
+  utter_recruitment_trend:
+    - text: "Bạn muốn xem xu hướng tuyển dụng việc làm IT hiện nay ở đâu nhỉ ?"
+      buttons:
+        - title: "Xu hướng trên hệ thống"
+          payload: "/recruitment_trend_in_system"
+        - title: "Xu hướng trên thị trường"
+          payload: "/recruitment_trend_on_market"
+
+  utter_recruitment_trend_on_market:
     - text: |
-        Chào bạn! Rất vui được gặp bạn tại đây. Bạn muốn tìm kiếm công việc gì
-        hôm nay?
-  utter_acknowledge_name:
-    - text: Rất vui được gặp {cust_name}! {cust_name} có muốn hỏi gì không ?
-    - text: Xin chào {cust_name}! Bạn cần hỗ trợ gì không?
-    - text: Chào {cust_name}! Hãy cho tôi biết bạn cần giúp đỡ về vấn đề gì nhé.
-  utter_search_job:
+        Theo kết quả khảo sát thì JavaScript, Java, Node.JS, SQL và C# là top 5 kỹ năng/ngôn ngữ lập trình mà các công ty IT muốn tuyển dụng nhiều nhất trong năm 2023. Không có sự cách biệt quá lớn về mặt nhu cầu giữa các kỹ năng này, tỷ lệ chênh lệch giữa các kỹ năng chỉ dao động từ 1 đến 1.4%.
+      image: "https://res-console.cloudinary.com/doo78f14s/media_explorer_thumbnails/e70df8508045a8d9f3e7c623e6cefed1/detailed"
     - text: |
-        Dưới đây là danh sách công việc phù hợp với yêu cầu của bạn:
-        - Loại công việc: {type_job}
-        - Địa điểm: {location}
-        - Mức lương: {salary}
-  utter_about_fsoft_company:
-    - text: |
-        FPT Software là công ty thành viên của Tập đoàn FPT. Được thành lập từ
-        năm 1999, FPT Software hiện là công ty chuyên cung cấp dịch vụ và giải
-        pháp phần mềm cho khách hàng quốc tế, với hơn 28.000 nhân viên có mặt
-        tại 27 quốc gia trên toàn cầu. Nhiều năm liên tiếp, FPT Software được
-        bình chọn là Nhà tuyển dụng được yêu thích nhất và nằm trong TOP công ty
-        có môi trường làm việc tốt nhất Châu Á.
-  utter_fsoft_company_size:
-    - text: |
-        Quy mô công ty FPT Software:"
-        Số lượng nhân viên: hơn 26.000 người
-        Văn phòng: 63 văn phòng tại 26 quốc gia trên thế giới, bao gồm:
-          - Việt Nam: 26 văn phòng
-          - Châu Á: 19 văn phòng (Nhật Bản, Singapore, Malaysia, Philippines, Thái Lan, Myanmar, Hàn Quốc, Trung Quốc...)
-          - Châu Âu: 12 văn phòng (Pháp, Đức, Slovakia...)
-          - Bắc Mỹ: 4 văn phòng (Mỹ)
-          - Châu Úc: 2 văn phòng (Úc)
-  utter_fsoft_industry:
-    - text: >
-        Công ty FPT Software hoạt động chủ yếu trong ba lĩnh vực:
-          1. Gia công phần mềm:
-            - Tích hợp hệ thống.
-            - Dịch vụ chuyển đổi số.
-            - Dịch vụ bảo mật CNTT.
-          2. Giải pháp phần mềm:
-            - Cho doanh nghiệp.
-            - Cho chính phủ.
-            - Cho cá nhân.
-          3. Ngành dọc:
-            - Tài chính ngân hàng.
-            - Viễn thông.
-            - Y tế.
-            - Sản xuất.
-        Đây là những lĩnh vực chính mà FPT Software tập trung và cung cấp các
-        giải pháp phần mềm cho nhiều loại hình doanh nghiệp khác nhau.
+        Back-end Developer trong năm 2023 thì vẫn cần chuẩn bị tinh thần cạnh tranh cao. Các vị trí IT như Front-end, Full-stack và Mobile Developer vẫn đang rất được săn đón. QA/QC cũng là vị trí có nhu cầu tuyển dụng cao và xếp thứ 5 trong bảng xếp hạng. Kết quả này khá tương đồng với năm 2022, khi top 5 vị trí IT mà các công ty muốn tuyển dụng nhiều nhất thuộc về Back-end Developer, Front-end Developer, Full-stack Developer, Tester và Mobile Developer.
+      image: "https://res-console.cloudinary.com/doo78f14s/media_explorer_thumbnails/a0c6ad29a2eed39d02762a0da1ed4cfc/detailed"
+
 actions:
   - utter_greet
   - utter_goodbye
-  - utter_acknowledge_name
+  - utter_ask_name
+  - utter_name_received
+  - utter_interview_process
+  - action_list_company_in_system
+  - utter_find_job_in_system
+  - utter_recruitment_trend
+  - utter_recruitment_trend_on_market
+  - action_recruitment_trend_in_system
   - action_search_job
-  - utter_search_job
-  - utter_about_fsoft
-  - utter_fsoft_company_size
-  - utter_fsoft_industry

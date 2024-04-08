@@ -1,81 +1,52 @@
 stories:
-  - story: Greet and ask for name
+  - story: greet and provide options
     steps:
       - intent: greet
       - action: utter_greet
+
+  - story: goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: provide name and greet
+    steps:
       - intent: give_name
-      - action: utter_acknowledge_name
+      - slot_was_set:
+          - cust_name: "cust_name"
+      - action: utter_name_received
 
-  - story: Say goodbye
+  - story: interview process
     steps:
-      - intent: goodbye
-      - action: utter_goodbye
+      - intent: interview_process
+      - action: utter_interview_process
 
-  - story: Search for job
+  - story: list company in system
+    steps:
+      - intent: list_company_in_system
+      - action: action_list_company_in_system
+
+  - story: find job in system
+    steps:
+      - intent: find_job_in_system
+      - action: utter_find_job_in_system
+
+  - story: ask recruitment trend
+    steps:
+      - intent: recruitment_trend
+      - action: utter_recruitment_trend
+
+  - story: ask recruitment trend on market
+    steps:
+      - intent: recruitment_trend_on_market
+      - action: utter_recruitment_trend_on_market
+
+  - story: ask recruitment trend in system
+    steps:
+      - intent: recruitment_trend_in_system
+      - action: action_recruitment_trend_in_system
+
+  - story: ask search job in system
     steps:
       - intent: search_job
       - action: action_search_job
-      - action: utter_search_job
-
-  - story: Inquire about FPT Software
-    steps:
-      - intent: about_fsoft_company
-      - action: utter_about_fsoft_company
-
-  - story: Inquire about industry focus of FPT Software
-    steps:
-      - intent: industry_focus_inquiry
-      - action: utter_fsoft_industry
-
-  - story: Inquire about company size of FPT Software
-    steps:
-      - intent: company_size_inquiry
-      - action: utter_fsoft_company_size
-
-  - story: Greet and do not provide name
-    steps:
-      - intent: greet
-      - action: utter_greet
-
-  - story: Search for job without specifying salary
-    steps:
-      - intent: search_job
-      - action: action_search_job
-      - action: utter_search_job
-
-  - story: Inquire about FPT Software without mentioning specific details
-    steps:
-      - intent: about_fsoft_company
-      - action: utter_about_fsoft_company
-
-  - story: Say goodbye with a promise to return
-    steps:
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: Search for job inquiring only about job type and location
-    steps:
-      - intent: search_job
-      - action: action_search_job
-      - action: utter_search_job
-  - story: Greet, inquire about FPT Software, inquire about industry focus, and say goodbye
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: about_fsoft_company
-      - action: utter_about_fsoft_company
-      - intent: industry_focus_inquiry
-      - action: utter_fsoft_industry
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: Greet, inquire about FPT Software, inquire about company size, and say goodbye
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: about_fsoft_company
-      - action: utter_about_fsoft_company
-      - intent: company_size_inquiry
-      - action: utter_fsoft_company_size
-      - intent: goodbye
-      - action: utter_goodbye
