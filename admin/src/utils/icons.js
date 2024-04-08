@@ -17,6 +17,8 @@ import {
   IoLocationSharp,
   IoChatbubblesOutline,
   IoChatbubbleOutline,
+  IoCheckmarkCircleOutline,
+  IoTrash,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -126,6 +128,8 @@ const icons = {
   FiSearch,
   FcGoogle,
   FiChevronDown,
+  IoCheckmarkCircleOutline,
+  IoTrash,
 };
 
 export { icons };
