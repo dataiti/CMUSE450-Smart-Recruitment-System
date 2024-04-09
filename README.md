@@ -23,12 +23,25 @@
   - **Ảnh màn hình**: 
   ![image](https://github.com/dataiti/CMUSE450-Capstone1-Smart-Recruitment-System/assets/104474689/795579f9-d77b-4b19-937e-b112e757bebc)
 
+**Quy tắc đặt tên branch**
+
+  - feature/: nhánh tính năng mới
+
+  - fix/: nhánh sửa lỗi.
+
+  - docs/: nhánh chỉnh sửa tài liệu.
+
+  - refactor/: nhánh thực hiện việc tái cấu trúc mã nguồn mà không ảnh hưởng đến chức năng bên ngoài.
+
+  - chore/: nhánh thực hiện các công việc nhỏ không liên quan đến tính năng chính.
+    
 **Version**
-Pip:    pip 24.0
 
-Python: Python 3.9.0
-
-Node:   v18.18.0
+  - Pip:    pip 24.0
+  
+  - Python: Python 3.9.0
+  
+  - Node:   v18.18.0
 
 **Cách cài đặt**
 
