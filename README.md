@@ -9,5 +9,7 @@ cd employer -> npm install -> npm start
 cd admin -> npm install -> npm start
 # đối với chatbot server
 bật 2 terminal để chạy server và chạy actions
+
 terminal 1: cd chatbot -> python -m rasa run --endpoints endpoints.yml --model models --enable-api --cors "*"
+
 terminal 2: cd chatbot -> python -m rasa run actions --actions actions
