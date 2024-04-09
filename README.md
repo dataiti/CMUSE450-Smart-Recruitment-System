@@ -25,9 +25,13 @@
 
 **Version**
 Pip:    pip 24.0
+
 Python: Python 3.9.0
+
 Node:   v18.18.0
+
 **Cách cài đặt**
+
   - đối với server
     + cd server -> npm install -> npm start 
   - đối với client
