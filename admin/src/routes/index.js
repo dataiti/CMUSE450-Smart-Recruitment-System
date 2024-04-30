@@ -16,6 +16,7 @@ import {
   Rules,
   Response,
   TalkYourBot,
+  Conversation,
 } from "../pages";
 
 const routers = [
@@ -37,6 +38,11 @@ const routers = [
       {
         path: "/rasa/talk-to-your-bot",
         element: <TalkYourBot />,
+        index: true,
+      },
+      {
+        path: "/rasa/conversations",
+        element: <Conversation />,
         index: true,
       },
       {

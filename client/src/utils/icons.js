@@ -26,6 +26,9 @@ import {
   IoRemove,
   IoEye,
   IoClose,
+  IoMicSharp,
+  IoAttach,
+  IoLinkOutline,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -93,7 +96,7 @@ import {
 } from "react-icons/ai";
 
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
-import { HiFilter } from "react-icons/hi";
+import { HiFilter, HiDotsVertical } from "react-icons/hi";
 import { GrReactjs, GrNode } from "react-icons/gr";
 import { SiTailwindcss, SiExpress } from "react-icons/si";
 import { DiMongodb } from "react-icons/di";
@@ -102,6 +105,10 @@ import { ImTable2 } from "react-icons/im";
 import { TbExternalLink } from "react-icons/tb";
 
 const icons = {
+  IoLinkOutline,
+  IoMicSharp,
+  IoAttach,
+  HiDotsVertical,
   IoEye,
   IoMdEyeOff,
   BsFileTextFill,

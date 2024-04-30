@@ -26,9 +26,7 @@ const MyCalendar = ({ events = [] }) => {
     };
   };
 
-  const handleEventClick = (event) => {
-    console.log("Event Clicked:", event.title);
-  };
+  const handleEventClick = (event) => {};
 
   return (
     <Calendar

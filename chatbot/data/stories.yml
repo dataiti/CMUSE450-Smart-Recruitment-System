@@ -50,3 +50,48 @@ stories:
     steps:
       - intent: search_job
       - action: action_search_job
+
+  - story: ask prepare for IT interview
+    steps:
+      - intent: prepare_for_IT_interview
+      - action: utter_prepare_for_IT_interview
+
+  - story: ask IT job market demand
+    steps:
+      - intent: IT_job_market_demand
+      - action: utter_IT_job_market_demand
+
+  - story: ask IT salary market
+    steps:
+      - intent: IT_salary_market
+      - action: utter_IT_salary_market
+
+  - story: ask about FSoftware company
+    steps:
+      - intent: about_FSoftware_company
+      - action: utter_about_FSoftware_company
+
+  - story: ask inquire popular companies
+    steps:
+      - intent: inquire_popular_companies
+      - action: action_inquire_popular_companies
+
+  - story: ask inquire companies by employee count
+    steps:
+      - intent: inquire_companies_by_employee_count
+      - action: action_inquire_companies_by_employee_count
+
+  - story: askinquire companies by tech_stack
+    steps:
+      - intent: inquire_companies_by_tech_stack
+      - action: action_inquire_companies_by_tech_stack
+
+  - story: ask inquire highest rated companies
+    steps:
+      - intent: inquire_highest_rated_companies
+      - action: action_inquire_highest_rated_companies
+
+  - story: ask inquire highest salary companies
+    steps:
+      - intent: inquire_highest_salary_companies
+      - action: action_inquire_highest_salary_companies

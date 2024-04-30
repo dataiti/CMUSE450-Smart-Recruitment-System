@@ -351,6 +351,7 @@ const getListJobs = asyncHandler(async (req, res) => {
     query.salaryFrom && query.salaryFrom > 0 ? Number(query.salaryFrom) : -1;
   const salaryTo =
     query.salaryTo && query.salaryTo > 0 ? Number(query.salaryTo) : -1;
+  const currentDate = new Date();
 
   const filterArgs = {
     $or: [
@@ -364,6 +365,7 @@ const getListJobs = asyncHandler(async (req, res) => {
     isHiring: true,
     status: "active",
     isLocked: false,
+    applicationDeadline: { $gte: currentDate },
   };
 
   if (industryArr !== -1) filterArgs.industry = { $in: industryArr };
@@ -605,6 +607,7 @@ const getListJobsByCompany = asyncHandler(async (req, res) => {
 
 const getListJobsForHomePage = asyncHandler(async (req, res) => {
   const { limit, userId } = req.query;
+  const currentDate = new Date();
 
   const allJobs = await Job.find()
     .limit(limit)
@@ -616,6 +619,7 @@ const getListJobsForHomePage = asyncHandler(async (req, res) => {
   if (userId) {
     followingsJobs = await Job.find({
       employerId: { $in: userId.followingIds },
+      applicationDeadline: { $gte: currentDate },
     })
       .limit(limit)
       .populate("workRegion")
@@ -642,8 +646,13 @@ const getListJobsForHomePage = asyncHandler(async (req, res) => {
 
 const getListSimilarJobs = asyncHandler(async (req, res) => {
   const { industry, jobId } = req.query;
+  const currentDate = new Date();
 
-  const listJobs = await Job.find({ industry, _id: { $ne: jobId } })
+  const listJobs = await Job.find({
+    industry,
+    _id: { $ne: jobId },
+    applicationDeadline: { $gte: currentDate },
+  })
     .populate("workRegion")
     .populate("employerId");
 

@@ -9,13 +9,13 @@ import ManageUser from "./user/ManageUser";
 import CreateCategory from "./category/CreateCategory";
 import CreateEmployer from "./employer/CreateEmployer";
 import EmployerDetail from "./employer/EmployerDetail";
-import ChatbotDashboard from "./chatbot/ChatbotDashboard";
-import NLUTrainingPage from "./chatbot/NLUTrainingPage";
-import DomainTraningPage from "./chatbot/DomainTraningPage";
-import RulesTrainingPage from "./chatbot/RulesTrainingPage";
-import StoriesTrainingPage from "./chatbot/StoriesTrainingPage";
-import ResponseTrainingPage from "./chatbot/ResponseTrainingPage";
-import TalkYourBotPage from "./chatbot/TalkYourBotPage";
+import NLU from "./chatbot/NLU";
+import Domain from "./chatbot/Domain";
+import Rules from "./chatbot/Rules";
+import Stories from "./chatbot/Stories";
+import Response from "./chatbot/Response";
+import TalkYourBot from "./chatbot/TalkYourBot";
+import Conversation from "./chatbot/Conversation";
 
 export {
   LoginPage,
@@ -29,11 +29,11 @@ export {
   CreateCategory,
   CreateEmployer,
   EmployerDetail,
-  ChatbotDashboard,
-  NLUTrainingPage,
-  DomainTraningPage,
-  RulesTrainingPage,
-  StoriesTrainingPage,
-  ResponseTrainingPage,
-  TalkYourBotPage,
+  NLU,
+  Domain,
+  Rules,
+  Stories,
+  Response,
+  TalkYourBot,
+  Conversation,
 };

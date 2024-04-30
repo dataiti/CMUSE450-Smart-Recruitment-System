@@ -101,7 +101,6 @@ const ToolbarCV = () => {
   const closeDrawer = () => setOpen(false);
 
   const handleChangeStatusEvent = () => {
-    console.log(status);
     socket.emit("update_status_apply_job", {
       userId: applyJobDetailData?.data?.candidateId?._id,
       employerId: user?.ownerEmployerId?._id,

@@ -165,7 +165,7 @@ export const jobPositionOptions = [
   { id: 18, value: "Data Scientist" },
   { id: 19, value: "Software Engineer" },
   { id: 20, value: "Quality Assurance (QA) Engineer" },
-  { id: 21, value: "Automation Test Engineer" },
+  { id: 21, value: "Tester" },
   { id: 22, value: "IT Infrastructure Manager" },
   { id: 23, value: "Cloud Architect" },
   { id: 24, value: "DevOps Engineer" },

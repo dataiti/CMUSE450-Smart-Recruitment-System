@@ -95,3 +95,132 @@ nlu:
       - Tìm việc làm [QA tester](job_type) ở [Đà Nẵng](location) với mức lương từ [12 triệu](salary) và yêu cầu kỹ năng [Selenium](skill) và ít nhất [2 năm](experience) kinh nghiệm.
       - Tìm một vị trí [backend developer](job_type) ở [Hồ Chí Minh](location) với mức lương từ [15 triệu](salary) và yêu cầu kỹ năng [Java](skill) và ít nhất [3 năm](experience) kinh nghiệm.
       - Có công việc [frontend developer](job_type) tại [Hà Nội](location) với mức lương từ [10 triệu](salary) và yêu cầu kỹ năng [Vue.js](skill) và ít nhất [2 năm](experience) kinh nghiệm.
+
+  - intent: inquire_current_positions
+    examples: |
+      - Các vị trí nào đang được tuyển dụng?
+      - Cho tôi biết về các vị trí công việc đang có sẵn.
+      - Hiện tại có những vị trí nào đang tuyển dụng?
+      - Tôi muốn biết về các cơ hội việc làm hiện tại.
+      - Các vị trí công việc đang mở cần tuyển nhân sự là gì?
+      - Cho xin thông tin về các vị trí đang được tuyển dụng.
+
+  - intent: career_direction_IT
+    examples: |
+      - Làm thế nào để định hướng nghề nghiệp trong lĩnh vực IT?  
+      - Tôi cần làm gì để chọn đúng hướng nghề trong ngành công nghệ thông tin?
+      - Làm sao để biết được lĩnh vực nào trong IT phù hợp với kỹ năng của tôi?
+      - Có nên học thêm các kỹ năng mới trong IT để mở rộng hướng nghiệp của mình không?
+      - Làm thế nào để chọn đúng vị trí công việc IT cho sự nghiệp của tôi?
+      - Tôi cần tư vấn về con đường nghề nghiệp trong ngành IT, bạn có thể giúp tôi không?
+
+  - intent: programming_skills_required
+    examples: |
+      - Có những kỹ năng nào cần thiết để trở thành một Developer trong IT?
+      - Những kỹ năng gì là quan trọng để làm việc trong ngành lập trình?
+      - Coder cần có những kỹ năng gì để thành công trong công việc?
+      - Để trở thành một software engineer giỏi, cần phải có những kỹ năng gì?
+      - Yêu cầu kỹ năng nào để làm việc trong lĩnh vực IT?
+      - Những kỹ năng cần có của một lập trình viên là gì?
+
+  - intent: impressive_cv_tips
+    examples: |
+      - Làm thế nào để viết một sơ yếu lý lịch (CV) ấn tượng?
+      - Có cách nào để làm cho CV của mình nổi bật và chuyên nghiệp?
+      - Hướng dẫn viết sơ yếu lý lịch (CV) đẹp và ấn tượng như thế nào?
+      - Tôi cần những gợi ý để xây dựng một sơ yếu lý lịch (CV) chuyên nghiệp.
+      - Làm sao để có một CV gây ấn tượng với nhà tuyển dụng?
+      - Cách thức viết sơ yếu lý lịch (CV) sao cho nổi bật và chuyên nghiệp?
+
+  - intent: prepare_for_IT_interview
+    examples: |
+      - Tôi cần chuẩn bị như thế nào cho một cuộc phỏng vấn vị trí IT?
+      - Làm thế nào để chuẩn bị tốt cho một cuộc phỏng vấn IT?
+      - Có những điều gì cần chuẩn bị trước khi đi phỏng vấn vị trí công nghệ thông tin?
+      - Hướng dẫn chuẩn bị cho cuộc phỏng vấn IT như thế nào?
+      - Tôi cần những tips để sẵn sàng cho cuộc phỏng vấn IT.
+      - Làm sao để tự tin và chuẩn bị tốt cho một cuộc phỏng vấn vị trí lập trình viên?
+      - Cần làm gì để đạt được thành công trong cuộc phỏng vấn vị trí công nghệ thông tin?
+      - Tôi muốn biết cách chuẩn bị hiệu quả cho cuộc phỏng vấn IT.
+
+  - intent: IT_job_market_demand
+    examples: |
+      - Nhu cầu việc làm trong ngành công nghệ thông tin hiện nay như thế nào?
+      - Thị trường việc làm trong lĩnh vực IT đang có nhu cầu những gì?
+      - Các công việc trong ngành công nghệ thông tin đang được ưa chuộng như thế nào?
+      - Lĩnh vực IT đang có sự tăng trưởng nhu cầu việc làm hay không?
+      - Tìm hiểu về nhu cầu thị trường ngành công nghệ thông tin.
+      - Các vị trí công nghệ thông tin có nhu cầu cao trong thời gian gần đây là gì?
+      - Cơ hội việc làm trong ngành IT hiện nay ra sao?
+      - Tôi cần biết thông tin về thị trường việc làm trong lĩnh vực công nghệ thông tin.
+
+  - intent: IT_salary_market
+    examples: |
+      - Mức lương của lập trình viên ở Việt Nam hiện nay là bao nhiêu?
+      - Các lập trình viên có thu nhập bình quân khoảng bao nhiêu trong năm nay?
+      - Tôi muốn biết về mức lương của nhân viên IT tại các công ty công nghệ.
+      - Mức thu nhập của các vị trí công nghệ thông tin là bao nhiêu?
+      - Lương của lập trình viên có tăng hay không trong những năm gần đây?
+      - Tìm hiểu về mức lương trong ngành công nghệ thông tin.
+
+  - intent: about_FSoftware_company
+    examples: |
+      - Tôi cần tìm hiểu về công ty F-Software làm gì?
+      - Xin thông tin về F-Soft làm việc trong lĩnh vực gì?
+      - Có thông tin gì về công ty FPT không?
+      - Tôi muốn bạn cung cấp thông tin công ty F-Software.
+      - Giới thiệu thông tin công ty F-Software.
+      - Mô tả thông tin về F-Software?
+
+  - intent: inquire_popular_companies
+    examples: |
+      - Các công ty nào thu hút nhiều ứng viên nộp CV nhất?
+      - Cho tôi biết về những doanh nghiệp được ứng viên quan tâm nhiều nhất.
+      - Các công ty công nghệ nào nhận được nhiều CV từ ứng viên?
+      - Ai là những nhà tuyển dụng phổ biến nhất?
+      - Các đơn vị tuyển dụng nào có số lượng ứng viên nộp CV cao nhất?
+      - Những công ty phần mềm nào được nhiều người quan tâm nhất?
+      - Tôi muốn biết về các công ty IT được ứng viên quan tâm nhiều nhất để nộp CV.
+      - Có những công ty công nghệ thông tin nào được ứng viên quan tâm đặc biệt không?
+
+  - intent: inquire_companies_by_employee_count
+    examples: |
+      - Những doanh nghiệp nào có số lượng nhân viên trên [100](employee_count) người?
+      - Các tập đoàn có bao nhiêu nhân viên trên [500](employee_count) người?
+      - Cho tôi biết về các công ty công nghệ có hơn [200](employee_count) nhân viên.
+      - Có những nhà tuyển dụng hàng đầu nào có số lượng nhân viên trên [1000](employee_count) người không?
+      - Tôi quan tâm đến các đơn vị tuyển dụng có từ [300](employee_count) nhân viên trở lên.
+      - Những công ty công nghệ thông tin nào có lượng nhân viên trên [5000](employee_count) người?
+      - Các công ty phần mềm có bao nhiêu nhân viên trên [1000](employee_count) người?
+      - Tôi muốn biết về các công ty công nghệ cao với số lượng nhân viên trên [500](employee_count) người..
+
+  - intent: inquire_companies_by_tech_stack
+    examples: |
+      - Cho tôi biết các doanh nghiệp đang tuyển vị trí [Java](tech_stack).
+      - Có công ty nào đang cần tuyển vị trí [Python](tech_stack) không?
+      - Những công ty nào đang có việc làm liên quan đến [JavaScript](tech_stack)?
+      - Có thông tin về các công ty đang tuyển dụng [Ruby on Rails](tech_stack) không?
+      - Tôi quan tâm đến các công ty tuyển dụng vị trí [ReactJS](tech_stack).
+      - Các công ty phần mềm đang cần tuyển [Vue.js](tech_stack) ư?
+      - Cho xin thông tin về các công ty đang tuyển vị trí [Node.js](tech_stack).
+      - Có công ty công nghệ nào đang tuyển dụng những người có kỹ năng [Net](tech_stack) không?
+
+  - intent: inquire_highest_rated_companies
+    examples: |
+      - Cho tôi biết về những doanh nghiệp được đánh giá tốt nhất?
+      - Có các công ty công nghệ nào được đánh giá cao nhất không?
+      - Những nhà tuyển dụng hàng đầu là gì?
+      - Tôi muốn biết về các đơn vị tuyển dụng được đánh giá tốt nhất.
+      - Công ty công nghệ thông tin nào có đánh giá rất cao?
+      - Có các công ty phần mềm nào được đánh giá tốt không?
+      - Những công ty công nghệ cao nào được đánh giá tốt nhất?
+
+  - intent: inquire_highest_salary_companies
+    examples: |
+      - Những doanh nghiệp nào có mức lương cao nhất?
+      - Có các công ty công nghệ nào trả lương hàng đầu không?
+      - Nhà tuyển dụng hàng đầu về mức lương là gì?
+      - Tôi muốn biết về các đơn vị tuyển dụng có mức lương cao nhất.
+      - Công ty công nghệ thông tin nào trả lương rất cao?
+      - Có các công ty phần mềm nào có mức lương cao không?
+      - Những công ty công nghệ cao nào có mức lương cao nhất?

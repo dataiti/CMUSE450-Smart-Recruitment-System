@@ -655,7 +655,7 @@ const socket = async (socket, io) => {
   // chatbot rasa
   socket.on("start_conversation_with_rasa_chatbot", async (data) => {
     try {
-      const { from, to } = data;
+      const { from, to, limit } = data;
 
       if (!from || !to) return;
 
@@ -699,7 +699,6 @@ const socket = async (socket, io) => {
           data: newConversation,
         });
       } else {
-        // Nếu cuộc trò chuyện đã tồn tại, trả về thông tin của cuộc trò chuyện
         socket.emit("conversation_started_with_chatbot", {
           success: true,
           data: existingConversation[0],
@@ -715,7 +714,17 @@ const socket = async (socket, io) => {
 
   socket.on("send_question_rasa_chatbot", async (data) => {
     try {
-      const { from, to, message, conversationId } = data;
+      const {
+        from,
+        to,
+        message,
+        buttons,
+        employers,
+        image,
+        charts,
+        jobs,
+        conversationId,
+      } = data;
 
       if (!from || !to || !message || !conversationId) return;
 
@@ -730,6 +739,11 @@ const socket = async (socket, io) => {
         senderId: from,
         conversationId,
         message,
+        buttons,
+        employers,
+        image,
+        charts,
+        jobs,
       });
 
       await newRasaMessage.save();

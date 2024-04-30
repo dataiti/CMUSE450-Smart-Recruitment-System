@@ -32,7 +32,6 @@ const SidebarChatbot = () => {
         setIsLoading(true);
         const response = await axios.post(url, res.data.data, {});
         setIsLoading(false);
-        console.log(response.data);
       }
     } catch (error) {
       setIsLoading(false);
@@ -53,7 +52,7 @@ const SidebarChatbot = () => {
       <List>
         {sidebarChatbotItems.map((item) => {
           return (
-            <>
+            <React.Fragment key={item.id}>
               {item.childrens ? (
                 <Accordion
                   open={open}
@@ -65,9 +64,13 @@ const SidebarChatbot = () => {
                       }`}
                     />
                   }
-                  key={item.id}
+                  key={`${item.title}-${item.id}`}
                 >
-                  <ListItem className="p-0" selected={open}>
+                  <ListItem
+                    key={`${item.title}-parent`}
+                    className="p-0"
+                    selected={open}
+                  >
                     <AccordionHeader
                       onClick={() => setOpen((prev) => !prev)}
                       className="border-b-0 p-3"
@@ -82,7 +85,10 @@ const SidebarChatbot = () => {
                     <List className="p-0">
                       {item.childrens.map((itemChild) => {
                         return (
-                          <Link to={itemChild.path} key={itemChild.id}>
+                          <Link
+                            to={itemChild.path}
+                            key={`${itemChild.title}-${itemChild.id}`}
+                          >
                             <ListItem className="font-bold text-white text-sm">
                               <ListItemPrefix>
                                 <ChevronRightIcon
@@ -95,7 +101,10 @@ const SidebarChatbot = () => {
                           </Link>
                         );
                       })}
-                      <ListItem className="font-bold text-white">
+                      <ListItem
+                        className="font-bold text-white"
+                        key={`${item.title}-train-button`}
+                      >
                         <ButtonCustom
                           className="w-full"
                           onClick={handleTrainModel}
@@ -114,7 +123,7 @@ const SidebarChatbot = () => {
                   </ListItem>
                 </Link>
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </List>
