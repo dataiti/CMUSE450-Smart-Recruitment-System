@@ -44,7 +44,7 @@ import {
   FaLongArrowAltDown,
 } from "react-icons/fa";
 import { BiSolidPhoneCall, BiSolidBuildingHouse } from "react-icons/bi";
-import { HiLocationMarker } from "react-icons/hi";
+import { HiLocationMarker, HiDotsVertical } from "react-icons/hi";
 import {
   FaCircleChevronUp,
   FaCircleChevronDown,
@@ -66,6 +66,7 @@ import { TbCategoryFilled } from "react-icons/tb";
 import { RiDashboard3Fill } from "react-icons/ri";
 
 const icons = {
+  HiDotsVertical,
   IoIosCloseCircle,
   FaLongArrowAltDown,
   IoIosSave,

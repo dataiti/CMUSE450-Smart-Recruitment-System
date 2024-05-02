@@ -16,6 +16,21 @@ const rasaMessageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    buttons: {
+      type: Array,
+    },
+    employers: {
+      type: Array,
+    },
+    image: {
+      type: String,
+    },
+    charts: {
+      type: Array,
+    },
+    jobs: {
+      type: Array,
+    },
   },
   { timestamps: true }
 );

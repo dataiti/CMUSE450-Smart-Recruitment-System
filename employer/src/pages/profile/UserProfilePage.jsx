@@ -36,7 +36,6 @@ const UserProfilePage = () => {
 
   const handleSubmitChangePassword = async (data) => {
     try {
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

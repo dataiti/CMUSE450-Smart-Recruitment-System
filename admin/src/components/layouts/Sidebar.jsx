@@ -65,7 +65,7 @@ const Sidebar = () => {
               <ButtonCustom
                 onClick={handleLogout}
                 key={item.id}
-                className="flex items-center rounded-full mt-28"
+                className="flex items-center rounded-full mt-10"
               >
                 {item.icon}
                 <Typography className="text-white uppercase text-xs font-bold">

@@ -93,8 +93,6 @@ const RegisterCandidatePage = () => {
     }
   }, [reset, user?.candidateId]);
 
-  console.log(user?.candidateId);
-
   const handleSubmitRegisterCandidate = async (data) => {
     try {
       let formatData = { ...data };
@@ -134,9 +132,6 @@ const RegisterCandidatePage = () => {
         if (response?.data?.success) {
           dispatch(updateCandidate({ data: response?.data?.data }));
           toast.success("Cập nhật ứng viên thành công");
-        }
-        for (const value of formData.values()) {
-          console.log(value);
         }
       } else {
         response = await createCandidate({

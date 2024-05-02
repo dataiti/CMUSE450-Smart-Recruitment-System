@@ -84,7 +84,6 @@ const NLU = () => {
         if (result.isConfirmed) {
           const res = await deleteExampleItem({ exampleItem, intentName });
           if (res && res.data && res.data.success) {
-            console.log({ exampleItem, intentName });
             setListNLUData((prev) => {
               return prev.filter(
                 (intent) =>

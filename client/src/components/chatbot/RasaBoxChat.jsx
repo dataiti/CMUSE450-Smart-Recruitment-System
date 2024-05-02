@@ -15,7 +15,10 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
 
   const [inputMessage, setInputMessage] = useState("");
   const [currentConversation, setCurrentConversation] = useState({});
-  const [isIncreaseSize, setIsIncreaseSize] = useState(false);
+  const [isIncreaseSize, setIsIncreaseSize] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAppearMesage, setIsAppearMesage] = useState(true);
+  // const [limit, setLimit] = useState(30);
 
   const scrollContainerRef = useRef(null);
 
@@ -25,7 +28,7 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
-  }, [currentConversation]);
+  }, [currentConversation, isLoading, isIncreaseSize]);
 
   // Xử lý tải cuộc trò chuyện khi component được tải lần đầu
   useEffect(() => {
@@ -46,6 +49,7 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
       socket.emit("start_conversation_with_rasa_chatbot", {
         from: user?._id,
         to: process.env.REACT_APP_ADMIN_ID,
+        // limit,
       });
 
       // Lắng nghe sự kiện nhận được câu hỏi từ Rasa Chatbot
@@ -75,44 +79,59 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
   }, [user]);
 
   // Hàm xử lý gửi một message đến chabot
-  const sendMessage = async () => {
+  const sendMessage = async ({ message }) => {
     try {
+      setIsLoading(true);
       socket?.emit("send_question_rasa_chatbot", {
         from: user?._id,
         to: process.env.REACT_APP_ADMIN_ID,
-        message: inputMessage,
+        message,
         conversationId: currentConversation?._id,
       });
 
       // Gọi request đến rasa server
       const response = await sendQuestionApi({
-        data: { sender: "Dat", message: inputMessage },
+        data: { sender: "Dat", message },
       });
 
       // Nếu có rasa phản hồi thì tiến hành gửi socket lưu vào DB
       if (response) {
-        const temp = response[0];
-        const recipient_msg = temp["text"];
-
         socket?.emit("send_question_rasa_chatbot", {
           from: process.env.REACT_APP_ADMIN_ID,
           to: user?._id,
-          message: recipient_msg,
           conversationId: currentConversation?._id,
+          message: response[0]?.text || response[0]?.custom?.text,
+          buttons: response[0]?.buttons,
+          employers: response[0]?.custom?.employers,
+          image: response[1]?.image,
+          charts: response[0]?.custom?.charts,
+          jobs: response[0]?.custom?.jobs,
         });
+        setIsLoading(false);
+        setIsAppearMesage(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      setIsLoading(true);
+    }
   };
 
   // Hàm xử lý gửi message
   const handleSendMessage = async () => {
-    sendMessage();
-  };
+    setIsAppearMesage(true);
+    if (!inputMessage) return;
 
+    setInputMessage("");
+
+    sendMessage({ message: inputMessage });
+  };
   // Hàm xử lý gửi message khi nhấn phím Enter
   const handleEnterMessage = async (e) => {
+    setIsAppearMesage(true);
     if (e.key === "Enter") {
-      sendMessage();
+      if (!inputMessage) return;
+
+      setInputMessage("");
+      sendMessage({ message: inputMessage });
     }
   };
 
@@ -127,9 +146,15 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
     setIsBoxChatOpen(false);
   };
 
+  const handleClickButtonsMessage = ({ message }) => {
+    if (!message) return;
+
+    sendMessage({ message });
+  };
+
   return (
     <div
-      className={`fixed bottom-5 right-5 shadow-2xl z-40 rounded-xl overflow-hidden border border-gray-400 transition-all ${
+      className={`fixed bottom-5 right-5 shadow-blue-gray-900 shadow-2xl z-40 rounded-xl overflow-hidden border border-gray-400 transition-all ${
         isIncreaseSize
           ? "h-[calc(100vh-100px)] w-[calc(100vw/2)] "
           : "h-[550px] w-[450px]"
@@ -142,23 +167,23 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
             className="bg-[#212f3f] p-2 h-11 w-11"
           />
           <div className="flex flex-col">
-            <Typography className="text-sm font-bold">
-              SmartHire Chatbot
+            <Typography className="text-lg font-bold text-teal-700">
+              Intelligence IT Job Finding Chatbot
             </Typography>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <button
-            className="hover:bg-blue-gray-300 p-2 rounded-full transition-all"
-            onClick={() => handleIncreaseSize()}
-          >
-            <icons.BsArrowsFullscreen size={16} />
-          </button>
-          <button
-            className="hover:bg-blue-gray-300 p-1 rounded-full transition-all"
+            className="hover:text-white hover:bg-blue-gray-300 p-1 rounded-full transition-all"
             onClick={() => handleCloseBoxChat()}
           >
             <icons.IoRemove size={24} />
+          </button>
+          <button
+            className="hover:text-white hover:bg-blue-gray-300 p-2 rounded-full transition-all"
+            onClick={() => handleIncreaseSize()}
+          >
+            <icons.BsArrowsFullscreen size={16} />
           </button>
         </div>
       </div>
@@ -167,19 +192,50 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
           isIncreaseSize
             ? "h-[calc(100vh-100px-120px)]"
             : "h-[calc(550px-120px)]"
-        } transition-all flex flex-col gap-1 w-full overflow-y-auto p-3 bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9]`}
+        } transition-all flex flex-col gap-2 w-full overflow-y-auto p-3 bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9]`}
         ref={scrollContainerRef}
       >
         {currentConversation &&
           currentConversation.messageIds &&
           currentConversation.messageIds.length > 0 &&
           currentConversation.messageIds.map((message) => {
-            return <Message message={message} key={message?._id} />;
+            return (
+              <Message
+                message={message}
+                key={message?._id}
+                onClickRecommentQuestion={handleClickButtonsMessage}
+                isLoading={isLoading}
+              />
+            );
           })}
+        {isLoading && (
+          <div className="flex gap-2 w-full">
+            <Avatar
+              src={images.chatbotavatar}
+              alt=""
+              className="h-10 w-10 bg-blue-gray-700 p-1"
+            />
+            <div className="w-20 rounded-bl-xl rounded-br-xl rounded-tr-xl flex items-center justify-center  bg-white">
+              <div class="loader"></div>
+            </div>
+          </div>
+        )}
       </div>
       <div className="h-[60px] p-2 flex items-center gap-2 bg-white">
+        <div className="flex items-center gap-2 ">
+          <label
+            className="text-blue-500 active:text-blue-700 cursor-pointer"
+            htmlFor="attachCV"
+          >
+            <icons.IoAttach size={24} />
+          </label>
+          <input id="attachCV" type="file" hidden />
+          <button className="text-blue-500 active:text-blue-700">
+            <icons.IoMicSharp size={24} />
+          </button>
+        </div>
         <input
-          className="outline-none border-none flex-1 bg-gray-200 rounded-md p-[10px] placeholder:text-gray-600 text-sm font-bold"
+          className="outline-none border-none flex-1 bg-blue-gray-100 rounded-full p-[10px] px-4 placeholder:text-gray-600 text-sm font-bold"
           placeholder="Nhập tin nhắn"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}

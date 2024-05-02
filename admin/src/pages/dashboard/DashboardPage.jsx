@@ -5,7 +5,6 @@ import {
   useGetOveviewStatisticsQuery,
   useGetTechnicalAndWorkPositionTrendingChartQuery,
 } from "../../redux/features/apis/analyticApi";
-import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { icons } from "../../utils/icons";
@@ -34,20 +33,20 @@ const DashboardPage = () => {
 
   const { data: oveviewStatisticsData } = useGetOveviewStatisticsQuery(
     {
-      userId: user?._id ? user?._id : skipToken,
+      userId: user?._id,
     },
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true, skip: !user }
   );
 
   const { data: lineChartData } = useGenerateTimeBasedLineChartForAdminQuery(
     {
-      userId: user?._id ? user?._id : skipToken,
+      userId: user?._id,
       startDay,
       endDay,
       type,
       typeTime,
     },
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true, skip: !user }
   );
 
   const { data: technicalTrendingData } =
@@ -60,10 +59,10 @@ const DashboardPage = () => {
 
   const { data: pieChartData } = useGenerateTimeBasedPieChartForAdminQuery(
     {
-      userId: user?._id ? user?._id : skipToken,
+      userId: user?._id,
       type: typePieChart,
     },
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true, skip: !user }
   );
 
   useEffect(() => {

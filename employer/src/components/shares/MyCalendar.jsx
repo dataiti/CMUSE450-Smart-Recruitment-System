@@ -31,9 +31,7 @@ const MyCalendar = ({
     };
   };
 
-  const handleEventClick = (event) => {
-    console.log("Event Clicked:", event.title);
-  };
+  const handleEventClick = (event) => {};
 
   return (
     <Calendar

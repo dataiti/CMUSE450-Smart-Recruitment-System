@@ -15,7 +15,6 @@ const sendQuestionApi = async ({ data = {} }) => {
   );
 
   if (res && res.data) {
-    console.log(res);
     return res.data;
   }
 };

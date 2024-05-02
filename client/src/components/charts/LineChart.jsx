@@ -1,45 +1,22 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
-const LineChart = ({
-  data = [
-    {
-      _id: "ReactJS",
-      value: 4,
-    },
-    {
-      _id: "Java",
-      value: 3,
-    },
-    {
-      _id: "Kotlin",
-      value: 3,
-    },
-    {
-      _id: "NodeJS",
-      value: 3,
-    },
-    {
-      _id: "Javascript",
-      value: 2,
-    },
-  ],
-  className = "",
-  type = "week",
-}) => {
+const LineChart = ({ data = [], className = "", type = "week" }) => {
   const chartData = {
-    labels: data.map((item) => item?._id),
+    labels: data?.map((item) => item?._id),
     datasets: [
       {
-        data: data.map((item) => item?.value || 0),
+        data: data?.map((item) => item?.value || 0),
         backgroundColor: [
-          "#881337",
-          "#713f12",
-          "#134e4a",
-          "#0c4a6e",
-          "#581c87",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
         ],
-        barPercentage: 0.7,
+        barPercentage: 0.5,
       },
     ],
   };
@@ -57,7 +34,8 @@ const LineChart = ({
                 display: true,
               },
               ticks: {
-                color: "white",
+                color: "black",
+                fontSize: 6,
               },
             },
             y: {

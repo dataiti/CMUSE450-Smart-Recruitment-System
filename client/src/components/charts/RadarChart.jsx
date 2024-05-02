@@ -14,10 +14,8 @@ const RadarChart = ({
   ],
   type = "",
 }) => {
-  console.log(data);
-
   const chartData = {
-    labels: data?.map((item) => `${item?.title}`),
+    labels: data?.map((item) => `${item?.title} || ${item?._id}`),
     datasets: [
       {
         label: `Biểu đồ Radar biểu hiện số lượng ${type}`,
