@@ -25,20 +25,20 @@ export const menuItems = [
     icon: <icons.HiDocumentText size={20} />,
   },
   {
-    to: "/my-schedule",
-    label: "Lịch trình",
-    icon: <icons.BsCalendar3 size={20} />,
-  },
-  {
     to: "/message",
     label: "Tin nhắn",
     icon: <icons.BsMessenger size={20} />,
   },
-  // {
-  //   to: "/decoration",
-  //   label: "Trang trí trang",
-  //   icon: <icons.MdImagesearchRoller size={20} />,
-  // },
+  {
+    to: "/forum",
+    label: "Diễn đàn",
+    icon: <icons.MdImagesearchRoller size={20} />,
+  },
+  {
+    to: "/my-schedule",
+    label: "Lịch trình",
+    icon: <icons.BsCalendar3 size={20} />,
+  },
   {
     to: "/payment",
     label: "Nâng cấp gói",
