@@ -324,7 +324,7 @@ const getListJobsByKeyword = asyncHandler(async (req, res) => {
 
 const getListJobs = asyncHandler(async (req, res) => {
   const { query } = req;
-  const search = query.search || "";
+  const search = query.search ? query.search : "";
   const regex = search
     .split(" ")
     .filter((q) => q)

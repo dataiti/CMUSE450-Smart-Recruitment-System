@@ -14,6 +14,8 @@ const searchRouter = require("./search");
 const scheduleRouter = require("./schedule");
 const workPositionRequiredRouter = require("./workPositionRequired");
 const rasaRouter = require("./rasa");
+const postRouter = require("./post");
+const commentRouter = require("./comment");
 
 const router = (app) => {
   app.use("/api/v1/auth", authRouter);
@@ -31,6 +33,8 @@ const router = (app) => {
   app.use("/api/v1/search", searchRouter);
   app.use("/api/v1/schedule", scheduleRouter);
   app.use("/api/v1/rasa", rasaRouter);
+  app.use("/api/v1/post", postRouter);
+  app.use("/api/v1/comment", commentRouter);
 };
 
 module.exports = router;

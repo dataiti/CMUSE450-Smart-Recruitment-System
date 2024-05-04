@@ -5,9 +5,6 @@ const Job = require("../models/job");
 const asyncHandler = require("express-async-handler");
 const { calculateSimilarity } = require("../utils/fn");
 const pdf = require("pdf-parse");
-const TextRazor = require("textrazor");
-const natural = require("natural");
-const tf = require("@tensorflow/tfjs");
 
 const recommentJobForCandidate = asyncHandler(async (req, res) => {
   const { query } = req;
