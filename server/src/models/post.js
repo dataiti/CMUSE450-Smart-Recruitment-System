@@ -5,7 +5,10 @@ const postSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+    },
+    employerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employer",
     },
     title: {
       type: String,
@@ -18,6 +21,15 @@ const postSchema = new mongoose.Schema(
     hashtag: {
       type: Array,
       default: [],
+    },
+    link: {
+      type: String,
+    },
+    pdfFile: {
+      type: String,
+    },
+    pdfName: {
+      type: String,
     },
     imagesId: [
       {

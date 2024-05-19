@@ -30,6 +30,7 @@ const router = (app) => {
   app.use("/api/v1/applyJob", applyJobRouter);
   app.use("/api/v1/recommender", recommenderRouter);
   app.use("/api/v1/transaction", transactionRouter);
+  app.use("/api/v1/workPositionRequired", workPositionRequiredRouter);
   app.use("/api/v1/search", searchRouter);
   app.use("/api/v1/schedule", scheduleRouter);
   app.use("/api/v1/rasa", rasaRouter);

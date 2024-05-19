@@ -93,6 +93,8 @@ const createJob = asyncHandler(async (req, res) => {
 });
 
 const editJob = asyncHandler(async (req, res) => {
+  const applicationDeadline = new Date(req.body.applicationDeadline);
+
   const updateAddressInterview = await Address.findOneAndUpdate(
     {
       _id: req.address._id,
@@ -129,6 +131,7 @@ const editJob = asyncHandler(async (req, res) => {
         salaryTo: req.body.salaryTo && Number(req.body.salaryTo),
         jobDescription: req.body.jobDescription,
         candidateRequirements: req.body.candidateRequirements,
+        skills: JSON.parse(req.body.skills),
         candidateBenefits: req.body.candidateBenefits,
         applicationDeadline: applicationDeadline,
         receiverFullName: req.body.receiverFullName,

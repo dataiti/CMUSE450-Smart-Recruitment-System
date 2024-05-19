@@ -68,7 +68,7 @@ const socket = async (socket, io) => {
         .populate("userId", "firstName lastName avatar email")
         .populate("employerId", "companyLogo companyName companyEmail");
 
-      const formatData = existingConversations.map((conversation) => {
+      let formatData = existingConversations.map((conversation) => {
         return {
           _id: conversation._id,
           userId: conversation.userId,

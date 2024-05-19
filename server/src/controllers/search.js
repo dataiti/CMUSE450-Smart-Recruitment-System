@@ -29,6 +29,10 @@ const saveSearch = asyncHandler(async (req, res) => {
 
   if (!keyword) throw new Error("Keyword field is required");
 
+  const existSearch = await Search.findOne({ userId: req.user._id, keyword });
+
+  if (existSearch) throw new Error("Keyword is existing");
+
   const newSearch = new Search({
     userId: req.user._id,
     keyword,

@@ -79,8 +79,8 @@ function calculateSkillMatchPercentage({
   cvExperience,
 }) {
   const commonSkills =
-    cvSkills?.filter((skill) => jobSkills.includes(skill)) || [];
-  const skillPercentage = (commonSkills.length / jobSkills.length) * 100;
+    cvSkills?.filter((skill) => jobSkills?.includes(skill)) || [];
+  const skillPercentage = (commonSkills.length / jobSkills?.length) * 100 || 0;
 
   const experiencePercentage =
     cvExperience >= jobExperience || jobExperience === 0
