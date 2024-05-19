@@ -162,8 +162,6 @@ const CreateRecruitmentJobPage = () => {
     districtWatch
   );
 
-  console.log(provincesValue);
-
   useEffect(() => {
     reset({
       recruitmentCampaignName: jobDetailData?.data?.recruitmentCampaignName,

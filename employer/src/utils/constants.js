@@ -20,8 +20,8 @@ export const menuItems = [
     icon: <icons.HiDocumentText size={20} />,
   },
   {
-    to: "/CV-recomendation",
-    label: "Đề xuất CV theo vị trí",
+    to: "/search-candidate",
+    label: "Tìm kiếm ứng viên",
     icon: <icons.HiDocumentText size={20} />,
   },
   {

@@ -42,6 +42,7 @@ const InputController = ({
                   className: "w-full",
                 }}
                 color="blue"
+                spellCheck={false}
               />
               {!!error && (
                 <Typography

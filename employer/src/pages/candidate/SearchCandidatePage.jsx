@@ -19,7 +19,7 @@ import { setTitle } from "../../redux/features/slices/titleSlice";
 import { useCallback } from "react";
 import { AddSettingWorkPositionForm } from "../../components/forms";
 
-const CandidateRecomendationPage = () => {
+const SearchCandidatePage = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector(authSelect);
@@ -95,11 +95,16 @@ const CandidateRecomendationPage = () => {
         {listCandidates?.map((candidate, index) => {
           return (
             <div className="flex flex-col gap-2 " key={index}>
-              <div className="w-[302px] flex items-center justify-between bg-blue-gray-700 p-3 rounded-full">
-                <Typography className="font-bold text-sm text-white whitespace-nowrap">
-                  {candidate?.workPosition?.jobPosition} -{" "}
-                  {candidate?.workPosition?.milestonePercent} %
-                </Typography>
+              <div className="w-[302px] flex items-center justify-between bg-blue-gray-700 px-4 py-1 rounded-full">
+                <div className="flex flex-col">
+                  <Typography className="font-bold text-base text-white  name">
+                    {candidate?.workPosition?.titlePosition}
+                  </Typography>
+                  <Typography className="font-semibold text-sm text-gray-400 whitespace-nowrap">
+                    {candidate?.workPosition?.jobPosition} -{" "}
+                    {candidate?.workPosition?.milestonePercent} %
+                  </Typography>
+                </div>
                 <div className="flex items-center gap-1">
                   <button
                     className="text-orange-400"
@@ -165,4 +170,4 @@ const CandidateRecomendationPage = () => {
   );
 };
 
-export default CandidateRecomendationPage;
+export default SearchCandidatePage;

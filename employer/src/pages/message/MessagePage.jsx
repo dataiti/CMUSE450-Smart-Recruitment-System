@@ -19,20 +19,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { images } from "../../assets/images";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { socket } from "../../socket";
-import {
-  messageSelect,
-  setCurrentConversation,
-  setListConversations,
-} from "../../redux/features/slices/messageSlice";
+
+import { useScrollBottom } from "../../hooks";
 
 const MessagePage = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector(authSelect);
-  const { listConversations, currentConversation } = useSelector(messageSelect);
 
   const [openPicker, setOpenPicker] = useState(false);
   const [inputMesssageValue, setInputMessageValue] = useState("");
+  const [currentConversation, setCurrentConversation] = useState(null);
+  const [conversations, setConversations] = useState([]);
+  const [selectedConversation, setSelectedConversation] = useState(null);
 
   const scrollContainerRef = useRef(null);
 
@@ -40,12 +39,7 @@ const MessagePage = () => {
     dispatch(setTitle("Tin nhắn"));
   }, [dispatch]);
 
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop =
-        scrollContainerRef.current.scrollHeight;
-    }
-  }, [currentConversation?.messages]);
+  useScrollBottom(scrollContainerRef, currentConversation);
 
   useEffect(() => {
     if (socket) {
@@ -53,41 +47,82 @@ const MessagePage = () => {
         employerId: user?.ownerEmployerId?._id,
       });
 
-      socket.on("employer_get_list_conversations", ({ message }) => {
-        dispatch(setListConversations({ data: message }));
+      socket.on("employer_get_list_conversations", handleGetConversations);
+
+      socket.emit("start_conversation", {
+        employerId: user?.ownerEmployerId?._id,
+        userId: selectedConversation?.userId,
       });
+
+      socket.on("start_chat", handleStartConversation);
+
+      socket.on("new_message", handleSetCurrentConversation);
     }
-  }, [user?.ownerEmployerId?._id, dispatch]);
 
-  useEffect(() => {
-    const handleUserGetMessage = (message) => {
-      if (message.success)
-        dispatch(setCurrentConversation({ data: message.message }));
-    };
-
-    socket?.on("new_message", handleUserGetMessage);
-
+    // Xóa các sự kiện lắng nghe khi component bị unMount
     return () => {
-      socket?.off("new_message", handleUserGetMessage);
+      socket.off("employer_get_list_conversations", handleGetConversations);
+      socket.off("start_chat", handleStartConversation);
+      socket.off("new_message", handleSetCurrentConversation);
     };
-  }, [dispatch]);
+  }, [socket, user, selectedConversation]);
+
+  const handleGetConversations = ({ message }) => {
+    setConversations(message);
+  };
+
+  const handleStartConversation = (data) => {
+    if (data && data.success) setCurrentConversation(data.message);
+  };
+
+  const handleSetCurrentConversation = (data) => {
+    if (data && data.success) {
+      setCurrentConversation(data.message);
+    }
+  };
 
   const handleClickEmoji = () => {};
 
-  const handleSendMessage = () => {
-    socket.emit("text_message", {
-      sender: "employer",
-      content: inputMesssageValue,
-      employerId: currentConversation?.employerId?._id,
-      userId: currentConversation?.userId?._id,
-      type: "text",
-      messageId: currentConversation?._id,
-    });
+  const sendMessage = async () => {
+    if (!inputMesssageValue) return;
+
     setInputMessageValue("");
+
+    try {
+      if (socket) {
+        socket.emit("text_message", {
+          sender: "employer",
+          content: inputMesssageValue,
+          employerId: currentConversation?.employerId?._id,
+          userId: currentConversation?.userId?._id,
+          type: "text",
+          messageId: currentConversation?._id,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClickSendMessage = async () => {
+    sendMessage();
+  };
+
+  const handleEnterMessage = async (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
   };
 
   return (
     <div className="w-full flex">
+      <div className=" w-[480px] bg-white border-r border-blue-gray-100">
+        <ListConversations
+          conversations={conversations}
+          selectedConversation={selectedConversation}
+          setSelectedConversation={setSelectedConversation}
+        />
+      </div>
       <div className="h-full w-full">
         {currentConversation ? (
           <>
@@ -148,6 +183,7 @@ const MessagePage = () => {
                 }
                 values={inputMesssageValue}
                 onChange={(e) => setInputMessageValue(e.target.value)}
+                onKeyDown={handleEnterMessage}
                 className="!bg-blue-gray-100/70"
               />
               <div
@@ -162,7 +198,10 @@ const MessagePage = () => {
                   onEmojiSelect={(emoji) => handleClickEmoji(emoji.native)}
                 />
               </div>
-              <IconButton onClick={handleSendMessage} className="!bg-teal-700">
+              <IconButton
+                onClick={handleClickSendMessage}
+                className="!bg-teal-700"
+              >
                 <icons.IoSendSharp size={20} />
               </IconButton>
             </div>
@@ -172,13 +211,10 @@ const MessagePage = () => {
             <img
               src={images.startchat}
               alt=""
-              className="h-[300px] w-[300px] object-cover"
+              className="w-full object-cover"
             />
           </div>
         )}
-      </div>
-      <div className=" w-[480px] bg-white border-l border-blue-gray-100">
-        <ListConversations data={listConversations} />
       </div>
     </div>
   );

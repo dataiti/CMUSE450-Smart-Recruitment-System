@@ -60,6 +60,7 @@ html:hover *::-webkit-scrollbar {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   min-height: 20px;
+  max-width: 200px;
 }
 
 .name-2 {

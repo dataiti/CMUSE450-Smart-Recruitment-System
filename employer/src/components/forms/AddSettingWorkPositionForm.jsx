@@ -16,6 +16,9 @@ import { Loading, ButtonCustom } from "../shares";
 import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
+  titlePosition: yup
+    .string()
+    .required("Vui lòng nhập  tiêu đề vị trí công việc"),
   jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),
   experienceWeight: yup
     .number()
@@ -60,6 +63,7 @@ const SettingWorkPosition = ({ setOpen, setListCandidates, workPosition }) => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
+      titlePosition: "",
       jobPosition: "",
       experienceWeight: "",
       skillsWeight: "",
@@ -124,6 +128,12 @@ const SettingWorkPosition = ({ setOpen, setListCandidates, workPosition }) => {
         className="flex flex-col gap-5"
         onSubmit={handleSubmit(handleSetupWorkPositionRequire)}
       >
+        <InputController
+          control={control}
+          name="titlePosition"
+          label="Tiêu đề vị trí tuyển"
+          error={errors?.titlePosition}
+        />
         <SelectController
           control={control}
           name="jobPosition"

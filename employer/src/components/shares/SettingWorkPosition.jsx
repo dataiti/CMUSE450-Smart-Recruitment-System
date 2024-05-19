@@ -18,6 +18,9 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 const schema = yup.object().shape({
+  titlePosition: yup
+    .string()
+    .required("Vui lòng nhập  tiêu đề vị trí công việc"),
   jobPosition: yup.string().required("Vui lòng nhập vị trí công việc"),
   experienceWeight: yup
     .number()
@@ -62,6 +65,7 @@ const SettingWorkPosition = ({ setOpen, setListCandidates, workPosition }) => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
+      titlePosition: workPosition?._id ? workPosition?.titlePosition : "",
       jobPosition: workPosition?._id ? workPosition?.jobPosition : "",
       experienceWeight: workPosition?._id ? workPosition?.experienceWeight : "",
       skillsWeight: workPosition?._id ? workPosition?.skillsWeight : "",
@@ -77,6 +81,7 @@ const SettingWorkPosition = ({ setOpen, setListCandidates, workPosition }) => {
   useEffect(() => {
     if (!workPosition?._id) {
       reset({
+        titlePosition: "",
         jobPosition: "",
         experienceWeight: "",
         skillsWeight: "",
@@ -144,6 +149,12 @@ const SettingWorkPosition = ({ setOpen, setListCandidates, workPosition }) => {
         className="flex flex-col gap-5"
         onSubmit={handleSubmit(handleSetupWorkPositionRequire)}
       >
+        <InputController
+          control={control}
+          name="titlePosition"
+          label="Tiêu đề vị trí tuyển"
+          error={errors?.titlePosition}
+        />
         <SelectController
           control={control}
           name="jobPosition"

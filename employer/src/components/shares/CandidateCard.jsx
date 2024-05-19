@@ -8,36 +8,19 @@ import {
   ButtonCustom,
   EvaluateSuitableCandidate,
   BoxChat,
-  SettingWorkPosition,
 } from "../shares";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
 import { icons } from "../../utils/icons";
 import { socket } from "../../socket";
-import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
 
 const CandidateCard = ({ data = {}, workPositionRequire = {} }) => {
-  const dispatch = useDispatch();
-
   const { user } = useSelector(authSelect);
 
   const [openEvaluateJobModal, setOpenEvaluateJobModal] = useState(false);
   const [isBoxChatOpen, setIsBoxChatOpen] = useState(false);
   const [isBoxChatBubble, setIsBoxChatBubble] = useState(false);
-
-  useEffect(() => {
-    const handleUserGetMessage = (message) => {
-      if (message.success)
-        dispatch(setCurrentConversation({ data: message.message }));
-    };
-
-    socket?.on("start_chat", handleUserGetMessage);
-
-    return () => {
-      socket?.off("start_chat", handleUserGetMessage);
-    };
-  }, [dispatch]);
 
   const handleStartConversation = () => {
     setIsBoxChatOpen(true);
