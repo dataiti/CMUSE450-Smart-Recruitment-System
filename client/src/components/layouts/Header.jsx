@@ -93,7 +93,8 @@ const Header = () => {
 
   const handleClickSearchIem = ({ keyword }) => {
     setIsFocus(false);
-    navigate(`/search-job?keyword=${keyword}`);
+    setSearchValue(keyword);
+    navigate(`/categories-job?keyword=${searchValue}`);
   };
 
   const handleOutsideClick = (e) => {
@@ -114,8 +115,12 @@ const Header = () => {
   const handleEnterKeywordSearch = async (e) => {
     if (e.key === "Enter") {
       setIsFocus(false);
-      await saveSearch({ userId: user?._id, keyword: searchValue });
-      navigate(`/search-job?keyword=${searchValue}`);
+      if (searchValue) {
+        await saveSearch({ userId: user?._id, keyword: searchValue });
+        navigate(`/categories-job?keyword=${searchValue}`);
+      } else {
+        navigate("/categories-job");
+      }
     }
   };
 
@@ -243,10 +248,13 @@ const Header = () => {
               {listSearchValue?.map((searchItem) => {
                 return (
                   <div
-                    className="flex items-center justify-between hover:bg-blue-gray-50 py-3 px-4 cursor-pointer transition-all"
+                    className="flex items-center justify-between hover:bg-blue-gray-50 cursor-pointer transition-all  py-3 px-4 "
                     key={searchItem?._id}
+                    onClick={() =>
+                      handleClickSearchIem({ keyword: searchItem?.keyword })
+                    }
                   >
-                    <div className="flex items-center gap-2 ">
+                    <div className="flex items-center gap-2">
                       <span className="text-light-blue-500">
                         {user?._id.toString() ===
                         searchItem?.userId?.toString() ? (
@@ -255,12 +263,7 @@ const Header = () => {
                           <icons.FiSearch size={20} />
                         )}
                       </span>
-                      <Typography
-                        className="text-sm font-bold flex-1 name"
-                        onClick={() =>
-                          handleClickSearchIem({ keyword: searchItem?.keyword })
-                        }
-                      >
+                      <Typography className="text-sm font-bold flex-1 name">
                         {searchItem?.keyword}
                       </Typography>
                     </div>
@@ -268,12 +271,13 @@ const Header = () => {
                       searchItem?.userId?.toString() && (
                       <button
                         className="w-4 h-4 rounded-full bg-gray-400 flex items-center justify-center text-white"
-                        onClick={() =>
-                          handleDeleteSearchKeyword({
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          return handleDeleteSearchKeyword({
                             userId: user?._id,
                             searchId: searchItem?._id,
-                          })
-                        }
+                          });
+                        }}
                       >
                         <icons.IoClose size={16} />
                       </button>

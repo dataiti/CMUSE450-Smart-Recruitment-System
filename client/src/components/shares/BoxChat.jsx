@@ -1,60 +1,71 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IconButtonCustom } from "../shares";
-import { icons } from "../../utils/icons";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  messageSelect,
-  setCurrentConversation,
-} from "../../redux/features/slices/messageSlice";
-import { socket } from "../../socket";
-import { MediaMessage, ReplyMessage, TextMessage } from "../shares/TypeMessage";
 import { Avatar, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
+import { IconButtonCustom } from "../shares";
+import { icons } from "../../utils/icons";
+import { socket } from "../../socket";
+import { MediaMessage, ReplyMessage, TextMessage } from "../shares/TypeMessage";
+import { useScrollBottom } from "../../hooks";
+
 const BoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { currentConversation } = useSelector(messageSelect);
-
   const [inputMesssageValue, setInputMessageValue] = useState("");
+  const [currentConversation, setCurrentConversation] = useState(null);
 
   const scrollContainerRef = useRef(null);
 
-  useEffect(() => {
-    const handleUserGetMessage = (message) => {
-      if (message.success)
-        dispatch(setCurrentConversation({ data: message.message }));
-    };
+  useScrollBottom(scrollContainerRef, currentConversation);
 
+  useEffect(() => {
     socket?.on("new_message", handleUserGetMessage);
+
+    socket?.on("start_chat", handleUserGetMessage);
 
     return () => {
       socket?.off("new_message", handleUserGetMessage);
+      socket?.off("start_chat", handleUserGetMessage);
     };
-  }, [dispatch]);
+  }, []);
 
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop =
-        scrollContainerRef.current.scrollHeight;
-    }
-  }, [currentConversation?.messages]);
+  const handleUserGetMessage = (data) => {
+    if (data && data.success) setCurrentConversation(data.message);
+  };
 
-  const handleSendMessage = () => {
+  const sendMessage = async () => {
+    if (!inputMesssageValue) return;
+
     setInputMessageValue("");
-    socket.emit("text_message", {
-      sender: "user",
-      content: inputMesssageValue,
-      employerId: currentConversation?.employerId?._id,
-      userId: currentConversation?.userId?._id,
-      type: "text",
-      messageId: currentConversation?._id,
-    });
+
+    try {
+      if (socket) {
+        socket.emit("text_message", {
+          sender: "user",
+          content: inputMesssageValue,
+          employerId: currentConversation?.employerId?._id,
+          userId: currentConversation?.userId?._id,
+          type: "text",
+          messageId: currentConversation?._id,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClickSendMessage = async () => {
+    sendMessage();
+  };
+
+  const handleEnterMessage = async (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
   };
 
   return (
-    <div className="fixed bottom-5 right-5 shadow-2xl h-[440px] w-[360px] z-40 rounded-xl overflow-hidden border border-gray-400">
+    <div className="fixed bottom-24 right-5 shadow-2xl h-[440px] w-[360px] z-40 rounded-xl overflow-hidden border border-gray-400">
       <div className="h-[60px] w-full p-2 bg-white border-b border-blue-gray-100 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Avatar
@@ -124,8 +135,12 @@ const BoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
           placeholder="Nhập tin nhắn"
           value={inputMesssageValue}
           onChange={(e) => setInputMessageValue(e.target.value)}
+          onKeyDown={handleEnterMessage}
         />
-        <IconButtonCustom className="rounded-md" onClick={handleSendMessage}>
+        <IconButtonCustom
+          className="rounded-md"
+          onClick={handleClickSendMessage}
+        >
           <icons.IoSendSharp />
         </IconButtonCustom>
       </div>

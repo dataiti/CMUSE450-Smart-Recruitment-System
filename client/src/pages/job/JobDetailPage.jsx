@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import {
@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-// API
 import { socket } from "../../socket";
 import { useGetEvaluateSuitableJobQuery } from "../../redux/features/apis/analyticApi";
 import {
@@ -17,9 +16,7 @@ import {
   useGetListSimilarJobsQuery,
 } from "../../redux/features/apis/jobApi";
 
-// redux
 import { useUserViewedJobMutation } from "../../redux/features/apis/userApi";
-import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
 import {
   formatRemainingTime,
   formattedAmount,
@@ -49,7 +46,6 @@ import JobCardSmall from "../../components/jobs/JobCardSmall";
 
 const JobDetailPage = () => {
   const { jobId } = useParams();
-  const dispatch = useDispatch();
   const { user, isLoggedIn } = useSelector(authSelect);
 
   const [isFollowCompany, setIsFollowCompany] = useState(false);
@@ -109,20 +105,6 @@ const JobDetailPage = () => {
     }
   }, [jobDetailData?.data?.employerId?.followerIds, user?._id, isLoggedIn]);
 
-  // Lắng nghe sự kiện bắt đầu cuộc trò chuyện và cập nhật dữ liệu hiện tại
-  useEffect(() => {
-    const handleUserGetMessage = (message) => {
-      if (message.success)
-        dispatch(setCurrentConversation({ data: message.message }));
-    };
-
-    socket?.on("start_chat", handleUserGetMessage);
-
-    return () => {
-      socket?.off("start_chat", handleUserGetMessage);
-    };
-  }, [dispatch]);
-
   // Xử lý hành động huỷ theo dõi công ty
   const handleUnfollowCompany = () => {
     if (!isLoggedIn) {
@@ -141,10 +123,12 @@ const JobDetailPage = () => {
     if (!isLoggedIn) {
       setIsOpenLoginModal(true);
     } else {
-      socket?.emit("follow_employer", {
-        employerId: jobDetailData?.data?.employerId?._id,
-        userId: user?._id,
-      });
+      try {
+        socket?.emit("follow_employer", {
+          employerId: jobDetailData?.data?.employerId?._id,
+          userId: user?._id,
+        });
+      } catch (error) {}
       setIsFollowCompany(true);
     }
   };
@@ -156,10 +140,12 @@ const JobDetailPage = () => {
     } else {
       setIsBoxChatOpen(true);
       setIsBoxChatBubble(false);
-      socket?.emit("start_conversation", {
-        employerId: jobDetailData?.data?.employerId?._id,
-        userId: user?._id,
-      });
+      try {
+        socket?.emit("start_conversation", {
+          employerId: jobDetailData?.data?.employerId?._id,
+          userId: user?._id,
+        });
+      } catch (error) {}
     }
   };
 
@@ -178,7 +164,7 @@ const JobDetailPage = () => {
       )}
       {isBoxChatBubble && (
         <button
-          className="h-14 w-14 flex items-center justify-center rounded-full bg-[#212f3f] text-light-blue-600 fixed bottom-5 right-5 shadow-2xl z-40"
+          className="h-14 w-14 flex items-center justify-center rounded-full bg-[#212f3f] text-light-blue-600 fixed bottom-[90px] right-6 shadow-2xl z-40"
           onClick={() => {
             setIsBoxChatBubble(false);
             setIsBoxChatOpen(true);

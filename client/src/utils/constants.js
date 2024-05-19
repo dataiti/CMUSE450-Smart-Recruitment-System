@@ -176,6 +176,11 @@ export const navbarItems = [
     path: "/resume-online",
     title: "Hồ sơ & CV",
   },
+  {
+    id: 3,
+    path: "/forum",
+    title: "Diễn đàn",
+  },
 ];
 
 export const jobPositionOptions = [
@@ -223,8 +228,8 @@ export const tableHeadApplyJob = [
   { id: 2, name: "công ty" },
   { id: 3, name: "Tên chiến dịch" },
   { id: 4, name: "Tên CV" },
-  { id: 5, name: "Ngày đăng" },
-  { id: 6, name: "Trạng thái" },
+  { id: 5, name: "Trạng thái" },
+  { id: 6, name: "Ngày đăng" },
   { id: 7, name: "Hành động" },
 ];
 
