@@ -150,9 +150,12 @@ const applyJob = asyncHandler(async (req, res) => {
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
+
     let jsonString = JSON.parse(JSON.stringify(response.text()));
 
     jsonString = jsonString.replace(/^[^{]*([\s\S]*?)[^}]*$/, "$1");
+
+    console.log(jsonString);
 
     let CVJSON = {};
 
@@ -172,9 +175,10 @@ const applyJob = asyncHandler(async (req, res) => {
         userId: req.user._id,
         applyJobId: newApplyJob._id,
         experience: CVJSON?.experience || 0,
-        skills: processStringArray(
-          CVJSON?.skills?.map((skill) => skill.toLowerCase())
-        ),
+        skills:
+          processStringArray(
+            CVJSON?.skills?.map((skill) => skill.toLowerCase())
+          ) || [],
       });
 
       await newResume.save();

@@ -112,7 +112,7 @@ const CreateRecruitmentJobPage = () => {
   const { data: listCategoriesData } = useGetListOfCategoriesQuery();
   const { data: jobDetailData, isFetching } = useGetJobDetailQuery(
     { jobId },
-    { refetchOnMountOrArgChange: true }
+    { skip: !jobId, refetchOnMountOrArgChange: true }
   );
 
   const [editJob, { isLoading: isLoadingEditJob }] = useEditJobMutation();
@@ -218,6 +218,8 @@ const CreateRecruitmentJobPage = () => {
   const handleSubmitRegisterEmployer = async (data) => {
     try {
       let formatData = { ...data };
+
+      console.log(formatData);
       for (const key in formatData) {
         if (formatData.hasOwnProperty(key)) {
           const value = formatData[key];

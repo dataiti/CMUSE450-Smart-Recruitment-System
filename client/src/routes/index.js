@@ -13,7 +13,7 @@ import {
   CompanyProfile,
   ListMyApplyJobs,
   JobRecommendationPage,
-  SearchJobPage,
+  ForumPage,
 } from "../pages";
 import { ProtectedRoutes } from "../components/shares";
 
@@ -31,8 +31,8 @@ const routers = [
         element: <CategoriesPage />,
       },
       {
-        path: "/search-job",
-        element: <SearchJobPage />,
+        path: "/forum",
+        element: <ForumPage />,
       },
       {
         path: "/job-detail/:jobId",

@@ -28,6 +28,7 @@ const workPositionRequiredById = asyncHandler(async (req, res, next, id) => {
 
 const createWorkPositionRequired = asyncHandler(async (req, res) => {
   const {
+    titlePosition,
     jobPosition,
     experienceWeight,
     skillsWeight,
@@ -38,6 +39,7 @@ const createWorkPositionRequired = asyncHandler(async (req, res) => {
 
   const newWorkPositionRequired = new WorkPositionRequired({
     employerId: req.employer._id,
+    titlePosition,
     jobPosition,
     experienceWeight: Number(experienceWeight),
     skillsWeight: Number(skillsWeight),
@@ -75,6 +77,7 @@ const createWorkPositionRequired = asyncHandler(async (req, res) => {
 
 const editWorkPositionRequired = asyncHandler(async (req, res) => {
   const {
+    titlePosition,
     jobPosition,
     experienceWeight,
     skillsWeight,
@@ -90,6 +93,7 @@ const editWorkPositionRequired = asyncHandler(async (req, res) => {
       { _id: req.workPositionRequired._id },
       {
         $set: {
+          titlePosition,
           jobPosition,
           experienceWeight: Number(experienceWeight),
           skillsWeight: Number(skillsWeight),

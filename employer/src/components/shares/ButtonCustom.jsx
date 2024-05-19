@@ -11,7 +11,7 @@ const ButtonCustom = ({
   fullWidth = false,
   type,
   to = "",
-  isBlank = false,
+  isblank = false,
 }) => {
   return (
     <>
@@ -26,7 +26,7 @@ const ButtonCustom = ({
           {children}
         </Button>
       ) : (
-        <Link to={to} target={isBlank ? "_blank" : ""}>
+        <Link to={to} target={isblank ? "_blank" : null}>
           <Button
             type={type}
             variant={variant}

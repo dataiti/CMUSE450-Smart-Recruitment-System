@@ -67,7 +67,7 @@ const ListJobsPage = () => {
       experience: experienceSelected,
       status: statusJobSelected,
     },
-    { refetchOnMountOrArgChange: true }
+    { skip: !user || !user.ownerEmployerId, refetchOnMountOrArgChange: true }
   );
 
   const [toggleHiringStatusJob, { isLoading }] =

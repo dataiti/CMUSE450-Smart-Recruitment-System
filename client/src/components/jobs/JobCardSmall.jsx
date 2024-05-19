@@ -44,23 +44,22 @@ const JobCardSmall = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                 <img
                   src={jobItem?.employerId?.companyLogo}
                   alt={jobItem?.recruitmentTitle}
-                  className="h-14 w-14 flex-none object-contain rounded-xl bg-blue-gray-800"
+                  className="border border-gray-400 h-16 w-16 flex-none object-contain rounded-xl bg-blue-gray-800"
                 />
-                <div className="flex flex-col gap-1">
-                  <Typography className="text-lg font-bold text-teal-900 name">
+                <div className="flex flex-col">
+                  <Typography className="text-lg font-extrabold px-2 text-teal-900 name">
                     {jobItem?.recruitmentTitle}
                   </Typography>
                   <div className="flex items-center gap-1">
-                    <Typography className="flex items-center gap-2 text-sm font-bold text-blue-gray-900">
-                      <icons.BiSolidBuildingHouse size={18} color="#a16207" />
+                    <icons.BiSolidBuildingHouse size={18} color="#a16207" />
+                    <Typography className="text-sm font-bold text-blue-gray-900 name">
                       {jobItem?.employerId?.companyName}
                     </Typography>
-                    •
-                    <Typography className="flex items-center gap-2 text-xs font-medium">
-                      <icons.AiFillClockCircle size={18} color="#a16207" />
-                      {timeAgo(new Date(jobItem?.createdAt))}
-                    </Typography>
                   </div>
+                  <Typography className="flex items-center gap-2 text-xs font-medium">
+                    <icons.AiFillClockCircle size={18} color="#a16207" />
+                    {timeAgo(new Date(jobItem?.createdAt))}
+                  </Typography>
                 </div>
               </div>
               {isWishlist ? (

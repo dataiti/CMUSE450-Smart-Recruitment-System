@@ -1,30 +1,14 @@
 import { Avatar, Typography } from "@material-tailwind/react";
-import React, { useEffect } from "react";
-import { socket } from "../../socket";
-import { useDispatch } from "react-redux";
-import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
+import React from "react";
 
-const ListConversations = ({ data = [] }) => {
-  const dispatch = useDispatch();
-
-  const handleGetMessage = ({ messageId }) => {
-    socket.emit("get_messages", {
-      messageId,
-    });
+const ListConversations = ({
+  conversations = [],
+  selectedConversation,
+  setSelectedConversation,
+}) => {
+  const handleSelectedConversation = ({ conversation }) => {
+    setSelectedConversation(conversation);
   };
-
-  useEffect(() => {
-    const handleUserGetMessage = (message) => {
-      if (message.success)
-        dispatch(setCurrentConversation({ data: message.message }));
-    };
-
-    socket?.on("user_get_message", handleUserGetMessage);
-
-    return () => {
-      socket?.off("user_get_message", handleUserGetMessage);
-    };
-  }, [dispatch]);
 
   return (
     <div className="flex flex-col gap-2 p-5">
@@ -37,31 +21,35 @@ const ListConversations = ({ data = [] }) => {
       />
       <hr className="my-2 border-blue-gray-100" />
       <div className="flex flex-col gap-1">
-        {data?.map((item) => {
+        {conversations?.map((conversation, index) => {
           return (
             <div
-              key={item?.id}
-              className="w-full flex items-center p-3 gap-2 bg-blue-gray-900 rounded-lg hover:bg-blue-gray-900/70 transition-all cursor-pointer"
-              onClick={() => handleGetMessage({ messageId: item?._id })}
+              key={conversation?.id}
+              className={`flex items-center gap-3 p-3  transition-all rounded-md cursor-pointer ${
+                conversation?._id === selectedConversation?._id
+                  ? "bg-cyan-900"
+                  : "bg-blue-gray-900 hover:bg-blue-gray-900/50"
+              }`}
+              onClick={() => handleSelectedConversation({ conversation })}
             >
               <Avatar
-                src={item?.employerId?.companyLogo}
-                alt={item?.employerId?.companyName}
+                src={conversation?.employerId?.companyLogo}
+                alt={conversation?.employerId?.companyName}
                 className="h-12 w-12 p-2 bg-blue-gray-100 rounded-full flex-none"
               />
               <div className="w-full flex flex-col gap-2">
                 <Typography className="text-xs font-bold text-white">
-                  {item?.employerId?.companyName}
+                  {conversation?.employerId?.companyName}
                 </Typography>
                 <div className="w-full flex items-center justify-between name">
-                  {item?.lastMessage?.content ? (
+                  {conversation?.lastMessage?.content ? (
                     <Typography className="text-xs font-semibold text-gray-400 italic">
                       {`${
-                        item?.lastMessage?.sender === "user"
+                        conversation?.lastMessage?.sender === "user"
                           ? "Bạn: "
-                          : `${item?.employerId?.companyName}: `
+                          : `${conversation?.employerId?.companyName}: `
                       }`}{" "}
-                      {item?.lastMessage?.content}
+                      {conversation?.lastMessage?.content}
                     </Typography>
                   ) : (
                     <Typography className="text-xs font-semibold text-gray-400 italic">
@@ -69,7 +57,7 @@ const ListConversations = ({ data = [] }) => {
                     </Typography>
                   )}
                   <Typography className="text-xs">
-                    {item?.lastMessage?.createdAt}
+                    {conversation?.lastMessage?.createdAt}
                   </Typography>
                 </div>
               </div>

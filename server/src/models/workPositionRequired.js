@@ -7,6 +7,10 @@ const workPositionRequiredSchema = new mongoose.Schema(
       ref: "EmployerId",
       required: true,
     },
+    titlePosition: {
+      type: String,
+      required: true,
+    },
     jobPosition: {
       type: String,
       required: true,

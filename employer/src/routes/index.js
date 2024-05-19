@@ -14,7 +14,8 @@ import {
   DecorationPage,
   RecruitProcessPage,
   MySchedulePage,
-  CandidateRecomendationPage,
+  SearchCandidatePage,
+  ForumPage,
 } from "../pages";
 import { ProtectedRoutes } from "../components/shares";
 import ListResumes from "../pages/resume/ListResumes";
@@ -95,8 +96,12 @@ const routers = [
             element: <UserProfilePage />,
           },
           {
-            path: "/CV-recomendation",
-            element: <CandidateRecomendationPage />,
+            path: "/search-candidate",
+            element: <SearchCandidatePage />,
+          },
+          {
+            path: "/forum",
+            element: <ForumPage />,
           },
         ],
       },

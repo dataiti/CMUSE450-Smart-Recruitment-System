@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+import { Avatar, Drawer, Typography } from "@material-tailwind/react";
+
 import { useGetApplyJobDetailQuery } from "../../redux/features/apis/apply";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Avatar, Drawer, Typography } from "@material-tailwind/react";
+import { InterviewIntivitionForm, SendNotificationForm } from "../forms";
+import { icons } from "../../utils/icons";
+import { socket } from "../../socket";
+import { JobDetail } from "../../pages";
+import { statusApplyJobOptions } from "../../utils/constants";
 import {
   BoxChat,
   ButtonCustom,
@@ -12,18 +20,8 @@ import {
   Loading,
   Modal,
 } from "../shares";
-import { InterviewIntivitionForm, SendNotificationForm } from "../forms";
-import { icons } from "../../utils/icons";
-import { socket } from "../../socket";
-import { toast } from "react-toastify";
-import Swal from "sweetalert2";
-import { JobDetail } from "../../pages";
-import { setCurrentConversation } from "../../redux/features/slices/messageSlice";
-import { statusApplyJobOptions } from "../../utils/constants";
 
 const ToolbarCV = () => {
-  const dispatch = useDispatch();
-
   const { applyJobId } = useParams();
 
   const { user } = useSelector(authSelect);
@@ -44,33 +42,28 @@ const ToolbarCV = () => {
   });
 
   useEffect(() => {
-    socket?.on("employer_get_status_apply_job", (message) => {
-      if (message.success) {
-        setStatus(message.message);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    const handleUserGetMessage = (message) => {
-      if (message.success)
-        dispatch(setCurrentConversation({ data: message.message }));
-    };
-
-    socket?.on("start_chat", handleUserGetMessage);
+    socket?.on("employer_get_status_apply_job", handleGetStatusApplyJob);
 
     return () => {
-      socket?.off("start_chat", handleUserGetMessage);
+      socket?.off("employer_get_status_apply_job", handleGetStatusApplyJob);
     };
-  }, [dispatch]);
+  }, []);
+
+  const handleGetStatusApplyJob = (data) => {
+    if (data.success) {
+      setStatus(data.message);
+    }
+  };
 
   const handleStartConversation = () => {
     setIsBoxChatOpen(true);
     setIsBoxChatBubble(false);
-    socket?.emit("start_conversation", {
-      employerId: user?.ownerEmployerId?._id,
-      userId: applyJobDetailData?.data?.candidateId?._id,
-    });
+    try {
+      socket?.emit("start_conversation", {
+        employerId: user?.ownerEmployerId?._id,
+        userId: applyJobDetailData?.data?.candidateId?._id,
+      });
+    } catch (error) {}
   };
 
   const handleRejectedCVEnvent = async () => {
@@ -101,12 +94,14 @@ const ToolbarCV = () => {
   const closeDrawer = () => setOpen(false);
 
   const handleChangeStatusEvent = () => {
-    socket.emit("update_status_apply_job", {
-      userId: applyJobDetailData?.data?.candidateId?._id,
-      employerId: user?.ownerEmployerId?._id,
-      applyJobId,
-      status,
-    });
+    try {
+      socket?.emit("update_status_apply_job", {
+        userId: applyJobDetailData?.data?.candidateId?._id,
+        employerId: user?.ownerEmployerId?._id,
+        applyJobId,
+        status,
+      });
+    } catch (error) {}
   };
 
   return (

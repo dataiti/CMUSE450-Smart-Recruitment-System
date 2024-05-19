@@ -42,8 +42,9 @@ const CategoriesPage = () => {
   const [jobDetailData, setJobDetailData] = useState({});
   const [isColumnCard, setIsColumnCard] = useState(true);
   const [isSticky, setIsSticky] = useState(false);
+  const [keyword, setKeyWord] = useState("");
 
-  const searchDebouceValue = useDebounce(search, 800);
+  const searchDebouceValue = useDebounce(keyword, 800);
 
   const location = useLocation();
 
@@ -62,9 +63,9 @@ const CategoriesPage = () => {
       rating: rating,
       salaryFrom,
       salaryTo,
-      candidateId: user.candidateId?._id || "",
+      candidateId: user?.candidateId?._id || "",
     },
-    { skip: !user, refetchOnMountOrArgChange: true }
+    { skip: !user && !user?.candidateId?._id, refetchOnMountOrArgChange: true }
   );
 
   // Cuộn đến đầu trang khi component được render
@@ -92,6 +93,13 @@ const CategoriesPage = () => {
       );
     }
   }, [dispatch, listJobsData]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const paramValue = queryParams.get("keyword");
+
+    if (paramValue) setKeyWord(paramValue);
+  }, [location.search]);
 
   // Cập nhật giới hạn số lượng hiển thị công việc
   useEffect(() => {

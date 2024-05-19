@@ -16,12 +16,22 @@ import {
   IconButtonCustom,
   Container,
   Loading,
+  BoxChat,
 } from "../../components/shares";
+import { socket } from "../../socket";
+import { authSelect } from "../../redux/features/slices/authSlice";
+import { useSelector } from "react-redux";
+import { LoginForm } from "../../components/forms";
 
 const CompanyProfile = () => {
   const { companyId } = useParams();
 
+  const { user, isLoggedIn } = useSelector(authSelect);
+
   const [limit, setLimit] = useState(6);
+  const [isBoxChatOpen, setIsBoxChatOpen] = useState(false);
+  const [isBoxChatBubble, setIsBoxChatBubble] = useState(false);
+  const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
 
   const { data: companyDetailData, isFetching } = useGetEmployerDetailQuery({
     employerId: companyId,
@@ -32,8 +42,42 @@ const CompanyProfile = () => {
     { refetchOnMountOrArgChange: true }
   );
 
+  const handleStartConversation = () => {
+    if (!isLoggedIn) {
+      setIsOpenLoginModal(true);
+    } else {
+      setIsBoxChatOpen(true);
+      setIsBoxChatBubble(false);
+      try {
+        socket?.emit("start_conversation", {
+          employerId: companyId,
+          userId: user?._id,
+        });
+      } catch (error) {}
+    }
+  };
+
   return (
     <div className="px-[110px] py-[20px] flex flex-col gap-2 relative">
+      {isBoxChatOpen && (
+        <BoxChat
+          isBoxChatOpen={isBoxChatOpen}
+          setIsBoxChatOpen={setIsBoxChatOpen}
+          setIsBoxChatBubble={setIsBoxChatBubble}
+          isBoxChatBubble={isBoxChatBubble}
+        />
+      )}
+      {isBoxChatBubble && (
+        <button
+          className="h-14 w-14 flex items-center justify-center rounded-full bg-[#212f3f] text-light-blue-600 fixed bottom-[90px] right-6 shadow-2xl z-40"
+          onClick={() => {
+            setIsBoxChatBubble(false);
+            setIsBoxChatOpen(true);
+          }}
+        >
+          <icons.BsMessenger size={28} />
+        </button>
+      )}
       {(isFetching || isFetchingListJobs) && <Loading />}
       <Breadcrumbs fullWidth className="bg-white">
         <Link to="/" className="text-light-blue-500 text-sm font-bold">
@@ -146,7 +190,10 @@ const CompanyProfile = () => {
                 <icons.FaUserPlus size={18} />
                 <Typography className="text-xs font-bold">Theo dõi</Typography>
               </ButtonCustom>
-              <ButtonCustom className="bg-gray-300 hover:bg-gray-400 text-black">
+              <ButtonCustom
+                className="bg-gray-300 hover:bg-gray-400 text-black"
+                onClick={handleStartConversation}
+              >
                 <icons.BsMessenger size={18} />
                 Nhắn tin
               </ButtonCustom>
@@ -160,6 +207,7 @@ const CompanyProfile = () => {
           </div>
         </div>
       </div>
+      <LoginForm open={isOpenLoginModal} handleOpen={setIsOpenLoginModal} />
     </div>
   );
 };

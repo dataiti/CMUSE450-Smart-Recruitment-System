@@ -56,7 +56,10 @@ const DashboardPage = () => {
       userId: user?._id,
       employerId: user?.ownerEmployerId?._id,
     },
-    { refetchOnMountOrArgChange: true }
+    {
+      skip: !user?._id || !user?.ownerEmployerId?._id,
+      refetchOnMountOrArgChange: true,
+    }
   );
 
   const { data: lineChartData, isFetching: isFetchingLineChart } =
@@ -69,7 +72,10 @@ const DashboardPage = () => {
         type,
         typeTime,
       },
-      { refetchOnMountOrArgChange: true }
+      {
+        skip: !user?._id || !user?.ownerEmployerId?._id,
+        refetchOnMountOrArgChange: true,
+      }
     );
 
   const { data: previousYearLineChartData, isFetching } =
@@ -82,7 +88,10 @@ const DashboardPage = () => {
         type,
         typeTime,
       },
-      { refetchOnMountOrArgChange: true }
+      {
+        skip: !user?._id || !user?.ownerEmployerId?._id,
+        refetchOnMountOrArgChange: true,
+      }
     );
 
   const { data: pieChartData, isFetching: isFetchingPieChart } =
@@ -92,7 +101,10 @@ const DashboardPage = () => {
         employerId: user?.ownerEmployerId?._id,
         type: typePieChart,
       },
-      { refetchOnMountOrArgChange: true }
+      {
+        skip: !user?._id || !user?.ownerEmployerId?._id,
+        refetchOnMountOrArgChange: true,
+      }
     );
 
   const { data: listApplyJobsData, isFetching: isFetchingListApplyJobs } =
@@ -105,7 +117,10 @@ const DashboardPage = () => {
         limit,
         status: "pending",
       },
-      { refetchOnMountOrArgChange: true }
+      {
+        skip: !user?._id || !user?.ownerEmployerId?._id,
+        refetchOnMountOrArgChange: true,
+      }
     );
 
   useEffect(() => {
