@@ -44,6 +44,41 @@ const storiesApi = rootApi.injectEndpoints({
         };
       },
     }),
+// -----------------------------
+    getRulesData: builder.query({
+      query: () => {
+        return {
+          url: "/rasa/rules/get-rules",
+          method: "GET",
+        };
+      },
+    }),
+    addRule: builder.mutation({
+      query: ({ data }) => {
+        return {
+          url: "/rasa/rules/add-rules",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+    updateRule: builder.mutation({
+      query: ({ data, ruleName }) => {
+        return {
+          url: `/rasa/rules/update-rule?ruleName=${ruleName}`,
+          method: "PUT",
+          body: data,
+        };
+      },
+    }),
+    deleteRule: builder.mutation({
+      query: ({ ruleName }) => {
+        return {
+          url: `/rasa/rules/delete-rule?ruleName=${ruleName}`,
+          method: "DELETE",
+        };
+      },
+    }),
   }),
 });
 
@@ -53,4 +88,12 @@ export const {
   useAddStoryMutation,
   useDeleteStoryMutation,
   useUpdateStoryMutation,
+<<<<<<< HEAD:admin/src/redux/features/apis/rasaApi.js
+  useGetRulesDataQuery,
+  useAddRuleMutation,
+  useDeleteRuleMutation,
+  useUpdateRuleMutation,
+} = rasaApi;
+=======
 } = storiesApi;
+>>>>>>> c0b77fc652333b77d220c7f0f07a50307ff9f19f:admin/src/redux/features/apis/rasas/storiesApi.js
