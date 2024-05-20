@@ -1,97 +1,20 @@
 stories:
-  - story: greet and provide options
+  - story: ask action search jobs
     steps:
-      - intent: greet
-      - action: utter_greet
+      - intent: search_jobs
+      - action: action_search_jobs
 
-  - story: goodbye
+  - story: ask job search by location
     steps:
-      - intent: goodbye
-      - action: utter_goodbye
-
-  - story: provide name and greet
-    steps:
-      - intent: give_name
-      - slot_was_set:
-          - cust_name: "cust_name"
-      - action: utter_name_received
-
-  - story: interview process
-    steps:
-      - intent: interview_process
-      - action: utter_interview_process
-
-  - story: list company in system
-    steps:
-      - intent: list_company_in_system
-      - action: action_list_company_in_system
-
-  - story: find job in system
-    steps:
-      - intent: find_job_in_system
-      - action: utter_find_job_in_system
-
-  - story: ask recruitment trend
-    steps:
-      - intent: recruitment_trend
-      - action: utter_recruitment_trend
-
-  - story: ask recruitment trend on market
-    steps:
-      - intent: recruitment_trend_on_market
-      - action: utter_recruitment_trend_on_market
-
-  - story: ask recruitment trend in system
-    steps:
-      - intent: recruitment_trend_in_system
-      - action: action_recruitment_trend_in_system
-
-  - story: ask search job in system
-    steps:
-      - intent: search_job
-      - action: action_search_job
-
-  - story: ask prepare for IT interview
-    steps:
-      - intent: prepare_for_IT_interview
-      - action: utter_prepare_for_IT_interview
-
-  - story: ask IT job market demand
-    steps:
-      - intent: IT_job_market_demand
-      - action: utter_IT_job_market_demand
-
-  - story: ask IT salary market
-    steps:
-      - intent: IT_salary_market
-      - action: utter_IT_salary_market
-
-  - story: ask about FSoftware company
-    steps:
-      - intent: about_FSoftware_company
-      - action: utter_about_FSoftware_company
-
-  - story: ask inquire popular companies
-    steps:
-      - intent: inquire_popular_companies
-      - action: action_inquire_popular_companies
+      - intent: job_search_by_location
+      - action: action_job_search_by_location
 
   - story: ask inquire companies by employee count
     steps:
       - intent: inquire_companies_by_employee_count
       - action: action_inquire_companies_by_employee_count
 
-  - story: askinquire companies by tech_stack
+  - story: ask action search jobs by experience
     steps:
-      - intent: inquire_companies_by_tech_stack
-      - action: action_inquire_companies_by_tech_stack
-
-  - story: ask inquire highest rated companies
-    steps:
-      - intent: inquire_highest_rated_companies
-      - action: action_inquire_highest_rated_companies
-
-  - story: ask inquire highest salary companies
-    steps:
-      - intent: inquire_highest_salary_companies
-      - action: action_inquire_highest_salary_companies
+      - intent: search_jobs_by_experience
+      - action: action_search_jobs_by_experience

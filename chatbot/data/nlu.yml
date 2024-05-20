@@ -1,187 +1,231 @@
 nlu:
-  - intent: greet
+  - intent: search_jobs
     examples: |
-      - Xin chào
-      - Hi
-      - Chào bạn
-      - Hello
-      - Hey
-      - Xin chào các bạn
-      - Xin chào mọi người
-      - Chào các bạn
-      - Hiện đây có ai không?
-      - Có ai ở đây không?
-  - intent: goodbye
-    examples: |
-      - Tạm biệt
-      - Chào tạm biệt
-      - Bye
-      - Hẹn gặp lại
-      - Goodbye
-      - Tôi phải đi
-      - Chúc bạn một ngày tốt lành
-      - Tôi sẽ quay lại sau
-      - Tạm biệt, hẹn gặp lại
-      - Hẹn gặp lại bạn sau
-  - intent: give_name
-    examples: |
-      - Mình tên là [Đạt](cust_name) nha.
-      - Anh là [Thành Đạt](cust_name) nhé.
-      - Cứ gọi tớ là [đạt](cust_name) là được.
-      - Chị] tên là [Nguyễn Thị Thuỳ Duyên](cust_name).
-      - Biệt danh của [Mình] là [dataiti](cust_name) nha.
-      - Em là [Nguyễn Thành Đạt](cust_name) nhé.
-      - Cứ gọi Anh là [Duyên Thuỳ](cust_name) thôi.
-      - Tớ tên là [Thành](cust_name).
-      - Anh là [Thành Đạt](cust_name), biệt danh là [Dat](cust_name).
+      - Có công việc nào cho [Front-end Developer](position) ở [Hà Nội](location) yêu cầu [2 năm](experience_year) kinh nghiệm với [React](skill) không?
+      - Tìm việc làm [Back-end Developer](position) tại [Đà Nẵng](location) yêu cầu [3 năm](experience_year) kinh nghiệm về [Node.js](skill).
+      - Tôi muốn tìm công việc [Full-stack Developer](position) ở [Thành phố Hồ Chí Minh](location) cho người có [5 năm](experience_year) kinh nghiệm về [JavaScript](skill).
+      - Có việc gì cho [UI/UX Designer](position) ở [Hà Nội](location) yêu cầu [1 năm](experience_year) kinh nghiệm và biết [Figma](skill) không?
+      - Tìm công việc [Project Manager](position) tại [Đà Nẵng](location) cho người có [4 năm](experience_year) kinh nghiệm trong [Agile](skill).
+      - Tôi muốn tìm việc [Data Analyst](position) ở [Hà Nội](location) yêu cầu [2 năm](experience_year) kinh nghiệm về [SQL](skill).
+      - Có công việc nào dành cho [Tester](position) tại [Thành phố Hồ Chí Minh](location) yêu cầu [1 năm](experience_year) kinh nghiệm với [Automation Testing](skill)?
+      - Tìm việc làm [DevOps Engineer](position) tại [Đà Nẵng](location) yêu cầu [3 năm](experience_year) kinh nghiệm về [Docker](skill).
+      - Tôi đang tìm công việc [Android Developer](position) ở [Hà Nội](location) yêu cầu [2 năm](experience_year) kinh nghiệm về [Kotlin](skill).
+      - Có việc gì cho [iOS Developer](position) tại [Thành phố Hồ Chí Minh](location) yêu cầu [3 năm](experience_year) kinh nghiệm và biết [Swift](skill)?
+      - Tìm công việc [Business Analyst](position) ở [Đà Nẵng](location) cho người có [2 năm](experience_year) kinh nghiệm về [Jira](skill).
+      - Tôi muốn tìm việc [Software Engineer](position) tại [Hà Nội](location) yêu cầu [5 năm](experience_year) kinh nghiệm với [C++](skill).
+      - Có công việc nào dành cho [Systems Analyst](position) ở [Thành phố Hồ Chí Minh](location) yêu cầu [3 năm](experience_year) kinh nghiệm về [Linux](skill)?
+      - Tìm việc làm [Game Developer](position) tại [Đà Nẵng](location) yêu cầu [2 năm](experience_year) kinh nghiệm với [Unity](skill).
+      - Tôi đang tìm công việc [Full-stack Developer](position) ở [Hà Nội](location) cho người có [3 năm](experience_year) kinh nghiệm về [Node.js](skill) và [React](skill).
 
-  - intent: list_company_in_system
+  - intent: search_job_by_skill
     examples: |
-      - Hiện tại trên hệ thống có những công ty nào?
-      - Cho tôi biết danh sách các công ty đang có trên hệ thống.
-      - Xin hãy liệt kê các công ty đang tham gia trên nền tảng này.
-      - Có những doanh nghiệp nào đã đăng ký trong hệ thống?
-      - Tôi muốn biết các công ty hiện đang hoạt động trên hệ thống.
-  - intent: interview_process
-    examples: |
-      - Cho tôi biết về quy trình phỏng vấn tại công ty.
-      - Bạn có thể cung cấp thông tin về quy trình phỏng vấn được không?
-      - Xin mô tả về quy trình phỏng vấn tại công ty.
-      - Làm ơn giải thích về quy trình phỏng vấn hoạt động như thế nào?
-      - Tôi muốn hiểu rõ về quy trình phỏng vấn tại công ty.
-  - intent: find_job_in_system
-    examples: |
-      - Tìm việc làm trên hệ thống
-      - Tìm công việc phù hợp với kỹ năng của tôi
-      - Bạn có thể giúp tôi tìm một công việc phù hợp không?
-      - Cho tôi xem danh sách các công việc đang có
-      - Có công việc nào phù hợp với background của tôi không?
-      - Tôi đang tìm kiếm cơ hội việc làm
-      - Bạn có thể gợi ý cho tôi một số công việc phù hợp không?
-  - intent: recruitment_trend
-    examples: |
-      - Xu hướng tuyển dụng ngành IT
-      - Tôi muốn biết về xu hướng tuyển dụng trong ngành IT
-      - Những công nghệ lập trình nào đang được ưa chuộng trong tuyển dụng IT?
-      - Công việc nào đang có nhiều cơ hội việc làm nhất trong ngành công nghệ thông tin?
-      - Các vị trí công việc hot trong ngành IT là gì?
+      - Tìm công việc yêu cầu kỹ năng [Python](skill)
+      - Có công việc nào cần biết [JavaScript](skill) không?
+      - Tôi muốn tìm việc liên quan đến [React](skill) Native
+      - Có việc gì cho những người làm về [Laravel](skill) không?
+      - Tìm công việc yêu cầu kỹ năng lập trình [Java](skill)
+      - Có công việc nào dành cho những người biết làm về [Spring Boot](skill) không?
+      - Tôi cần tìm việc làm trong lĩnh vực [machine learning](skill)
+      - Có công ty nào cần người biết về [DevOps](skill) không?
+      - Tôi muốn tìm việc yêu cầu kỹ năng [PHP](skill)
+      - Tôi đang tìm công việc về [React](skill)
+      - Có công việc nào cho người biết sử dụng [Angular](skill) không?
+      - Tìm việc yêu cầu kỹ năng [Node.js](skill)
+      - Có công việc nào dành cho lập trình viên làm việc với [Django](skill) không?
 
-  - intent: recruitment_trend_on_market
+  - synonym: javascript
     examples: |
-      - Xu hướng trên thị trường
-      - Xu hướng tuyển dụng ngành IT trên thị trường trong năm nay như thế nào?
-      - Tôi muốn biết về xu hướng tuyển dụng trong ngành IT trên thị trường
-      - Những công nghệ lập trình nào trên thị trường đang được ưa chuộng trong tuyển dụng IT?
-      - Công việc nào đang có nhiều cơ hội việc làm nhất trên thị trường trong ngành công nghệ thông tin?
-      - Các vị trí công việc hot trên thị trường trong ngành IT là gì?
+      - JavaScript
+      - javascript
+      - JAVASCRIPT
+      - JS
+      - js
+  - synonym: python
+    examples: |
+      - Python
+      - python
+      - PYTHON
+      - py
+      - PY
+  - synonym: java
+    examples: |
+      - Java
+      - java
+      - JAVA
 
-  - intent: recruitment_trend_in_system
+  - synonym: c#
     examples: |
-      - Xu hướng trên hệ thống
-      - Xu hướng tuyển dụng ngành IT trên hệ thống trong năm nay như thế nào?
-      - Tôi muốn biết về xu hướng tuyển dụng trong ngành IT trên hệ thống
-      - Những công nghệ lập trình nào trên hệ thống đang được ưa chuộng trong tuyển dụng IT?
-      - Công việc nào đang có nhiều cơ hội việc làm nhất trên hệ thống trong ngành công nghệ thông tin?
-      - Các vị trí công việc hot trên hệ thống trong ngành IT là gì?
+      - C#
+      - csharp
+      - CSHARP
+      - csharp
+      - CSharp
 
-  - intent: search_job
+  - synonym: php
     examples: |
-      - Tìm một vị trí [frontend](job_type) ở [TP HCM](location) với mức lương từ [10 triệu](salary) và yêu cầu kỹ năng [ReactJS](skill) và ít nhất [2 năm](experience) kinh nghiệm.
-      - Tìm việc làm [backend developer](job_type) tại [Hà Nội](location) với mức lương từ [15 triệu](salary) và yêu cầu kỹ năng [Node.js](skill) và ít nhất [3 năm](experience) kinh nghiệm.
-      - Tôi đang tìm việc làm [full stack developer](job_type) ở [Đà Nẵng](location) với mức lương tối thiểu [20 triệu](salary) và yêu cầu kỹ năng [AngularJS](skill) và ít nhất [5 năm](experience) kinh nghiệm.
-      - Muốn tìm việc về [DevOps](job_type) ở [TP HCM](location) với mức lương tối thiểu [12 triệu](salary) và yêu cầu kỹ năng [Docker](skill) và ít nhất [2 năm](experience) kinh nghiệm.
-      - Có việc làm [data scientist](job_type) ở [Hà Nội](location) với mức lương từ [20 triệu](salary) và yêu cầu kỹ năng [Python](skill) và ít nhất [3 năm](experience) kinh nghiệm.
-      - Tôi cần tìm vị trí [UI/UX designer](job_type) tại [TP HCM](location) với mức lương từ [18 triệu](salary) và yêu cầu kỹ năng [Sketch](skill) và ít nhất [3 năm](experience) kinh nghiệm.
-      - Tìm việc làm [QA tester](job_type) ở [Đà Nẵng](location) với mức lương từ [12 triệu](salary) và yêu cầu kỹ năng [Selenium](skill) và ít nhất [2 năm](experience) kinh nghiệm.
-      - Tìm một vị trí [backend developer](job_type) ở [Hồ Chí Minh](location) với mức lương từ [15 triệu](salary) và yêu cầu kỹ năng [Java](skill) và ít nhất [3 năm](experience) kinh nghiệm.
-      - Có công việc [frontend developer](job_type) tại [Hà Nội](location) với mức lương từ [10 triệu](salary) và yêu cầu kỹ năng [Vue.js](skill) và ít nhất [2 năm](experience) kinh nghiệm.
+      - PHP
+      - php
+      - Php
 
-  - intent: inquire_current_positions
+  - synonym: ruby
     examples: |
-      - Các vị trí nào đang được tuyển dụng?
-      - Cho tôi biết về các vị trí công việc đang có sẵn.
-      - Hiện tại có những vị trí nào đang tuyển dụng?
-      - Tôi muốn biết về các cơ hội việc làm hiện tại.
-      - Các vị trí công việc đang mở cần tuyển nhân sự là gì?
-      - Cho xin thông tin về các vị trí đang được tuyển dụng.
+      - Ruby
+      - ruby
+      - RUBY
 
-  - intent: career_direction_IT
+  - synonym: typescript
     examples: |
-      - Làm thế nào để định hướng nghề nghiệp trong lĩnh vực IT?  
-      - Tôi cần làm gì để chọn đúng hướng nghề trong ngành công nghệ thông tin?
-      - Làm sao để biết được lĩnh vực nào trong IT phù hợp với kỹ năng của tôi?
-      - Có nên học thêm các kỹ năng mới trong IT để mở rộng hướng nghiệp của mình không?
-      - Làm thế nào để chọn đúng vị trí công việc IT cho sự nghiệp của tôi?
-      - Tôi cần tư vấn về con đường nghề nghiệp trong ngành IT, bạn có thể giúp tôi không?
+      - TypeScript
+      - typescript
+      - TYPESCRIPT
+      - TS
+      - ts
 
-  - intent: programming_skills_required
+  - synonym: html/css
     examples: |
-      - Có những kỹ năng nào cần thiết để trở thành một Developer trong IT?
-      - Những kỹ năng gì là quan trọng để làm việc trong ngành lập trình?
-      - Coder cần có những kỹ năng gì để thành công trong công việc?
-      - Để trở thành một software engineer giỏi, cần phải có những kỹ năng gì?
-      - Yêu cầu kỹ năng nào để làm việc trong lĩnh vực IT?
-      - Những kỹ năng cần có của một lập trình viên là gì?
+      - HTML/CSS
+      - html/css
+      - HTML
+      - html
+      - CSS
+      - css
+      - Html/Css
+      - html/CSS
 
-  - intent: impressive_cv_tips
+  - synonym: sql
     examples: |
-      - Làm thế nào để viết một sơ yếu lý lịch (CV) ấn tượng?
-      - Có cách nào để làm cho CV của mình nổi bật và chuyên nghiệp?
-      - Hướng dẫn viết sơ yếu lý lịch (CV) đẹp và ấn tượng như thế nào?
-      - Tôi cần những gợi ý để xây dựng một sơ yếu lý lịch (CV) chuyên nghiệp.
-      - Làm sao để có một CV gây ấn tượng với nhà tuyển dụng?
-      - Cách thức viết sơ yếu lý lịch (CV) sao cho nổi bật và chuyên nghiệp?
+      - SQL
+      - sql
+      - Sql
 
-  - intent: prepare_for_IT_interview
+  - synonym: nodejs
     examples: |
-      - Tôi cần chuẩn bị như thế nào cho một cuộc phỏng vấn vị trí IT?
-      - Làm thế nào để chuẩn bị tốt cho một cuộc phỏng vấn IT?
-      - Có những điều gì cần chuẩn bị trước khi đi phỏng vấn vị trí công nghệ thông tin?
-      - Hướng dẫn chuẩn bị cho cuộc phỏng vấn IT như thế nào?
-      - Tôi cần những tips để sẵn sàng cho cuộc phỏng vấn IT.
-      - Làm sao để tự tin và chuẩn bị tốt cho một cuộc phỏng vấn vị trí lập trình viên?
-      - Cần làm gì để đạt được thành công trong cuộc phỏng vấn vị trí công nghệ thông tin?
-      - Tôi muốn biết cách chuẩn bị hiệu quả cho cuộc phỏng vấn IT.
+      - Node.js
+      - node.js
+      - NODE.JS
+      - NodeJS
+      - nodejs
+      - NODEJS
 
-  - intent: IT_job_market_demand
+  - synonym: react
     examples: |
-      - Nhu cầu việc làm trong ngành công nghệ thông tin hiện nay như thế nào?
-      - Thị trường việc làm trong lĩnh vực IT đang có nhu cầu những gì?
-      - Các công việc trong ngành công nghệ thông tin đang được ưa chuộng như thế nào?
-      - Lĩnh vực IT đang có sự tăng trưởng nhu cầu việc làm hay không?
-      - Tìm hiểu về nhu cầu thị trường ngành công nghệ thông tin.
-      - Các vị trí công nghệ thông tin có nhu cầu cao trong thời gian gần đây là gì?
-      - Cơ hội việc làm trong ngành IT hiện nay ra sao?
-      - Tôi cần biết thông tin về thị trường việc làm trong lĩnh vực công nghệ thông tin.
+      - React
+      - react
+      - REACT
+      - ReactJS
+      - reactjs
+      - REACTJS
 
-  - intent: IT_salary_market
+  - synonym: angular
     examples: |
-      - Mức lương của lập trình viên ở Việt Nam hiện nay là bao nhiêu?
-      - Các lập trình viên có thu nhập bình quân khoảng bao nhiêu trong năm nay?
-      - Tôi muốn biết về mức lương của nhân viên IT tại các công ty công nghệ.
-      - Mức thu nhập của các vị trí công nghệ thông tin là bao nhiêu?
-      - Lương của lập trình viên có tăng hay không trong những năm gần đây?
-      - Tìm hiểu về mức lương trong ngành công nghệ thông tin.
+      - Angular
+      - angular
+      - ANGULAR
+      - AngularJS
+      - angularjs
+      - ANGULARJS
 
-  - intent: about_FSoftware_company
+  - synonym: vuejs
     examples: |
-      - Tôi cần tìm hiểu về công ty F-Software làm gì?
-      - Xin thông tin về F-Soft làm việc trong lĩnh vực gì?
-      - Có thông tin gì về công ty FPT không?
-      - Tôi muốn bạn cung cấp thông tin công ty F-Software.
-      - Giới thiệu thông tin công ty F-Software.
-      - Mô tả thông tin về F-Software?
+      - Vue.js
+      - vue.js
+      - VUE.JS
+      - VueJS
+      - vuejs
+      - VUEJS
+      - Vue
 
-  - intent: inquire_popular_companies
+  - synonym: django
     examples: |
-      - Các công ty nào thu hút nhiều ứng viên nộp CV nhất?
-      - Cho tôi biết về những doanh nghiệp được ứng viên quan tâm nhiều nhất.
-      - Các công ty công nghệ nào nhận được nhiều CV từ ứng viên?
-      - Ai là những nhà tuyển dụng phổ biến nhất?
-      - Các đơn vị tuyển dụng nào có số lượng ứng viên nộp CV cao nhất?
-      - Những công ty phần mềm nào được nhiều người quan tâm nhất?
-      - Tôi muốn biết về các công ty IT được ứng viên quan tâm nhiều nhất để nộp CV.
-      - Có những công ty công nghệ thông tin nào được ứng viên quan tâm đặc biệt không?
+      - Django
+      - django
+      - DJANGO
+
+  - synonym: flask
+    examples: |
+      - Flask
+      - flask
+      - FLASK
+
+  - synonym: spring_boot
+    examples: |
+      - Spring Boot
+      - spring boot
+      - SpringBoot
+      - springboot
+
+  - synonym: asp_net
+    examples: |
+      - ASP.NET
+      - asp.net
+      - ASPNet
+      - aspnet
+
+  - synonym: laravel
+    examples: |
+      - Laravel
+      - laravel
+      - LARAVEL
+
+  - synonym: react_native
+    examples: |
+      - React Native
+      - react native
+      - ReactNative
+      - reactnative
+
+  - synonym: flutter
+    examples: |
+      - Flutter
+      - flutter
+      - FLUTTER
+
+  - intent: job_search_by_location
+    examples: |
+      - Có công việc IT nào ở [Thành phố Hà Nội](location) không?
+      - Tôi muốn tìm công việc lập trình viên tại [Thành phố Hồ Chí Minh](location).
+      - Có công việc IT nào tại [Thành phố Đà Nẵng](location) không?
+      - Hiện tại có công việc IT nào ở [Thành phố Hải Phòng](location) không?
+      - Tôi đang tìm việc IT ở [Thành phố Hồ Chí Minh](location).
+
+  - synonym: "Thành phố Hồ Chí Minh"
+    examples: |
+      - TP.HCM
+      - Hồ Chí Minh
+      - Thành phố Hồ Chí Minh
+      - Sài gòn
+      - TP HCM
+      - hcm
+      - sài gòn
+      - hồ chí minh
+      - hochiminh
+      - sg
+      - HCM
+
+  - synonym: "Thành phố Đà Nẵng"
+    examples: |
+      - Đà Nẵng
+      - Thành phố Đà Nẵng
+      - danang
+      - da nang
+      - đn
+      - Da Nang
+      - đà nẵng
+      - DN
+      - ĐN
+
+  - synonym: "Thành phố Hà Nội"
+    examples: |
+      - Hà Nội
+      - Thành phố Hà Nội
+      - Hanoi
+      - Ha noi
+      - hn
+      - Ha Noi
+      - hà nội
+      - HN
+      - ha noi
+      - hanoi
 
   - intent: inquire_companies_by_employee_count
     examples: |
@@ -194,33 +238,74 @@ nlu:
       - Các công ty phần mềm có bao nhiêu nhân viên trên [1000](employee_count) người?
       - Tôi muốn biết về các công ty công nghệ cao với số lượng nhân viên trên [500](employee_count) người..
 
-  - intent: inquire_companies_by_tech_stack
+  - intent: search_jobs_by_experience
     examples: |
-      - Cho tôi biết các doanh nghiệp đang tuyển vị trí [Java](tech_stack).
-      - Có công ty nào đang cần tuyển vị trí [Python](tech_stack) không?
-      - Những công ty nào đang có việc làm liên quan đến [JavaScript](tech_stack)?
-      - Có thông tin về các công ty đang tuyển dụng [Ruby on Rails](tech_stack) không?
-      - Tôi quan tâm đến các công ty tuyển dụng vị trí [ReactJS](tech_stack).
-      - Các công ty phần mềm đang cần tuyển [Vue.js](tech_stack) ư?
-      - Cho xin thông tin về các công ty đang tuyển vị trí [Node.js](tech_stack).
-      - Có công ty công nghệ nào đang tuyển dụng những người có kỹ năng [Net](tech_stack) không?
+      - Có công việc nào cho người [mới tốt nghiệp](experience_year) không?
+      - Tôi có [2 năm](experience_year) kinh nghiệm, có công việc IT nào phù hợp không?
+      - Có công việc IT nào yêu cầu ít hơn [1 năm](experience_year) kinh nghiệm không?
+      - Tôi có [5 năm](experience_year) kinh nghiệm trong lĩnh vực IT, có công việc nào phù hợp không?
+      - Các công việc IT dành cho người có kinh nghiệm trên [3 năm](experience_year) là gì?
+      - Có công việc nào cho người [mới ra trường](experience_year) không?
+      - Tôi là [sinh viên mới tốt nghiệp](experience_year), có công việc IT nào không?
+      - Tôi có [3 năm](experience_year) kinh nghiệm, có việc nào phù hợp không?
+      - Tôi có [4 năm](experience_year) kinh nghiệm, có việc nào phù hợp không?
+      - Tôi có [10 năm](experience_year) kinh nghiệm trong IT, có công việc nào không?
+      - Tôi là [frehser](experience_year), có công việc IT nào không?
 
-  - intent: inquire_highest_rated_companies
+  - synonym: "0"
     examples: |
-      - Cho tôi biết về những doanh nghiệp được đánh giá tốt nhất?
-      - Có các công ty công nghệ nào được đánh giá cao nhất không?
-      - Những nhà tuyển dụng hàng đầu là gì?
-      - Tôi muốn biết về các đơn vị tuyển dụng được đánh giá tốt nhất.
-      - Công ty công nghệ thông tin nào có đánh giá rất cao?
-      - Có các công ty phần mềm nào được đánh giá tốt không?
-      - Những công ty công nghệ cao nào được đánh giá tốt nhất?
+      - moi tot nghiep
+      - vừa tốt nghiệp
+      - mới tốt nghiệp
+      - fresher
+      - mới ra trường
+      - vừa ra trường
+      - sinh viên mới tốt nghiệp
+      - sinh vien moi tot nghiep
+      - Fresher
+      - fresher
+      - Intern
+      - intern
+      - internship
 
-  - intent: inquire_highest_salary_companies
+  - synonym: "1"
     examples: |
-      - Những doanh nghiệp nào có mức lương cao nhất?
-      - Có các công ty công nghệ nào trả lương hàng đầu không?
-      - Nhà tuyển dụng hàng đầu về mức lương là gì?
-      - Tôi muốn biết về các đơn vị tuyển dụng có mức lương cao nhất.
-      - Công ty công nghệ thông tin nào trả lương rất cao?
-      - Có các công ty phần mềm nào có mức lương cao không?
-      - Những công ty công nghệ cao nào có mức lương cao nhất?
+      - 1 năm
+      - it hon 1 nam
+      - mot nam
+      - Một Năm
+      - Một năm
+      - ít hơn 1 năm
+      - dưới 1 năm
+
+  - synonym: "2"
+    examples: |
+      - hai năm
+      - Hai Năm
+      - hai nam
+      - Hai Nam
+      - 2 năm
+
+  - synonym: "3"
+    examples: |
+      - ba năm
+      - Ba Năm
+      - ba nam
+      - Ba Nam
+      - 3 năm
+
+  - synonym: "4"
+    examples: |
+      - bốn năm
+      - Bốn Năm
+      - bon nam
+      - Bon Nam
+      - 4 năm
+
+  - synonym: "5"
+    examples: |
+      - năm năm
+      - Năm Năm
+      - nam nam
+      - Nam Nam
+      - 5 năm
