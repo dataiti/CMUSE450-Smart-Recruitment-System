@@ -1,311 +1,404 @@
 nlu:
-  - intent: search_jobs
-    examples: |
-      - Có công việc nào cho [Front-end Developer](position) ở [Hà Nội](location) yêu cầu [2 năm](experience_year) kinh nghiệm với [React](skill) không?
-      - Tìm việc làm [Back-end Developer](position) tại [Đà Nẵng](location) yêu cầu [3 năm](experience_year) kinh nghiệm về [Node.js](skill).
-      - Tôi muốn tìm công việc [Full-stack Developer](position) ở [Thành phố Hồ Chí Minh](location) cho người có [5 năm](experience_year) kinh nghiệm về [JavaScript](skill).
-      - Có việc gì cho [UI/UX Designer](position) ở [Hà Nội](location) yêu cầu [1 năm](experience_year) kinh nghiệm và biết [Figma](skill) không?
-      - Tìm công việc [Project Manager](position) tại [Đà Nẵng](location) cho người có [4 năm](experience_year) kinh nghiệm trong [Agile](skill).
-      - Tôi muốn tìm việc [Data Analyst](position) ở [Hà Nội](location) yêu cầu [2 năm](experience_year) kinh nghiệm về [SQL](skill).
-      - Có công việc nào dành cho [Tester](position) tại [Thành phố Hồ Chí Minh](location) yêu cầu [1 năm](experience_year) kinh nghiệm với [Automation Testing](skill)?
-      - Tìm việc làm [DevOps Engineer](position) tại [Đà Nẵng](location) yêu cầu [3 năm](experience_year) kinh nghiệm về [Docker](skill).
-      - Tôi đang tìm công việc [Android Developer](position) ở [Hà Nội](location) yêu cầu [2 năm](experience_year) kinh nghiệm về [Kotlin](skill).
-      - Có việc gì cho [iOS Developer](position) tại [Thành phố Hồ Chí Minh](location) yêu cầu [3 năm](experience_year) kinh nghiệm và biết [Swift](skill)?
-      - Tìm công việc [Business Analyst](position) ở [Đà Nẵng](location) cho người có [2 năm](experience_year) kinh nghiệm về [Jira](skill).
-      - Tôi muốn tìm việc [Software Engineer](position) tại [Hà Nội](location) yêu cầu [5 năm](experience_year) kinh nghiệm với [C++](skill).
-      - Có công việc nào dành cho [Systems Analyst](position) ở [Thành phố Hồ Chí Minh](location) yêu cầu [3 năm](experience_year) kinh nghiệm về [Linux](skill)?
-      - Tìm việc làm [Game Developer](position) tại [Đà Nẵng](location) yêu cầu [2 năm](experience_year) kinh nghiệm với [Unity](skill).
-      - Tôi đang tìm công việc [Full-stack Developer](position) ở [Hà Nội](location) cho người có [3 năm](experience_year) kinh nghiệm về [Node.js](skill) và [React](skill).
-
   - intent: search_job_by_skill
     examples: |
-      - Tìm công việc yêu cầu kỹ năng [Python](skill)
-      - Có công việc nào cần biết [JavaScript](skill) không?
-      - Tôi muốn tìm việc liên quan đến [React](skill) Native
-      - Có việc gì cho những người làm về [Laravel](skill) không?
-      - Tìm công việc yêu cầu kỹ năng lập trình [Java](skill)
-      - Có công việc nào dành cho những người biết làm về [Spring Boot](skill) không?
-      - Tôi cần tìm việc làm trong lĩnh vực [machine learning](skill)
-      - Có công ty nào cần người biết về [DevOps](skill) không?
-      - Tôi muốn tìm việc yêu cầu kỹ năng [PHP](skill)
-      - Tôi đang tìm công việc về [React](skill)
-      - Có công việc nào cho người biết sử dụng [Angular](skill) không?
-      - Tìm việc yêu cầu kỹ năng [Node.js](skill)
-      - Có công việc nào dành cho lập trình viên làm việc với [Django](skill) không?
+      - Tìm công việc yêu cầu kỹ năng [javascript](skill) dành cho [Internship](level)
+      - Có công việc nào dành cho [js](skill) dành cho [thực tập sinh](level)
+      - Có công việc nào dành cho [c#](skill) dành cho [intern](level)
+      - Có công việc nào dành cho [tập sự](level) cần biết [csharp](skill) không?
+      - Tôi muốn tìm việc liên quan đến [java](skill) dành cho [học việc](level)
+      - Có việc gì cho những người làm về [typescript](skill) ở mức [mới ra trường](level) không?
+      - Tìm công việc dành cho [mới tốt nghiệm](level) yêu cầu kỹ năng [ts](skill)
+      - Tìm công việc dành cho [mới ra trường](level) yêu cầu kỹ năng [ts](skill)
+      - Có công việc nào dành cho [Fresher](level) biết làm về [html css](skill) không?
+      - Tôi cần tìm việc cấp bậc [Junior](level) [html/css](skill)?
+      - Có công ty nào cần người biết về [htmlcss](skill) không?
+      - Tôi đang tìm công việc về [người mới vào nghề](level) [nodejs](skill)?
+      - Tìm công việc dành cho [nhân viên mới](level) [node.js](skill)
+      - Có công việc nào dành cho cấp bậc [Middle](level) [reactjs](skill)
+      - Tìm việc dành cho cấp bậc [trung cấp](level) [react](skill)
+      - Tôi muốn tìm việc [Senior](level) [angular](skill)
+      - Có công ty nào cần người biết [angularjs](skill) ở mức [giàu kinh nghiệm](level) không?
+      - Tìm việc yêu cầu [cao cấp](level) [vuejs](skill)
+      - Tôi cần tìm việc [cấp cao](level) với kỹ năng [vue.js](skill)
+      - Tôi đang tìm công việc [Manager](level) làm về [asp.net](skill)
+      - Tìm việc dành cho [quản lý](level) [spring boot](skill)
+      - Tìm việc dành cho [quản lý](trưởng nhóm) [.net](skill)
+      - Có công việc nào dành cho [tập sự](level) cần biết [reactnative](skill) không?
+      - Có công việc nào dành cho [tập sự](level) cần biết [react native](skill) không?
+
+  - synonym: Internship
+    examples: |
+      - intern
+      - thực tập sinh
+      - tập sự
+      - học việc
+
+  - synonym: Fresher
+    examples: |
+      - mới ra trường
+      - mới tốt nghiệm
+
+  - synonym: Junior
+    examples: |
+      - người mới vào nghề
+      - nhân viên mới
+
+  - synonym: Middle
+    examples: |
+      - trung cấp
+
+  - synonym: Senior
+    examples: |
+      - giàu kinh nghiệm
+      - cao cấp
+      - cấp cao
+
+  - synonym: Manager
+    examples: |
+      - quản lý
+      - trưởng nhóm
 
   - synonym: javascript
     examples: |
-      - JavaScript
-      - javascript
-      - JAVASCRIPT
-      - JS
       - js
-  - synonym: python
-    examples: |
-      - Python
-      - python
-      - PYTHON
-      - py
-      - PY
-  - synonym: java
-    examples: |
-      - Java
-      - java
-      - JAVA
 
   - synonym: c#
     examples: |
-      - C#
       - csharp
-      - CSHARP
-      - csharp
-      - CSharp
-
-  - synonym: php
-    examples: |
-      - PHP
-      - php
-      - Php
-
-  - synonym: ruby
-    examples: |
-      - Ruby
-      - ruby
-      - RUBY
 
   - synonym: typescript
     examples: |
-      - TypeScript
-      - typescript
-      - TYPESCRIPT
-      - TS
       - ts
 
-  - synonym: html/css
+  - synonym: "html css"
     examples: |
-      - HTML/CSS
       - html/css
-      - HTML
-      - html
-      - CSS
-      - css
-      - Html/Css
-      - html/CSS
-
-  - synonym: sql
-    examples: |
-      - SQL
-      - sql
-      - Sql
+      - htmlcss
 
   - synonym: nodejs
     examples: |
-      - Node.js
       - node.js
-      - NODE.JS
-      - NodeJS
-      - nodejs
-      - NODEJS
 
-  - synonym: react
+  - synonym: reactjs
     examples: |
-      - React
       - react
-      - REACT
-      - ReactJS
-      - reactjs
-      - REACTJS
 
   - synonym: angular
     examples: |
-      - Angular
-      - angular
-      - ANGULAR
-      - AngularJS
       - angularjs
-      - ANGULARJS
 
   - synonym: vuejs
     examples: |
-      - Vue.js
       - vue.js
-      - VUE.JS
-      - VueJS
-      - vuejs
-      - VUEJS
-      - Vue
+      - vue
+      - vue3
 
-  - synonym: django
+  - synonym: "spring boot"
     examples: |
-      - Django
-      - django
-      - DJANGO
-
-  - synonym: flask
-    examples: |
-      - Flask
-      - flask
-      - FLASK
-
-  - synonym: spring_boot
-    examples: |
-      - Spring Boot
       - spring boot
-      - SpringBoot
       - springboot
 
-  - synonym: asp_net
+  - synonym: asp.net
     examples: |
-      - ASP.NET
-      - asp.net
-      - ASPNet
       - aspnet
+      - .net
+      - asp
 
-  - synonym: laravel
+  - synonym: "react native"
     examples: |
-      - Laravel
-      - laravel
-      - LARAVEL
-
-  - synonym: react_native
-    examples: |
-      - React Native
       - react native
-      - ReactNative
       - reactnative
-
-  - synonym: flutter
-    examples: |
-      - Flutter
-      - flutter
-      - FLUTTER
+      - react
 
   - intent: job_search_by_location
     examples: |
       - Có công việc IT nào ở [Thành phố Hà Nội](location) không?
+      - Có công việc IT nào ở [hn](location) không?
+      - Có công việc IT nào ở [hà nội](location) không?
+      - Có công việc IT nào ở [ha noi](location) không?
+      - Có công việc IT nào ở [hanoi](location) không?
       - Tôi muốn tìm công việc lập trình viên tại [Thành phố Hồ Chí Minh](location).
+      - Tôi muốn tìm công việc lập trình viên tại [tp.hcm](location).
+      - Tôi muốn tìm công việc lập trình viên tại [sài gòn](location).
+      - Tôi muốn tìm công việc lập trình viên tại [sg](location).
+      - Tôi muốn tìm công việc lập trình viên tại [sai gon](location).
+      - Tôi muốn tìm công việc lập trình viên tại [hồ chí minh](location).
+      - Tôi muốn tìm công việc lập trình viên tại [hochiminh](location).
       - Có công việc IT nào tại [Thành phố Đà Nẵng](location) không?
+      - Có công việc IT nào tại [da nang](location) không?
+      - Có công việc IT nào tại [đn](location) không?
+      - Có công việc IT nào tại [đà nẵng](location) không?
+      - Có công việc IT nào tại [dn](location) không?
       - Hiện tại có công việc IT nào ở [Thành phố Hải Phòng](location) không?
-      - Tôi đang tìm việc IT ở [Thành phố Hồ Chí Minh](location).
 
-  - synonym: "Thành phố Hồ Chí Minh"
+  - synonym: Thành phố Hồ Chí Minh
     examples: |
-      - TP.HCM
-      - Hồ Chí Minh
-      - Thành phố Hồ Chí Minh
-      - Sài gòn
-      - TP HCM
-      - hcm
+      - tp.hcm
       - sài gòn
+      - sg
+      - sai gon
       - hồ chí minh
       - hochiminh
-      - sg
-      - HCM
 
-  - synonym: "Thành phố Đà Nẵng"
+  - synonym: Thành phố Đà Nẵng
     examples: |
-      - Đà Nẵng
-      - Thành phố Đà Nẵng
-      - danang
       - da nang
       - đn
-      - Da Nang
       - đà nẵng
-      - DN
-      - ĐN
+      - dn
 
-  - synonym: "Thành phố Hà Nội"
+  - synonym: Thành phố Hà Nội
     examples: |
-      - Hà Nội
-      - Thành phố Hà Nội
-      - Hanoi
-      - Ha noi
       - hn
-      - Ha Noi
       - hà nội
-      - HN
       - ha noi
       - hanoi
 
   - intent: inquire_companies_by_employee_count
     examples: |
-      - Những doanh nghiệp nào có số lượng nhân viên trên [100](employee_count) người?
-      - Các tập đoàn có bao nhiêu nhân viên trên [500](employee_count) người?
+      - Những doanh nghiệp nào có số lượng nhân viên khoảng [100](employee_count) người?
+      - Các tập đoàn có bao nhiêu nhân viên khoảng [500](employee_count) người?
       - Cho tôi biết về các công ty công nghệ có hơn [200](employee_count) nhân viên.
-      - Có những nhà tuyển dụng hàng đầu nào có số lượng nhân viên trên [1000](employee_count) người không?
+      - Có những nhà tuyển dụng hàng đầu nào có số lượng nhân viên khoảng [1000](employee_count) người không?
       - Tôi quan tâm đến các đơn vị tuyển dụng có từ [300](employee_count) nhân viên trở lên.
-      - Những công ty công nghệ thông tin nào có lượng nhân viên trên [5000](employee_count) người?
-      - Các công ty phần mềm có bao nhiêu nhân viên trên [1000](employee_count) người?
-      - Tôi muốn biết về các công ty công nghệ cao với số lượng nhân viên trên [500](employee_count) người..
+      - Những công ty công nghệ thông tin nào có lượng nhân viên khoảng [5000](employee_count) người?
+      - Các công ty phần mềm có bao nhiêu nhân viên khoảng [1000](employee_count) người?
+      - Tôi muốn biết về các công ty công nghệ cao với số lượng nhân viên khoảng [500](employee_count) người..
 
   - intent: search_jobs_by_experience
     examples: |
-      - Có công việc nào cho người [mới tốt nghiệp](experience_year) không?
-      - Tôi có [2 năm](experience_year) kinh nghiệm, có công việc IT nào phù hợp không?
-      - Có công việc IT nào yêu cầu ít hơn [1 năm](experience_year) kinh nghiệm không?
-      - Tôi có [5 năm](experience_year) kinh nghiệm trong lĩnh vực IT, có công việc nào phù hợp không?
-      - Các công việc IT dành cho người có kinh nghiệm trên [3 năm](experience_year) là gì?
       - Có công việc nào cho người [mới ra trường](experience_year) không?
-      - Tôi là [sinh viên mới tốt nghiệp](experience_year), có công việc IT nào không?
-      - Tôi có [3 năm](experience_year) kinh nghiệm, có việc nào phù hợp không?
-      - Tôi có [4 năm](experience_year) kinh nghiệm, có việc nào phù hợp không?
-      - Tôi có [10 năm](experience_year) kinh nghiệm trong IT, có công việc nào không?
-      - Tôi là [frehser](experience_year), có công việc IT nào không?
+      - Tôi có [vừa ra trường](experience_year) kinh nghiệm, có công việc IT nào phù hợp không?
+      - Có công việc IT nào yêu cầu ít hơn [sinh viên](experience_year) kinh nghiệm không?
+      - Tôi có [mới tốt nghiệp](experience_year) kinh nghiệm trong lĩnh vực IT, có công việc nào phù hợp không?
+      - Các công việc IT dành cho người có kinh nghiệm trên [fresher](experience_year) là gì?
+      - Có công việc nào cho người [mới ra trường](experience_year) không?
+      - Tôi là [internship](experience_year), có công việc IT nào không?
+      - Tôi có [intern](experience_year) kinh nghiệm, có việc nào phù hợp không?
+      - Tôi có [thực tập](experience_year) kinh nghiệm, có việc nào phù hợp không?
+      - Tôi có [chưa có kinh nghiệm](experience_year) kinh nghiệm trong IT, có công việc nào không?
+      - Tôi là [không cần kinh nghiệm](experience_year), có công việc IT nào không?\
+      - Có công việc nào cho người [1 năm](experience_year) không?
+      - Tôi có [một năm](experience_year) kinh nghiệm, có công việc IT nào phù hợp không?
+      - Có công việc IT nào yêu cầu ít hơn [2 năm](experience_year) kinh nghiệm không?
+      - Tôi có [hai năm](experience_year) kinh nghiệm trong lĩnh vực IT, có công việc nào phù hợp không?
+      - Các công việc IT dành cho người có kinh nghiệm trên [ba năm](experience_year) là gì?
+      - Có công việc nào cho người [3 năm](experience_year) không?
+      - Tôi là [bốn năm](experience_year), có công việc IT nào không?
+      - Tôi có [4 năm](experience_year) kinh nghiệm trong lĩnh vực IT, có công việc nào phù hợp không?
+      - Các công việc IT dành cho người có kinh nghiệm trên [năm năm](experience_year) là gì?
+      - Có công việc nào cho người [5 năm](experience_year) không?
 
   - synonym: "0"
     examples: |
-      - moi tot nghiep
-      - vừa tốt nghiệp
-      - mới tốt nghiệp
-      - fresher
       - mới ra trường
       - vừa ra trường
-      - sinh viên mới tốt nghiệp
-      - sinh vien moi tot nghiep
-      - Fresher
+      - sinh viên 
+      - mới tốt nghiệp
       - fresher
-      - Intern
-      - intern
       - internship
+      - intern
+      - thực tập
+      - chưa có kinh nghiệm
+      - không cần kinh nghiệm
 
   - synonym: "1"
     examples: |
       - 1 năm
-      - it hon 1 nam
-      - mot nam
-      - Một Năm
-      - Một năm
-      - ít hơn 1 năm
-      - dưới 1 năm
+      - một năm
 
   - synonym: "2"
     examples: |
-      - hai năm
-      - Hai Năm
-      - hai nam
-      - Hai Nam
       - 2 năm
+      - hai năm
 
   - synonym: "3"
     examples: |
       - ba năm
-      - Ba Năm
-      - ba nam
-      - Ba Nam
       - 3 năm
 
   - synonym: "4"
     examples: |
       - bốn năm
-      - Bốn Năm
-      - bon nam
-      - Bon Nam
       - 4 năm
 
   - synonym: "5"
     examples: |
       - năm năm
-      - Năm Năm
-      - nam nam
-      - Nam Nam
       - 5 năm
+
+  - intent: search_job_by_position
+    examples: |
+      - Tìm công việc cho vị trí [Front-end Developer](position)
+      - Tìm công việc cho vị trí [front end](position)
+      - Tìm công việc cho vị trí [fe](position)
+      - Tìm công việc cho vị trí [frontend](position)
+      - Tìm công việc cho vị trí [front-end](position)
+      - Có công việc nào dành cho vị trí [Back-end Developer](position) không?
+      - Có công việc nào dành cho vị trí [back end](position) không?
+      - Có công việc nào dành cho vị trí [be](position) không?
+      - Có công việc nào dành cho vị trí [back](position) không?
+      - Có công việc nào dành cho vị trí [back-end](position) không?
+      - Tôi muốn tìm việc cho vị trí [Full-stack Developer](position)
+      - Tôi muốn tìm việc cho vị trí [full stack](position)
+      - Tôi muốn tìm việc cho vị trí [full-stack](position)
+      - Tôi muốn tìm việc cho vị trí [fullstack](position)
+      - Tôi muốn tìm việc cho vị trí [ft](position)
+      - Có việc gì cho vị trí [Game Developer](position) không?
+      - Có việc gì cho vị trí [game dev](position) không?
+      - Có việc gì cho vị trí [game engineer](position) không?
+      - Tìm công việc cho vị trí [UI/UX Designer](position)
+      - Tìm công việc cho vị trí [uiux](position)
+      - Tìm công việc cho vị trí [ui ux](position)
+      - Tìm công việc cho vị trí [ui/ux](position)
+      - Tôi cần tìm việc làm ở vị trí [Project Manager](position)
+      - Tôi cần tìm việc làm ở vị trí [pm](position)
+      - Tôi muốn tìm công việc ở vị trí [Scrum Master](position)
+      - Tôi muốn tìm công việc ở vị trí [scrum master](position)
+      - Tôi muốn tìm công việc ở vị trí [scrum lead](position)
+      - Có công ty nào đang tuyển vị trí [Data Analyst](position) không?
+      - Có công ty nào đang tuyển vị trí [data analyst](position) không?
+      - Có công ty nào đang tuyển vị trí [data analysis](position) không?
+      - Tôi đang tìm việc làm cho vị trí [Tester](position)
+      - Tôi đang tìm việc làm cho vị trí [quality assurance](position)
+      - Tôi đang tìm việc làm cho vị trí [QA](position)
+      - Tôi đang tìm việc làm cho vị trí [tester](position)
+      - Tôi đang tìm việc làm cho vị trí [test](position)
+      - Tôi đang tìm việc làm cho vị trí [QC](position)
+      - Có việc nào cho vị trí [DevOps Engineer](position) không?
+      - Có việc nào cho vị trí [devops](position) không?
+      - Tìm công việc cho vị trí [Systems Analyst](position)
+      - Tìm công việc cho vị trí [system analyst](position)
+      - Tìm công việc cho vị trí [Business Analyst](position)
+      - Tìm công việc cho vị trí [BA](position)
+
+  - synonym: "Front-end Developer"
+    examples: |
+      - front end
+      - fe
+      - frontend
+      - front-end
+
+  - synonym: "Back-end Developer"
+    examples: |
+      - back end
+      - be
+      - backend
+      - back-end
+
+  - synonym: "Full-stack Developer"
+    examples: |
+      - full stack
+      - full-stack
+      - fullstack
+      - ft
+
+  - synonym: "Game Developer"
+    examples: |
+      - game dev
+      - game engineer
+
+  - synonym: "UI/UX Designer"
+    examples: |
+      - uiux 
+      - ui ux 
+      - ui/ux
+
+  - synonym: "Project Manager"
+    examples: |
+      - pm
+
+  - synonym: "Scrum Master"
+    examples: |
+      - scrum master
+      - scrum lead
+
+  - synonym: "Data Analyst"
+    examples: |
+      - data analyst
+      - data analysis
+
+  - synonym: "Tester"
+    examples: |
+      - quality assurance
+      - QA
+      - tester
+      - test
+      - QC
+
+  - synonym: "DevOps Engineer"
+    examples: |
+      - devops
+
+  - synonym: "Systems Analyst"
+    examples: |
+      - system analyst
+
+  - synonym: "Business Analyst"
+    examples: |
+      - BA
+
+  - intent: search_job_by_salary
+    examples: |
+      - Tìm công việc với mức lương [20 triệu](salary) 
+      - Có công việc nào lương trên [50 triệu](salary) không?
+      - Tôi muốn tìm việc có mức lương khoảng [15 triệu](salary)
+      - Công việc lương dưới [10 triệu](salary) có không?
+      - Có việc nào lương khoảng [30 triệu](salary) trở lên không?
+      - Tìm việc lương cao hơn [40 triệu](salary)
+      - Tôi cần tìm việc lương từ [25 triệu](salary) 
+      - Công việc nào trả lương ít nhất [20 triệu](salary)?
+      - Có vị trí nào với mức lương tối thiểu [10 triệu](salary) không?
+      - Tôi muốn tìm việc với mức lương trên [60 triệu](salary)
+
+  - intent: recruitment_trend
+    examples: |
+      - Xu hướng tuyển dụng theo [skill](trendAspect) trên [system](trendType) hiện nay là gì?
+      - Xu hướng tuyển dụng theo [công nghệ](trendAspect) trên [system](trendType) hiện nay là gì?
+      - Cho tôi biết xu hướng tuyển dụng theo [công nghệ](trendAspect) trên [application](trendType)
+      - Xu hướng tuyển dụng theo [kỹ năng](trendAspect) trên [app](trendType) ra sao?
+      - Xu hướng tuyển dụng theo [skills](trendAspect) trên [website](trendType) như thế nào?
+      - Xu hướng tuyển dụng theo [tech](trendAspect) trong ngành công nghệ trên [hệ thống](trendType) là gì?
+      - Làm ơn cho tôi biết xu hướng tuyển dụng theo [technical](trendAspect) trên [ứng dụng](trendType)
+      - Xu hướng tuyển dụng vị trí theo [technology](trendAspect) trên [web](trendType) như thế nào?
+      - Tôi muốn biết xu hướng tuyển dụng theo [ngôn ngữ lập trình](trendAspect) trên [trang web](trendType)
+      - Xu hướng tuyển dụng theo [position](trendAspect) trên [market](trendType) là gì?
+      - Xu hướng tuyển dụng theo [vị trí công việc](trendAspect) trên [thị trường](trendType) hiện nay là gì?
+      - Cho tôi biết xu hướng tuyển dụng theo [chức danh](trendAspect) trên [thế giới](trendType)
+      - Xu hướng tuyển dụng theo [vị trí](trendAspect) trên [diễn đàn](trendType) ra sao?
+      - Xu hướng tuyển dụng theo [role](trendAspect) trên [thị trường](trendType) như thế nào?
+      - Xu hướng tuyển dụng theo [jobPosition](trendAspect) trên [thị trường](trendType) như thế nào?
+
+  - synonym: skills
+    examples: |
+      - công nghệ
+      - kỹ năng
+      - skills
+      - tech
+      - technical
+      - technology
+      - ngôn ngữ lập trình
+
+  - synonym: jobPosition
+    examples: |
+      - vị trí công việc
+      - chức danh
+      - vị trí
+      - role
+      - position
+
+  - synonym: system
+    examples: |
+      - application
+      - app
+      - website
+      - hệ thống
+      - ứng dụng
+      - web
+      - trang web
+
+  - synonym: market
+    examples: |
+      - thị trường
+      - thế giới
+      - diễn đàn

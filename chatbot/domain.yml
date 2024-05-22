@@ -1,14 +1,23 @@
 intents:
-  - search_jobs
+  - search_job_by_skill
   - job_search_by_location
   - inquire_companies_by_employee_count
   - search_jobs_by_experience
+  - search_job_by_position
+  - search_job_by_salary
+  - recruitment_trend
 
 entities:
   - location
   - employee_count
   - experience_year
   - position
+  - skill
+  - level
+  - salary
+  - salaryType
+  - trendAspect
+  - trendType
 
 slots:
   location:
@@ -16,6 +25,11 @@ slots:
     mappings:
       - type: from_entity
         entity: location
+  skill:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: skill
   employee_count:
     type: text
     mappings:
@@ -31,17 +45,42 @@ slots:
     mappings:
       - type: from_entity
         entity: position
+  level:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: level
+  salary:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: salary
+  salaryType:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: salaryType
+  trendAspect:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: trendAspect
+  trendType:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: trendType
 
 responses:
-  utter_ask_location:
-    - text: "Bạn muốn tìm công việc IT ở đâu?"
-  utter_ask_employee_count:
-    - text: "Bạn muốn tìm doanh nghiệp với số lượng nhân viên là bao nhiêu?"
+  utter_market_trend_by_skill:
+    - text: "data treding"
 
 actions:
-  - action_search_jobs
-  - utter_ask_location
   - action_job_search_by_location
   - action_inquire_companies_by_employee_count
-  - utter_ask_employee_count
   - action_search_jobs_by_experience
+  - action_search_job_by_skill
+  - action_search_job_by_position
+  - action_search_job_by_salary
+  - action_recruitment_trend
+  - utter_market_trend_by_skill
