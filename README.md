@@ -59,4 +59,4 @@
     + terminal 1: cd chatbot -> python -m rasa run --endpoints endpoints.yml --model models --enable-api --cors "*"
   
     + terminal 2: cd chatbot -> python -m rasa run actions --actions actions
-    + lệnh train model: python -m rasa train
+    + lệnh train model: python -m rasa train --config config.yml
