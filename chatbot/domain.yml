@@ -22,6 +22,37 @@ intents:
   - inquire_companies_by_tech_stack
   - inquire_highest_rated_companies
   - inquire_highest_salary_companies
+  - define_information_programmer
+  - define_information_business_analysis
+  - define_information_ux_designer
+  - define_information_software_design
+  - define_information_project_manager
+  - define_information_it_system_administrator
+  - define_information_tester
+  - define_information_qa
+  - define_information_qc
+  - define_information_data_engineer
+  - define_information_product_manager
+  - write_job_application_email
+  - introduce_yourself_in_interview
+  - common_interview_questions
+  - disappearing_jobs_in_future
+  - flutter_developer_demand
+  - react_developer_demand
+  - java_developer_demand
+  - python_developer_demand
+  - nodejs_developer_demand
+  - csharp_developer_demand
+  - cpp_developer_demand
+  - interview_preparation
+  - create_impressive_cv
+  - interview_questions_preparation
+  - research_company_before_interview
+  - interview_questions_to_understand_job_and_environment
+  - popular_technologies_da_nang
+  - current_technology_trends
+  - frontend_developer_roadmap
+  - backend_developer_roadmap
 
 entities:
   - cust_name
@@ -256,6 +287,795 @@ responses:
           payload: "/fpt_software"
           url: "https://fptsoftware.com/"
 
+  utter_define_information_programmer:
+    - text: |
+        Lập trình viên là người có kiến thức và kỹ năng trong việc tạo ra và phát triển các chương trình máy tính. Họ sử dụng các ngôn ngữ lập trình để viết mã và tạo ra các ứng dụng, phần mềm, trang web, và hệ thống phức tạp khác. Lập trình viên cũng có khả năng phân tích yêu cầu, thiết kế, và kiểm thử các ứng dụng để đảm bảo chúng hoạt động đúng và hiệu quả.
+        Lập trình viên có nhiều vai trò và trách nhiệm trong quá trình phát triển phần mềm. Dưới đây là một số mô tả về lập trình viên:
+        - Viết mã: Lập trình viên sử dụng ngôn ngữ lập trình để viết mã và tạo ra các chương trình máy tính.
+        - Thiết kế: Họ tham gia vào quá trình thiết kế các ứng dụng và hệ thống phức tạp.
+        - Kiểm thử: Lập trình viên kiểm tra và đảm bảo rằng các ứng dụng hoạt động đúng và không có lỗi.
+        - Phân tích yêu cầu: Họ phân tích yêu cầu của khách hàng và xác định cách triển khai chúng trong ứng dụng.
+        - Bảo trì và nâng cấp: Lập trình viên cũng tham gia vào việc bảo trì và nâng cấp các ứng dụng đã được phát triển.
+        Lập trình viên là những chuyên gia trong lĩnh vực công nghệ thông tin và có vai trò quan trọng trong việc phát triển các ứng dụng và hệ thống phức tạp. Họ cần có kiến thức vững về ngôn ngữ lập trình, cấu trúc dữ liệu, thuật toán, và các công nghệ liên quan. Lập trình viên cũng cần có khả năng làm việc nhóm, giải quyết vấn đề, và học tập liên tục để cập nhật với sự phát triển của công nghệ.
+
+  utter_define_information_business_analysis:
+    - text: |
+        Phân tích nghiệp vụ (Business Analysis) là quá trình nghiên cứu và đánh giá các quy trình, nhu cầu, và hoạt động của doanh nghiệp nhằm đưa ra các giải pháp cải tiến hiệu quả hoạt động kinh doanh.
+        Các nhiệm vụ chính của một chuyên viên phân tích nghiệp vụ (BA) bao gồm:
+        - Thu thập và phân tích yêu cầu từ các bên liên quan (stakeholders) để hiểu rõ nhu cầu kinh doanh.
+        - Xác định và tài liệu hóa các quy trình hiện tại và đề xuất các quy trình mới.
+        - Đánh giá và phân tích dữ liệu để hỗ trợ việc ra quyết định kinh doanh.
+        - Đưa ra các giải pháp công nghệ và phi công nghệ để cải thiện hiệu quả và năng suất của doanh nghiệp.
+        - Phối hợp với các nhóm kỹ thuật và kinh doanh để triển khai và thực hiện các giải pháp đề xuất.
+        - Đảm bảo rằng các giải pháp được triển khai đáp ứng đúng yêu cầu và mục tiêu của doanh nghiệp.
+        Phân tích nghiệp vụ là một vai trò quan trọng trong việc giúp doanh nghiệp cải thiện quy trình và đạt được mục tiêu kinh doanh. Các chuyên viên BA cần có kỹ năng giao tiếp, phân tích, và giải quyết vấn đề tốt, cũng như kiến thức sâu rộng về lĩnh vực kinh doanh và công nghệ.
+    
+  utter_define_information_ux_designer:
+    - text: |
+        UX designer (User Experience designer) là người chịu trách nhiệm về trải nghiệm người dùng của sản phẩm, đảm bảo rằng sản phẩm không chỉ hữu ích mà còn dễ sử dụng và mang lại trải nghiệm tích cực cho người dùng.
+        Các nhiệm vụ chính của một UX designer bao gồm:
+        - Nghiên cứu người dùng: Thu thập và phân tích thông tin về người dùng mục tiêu để hiểu nhu cầu, hành vi và cảm nhận của họ.
+        - Thiết kế giao diện: Tạo ra các nguyên mẫu (prototypes) và sơ đồ wireframe để biểu diễn cấu trúc và chức năng của sản phẩm.
+        - Kiểm thử và đánh giá: Thực hiện kiểm thử tính khả dụng (usability testing) và thu thập phản hồi từ người dùng để cải tiến thiết kế.
+        - Hợp tác với các nhóm liên quan: Làm việc chặt chẽ với các nhà phát triển, nhà thiết kế giao diện (UI designers), và các bên liên quan khác để đảm bảo sản phẩm cuối cùng đáp ứng yêu cầu về trải nghiệm người dùng.
+        - Tạo tài liệu: Tạo và duy trì các tài liệu thiết kế như user flow, wireframes, prototypes, và các báo cáo nghiên cứu người dùng.
+        UX designer cần có kỹ năng nghiên cứu, tư duy phân tích, khả năng thiết kế sáng tạo, và kỹ năng giao tiếp tốt để làm việc hiệu quả với các nhóm khác nhau trong quá trình phát triển sản phẩm. Mục tiêu chính của họ là tạo ra trải nghiệm người dùng tốt nhất có thể cho sản phẩm.
+
+  utter_define_information_software_design:
+    - text: |
+        Thiết kế phần mềm là quá trình lập kế hoạch và định hình cấu trúc của một hệ thống phần mềm nhằm đáp ứng các yêu cầu đã xác định. Nó bao gồm việc xác định các thành phần phần mềm, các mối quan hệ giữa chúng, và cách chúng sẽ hoạt động cùng nhau để thực hiện các chức năng của hệ thống.
+        Các nhiệm vụ chính trong thiết kế phần mềm bao gồm:
+        - Phân tích yêu cầu: Hiểu và tài liệu hóa các yêu cầu chức năng và phi chức năng của hệ thống.
+        - Thiết kế kiến trúc: Định nghĩa cấu trúc tổng thể của hệ thống, bao gồm các thành phần chính và cách chúng tương tác với nhau.
+        - Thiết kế chi tiết: Tạo ra các mô tả chi tiết cho từng thành phần, bao gồm các thuật toán, giao diện, và các luồng dữ liệu.
+        - Tạo mô hình: Sử dụng các công cụ mô hình hóa như UML (Unified Modeling Language) để biểu diễn cấu trúc và hành vi của hệ thống.
+        - Đảm bảo tính nhất quán: Đảm bảo rằng thiết kế phần mềm đáp ứng các tiêu chuẩn và yêu cầu ban đầu, đồng thời dễ bảo trì và mở rộng trong tương lai.
+        - Kiểm tra và đánh giá: Thực hiện các đánh giá thiết kế để xác định các vấn đề tiềm ẩn và cải tiến thiết kế trước khi bắt đầu giai đoạn lập trình.
+        Thiết kế phần mềm là một giai đoạn quan trọng trong quy trình phát triển phần mềm, giúp đảm bảo rằng sản phẩm cuối cùng sẽ hoạt động hiệu quả, dễ bảo trì và có khả năng mở rộng. Các nhà thiết kế phần mềm cần có kỹ năng phân tích, tư duy hệ thống, và khả năng giải quyết vấn đề tốt, cùng với kiến thức sâu rộng về các nguyên tắc thiết kế và kiến.
+
+  utter_define_information_project_manager:
+    - text: |
+        Quản lý dự án (Project Manager) là người chịu trách nhiệm lập kế hoạch, điều phối, và giám sát quá trình thực hiện các dự án nhằm đảm bảo chúng được hoàn thành đúng thời hạn, trong ngân sách và đạt được các mục tiêu đã đề ra.
+        Các nhiệm vụ chính của một quản lý dự án bao gồm:
+        - Lập kế hoạch dự án: Xác định phạm vi, mục tiêu, và lịch trình của dự án. Tạo ra kế hoạch chi tiết bao gồm các công việc cần thực hiện, phân công nhiệm vụ, và thiết lập thời gian hoàn thành.
+        - Quản lý nguồn lực: Xác định và phân bổ các nguồn lực cần thiết (nhân lực, tài chính, thiết bị, v.v.) để thực hiện dự án.
+        - Điều phối và giám sát: Theo dõi tiến độ dự án, đảm bảo rằng các công việc được thực hiện đúng tiến độ và giải quyết các vấn đề phát sinh.
+        - Quản lý rủi ro: Xác định các rủi ro tiềm ẩn và lập kế hoạch để giảm thiểu hoặc loại bỏ chúng.
+        - Giao tiếp: Đảm bảo thông tin được truyền đạt hiệu quả giữa các bên liên quan (team members, stakeholders, sponsors).
+        - Kiểm soát ngân sách: Quản lý ngân sách dự án để đảm bảo không vượt quá nguồn tài chính đã được phân bổ.
+        - Đánh giá và báo cáo: Theo dõi và đánh giá hiệu quả của dự án, lập các báo cáo tiến độ và kết quả cuối cùng.
+        Quản lý dự án là vai trò quan trọng trong việc đảm bảo sự thành công của các dự án. Một quản lý dự án cần có kỹ năng lập kế hoạch, tổ chức, lãnh đạo, giải quyết vấn đề, và giao tiếp tốt. Họ cũng cần có khả năng làm việc dưới áp lực và quản lý nhiều nhiệm vụ cùng một lúc.
+
+  utter_define_information_it_system_administrator:
+    - text: |
+        Quản trị hệ thống IT (IT System Administrator) là người chịu trách nhiệm duy trì, cấu hình và đảm bảo hoạt động ổn định của hệ thống máy tính, mạng và các dịch vụ công nghệ thông tin trong một tổ chức.
+        Các nhiệm vụ chính của một quản trị hệ thống IT bao gồm:
+        - Cài đặt và cấu hình phần cứng, phần mềm và các dịch vụ hệ thống.
+        - Giám sát và quản lý hiệu suất của hệ thống để đảm bảo hoạt động mượt mà và liên tục.
+        - Bảo mật hệ thống: Cài đặt và duy trì các biện pháp bảo mật để bảo vệ dữ liệu và thông tin khỏi các mối đe dọa.
+        - Quản lý người dùng: Tạo và quản lý tài khoản người dùng, đảm bảo quyền truy cập hợp lý và hỗ trợ người dùng khi cần thiết.
+        - Sao lưu và khôi phục dữ liệu: Thiết lập và thực hiện các quy trình sao lưu dữ liệu định kỳ, cũng như khôi phục dữ liệu khi xảy ra sự cố.
+        - Giải quyết sự cố: Phát hiện và khắc phục các sự cố hệ thống, đảm bảo hệ thống hoạt động bình thường.
+        - Cập nhật hệ thống: Cài đặt các bản vá lỗi và cập nhật phần mềm để đảm bảo hệ thống luôn an toàn và hiệu quả.
+        - Lập tài liệu: Ghi chép và duy trì tài liệu về cấu hình hệ thống, quy trình và các sự cố đã giải quyết.
+        Quản trị hệ thống IT là một vai trò quan trọng trong việc đảm bảo cơ sở hạ tầng công nghệ thông tin của tổ chức hoạt động ổn định và an toàn. Người quản trị hệ thống cần có kỹ năng kỹ thuật sâu rộng, khả năng giải quyết vấn đề nhanh chóng và hiệu quả, cũng như kỹ năng giao tiếp để hỗ trợ người dùng và làm việc với các nhóm khác trong tổ chức.
+
+  utter_define_information_tester:
+    - text: |
+        Tester, hay chuyên viên kiểm thử phần mềm, là người chịu trách nhiệm đánh giá và kiểm thử phần mềm để đảm bảo chất lượng, tính ổn định và đáp ứng các yêu cầu đề ra. Tester đóng vai trò quan trọng trong quá trình phát triển phần mềm, giúp phát hiện và sửa chữa lỗi trước khi phần mềm được phát hành.
+        Các nhiệm vụ chính của một tester bao gồm:
+        - Phân tích yêu cầu: Hiểu rõ các yêu cầu và tiêu chuẩn của phần mềm để xây dựng kế hoạch kiểm thử chi tiết.
+        - Lập kế hoạch kiểm thử: Thiết kế các kịch bản kiểm thử (test cases) và tạo ra các kế hoạch kiểm thử để đảm bảo mọi khía cạnh của phần mềm được kiểm tra.
+        - Thực hiện kiểm thử: Tiến hành kiểm thử phần mềm bằng cách thực hiện các kịch bản kiểm thử, bao gồm kiểm thử chức năng, kiểm thử hiệu suất, kiểm thử bảo mật, và kiểm thử khả dụng.
+        - Báo cáo lỗi: Ghi lại các lỗi (bugs) và vấn đề phát sinh trong quá trình kiểm thử, và báo cáo chúng cho đội phát triển để sửa chữa.
+        - Kiểm thử lại: Kiểm tra lại các phần mềm sau khi lỗi đã được sửa để đảm bảo rằng chúng không tái diễn và không gây ra lỗi mới.
+        - Tạo và duy trì tài liệu: Ghi chép kết quả kiểm thử, tạo báo cáo kiểm thử, và duy trì tài liệu liên quan đến quy trình kiểm thử.
+        Tester cần có kỹ năng phân tích, chú ý đến chi tiết, khả năng giải quyết vấn đề, và kỹ năng giao tiếp tốt để làm việc hiệu quả với các nhà phát triển và các bên liên quan khác. Họ cũng cần nắm vững các công cụ và phương pháp kiểm thử để thực hiện công việc của mình một cách hiệu quả.
+
+  utter_define_information_qa:
+    - text:  |
+        QA (Quality Assurance) hay đảm bảo chất lượng, là một quá trình có hệ thống nhằm đảm bảo rằng sản phẩm hoặc dịch vụ đáp ứng các tiêu chuẩn chất lượng đề ra. Trong lĩnh vực phát triển phần mềm, QA là bộ phận chịu trách nhiệm theo dõi và cải thiện quy trình phát triển phần mềm để đảm bảo rằng sản phẩm cuối cùng không có lỗi và đáp ứng các yêu cầu của khách hàng.
+
+        Các nhiệm vụ chính của một chuyên viên QA bao gồm:
+        - Thiết lập tiêu chuẩn chất lượng: Xác định và xây dựng các tiêu chuẩn chất lượng và quy trình để đảm bảo sản phẩm đạt chất lượng cao.
+        - Lập kế hoạch kiểm thử: Phát triển kế hoạch kiểm thử, bao gồm chiến lược kiểm thử, tài liệu kiểm thử và các kịch bản kiểm thử (test cases).
+        - Giám sát quy trình: Theo dõi và đánh giá quy trình phát triển phần mềm để đảm bảo tuân thủ các tiêu chuẩn chất lượng.
+        - Thực hiện kiểm thử: Tiến hành kiểm thử phần mềm bằng cách sử dụng các kịch bản kiểm thử để phát hiện lỗi và đánh giá hiệu suất của phần mềm.
+        - Phân tích và báo cáo: Phân tích kết quả kiểm thử, ghi nhận các lỗi và báo cáo cho đội phát triển để khắc phục.
+        - Đào tạo và hỗ trợ: Cung cấp hướng dẫn và hỗ trợ cho các thành viên trong nhóm về các quy trình và tiêu chuẩn chất lượng.
+        - Cải tiến quy trình: Liên tục cải tiến các quy trình QA dựa trên phản hồi và kết quả kiểm thử để nâng cao chất lượng sản phẩm.
+        Chuyên viên QA cần có kỹ năng phân tích, chú ý đến chi tiết, khả năng giải quyết vấn đề, và kỹ năng giao tiếp tốt. Họ cũng cần hiểu rõ về các công cụ và phương pháp kiểm thử cũng như các quy trình phát triển phần mềm để đảm bảo chất lượng của sản phẩm.
+
+  utter_define_information_qc:
+    - text: |
+        QC (Quality Control) hay kiểm soát chất lượng, là quá trình tập trung vào việc kiểm tra sản phẩm cuối cùng để đảm bảo rằng nó đáp ứng các tiêu chuẩn chất lượng và yêu cầu kỹ thuật đã đề ra. Trong lĩnh vực phát triển phần mềm, QC đóng vai trò quan trọng trong việc phát hiện và sửa chữa lỗi trước khi phần mềm được phát hành.
+
+        Các nhiệm vụ chính của một chuyên viên QC bao gồm:
+        - Kiểm tra sản phẩm: Thực hiện các bài kiểm tra để đảm bảo rằng phần mềm hoạt động đúng theo yêu cầu và không có lỗi.
+        - Phát hiện lỗi: Xác định và ghi nhận các lỗi (bugs) trong phần mềm trong suốt quá trình kiểm thử.
+        - Báo cáo lỗi: Ghi lại chi tiết các lỗi phát hiện được và báo cáo cho đội phát triển để tiến hành sửa chữa.
+        - Xác nhận sửa lỗi: Kiểm tra lại các phần mềm sau khi lỗi đã được sửa để đảm bảo rằng các lỗi đã được khắc phục và không gây ra vấn đề mới.
+        - Đảm bảo tiêu chuẩn: Đảm bảo rằng sản phẩm cuối cùng tuân thủ các tiêu chuẩn chất lượng và yêu cầu kỹ thuật.
+        - Lập tài liệu kiểm thử: Tạo và duy trì các tài liệu liên quan đến quy trình kiểm thử, kết quả kiểm thử và các lỗi phát hiện.
+        Chuyên viên QC cần có kỹ năng phân tích, chú ý đến chi tiết, khả năng giải quyết vấn đề và kỹ năng giao tiếp tốt để làm việc hiệu quả với các nhà phát triển và các bên liên quan khác. Họ cũng cần nắm vững các công cụ và kỹ thuật kiểm thử phần mềm để đảm bảo rằng sản phẩm cuối cùng đạt chất lượng cao nhất.
+
+  utter_define_information_data_engineer:
+    - text: |
+        Data Engineer (kỹ sư dữ liệu) là người chịu trách nhiệm thiết kế, xây dựng và duy trì cơ sở hạ tầng dữ liệu của một tổ chức. Họ đảm bảo rằng dữ liệu được thu thập, lưu trữ và xử lý một cách hiệu quả để hỗ trợ phân tích và ra quyết định.
+
+        Các nhiệm vụ chính của một Data Engineer bao gồm:
+        - Thiết kế kiến trúc dữ liệu: Xây dựng các hệ thống quản lý dữ liệu, bao gồm cơ sở dữ liệu, kho dữ liệu (data warehouse), và hệ thống xử lý dữ liệu lớn (big data).
+        - Thu thập dữ liệu: Phát triển và triển khai các quy trình thu thập dữ liệu từ nhiều nguồn khác nhau như cơ sở dữ liệu, API, và hệ thống bên ngoài.
+        - Xử lý và chuyển đổi dữ liệu: Sử dụng các công cụ ETL (Extract, Transform, Load) để chuyển đổi dữ liệu thô thành dữ liệu có cấu trúc và sẵn sàng cho phân tích.
+        - Quản lý và bảo trì: Đảm bảo cơ sở hạ tầng dữ liệu luôn sẵn sàng, hiệu suất cao và an toàn. Giải quyết các vấn đề liên quan đến hiệu suất và độ tin cậy của hệ thống.
+        - Hợp tác với các nhóm khác: Làm việc với các nhà phân tích dữ liệu, nhà khoa học dữ liệu và các bên liên quan khác để hiểu yêu cầu dữ liệu và cung cấp các giải pháp dữ liệu phù hợp.
+        - Tối ưu hóa hiệu suất: Tối ưu hóa các truy vấn và hệ thống dữ liệu để đảm bảo thời gian phản hồi nhanh và hiệu quả xử lý cao.
+        - Đảm bảo chất lượng dữ liệu: Thiết lập và thực hiện các quy trình để đảm bảo tính toàn vẹn và chất lượng của dữ liệu.
+        Data Engineer cần có kiến thức vững về cơ sở dữ liệu, kỹ thuật xử lý dữ liệu lớn, và các công cụ ETL. Họ cũng cần kỹ năng lập trình mạnh mẽ (thường là Python, SQL, Java, hoặc Scala), khả năng giải quyết vấn đề, và khả năng làm việc nhóm tốt.
+
+  utter_define_information_product_manager:
+      - text: |
+          Product Manager (quản lý sản phẩm) là người chịu trách nhiệm quản lý toàn bộ vòng đời của sản phẩm, từ ý tưởng ban đầu đến khi sản phẩm được ra mắt và tiếp tục phát triển. Họ là cầu nối giữa các bộ phận khác nhau như phát triển, marketing, bán hàng và dịch vụ khách hàng để đảm bảo sản phẩm đáp ứng nhu cầu của thị trường và khách hàng.
+
+          Các nhiệm vụ chính của một Product Manager bao gồm:
+          - Nghiên cứu thị trường: Phân tích xu hướng thị trường, nhu cầu của khách hàng, và các hoạt động của đối thủ cạnh tranh để xác định cơ hội và phát triển sản phẩm mới.
+          - Xác định tầm nhìn sản phẩm: Xây dựng chiến lược và tầm nhìn dài hạn cho sản phẩm, bao gồm việc xác định các mục tiêu và lộ trình phát triển sản phẩm.
+          - Quản lý yêu cầu sản phẩm: Thu thập và xác định các yêu cầu chức năng và phi chức năng từ các bên liên quan và khách hàng.
+          - Phối hợp phát triển sản phẩm: Làm việc chặt chẽ với đội ngũ phát triển để đảm bảo sản phẩm được thiết kế và xây dựng theo đúng yêu cầu và tiêu chuẩn.
+          - Lập kế hoạch và quản lý dự án: Theo dõi tiến độ phát triển sản phẩm, quản lý ngân sách, và đảm bảo các mốc thời gian được tuân thủ.
+          - Kiểm tra và đánh giá: Thực hiện kiểm tra sản phẩm, thu thập phản hồi từ người dùng và cải tiến sản phẩm dựa trên phản hồi đó.
+          - Ra mắt sản phẩm: Lên kế hoạch và triển khai các hoạt động ra mắt sản phẩm, bao gồm marketing, đào tạo đội ngũ bán hàng và hỗ trợ khách hàng.
+          - Theo dõi hiệu suất sản phẩm: Đo lường và phân tích hiệu suất của sản phẩm sau khi ra mắt, điều chỉnh chiến lược nếu cần thiết để đạt được các mục tiêu kinh doanh.
+          Product Manager cần có kỹ năng phân tích, tư duy chiến lược, kỹ năng giao tiếp và lãnh đạo mạnh mẽ. Họ cũng cần có khả năng làm việc hiệu quả với các đội ngũ khác nhau và hiểu rõ về quy trình phát triển sản phẩm cũng như nhu cầu thị trường.
+
+  utter_write_job_application_email:
+      - text: |
+          Để viết một email xin việc chuẩn và chuyên nghiệp, bạn có thể làm theo các bước sau:
+          1. Tiêu đề email (Subject Line):
+          - Đặt tiêu đề ngắn gọn, rõ ràng và thể hiện được mục đích của email. Ví dụ: "Ứng tuyển vị trí [Tên vị trí] - [Họ tên]".
+          2. Lời chào (Greeting):
+          - Bắt đầu email bằng lời chào lịch sự. Nếu biết tên người nhận, hãy sử dụng tên của họ. Ví dụ: "Kính gửi Anh/Chị [Tên người nhận],"
+          3. Giới thiệu bản thân (Introduction):
+          - Giới thiệu ngắn gọn về bản thân, nêu rõ vị trí bạn đang ứng tuyển và nguồn thông tin bạn biết đến công việc này (ví dụ: từ trang web tuyển dụng, từ bạn bè,...).
+          - Ví dụ: "Tôi là [Họ tên], tôi viết email này để ứng tuyển vị trí [Tên vị trí] mà công ty [Tên công ty] đã đăng tuyển trên [Nguồn]."
+          4. Nội dung chính (Body):
+          - Lý do ứng tuyển: Nêu lý do tại sao bạn quan tâm đến vị trí này và công ty.
+          - Kỹ năng và kinh nghiệm: Tóm tắt ngắn gọn về các kỹ năng và kinh nghiệm liên quan của bạn, giải thích tại sao bạn phù hợp với vị trí này.
+          - Ví dụ: "Tôi đã có [số năm] kinh nghiệm làm việc trong lĩnh vực [lĩnh vực]. Trong thời gian đó, tôi đã phát triển và hoàn thiện các kỹ năng [kỹ năng liên quan], phù hợp với yêu cầu của vị trí này. Tôi đặc biệt ấn tượng với [dự án/sản phẩm/công ty], và tin rằng tôi có thể đóng góp tích cực vào [Tên công ty]."
+          5. Kết luận (Closing):
+          - Cảm ơn người nhận đã dành thời gian đọc email của bạn.
+          - Đề nghị một buổi phỏng vấn hoặc trao đổi thêm để thảo luận chi tiết hơn về khả năng của bạn.
+          - Ví dụ: "Tôi rất mong có cơ hội thảo luận thêm về cách tôi có thể đóng góp cho [Tên công ty]. Xin cảm ơn Anh/Chị đã dành thời gian xem xét hồ sơ của tôi."
+          6. Lời chào kết thúc (Closing Salutation):
+          - Kết thúc email bằng lời chào lịch sự và chữ ký của bạn.
+          - Ví dụ: "Trân trọng, [Họ tên] [Số điện thoại] [Email liên hệ]"
+          7. Đính kèm tài liệu:
+          - Đính kèm CV, thư xin việc và các tài liệu liên quan khác dưới dạng file PDF để đảm bảo định dạng không bị thay đổi.
+          Ví dụ về email xin việc chuẩn:
+
+          Tiêu đề: Ứng tuyển vị trí Nhân viên Marketing - Nguyễn Văn A
+          Kính gửi Anh/Chị [Tên người nhận],
+
+          Tôi là Nguyễn Văn A, tôi viết email này để ứng tuyển vị trí Nhân viên Marketing mà công ty ABC đã đăng tuyển trên trang VietnamWorks.
+
+          Tôi đã có 3 năm kinh nghiệm làm việc trong lĩnh vực Marketing. Trong thời gian đó, tôi đã phát triển và hoàn thiện các kỹ năng quảng cáo trực tuyến, quản lý chiến dịch truyền thông xã hội và phân tích dữ liệu. Tôi đặc biệt ấn tượng với các dự án quảng cáo sáng tạo của công ty và tin rằng tôi có thể đóng góp tích cực vào sự phát triển của ABC.
+
+          Tôi rất mong có cơ hội thảo luận thêm về cách tôi có thể đóng góp cho ABC. Xin cảm ơn Anh/Chị đã dành thời gian xem xét hồ sơ của tôi.
+
+          Trân trọng,
+          Nguyễn Văn A
+          0987 654 321
+          nguyenvana@gmail.com
+
+  utter_introduce_yourself_in_interview:
+      - text: |
+          Để giới thiệu bản thân một cách ấn tượng trong buổi phỏng vấn, bạn có thể tuân theo các bước dưới đây. Một phần giới thiệu bản thân tốt nên ngắn gọn, rõ ràng và liên quan đến vị trí bạn đang ứng tuyển. Dưới đây là hướng dẫn chi tiết và một ví dụ mẫu:
+
+          1. Chào hỏi và giới thiệu tên:
+          - Bắt đầu bằng lời chào lịch sự và giới thiệu tên của bạn.
+          - Ví dụ: "Chào Anh/Chị, tôi là Nguyễn Văn A."
+
+          2. Tóm tắt về trình độ học vấn:
+          - Tóm tắt ngắn gọn về trình độ học vấn của bạn, đặc biệt là những khóa học và bằng cấp liên quan đến vị trí ứng tuyển.
+          - Ví dụ: "Tôi tốt nghiệp Đại học Kinh tế Quốc dân, chuyên ngành Marketing."
+
+          3. Kinh nghiệm làm việc:
+          - Mô tả ngắn gọn về kinh nghiệm làm việc, tập trung vào các công việc liên quan đến vị trí bạn đang ứng tuyển.
+          - Ví dụ: "Tôi đã có 3 năm kinh nghiệm làm việc tại công ty ABC, nơi tôi phụ trách các chiến dịch marketing trực tuyến và quản lý truyền thông xã hội."
+
+          4. Kỹ năng và thành tựu nổi bật:
+          - Nêu rõ các kỹ năng và thành tựu nổi bật mà bạn đã đạt được, liên quan đến yêu cầu của công việc.
+          - Ví dụ: "Tôi có kỹ năng phân tích dữ liệu và quản lý dự án, và tôi đã tăng lượng truy cập trang web của công ty ABC lên 30% trong 6 tháng đầu tiên."
+
+          5. Lý do bạn ứng tuyển và phù hợp với công việc:
+          - Giải thích tại sao bạn quan tâm đến vị trí này và vì sao bạn nghĩ rằng mình phù hợp.
+          - Ví dụ: "Tôi rất quan tâm đến vị trí này tại công ty XYZ vì tôi ngưỡng mộ các chiến dịch sáng tạo của công ty và tin rằng kỹ năng của tôi sẽ đóng góp tích cực vào sự phát triển của công ty."
+
+          6. Kết thúc và chuyển sang phần tiếp theo của buổi phỏng vấn:
+          - Kết thúc phần giới thiệu và sẵn sàng trả lời các câu hỏi từ nhà tuyển dụng.
+          - Ví dụ: "Tôi rất mong có cơ hội trao đổi thêm về cách tôi có thể đóng góp cho đội ngũ của công ty. Cảm ơn Anh/Chị đã dành thời gian."
+
+          Ví dụ mẫu về phần giới thiệu bản thân:
+          Chào Anh/Chị, tôi là Nguyễn Văn A.
+
+          Tôi tốt nghiệp Đại học Kinh tế Quốc dân, chuyên ngành Marketing. Tôi đã có 3 năm kinh nghiệm làm việc tại công ty ABC, nơi tôi phụ trách các chiến dịch marketing trực tuyến và quản lý truyền thông xã hội. Tôi có kỹ năng phân tích dữ liệu và quản lý dự án, và tôi đã tăng lượng truy cập trang web của công ty ABC lên 30% trong 6 tháng đầu tiên.
+
+          Tôi rất quan tâm đến vị trí này tại công ty XYZ vì tôi ngưỡng mộ các chiến dịch sáng tạo của công ty và tin rằng kỹ năng của tôi sẽ đóng góp tích cực vào sự phát triển của công ty.
+
+          Tôi rất mong có cơ hội trao đổi thêm về cách tôi có thể đóng góp cho đội ngũ của công ty. Cảm ơn Anh/Chị đã dành thời gian.
+
+  utter_common_interview_questions:
+      - text: |
+          Dưới đây là một số câu hỏi phỏng vấn thường gặp mà bạn có thể chuẩn bị trước:
+          1. Giới thiệu về bản thân:
+          - Mẹo: Tóm tắt ngắn gọn về học vấn, kinh nghiệm làm việc và kỹ năng nổi bật của bạn.
+
+          2. Tại sao bạn muốn làm việc tại công ty chúng tôi?
+          - "Tại sao bạn chọn công ty chúng tôi?"
+          - Mẹo: Tìm hiểu kỹ về công ty và nêu rõ lý do tại sao bạn phù hợp với văn hóa và mục tiêu của công ty.
+
+          3. Điểm mạnh và điểm yếu của bạn là gì?
+          - "Điểm mạnh và điểm yếu lớn nhất của bạn là gì?"
+          - Mẹo: Nêu một vài điểm mạnh liên quan đến công việc và cách bạn đang cải thiện điểm yếu của mình.
+
+          4. Bạn đã từng làm việc nhóm như thế nào?
+          - "Hãy kể về một lần bạn làm việc nhóm thành công."
+          - Mẹo: Chọn một ví dụ cụ thể, mô tả vai trò của bạn và kết quả đạt được.
+
+          5. Bạn đã giải quyết xung đột trong công việc như thế nào?
+          - "Bạn đã xử lý một tình huống xung đột trong công việc như thế nào?"
+          - Mẹo: Mô tả tình huống, hành động của bạn và kết quả.
+
+          6. Mục tiêu nghề nghiệp của bạn là gì?
+          - "Mục tiêu nghề nghiệp của bạn trong 5 năm tới là gì?"
+          - Mẹo: Nêu rõ mục tiêu ngắn hạn và dài hạn của bạn, và cách công ty có thể giúp bạn đạt được những mục tiêu đó.
+
+          7. Tại sao chúng tôi nên tuyển dụng bạn?
+          - "Tại sao chúng tôi nên chọn bạn cho vị trí này?"
+          - Mẹo: Nhấn mạnh kỹ năng, kinh nghiệm và động lực của bạn phù hợp với yêu cầu công việc.
+
+          8. Bạn đã từng gặp phải thất bại chưa? Bạn đã học được gì từ nó?
+          - "Hãy kể về một lần bạn gặp phải thất bại và bạn đã học được gì từ nó."
+          - Mẹo: Mô tả ngắn gọn thất bại, bài học rút ra và cách bạn đã áp dụng bài học đó vào công việc sau này.
+
+          9. Bạn có câu hỏi gì cho chúng tôi không?
+          - "Bạn có câu hỏi nào cho chúng tôi không?"
+          - Mẹo: Chuẩn bị sẵn một vài câu hỏi về công ty, vị trí công việc hoặc văn hóa làm việc để thể hiện sự quan tâm và tìm hiểu của bạn.
+
+          10. Bạn có sẵn sàng làm việc ngoài giờ nếu cần thiết không?
+          - "Bạn có thể làm việc ngoài giờ hoặc vào cuối tuần nếu công việc yêu cầu không?"
+          - Mẹo: Trả lời thành thật và nêu rõ sự linh hoạt của bạn nếu có thể.
+
+  utter_disappearing_jobs_in_future:
+    - text: |
+        Với sự phát triển nhanh chóng của công nghệ, nhiều ngành nghề có nguy cơ biến mất hoặc bị thay thế bởi tự động hóa và trí tuệ nhân tạo trong tương lai. Dưới đây là một số ngành nghề có thể biến mất hoặc thay đổi đáng kể:
+          1. Công nhân dây chuyền sản xuất:
+          - Các công việc sản xuất và lắp ráp thủ công trên dây chuyền sản xuất đang bị thay thế bởi robot và hệ thống tự động hóa.
+
+          2. Nhân viên thu ngân:
+          - Các hệ thống thanh toán tự động và dịch vụ thanh toán trực tuyến đang dần thay thế công việc của nhân viên thu ngân tại các cửa hàng và siêu thị.
+
+          3. Nhân viên tổng đài:
+          - Các hệ thống tổng đài tự động và chatbot AI có thể xử lý các cuộc gọi dịch vụ khách hàng, làm giảm nhu cầu nhân viên tổng đài truyền thống.
+
+          4. Nhân viên nhập liệu:
+          - Công nghệ nhận dạng ký tự quang học (OCR) và các phần mềm tự động hóa dữ liệu có thể thay thế công việc nhập liệu thủ công.
+
+          5. Nhân viên bán vé:
+          - Các hệ thống bán vé tự động và trực tuyến đang thay thế công việc của nhân viên bán vé tại các nhà ga, sân bay và rạp chiếu phim.
+
+          6. Nhân viên thư viện:
+          - Với sự phát triển của sách điện tử và các cơ sở dữ liệu trực tuyến, nhu cầu về nhân viên thư viện truyền thống có thể giảm.
+
+          7. Nhân viên ngân hàng:
+          - Các dịch vụ ngân hàng trực tuyến và máy ATM thông minh có thể làm giảm nhu cầu về nhân viên ngân hàng tại các chi nhánh.
+
+          8. Nhân viên báo chí và biên tập viên:
+          - Các công nghệ viết báo tự động và trí tuệ nhân tạo có thể thay thế một số công việc viết bài và biên tập.
+
+          9. Nhân viên bảo vệ an ninh:
+          - Các hệ thống an ninh tự động và camera giám sát thông minh có thể giảm nhu cầu về nhân viên bảo vệ truyền thống.
+
+          10. Lái xe:
+          - Với sự phát triển của xe tự lái, công việc của tài xế taxi, tài xế xe tải và lái xe công cộng có thể bị ảnh hưởng.
+
+          Mặc dù những công việc này có nguy cơ biến mất hoặc thay đổi đáng kể, nhưng cũng sẽ có nhiều ngành nghề mới xuất hiện nhờ công nghệ và tự động hóa. Việc học hỏi và cập nhật kỹ năng mới sẽ giúp bạn thích ứng với sự thay đổi của thị trường lao động trong tương lai.
+
+  utter_flutter_developer_demand:
+    - text: |
+        Nhu cầu tuyển dụng lập trình viên Flutter đang tăng nhanh do sự phổ biến và những lợi ích mà Flutter mang lại. Dưới đây là một số thông tin về tỷ lệ và nhu cầu lập trình viên Flutter hiện nay:
+
+        1. Sự tăng trưởng của Flutter:
+        - Flutter, một framework phát triển ứng dụng di động mã nguồn mở do Google phát triển, đã nhanh chóng trở nên phổ biến nhờ khả năng phát triển ứng dụng đa nền tảng (Android, iOS, web) từ một codebase duy nhất.
+        - Theo khảo sát của Stack Overflow năm 2023, Flutter là một trong những công nghệ được yêu thích nhất bởi các lập trình viên.
+
+        2. Nhu cầu tuyển dụng cao:
+        - Với sự phổ biến của các ứng dụng di động và nhu cầu phát triển nhanh chóng và hiệu quả, nhiều công ty đang tìm kiếm lập trình viên Flutter.
+        - Các nền tảng tuyển dụng như LinkedIn, Indeed, và Glassdoor đều ghi nhận sự gia tăng trong số lượng công việc liên quan đến Flutter.
+
+        3. Lợi ích của Flutter:
+        - Khả năng phát triển ứng dụng cho nhiều nền tảng từ một codebase duy nhất giúp tiết kiệm thời gian và chi phí cho các doanh nghiệp.
+        - Hiệu suất cao và giao diện người dùng mượt mà của Flutter cũng là lý do nhiều công ty lựa chọn framework này.
+
+        4. Thị trường cạnh tranh:
+        - Mặc dù nhu cầu cao, số lượng lập trình viên Flutter vẫn còn hạn chế so với các ngôn ngữ và framework khác như Java, Kotlin (cho Android) hay Swift (cho iOS). Điều này tạo ra cơ hội lớn cho các lập trình viên có kỹ năng về Flutter.
+
+        5. Tỷ lệ so với các nền tảng khác:
+        - So với các nền tảng phát triển ứng dụng di động khác, Flutter đang có mức độ tăng trưởng nhanh hơn nhờ khả năng đa nền tảng và cộng đồng hỗ trợ ngày càng lớn mạnh.
+
+        6. Cơ hội và mức lương:
+        - Các lập trình viên Flutter có cơ hội làm việc trong nhiều lĩnh vực khác nhau, từ startup đến các công ty lớn.
+        - Mức lương cho lập trình viên Flutter cũng khá cạnh tranh, phản ánh nhu cầu cao và sự khan hiếm của kỹ năng này trên thị trường.
+
+        7. Học tập và phát triển:
+        - Để đáp ứng nhu cầu này, nhiều khóa học trực tuyến và tài liệu học tập về Flutter đang được cung cấp bởi các nền tảng như Udemy, Coursera, và các kênh YouTube chuyên về lập trình.
+
+        Nhìn chung, nhu cầu về lập trình viên Flutter đang ở mức cao và tiếp tục tăng, tạo ra nhiều cơ hội hấp dẫn cho những ai muốn theo đuổi sự nghiệp trong lĩnh vực này. Nếu bạn quan tâm đến việc trở thành lập trình viên Flutter, đây là thời điểm tốt để bắt đầu học và phát triển kỹ năng của mình.
+
+  utter_react_developer_demand:
+    - text: |
+        Nhu cầu tuyển dụng lập trình viên React đang rất cao do React trở thành một trong những thư viện JavaScript phổ biến nhất để phát triển ứng dụng web hiện nay. Dưới đây là một số thông tin về tỷ lệ và nhu cầu lập trình viên React:
+
+        1. Sự phổ biến của React:
+        - React, được phát triển bởi Facebook, là một thư viện JavaScript mạnh mẽ được sử dụng rộng rãi để xây dựng giao diện người dùng (UI).
+        - Theo khảo sát của Stack Overflow năm 2023, React tiếp tục là một trong những công nghệ web phổ biến nhất và được yêu thích nhất bởi các lập trình viên.
+
+        2. Nhu cầu tuyển dụng cao:
+        - Rất nhiều công ty từ các startup nhỏ đến các tập đoàn lớn đều sử dụng React để phát triển các ứng dụng web và di động, dẫn đến nhu cầu cao về lập trình viên React.
+        - Các nền tảng tuyển dụng như LinkedIn, Indeed, và Glassdoor đều ghi nhận số lượng lớn các công việc liên quan đến React.
+
+        3. Lợi ích của React:
+        - React cho phép phát triển các ứng dụng web hiệu quả với khả năng tái sử dụng các thành phần UI và cập nhật giao diện một cách nhanh chóng và hiệu quả.
+        - Hiệu suất cao, cộng đồng mạnh mẽ và tài liệu phong phú là những yếu tố giúp React được ưa chuộng.
+
+        4. Thị trường cạnh tranh:
+        - So với nhiều công nghệ khác, số lượng lập trình viên React vẫn đang tăng nhưng nhu cầu vẫn cao hơn nguồn cung, tạo ra cơ hội lớn cho những lập trình viên có kỹ năng này.
+
+        5. Tỷ lệ so với các nền tảng khác:
+        - React có mức độ phổ biến cao hơn so với nhiều framework khác như Angular hay Vue.js, nhờ sự linh hoạt và hiệu quả của nó.
+        - Tuy nhiên, mỗi framework đều có điểm mạnh riêng và được lựa chọn dựa trên yêu cầu cụ thể của dự án.
+
+        6. Cơ hội và mức lương:
+        - Lập trình viên React có thể tìm thấy cơ hội việc làm trong nhiều lĩnh vực khác nhau, từ phát triển ứng dụng web đến ứng dụng di động (kết hợp với React Native).
+        - Mức lương cho lập trình viên React thường khá cạnh tranh, phản ánh nhu cầu cao và sự phổ biến của công nghệ này trên thị trường.
+
+        7. Học tập và phát triển:
+        - Có rất nhiều khóa học trực tuyến và tài liệu học tập về React có sẵn trên các nền tảng như Udemy, Coursera, Pluralsight và các kênh YouTube chuyên về lập trình.
+
+        Nhìn chung, nhu cầu về lập trình viên React rất cao và tiếp tục tăng, tạo ra nhiều cơ hội hấp dẫn cho những ai muốn theo đuổi sự nghiệp trong lĩnh vực này. Nếu bạn quan tâm đến việc trở thành lập trình viên React, đây là thời điểm tốt để bắt đầu học và phát triển kỹ năng của mình.
+
+  utter_java_developer_demand:
+    - text: |
+        Nhu cầu tuyển dụng lập trình viên Java luôn ở mức cao do sự phổ biến và tính ứng dụng rộng rãi của ngôn ngữ này trong nhiều lĩnh vực khác nhau. Dưới đây là một số thông tin về tỷ lệ và nhu cầu lập trình viên Java hiện nay:
+
+        1. Sự phổ biến của Java:
+        - Java là một trong những ngôn ngữ lập trình lâu đời và được sử dụng rộng rãi nhất, đặc biệt trong các ứng dụng doanh nghiệp, hệ thống backend, và phát triển ứng dụng di động (Android).
+        - Theo khảo sát của Stack Overflow năm 2023, Java vẫn nằm trong top các ngôn ngữ lập trình phổ biến nhất.
+
+        2. Nhu cầu tuyển dụng cao:
+        - Các công ty trong các ngành công nghiệp khác nhau, từ tài chính, y tế, đến công nghệ thông tin, đều có nhu cầu cao về lập trình viên Java.
+        - Các nền tảng tuyển dụng như LinkedIn, Indeed, và Glassdoor đều ghi nhận số lượng lớn các công việc liên quan đến Java.
+
+        3. Ứng dụng rộng rãi của Java:
+        - Java được sử dụng trong phát triển ứng dụng web, hệ thống doanh nghiệp, ứng dụng di động, và cả trong lĩnh vực Internet of Things (IoT).
+        - Sự ổn định, bảo mật, và khả năng mở rộng của Java khiến nó trở thành lựa chọn hàng đầu cho các ứng dụng yêu cầu hiệu suất và độ tin cậy cao.
+
+        4. Thị trường cạnh tranh:
+        - Mặc dù có nhiều lập trình viên Java trên thị trường, nhưng nhu cầu về lập trình viên có kỹ năng và kinh nghiệm vẫn rất lớn, tạo ra nhiều cơ hội việc làm hấp dẫn.
+
+        5. Tỷ lệ so với các ngôn ngữ khác:
+        - Java vẫn duy trì vị trí cao trong danh sách các ngôn ngữ lập trình phổ biến, cạnh tranh với các ngôn ngữ như Python, JavaScript, và C#.
+        - Tuy nhiên, sự gia tăng của các ngôn ngữ mới và các framework hiện đại đòi hỏi lập trình viên Java phải liên tục cập nhật và nâng cao kỹ năng của mình.
+
+        6. Cơ hội và mức lương:
+        - Lập trình viên Java có thể tìm thấy cơ hội việc làm trong nhiều lĩnh vực khác nhau, từ các công ty startup đến các tập đoàn lớn.
+        - Mức lương cho lập trình viên Java thường rất cạnh tranh, phản ánh nhu cầu cao và tính chuyên nghiệp của công việc này.
+
+        7. Học tập và phát triển:
+        - Có rất nhiều khóa học trực tuyến và tài liệu học tập về Java có sẵn trên các nền tảng như Udemy, Coursera, Pluralsight, và các kênh YouTube chuyên về lập trình.
+        - Việc tham gia các khóa học và chứng chỉ chuyên môn như Oracle Certified Professional (OCP) có thể giúp lập trình viên nâng cao trình độ và tăng cơ hội việc làm.
+
+        Nhìn chung, nhu cầu về lập trình viên Java luôn ổn định và tiếp tục tăng, tạo ra nhiều cơ hội hấp dẫn cho những ai muốn theo đuổi sự nghiệp trong lĩnh vực này. Nếu bạn quan tâm đến việc trở thành lập trình viên Java, đây là thời điểm tốt để bắt đầu học và phát triển kỹ năng của mình.
+
+  utter_python_developer_demand:
+    - text: |
+        Nhu cầu tuyển dụng lập trình viên Python đang ở mức rất cao do sự phổ biến và tính linh hoạt của ngôn ngữ này trong nhiều lĩnh vực khác nhau. Dưới đây là một số thông tin về tỷ lệ và nhu cầu lập trình viên Python hiện nay:
+
+        1. Sự phổ biến của Python:
+        - Python là một trong những ngôn ngữ lập trình phát triển nhanh nhất và phổ biến nhất hiện nay, được sử dụng rộng rãi trong nhiều lĩnh vực như phát triển web, khoa học dữ liệu, trí tuệ nhân tạo, và tự động hóa.
+        - Theo khảo sát của Stack Overflow năm 2023, Python tiếp tục nằm trong top các ngôn ngữ lập trình được yêu thích và sử dụng nhiều nhất bởi các lập trình viên.
+
+        2. Nhu cầu tuyển dụng cao:
+        - Nhu cầu về lập trình viên Python rất lớn, đặc biệt trong các lĩnh vực công nghệ cao như phân tích dữ liệu, học máy (machine learning), và phát triển web.
+        - Các nền tảng tuyển dụng như LinkedIn, Indeed, và Glassdoor đều ghi nhận số lượng lớn các công việc liên quan đến Python.
+
+        3. Ứng dụng rộng rãi của Python:
+        - Python được sử dụng trong nhiều ứng dụng khác nhau, từ các dự án nhỏ đến các hệ thống lớn và phức tạp.
+        - Sự linh hoạt và dễ học của Python khiến nó trở thành lựa chọn phổ biến cho cả người mới bắt đầu và các chuyên gia có kinh nghiệm.
+
+        4. Thị trường cạnh tranh:
+        - Số lượng lập trình viên Python đang tăng, nhưng nhu cầu về các chuyên gia có kỹ năng và kinh nghiệm vẫn rất lớn, tạo ra nhiều cơ hội việc làm hấp dẫn.
+        - Các công ty công nghệ lớn, các startup và các tổ chức nghiên cứu đều tìm kiếm lập trình viên Python để phát triển các dự án sáng tạo và tiên tiến.
+
+        5. Tỷ lệ so với các ngôn ngữ khác:
+        - Python cạnh tranh mạnh mẽ với các ngôn ngữ lập trình khác như JavaScript, Java, và C# nhờ tính linh hoạt và sự hỗ trợ mạnh mẽ từ cộng đồng.
+        - Nhiều công ty ưa chuộng Python vì khả năng phát triển nhanh chóng và tính đơn giản của nó.
+
+        6. Cơ hội và mức lương:
+        - Lập trình viên Python có thể tìm thấy cơ hội việc làm trong nhiều lĩnh vực khác nhau, từ công nghệ thông tin, tài chính, y tế, đến giải trí và giáo dục.
+        - Mức lương cho lập trình viên Python thường rất cạnh tranh, phản ánh nhu cầu cao và sự đa dạng của các ứng dụng Python.
+
+        7. Học tập và phát triển:
+        - Có rất nhiều khóa học trực tuyến và tài liệu học tập về Python có sẵn trên các nền tảng như Udemy, Coursera, Pluralsight, và các kênh YouTube chuyên về lập trình.
+        - Việc tham gia các khóa học và chứng chỉ chuyên môn như Certified Python Developer (CPD) có thể giúp lập trình viên nâng cao trình độ và tăng cơ hội việc làm.
+
+        Nhìn chung, nhu cầu về lập trình viên Python rất cao và tiếp tục tăng, tạo ra nhiều cơ hội hấp dẫn cho những ai muốn theo đuổi sự nghiệp trong lĩnh vực này. Nếu bạn quan tâm đến việc trở thành lập trình viên Python, đây là thời điểm tốt để bắt đầu học và phát triển kỹ năng của mình.
+
+  utter_nodejs_developer_demand:
+    - text: |
+        Nhu cầu tuyển dụng lập trình viên Node.js đang rất cao do sự phổ biến của Node.js trong việc phát triển ứng dụng web hiện đại. Dưới đây là một số thông tin về tỷ lệ và nhu cầu lập trình viên Node.js hiện nay:
+
+        1. Sự phổ biến của Node.js:
+        - Node.js là một môi trường chạy JavaScript phía server mạnh mẽ, cho phép xây dựng các ứng dụng mạng hiệu suất cao.
+        - Node.js được sử dụng rộng rãi bởi nhiều công ty công nghệ lớn và các startup để phát triển ứng dụng web và API.
+
+        2. Nhu cầu tuyển dụng cao:
+        - Nhu cầu tuyển dụng lập trình viên Node.js rất lớn, đặc biệt trong các công ty phát triển ứng dụng web, các dịch vụ đám mây và các nền tảng công nghệ cao.
+        - Các nền tảng tuyển dụng như LinkedIn, Indeed, và Glassdoor đều ghi nhận số lượng lớn các công việc liên quan đến Node.js.
+
+        3. Ứng dụng rộng rãi của Node.js:
+        - Node.js được sử dụng trong nhiều loại ứng dụng khác nhau, từ các ứng dụng web đơn giản đến các hệ thống phức tạp và các dịch vụ microservices.
+        - Tính năng non-blocking I/O của Node.js giúp tăng hiệu suất và khả năng mở rộng, làm cho nó trở thành lựa chọn phổ biến cho các ứng dụng thời gian thực như chat và các ứng dụng streaming.
+
+        4. Thị trường cạnh tranh:
+        - Số lượng lập trình viên Node.js đang tăng, nhưng nhu cầu về các chuyên gia có kỹ năng và kinh nghiệm vẫn rất lớn, tạo ra nhiều cơ hội việc làm hấp dẫn.
+        - Các công ty công nghệ lớn như Netflix, Uber, và LinkedIn sử dụng Node.js trong các sản phẩm của họ, góp phần làm tăng nhu cầu lập trình viên Node.js.
+
+        5. Tỷ lệ so với các ngôn ngữ khác:
+        - Node.js cạnh tranh mạnh mẽ với các ngôn ngữ và framework khác như Python (với Django hoặc Flask), Ruby on Rails, và Java (với Spring Boot).
+        - Node.js có lợi thế nhờ khả năng sử dụng JavaScript cả ở phía client và server, giúp giảm thiểu sự phức tạp và tăng hiệu quả phát triển.
+
+        6. Cơ hội và mức lương:
+        - Lập trình viên Node.js có thể tìm thấy cơ hội việc làm trong nhiều lĩnh vực khác nhau, từ công nghệ thông tin, tài chính, y tế, đến giải trí và giáo dục.
+        - Mức lương cho lập trình viên Node.js thường rất cạnh tranh, phản ánh nhu cầu cao và sự phổ biến của Node.js.
+
+        7. Học tập và phát triển:
+        - Có rất nhiều khóa học trực tuyến và tài liệu học tập về Node.js có sẵn trên các nền tảng như Udemy, Coursera, Pluralsight, và các kênh YouTube chuyên về lập trình.
+        - Việc tham gia các khóa học và chứng chỉ chuyên môn về Node.js có thể giúp lập trình viên nâng cao trình độ và tăng cơ hội việc làm.
+
+        Nhìn chung, nhu cầu về lập trình viên Node.js rất cao và tiếp tục tăng, tạo ra nhiều cơ hội hấp dẫn cho những ai muốn theo đuổi sự nghiệp trong lĩnh vực này. Nếu bạn quan tâm đến việc trở thành lập trình viên Node.js, đây là thời điểm tốt để bắt đầu học và phát triển kỹ năng của mình.
+
+  utter_csharp_developer_demand:
+    - text: |
+        Nhu cầu tuyển dụng lập trình viên C# (C-sharp) luôn ở mức cao do ngôn ngữ này được sử dụng rộng rãi trong phát triển ứng dụng doanh nghiệp, trò chơi và nhiều ứng dụng khác. Dưới đây là một số thông tin về tỷ lệ và nhu cầu lập trình viên C# hiện nay:
+
+        1. Sự phổ biến của C#:
+        - C# là một ngôn ngữ lập trình đa năng, phát triển bởi Microsoft, chủ yếu sử dụng trong phát triển ứng dụng .NET.
+        - C# được sử dụng rộng rãi trong các ứng dụng doanh nghiệp, trò chơi (với Unity), và nhiều ứng dụng Windows khác.
+
+        2. Nhu cầu tuyển dụng cao:
+        - Nhu cầu về lập trình viên C# rất lớn, đặc biệt trong các công ty phát triển phần mềm doanh nghiệp, dịch vụ web và các ứng dụng trò chơi.
+        - Các nền tảng tuyển dụng như LinkedIn, Indeed, và Glassdoor đều ghi nhận số lượng lớn các công việc liên quan đến C#.
+
+        3. Ứng dụng rộng rãi của C#:
+        - C# được sử dụng trong nhiều loại ứng dụng khác nhau, từ phát triển ứng dụng web và dịch vụ web với ASP.NET, đến phát triển trò chơi với Unity.
+        - Tính ổn định, hiệu suất cao và sự hỗ trợ mạnh mẽ từ Microsoft khiến C# trở thành lựa chọn phổ biến cho nhiều loại dự án.
+
+        4. Thị trường cạnh tranh:
+        - Số lượng lập trình viên C# đang tăng, nhưng nhu cầu về các chuyên gia có kỹ năng và kinh nghiệm vẫn rất lớn, tạo ra nhiều cơ hội việc làm hấp dẫn.
+        - Các công ty từ các tập đoàn lớn đến các startup đều sử dụng C# trong các dự án của họ, làm tăng nhu cầu tuyển dụng.
+
+        5. Tỷ lệ so với các ngôn ngữ khác:
+        - C# cạnh tranh mạnh mẽ với các ngôn ngữ lập trình khác như Java, Python, và JavaScript.
+        - Sự phát triển của .NET Core, cho phép chạy ứng dụng trên nhiều nền tảng, cũng làm tăng sự hấp dẫn của C#.
+
+        6. Cơ hội và mức lương:
+        - Lập trình viên C# có thể tìm thấy cơ hội việc làm trong nhiều lĩnh vực khác nhau, từ phát triển phần mềm doanh nghiệp, dịch vụ web, đến phát triển trò chơi.
+        - Mức lương cho lập trình viên C# thường rất cạnh tranh, phản ánh nhu cầu cao và sự chuyên môn hóa của công việc này.
+
+        7. Học tập và phát triển:
+        - Có rất nhiều khóa học trực tuyến và tài liệu học tập về C# có sẵn trên các nền tảng như Udemy, Coursera, Pluralsight, và các kênh YouTube chuyên về lập trình.
+        - Việc tham gia các khóa học và chứng chỉ chuyên môn như Microsoft Certified: C# Developer có thể giúp lập trình viên nâng cao trình độ và tăng cơ hội việc làm.
+
+        Nhìn chung, nhu cầu về lập trình viên C# luôn ổn định và tiếp tục tăng, tạo ra nhiều cơ hội hấp dẫn cho những ai muốn theo đuổi sự nghiệp trong lĩnh vực này. Nếu bạn quan tâm đến việc trở thành lập trình viên C#, đây là thời điểm tốt để bắt đầu học và phát triển kỹ năng của mình.
+
+  utter_cpp_developer_demand:
+    - text: |
+        Nhu cầu tuyển dụng lập trình viên C++ vẫn luôn ở mức cao do ngôn ngữ này được sử dụng rộng rãi trong nhiều lĩnh vực yêu cầu hiệu suất cao và điều khiển phần cứng. Dưới đây là một số thông tin về tỷ lệ và nhu cầu lập trình viên C++ hiện nay:
+
+        1. Sự phổ biến của C++:
+        - C++ là một ngôn ngữ lập trình mạnh mẽ và linh hoạt, được sử dụng rộng rãi trong phát triển phần mềm hệ thống, ứng dụng, trò chơi và các hệ thống nhúng.
+        - Theo khảo sát của Stack Overflow năm 2023, C++ vẫn nằm trong danh sách các ngôn ngữ lập trình phổ biến và được yêu thích bởi nhiều lập trình viên.
+
+        2. Nhu cầu tuyển dụng cao:
+        - Nhu cầu về lập trình viên C++ rất lớn, đặc biệt trong các ngành công nghiệp như phát triển trò chơi, phần mềm hệ thống, tài chính, và các hệ thống nhúng.
+        - Các nền tảng tuyển dụng như LinkedIn, Indeed, và Glassdoor đều ghi nhận số lượng lớn các công việc liên quan đến C++.
+
+        3. Ứng dụng rộng rãi của C++:
+        - C++ được sử dụng trong nhiều lĩnh vực khác nhau, từ phát triển hệ điều hành, trình duyệt web, trò chơi, đến các hệ thống nhúng và điều khiển phần cứng.
+        - Khả năng tối ưu hóa hiệu suất và quản lý tài nguyên hiệu quả của C++ khiến nó trở thành lựa chọn hàng đầu cho các ứng dụng yêu cầu cao về hiệu suất.
+
+        4. Thị trường cạnh tranh:
+        - Mặc dù có nhiều lập trình viên C++ trên thị trường, nhưng nhu cầu về các chuyên gia có kỹ năng và kinh nghiệm vẫn rất lớn, tạo ra nhiều cơ hội việc làm hấp dẫn.
+        - Các công ty công nghệ lớn, các tổ chức tài chính và các công ty phát triển trò chơi đều tìm kiếm lập trình viên C++ để phát triển các sản phẩm và dịch vụ của họ.
+
+        5. Tỷ lệ so với các ngôn ngữ khác:
+        - C++ cạnh tranh mạnh mẽ với các ngôn ngữ lập trình khác như C, Java, và Python, đặc biệt trong các lĩnh vực yêu cầu hiệu suất cao và quản lý tài nguyên tốt.
+        - Sự phát triển của các ứng dụng đa nền tảng và các công nghệ mới như IoT và AI cũng làm tăng nhu cầu về lập trình viên C++.
+
+        6. Cơ hội và mức lương:
+        - Lập trình viên C++ có thể tìm thấy cơ hội việc làm trong nhiều lĩnh vực khác nhau, từ công nghệ thông tin, tài chính, y tế, đến các hệ thống nhúng và trò chơi.
+        - Mức lương cho lập trình viên C++ thường rất cạnh tranh, phản ánh nhu cầu cao và tính chuyên môn hóa của công việc này.
+
+        7. Học tập và phát triển:
+        - Có rất nhiều khóa học trực tuyến và tài liệu học tập về C++ có sẵn trên các nền tảng như Udemy, Coursera, Pluralsight, và các kênh YouTube chuyên về lập trình.
+        - Việc tham gia các khóa học và chứng chỉ chuyên môn về C++ có thể giúp lập trình viên nâng cao trình độ và tăng cơ hội việc làm.
+
+        Nhìn chung, nhu cầu về lập trình viên C++ rất cao và tiếp tục tăng, tạo ra nhiều cơ hội hấp dẫn cho những ai muốn theo đuổi sự nghiệp trong lĩnh vực này. Nếu bạn quan tâm đến việc trở thành lập trình viên C++, đây là thời điểm tốt để bắt đầu học và phát triển kỹ năng của mình.
+
+  utter_interview_preparation:
+    - text: |
+        - Trước khi đi phỏng vấn, bạn nên chuẩn bị kỹ lưỡng để tạo ấn tượng tốt và tăng cơ hội thành công. Dưới đây là những điều cần chuẩn bị:
+        - Tìm hiểu về công ty: Nghiên cứu về công ty bạn sắp phỏng vấn, bao gồm sứ mệnh, giá trị, sản phẩm/dịch vụ và văn hóa công ty.
+        - Xem lại mô tả công việc: Hiểu rõ các yêu cầu và trách nhiệm của vị trí bạn ứng tuyển, để chuẩn bị các câu trả lời liên quan đến kỹ năng và kinh nghiệm của bạn.
+        - Chuẩn bị câu trả lời cho các câu hỏi phổ biến: Dự đoán các câu hỏi phỏng vấn phổ biến như "Hãy giới thiệu về bản thân," "Điểm mạnh và điểm yếu của bạn là gì?" và chuẩn bị câu trả lời cụ thể và rõ ràng.
+        - Chuẩn bị câu hỏi để hỏi nhà tuyển dụng: Chuẩn bị một vài câu hỏi để hỏi nhà tuyển dụng về công ty, đội nhóm hoặc vị trí bạn ứng tuyển. Điều này thể hiện sự quan tâm và chuẩn bị kỹ lưỡng của bạn.
+        - Luyện tập phỏng vấn: Thực hành trả lời các câu hỏi phỏng vấn với bạn bè hoặc trước gương để tự tin hơn khi trả lời.
+        - Chuẩn bị hồ sơ: In sẵn bản sao hồ sơ xin việc, thư xin việc, và các tài liệu liên quan khác như chứng chỉ, bảng điểm.
+        - Chọn trang phục phù hợp: Chọn trang phục lịch sự, chuyên nghiệp và phù hợp với văn hóa công ty.
+        - Kiểm tra đường đi: Xác định vị trí và thời gian di chuyển đến địa điểm phỏng vấn, đảm bảo bạn đến đúng giờ hoặc sớm hơn một chút.
+        - Chuẩn bị tinh thần: Đảm bảo bạn ngủ đủ giấc trước buổi phỏng vấn để giữ tinh thần thoải mái và minh mẫn.
+        - Mang theo giấy bút: Để ghi chép các thông tin quan trọng trong buổi phỏng vấn.
+        Chuẩn bị kỹ lưỡng sẽ giúp bạn tự tin hơn và tạo ấn tượng tốt với nhà tuyển dụng. Chúc bạn thành công!
+
+  utter_create_impressive_cv:
+    - text: |
+        - Để tạo một CV ấn tượng và thu hút nhà tuyển dụng, bạn có thể làm theo những gợi ý sau:
+        - Thông tin cá nhân rõ ràng: Bao gồm họ tên, địa chỉ, số điện thoại và email. Đảm bảo thông tin liên lạc là chính xác và chuyên nghiệp.
+        - Tóm tắt hồ sơ: Viết một đoạn tóm tắt ngắn gọn (3-4 câu) về bản thân, nêu bật những kỹ năng và kinh nghiệm nổi bật nhất của bạn.
+        - Kinh nghiệm làm việc: Liệt kê các công việc bạn đã làm theo thứ tự thời gian ngược lại, bao gồm tên công ty, vị trí công việc, thời gian làm việc và mô tả ngắn gọn về trách nhiệm và thành tựu của bạn ở mỗi vị trí.
+        - Học vấn: Liệt kê các bằng cấp học vấn theo thứ tự thời gian ngược lại, bao gồm tên trường, chuyên ngành và năm tốt nghiệp.
+        - Kỹ năng: Nêu rõ các kỹ năng kỹ thuật và mềm mà bạn sở hữu, đặc biệt là những kỹ năng liên quan trực tiếp đến vị trí bạn ứng tuyển.
+        - Chứng chỉ và giải thưởng: Nếu có, liệt kê các chứng chỉ chuyên môn và giải thưởng bạn đã nhận được.
+        - Hoạt động ngoại khóa và dự án: Liệt kê các hoạt động ngoại khóa, dự án cá nhân hoặc tình nguyện bạn đã tham gia, đặc biệt nếu chúng liên quan đến công việc bạn đang ứng tuyển.
+        - Thiết kế đơn giản, chuyên nghiệp: Sử dụng phông chữ rõ ràng, trình bày sạch sẽ và dễ đọc. Tránh sử dụng quá nhiều màu sắc hay hình ảnh gây rối mắt.
+        - Tùy chỉnh CV theo vị trí ứng tuyển: Điều chỉnh nội dung CV để phù hợp với yêu cầu cụ thể của từng công việc. Nhấn mạnh những kỹ năng và kinh nghiệm liên quan nhất.
+        - Kiểm tra chính tả và ngữ pháp: Đảm bảo CV không có lỗi chính tả hay ngữ pháp. Bạn có thể nhờ người khác xem lại để chắc chắn hơn.
+        - Sử dụng từ ngữ mạnh mẽ: Sử dụng các động từ hành động để mô tả trách nhiệm và thành tựu của bạn, chẳng hạn như "quản lý," "phát triển," "tăng cường," "cải thiện," v.v.
+        - Liên kết đến hồ sơ trực tuyến: Nếu có, thêm liên kết đến hồ sơ LinkedIn hoặc trang web cá nhân chuyên nghiệp của bạn.
+        Một CV ấn tượng không chỉ là bản tóm tắt về kinh nghiệm và kỹ năng mà còn phải thể hiện được cá nhân bạn và lý do tại sao bạn là ứng viên phù hợp cho vị trí đang ứng tuyển.
+
+  utter_interview_questions_preparation:
+    - text: |
+        Khi đi phỏng vấn, việc chuẩn bị sẵn những câu hỏi để hỏi nhà tuyển dụng không chỉ giúp bạn hiểu rõ hơn về công ty và vị trí mà còn thể hiện sự quan tâm và chuẩn bị kỹ lưỡng của bạn. Dưới đây là một số câu hỏi bạn có thể cân nhắc:
+
+        - Về công ty và văn hóa làm việc:
+        + Công ty có thể chia sẻ về văn hóa làm việc và giá trị cốt lõi của mình không?
+        + Môi trường làm việc tại đây như thế nào?
+        + Công ty có các chương trình đào tạo và phát triển kỹ năng cho nhân viên không?
+        - Về vị trí ứng tuyển:
+        + Anh/chị có thể mô tả chi tiết hơn về các trách nhiệm chính của vị trí này không?
+        + Những kỹ năng và kinh nghiệm nào là quan trọng nhất cho vị trí này?
+        + Mục tiêu chính của vị trí này trong 6 tháng đến 1 năm tới là gì?
+        - Về đội nhóm và quản lý:
+        + Tôi sẽ làm việc trực tiếp với ai và đội nhóm của tôi gồm những ai?
+        + Phong cách quản lý của người quản lý trực tiếp của tôi như thế nào?
+        + Đội nhóm này đang làm việc trên những dự án hoặc nhiệm vụ nào?
+        - Về hiệu suất và đánh giá:
+        + Công ty đánh giá hiệu suất công việc của nhân viên như thế nào?
+        + Quy trình thăng tiến và phát triển sự nghiệp tại công ty ra sao?
+        - Về công việc hàng ngày:
+        + Một ngày làm việc điển hình cho vị trí này sẽ như thế nào?
+        + Những thách thức chính mà tôi có thể gặp phải ở vị trí này là gì?
+        - Về tương lai công ty:
+        + Công ty có kế hoạch phát triển hoặc mở rộng nào trong tương lai gần không?
+        + Những xu hướng hoặc thay đổi lớn nào trong ngành mà công ty đang chú ý?
+        - Về quy trình tuyển dụng:
+        + Bước tiếp theo trong quy trình tuyển dụng là gì?
+        + Khi nào tôi có thể mong đợi được nhận phản hồi về kết quả phỏng vấn?
+        Chuẩn bị sẵn những câu hỏi này sẽ giúp bạn không chỉ hiểu rõ hơn về công ty và vị trí ứng tuyển mà còn để nhà tuyển dụng thấy được sự chuẩn bị và quan tâm của bạn đối với công việc. Chúc bạn may mắn trong buổi phỏng vấn!
+
+  utter_research_company_before_interview:
+    - text: |
+        Để tìm hiểu về một công ty trước khi phỏng vấn, bạn có thể thực hiện những bước sau:
+        -Trang web chính thức của công ty:
+        + Giới thiệu công ty: Đọc phần giới thiệu về lịch sử, sứ mệnh, tầm nhìn, và giá trị cốt lõi của công ty.
+        + Sản phẩm/Dịch vụ: Tìm hiểu về các sản phẩm hoặc dịch vụ chính mà công ty cung cấp.
+        + Tin tức và sự kiện: Xem các tin tức, thông cáo báo chí và các sự kiện gần đây để biết về các hoạt động nổi bật của công ty.
+        - Mạng xã hội của công ty:
+        + LinkedIn: Kiểm tra trang LinkedIn của công ty để xem thông tin về nhân sự, các bài viết liên quan đến công ty, và các thông tin tuyển dụng khác.
+        + Facebook/Twitter/Instagram: Theo dõi các trang mạng xã hội của công ty để cập nhật các hoạt động, sự kiện và văn hóa làm việc của công ty.
+        - Báo cáo tài chính và tài liệu công khai:
+        + Đối với các công ty lớn, bạn có thể tìm thấy báo cáo tài chính và các tài liệu công khai khác trên trang web của công ty hoặc các trang web tài chính như Bloomberg, Yahoo Finance, hoặc các trang web của cơ quan quản lý chứng khoán.
+        - Đánh giá của nhân viên và khách hàng:
+        + Glassdoor: Đọc các đánh giá của nhân viên hiện tại và cựu nhân viên về công ty, văn hóa làm việc, và quy trình phỏng vấn.
+        + Indeed: Tìm hiểu thêm về đánh giá của nhân viên và các câu hỏi phỏng vấn phổ biến.
+        Các diễn đàn và trang đánh giá sản phẩm: Đọc các đánh giá từ khách hàng về sản phẩm và dịch vụ của công ty để hiểu rõ hơn về uy tín và chất lượng của công ty.
+        - Tin tức và báo chí:
+        + Tìm kiếm các bài viết, tin tức liên quan đến công ty trên Google News hoặc các trang báo chí uy tín để biết về tình hình kinh doanh, những thách thức và cơ hội mà công ty đang đối mặt.
+        - Mạng lưới cá nhân:
+        + Hỏi thăm bạn bè, người quen hoặc các mối quan hệ trên LinkedIn xem họ có thông tin hoặc kinh nghiệm gì về công ty không.
+        - Các trang web tuyển dụng:
+        + Xem các bài đăng tuyển dụng của công ty trên các trang web như VietnamWorks, CareerBuilder, hoặc các trang web tuyển dụng khác để hiểu rõ hơn về các vị trí đang tuyển dụng và yêu cầu công việc.
+        - Chuẩn bị câu hỏi:
+        + Dựa trên những thông tin thu thập được, chuẩn bị một số câu hỏi liên quan đến công ty, văn hóa làm việc, và vị trí ứng tuyển để hỏi nhà tuyển dụng trong buổi phỏng vấn.
+        Nghiên cứu kỹ lưỡng về công ty sẽ giúp bạn tự tin hơn trong buổi phỏng vấn và tạo ấn tượng tốt với nhà tuyển dụng. Chúc bạn thành công!
+
+  utter_interview_questions_to_understand_job_and_environment:
+    - text: |
+        Để hiểu rõ hơn về vị trí công việc và môi trường làm việc trong buổi phỏng vấn, bạn có thể đặt những câu hỏi sau:
+        - Về vị trí công việc:
+        + Anh/chị có thể mô tả một ngày làm việc điển hình cho vị trí này không?
+        + Những kỹ năng và kinh nghiệm nào là quan trọng nhất để thành công trong vị trí này?
+        + Mục tiêu chính của vị trí này trong 6 tháng đến 1 năm tới là gì?
+        + Những thách thức chính mà tôi có thể gặp phải ở vị trí này là gì?
+        + Làm thế nào để công ty đánh giá hiệu suất công việc của nhân viên ở vị trí này?
+        - Về đội nhóm và quản lý:
+        + Tôi sẽ làm việc trực tiếp với ai và đội nhóm của tôi gồm những ai?
+        + Phong cách quản lý của người quản lý trực tiếp của tôi như thế nào?
+        + Đội nhóm này đang làm việc trên những dự án hoặc nhiệm vụ nào?
+        + Có cơ hội để phát triển và thăng tiến trong đội nhóm này không?
+        - Về văn hóa và môi trường làm việc:
+        + Công ty có thể chia sẻ về văn hóa làm việc và giá trị cốt lõi của mình không?
+        + Môi trường làm việc tại đây như thế nào? Công ty + có các chương trình hỗ trợ sức khỏe và cân bằng công việc-cuộc sống không?
+        + Công ty có các hoạt động nội bộ nào để gắn kết nhân viên không?
+        + Công ty có chính sách làm việc linh hoạt hay làm việc từ xa không?
+        - Về phát triển cá nhân và cơ hội học hỏi:
+        + Công ty có các chương trình đào tạo và phát triển kỹ năng cho nhân viên không?
+        + Có cơ hội để tham gia các hội thảo, khóa học hay các sự kiện chuyên ngành không?
+        + Quy trình thăng tiến và phát triển sự nghiệp tại công ty ra sao?
+        - Về quy trình tuyển dụng và bước tiếp theo:
+        + Bước tiếp theo trong quy trình tuyển dụng là gì?
+        + Khi nào tôi có thể mong đợi được nhận phản hồi về kết quả phỏng vấn?
+        Những câu hỏi này sẽ giúp bạn có cái nhìn rõ ràng hơn về công việc và môi trường làm việc tại công ty, đồng thời thể hiện sự quan tâm và chuẩn bị kỹ lưỡng của bạn đối với vị trí ứng tuyển. Chúc bạn thành công trong buổi phỏng vấn!
+
+  utter_popular_technologies_da_nang:
+      - text: |
+          Hiện nay, các công nghệ đang phổ biến ở Đà Nẵng bao gồm:
+          - Trí tuệ nhân tạo (AI) và Học máy (Machine Learning)
+          - Internet vạn vật (IoT)
+          - Công nghệ Blockchain
+          - Dữ liệu lớn (Big Data)
+          - Điện toán đám mây (Cloud Computing)
+          - An ninh mạng (Cybersecurity)
+          - Phát triển ứng dụng di động
+          - Thực tế ảo (Virtual Reality) và Thực tế tăng cường (Augmented Reality)
+          - Công nghệ 5G
+          - Công nghệ tài chính (Fintech)
+
+  utter_current_technology_trends:
+      - text: |
+          Hiện nay, các xu hướng công nghệ nổi bật bao gồm:
+          - Trí tuệ nhân tạo (AI) và Học máy (Machine Learning)
+          - Internet vạn vật (IoT)
+          - Công nghệ Blockchain
+          - Dữ liệu lớn (Big Data)
+          - Điện toán đám mây (Cloud Computing)
+          - An ninh mạng (Cybersecurity)
+          - Phát triển ứng dụng di động
+          - Thực tế ảo (Virtual Reality) và Thực tế tăng cường (Augmented Reality)
+          - Công nghệ 5G
+          - Công nghệ tài chính (Fintech)
+          - Công nghệ sinh học (Biotechnology)
+          - Xe tự lái (Autonomous Vehicles)
+          - Tự động hóa và Robot học (Automation and Robotics)
+
+  utter_frontend_developer_roadmap:
+    - text: |
+          Để trở thành một frontend developer chuyên sâu, bạn có thể làm theo lộ trình sau:
+
+          **1. Nắm vững các kiến thức cơ bản:**
+          - HTML, CSS: Học cách tạo cấu trúc và trình bày trang web.
+          - JavaScript: Học các khái niệm cơ bản và các thao tác với DOM.
+
+          **2. Làm quen với các công cụ và môi trường phát triển:**
+          - Git và GitHub: Học cách quản lý mã nguồn và làm việc nhóm.
+          - Các công cụ xây dựng như Webpack hoặc Parcel.
+
+          **3. Học các thư viện và framework phổ biến:**
+          - React.js, Angular, hoặc Vue.js: Chọn một và học cách sử dụng thành thạo.
+          - Redux hoặc MobX: Quản lý state trong ứng dụng.
+
+          **4. Tìm hiểu về thiết kế và trải nghiệm người dùng (UI/UX):**
+          - Nguyên tắc thiết kế giao diện người dùng.
+          - Công cụ thiết kế như Figma hoặc Adobe XD.
+
+          **5. Nâng cao kỹ năng:**
+          - TypeScript: Học cách sử dụng TypeScript để viết mã JavaScript an toàn hơn.
+          - Testing: Học các công cụ kiểm thử như Jest, Mocha hoặc Jasmine.
+
+          **6. Xây dựng và triển khai dự án thực tế:**
+          - Tạo các dự án cá nhân hoặc tham gia vào các dự án mã nguồn mở.
+          - Học cách triển khai ứng dụng lên các nền tảng như Netlify, Vercel hoặc Heroku.
+
+          **7. Cập nhật và học hỏi liên tục:**
+          - Tham gia các cộng đồng lập trình viên, đọc blog, theo dõi các kênh YouTube hoặc tham gia các khóa học trực tuyến để cập nhật các công nghệ mới.
+
+  utter_backend_developer_roadmap:
+      - text: |
+          Để trở thành một backend developer, bạn có thể làm theo lộ trình sau:
+
+          **1. Nắm vững các kiến thức cơ bản:**
+          - Học một ngôn ngữ lập trình: Python, Java, JavaScript (Node.js), Ruby, PHP, hoặc C#.
+          - Hiểu về cấu trúc dữ liệu và giải thuật cơ bản.
+
+          **2. Hiểu về cơ sở dữ liệu:**
+          - SQL: Học cách sử dụng các hệ quản trị cơ sở dữ liệu quan hệ như MySQL, PostgreSQL.
+          - NoSQL: Tìm hiểu về các hệ quản trị cơ sở dữ liệu phi quan hệ như MongoDB, Cassandra.
+
+          **3. Học về các công nghệ backend:**
+          - Web servers: Hiểu về cách hoạt động của các máy chủ web như Apache, Nginx.
+          - APIs: Học cách xây dựng và tiêu thụ APIs (RESTful và GraphQL).
+          - Authentication and Authorization: Tìm hiểu về các phương thức xác thực và phân quyền (JWT, OAuth).
+
+          **4. Làm quen với các framework và thư viện:**
+          - Framework: Học cách sử dụng các framework phổ biến như Express.js (Node.js), Django (Python), Spring (Java), Ruby on Rails (Ruby).
+          - ORM (Object-Relational Mapping): Hiểu và sử dụng các ORM như Sequelize, TypeORM, Hibernate.
+
+          **5. Quản lý phiên bản mã nguồn:**
+          - Git: Học cách sử dụng Git và các nền tảng quản lý mã nguồn như GitHub, GitLab.
+
+          **6. Hiểu về triển khai và quản lý server:**
+          - DevOps: Tìm hiểu về các công cụ và quy trình DevOps (Docker, Kubernetes, CI/CD).
+          - Cloud Services: Làm quen với các dịch vụ đám mây như AWS, Azure, Google Cloud.
+
+          **7. Bảo mật:**
+          - Hiểu các khái niệm và kỹ thuật bảo mật cơ bản (SSL/TLS, XSS, CSRF, SQL Injection).
+
+          **8. Xây dựng và triển khai dự án thực tế:**
+          - Tạo các dự án cá nhân hoặc tham gia vào các dự án mã nguồn mở.
+          - Học cách triển khai ứng dụng lên các nền tảng như Heroku, AWS, DigitalOcean.
+
+          **9. Cập nhật và học hỏi liên tục:**
+          - Tham gia các cộng đồng lập trình viên, đọc blog, theo dõi các kênh YouTube hoặc tham gia các khóa học trực tuyến để cập nhật các công nghệ mới.
+
+  utter_fullstack_developer_roadmap:
+      - text: |
+          Để trở thành một fullstack developer, bạn có thể làm theo lộ trình sau:
+
+          **1. Nắm vững các kiến thức cơ bản về frontend:**
+          - HTML, CSS: Học cách tạo cấu trúc và trình bày trang web.
+          - JavaScript: Học các khái niệm cơ bản và các thao tác với DOM.
+
+          **2. Làm quen với các công cụ và môi trường phát triển frontend:**
+          - Git và GitHub: Học cách quản lý mã nguồn và làm việc nhóm.
+          - Các công cụ xây dựng như Webpack hoặc Parcel.
+
+          **3. Học các thư viện và framework frontend phổ biến:**
+          - React.js, Angular, hoặc Vue.js: Chọn một và học cách sử dụng thành thạo.
+          - Redux hoặc MobX: Quản lý state trong ứng dụng.
+
+          **4. Nắm vững các kiến thức cơ bản về backend:**
+          - Học một ngôn ngữ lập trình: Python, Java, JavaScript (Node.js), Ruby, PHP, hoặc C#.
+          - Hiểu về cấu trúc dữ liệu và giải thuật cơ bản.
+
+          **5. Hiểu về cơ sở dữ liệu:**
+          - SQL: Học cách sử dụng các hệ quản trị cơ sở dữ liệu quan hệ như MySQL, PostgreSQL.
+          - NoSQL: Tìm hiểu về các hệ quản trị cơ sở dữ liệu phi quan hệ như MongoDB, Cassandra.
+
+          **6. Học về các công nghệ backend:**
+          - Web servers: Hiểu về cách hoạt động của các máy chủ web như Apache, Nginx.
+          - APIs: Học cách xây dựng và tiêu thụ APIs (RESTful và GraphQL).
+          - Authentication and Authorization: Tìm hiểu về các phương thức xác thực và phân quyền (JWT, OAuth).
+
+          **7. Làm quen với các framework và thư viện backend:**
+          - Framework: Học cách sử dụng các framework phổ biến như Express.js (Node.js), Django (Python), Spring (Java), Ruby on Rails (Ruby).
+          - ORM (Object-Relational Mapping): Hiểu và sử dụng các ORM như Sequelize, TypeORM, Hibernate.
+
+          **8. Hiểu về triển khai và quản lý server:**
+          - DevOps: Tìm hiểu về các công cụ và quy trình DevOps (Docker, Kubernetes, CI/CD).
+          - Cloud Services: Làm quen với các dịch vụ đám mây như AWS, Azure, Google Cloud.
+
+          **9. Bảo mật:**
+          - Hiểu các khái niệm và kỹ thuật bảo mật cơ bản (SSL/TLS, XSS, CSRF, SQL Injection).
+
+          **10. Xây dựng và triển khai dự án thực tế:**
+          - Tạo các dự án cá nhân hoặc tham gia vào các dự án mã nguồn mở.
+          - Học cách triển khai ứng dụng lên các nền tảng như Heroku, AWS, DigitalOcean.
+
+          **11. Cập nhật và học hỏi liên tục:**
+          - Tham gia các cộng đồng lập trình viên, đọc blog, theo dõi các kênh YouTube hoặc tham gia các khóa học trực tuyến để cập nhật các công nghệ mới.
+
 actions:
   - utter_greet
   - utter_goodbye
@@ -277,3 +1097,35 @@ actions:
   - action_inquire_companies_by_tech_stack
   - action_inquire_highest_rated_companies
   - action_inquire_highest_salary_companies
+  - utter_define_information_programmer
+  - utter_define_information_business_analysis
+  - utter_define_information_ux_designer
+  - utter_define_information_software_design
+  - utter_define_information_project_manager
+  - utter_define_information_it_system_administrator
+  - utter_define_information_tester
+  - utter_define_information_qa
+  - utter_define_information_qc
+  - utter_define_information_data_engineer
+  - utter_define_information_product_manager
+  - utter_write_job_application_email
+  - utter_introduce_yourself_in_interview
+  - utter_common_interview_questions
+  - utter_disappearing_jobs_in_future
+  - utter_flutter_developer_demand
+  - utter_react_developer_demand
+  - utter_java_developer_demand
+  - utter_python_developer_demand
+  - utter_nodejs_developer_demand
+  - utter_csharp_developer_demand
+  - utter_cpp_developer_demand
+  - utter_interview_preparation
+  - utter_create_impressive_cv
+  - utter_interview_questions_preparation
+  - utter_research_company_before_interview
+  - utter_interview_questions_to_understand_job_and_environment
+  - utter_popular_technologies_da_nang
+  - utter_current_technology_trends
+  - utter_frontend_developer_roadmap
+  - utter_backend_developer_roadmap
+  - utter_fullstack_developer_roadmap

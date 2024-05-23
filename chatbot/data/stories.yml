@@ -95,3 +95,168 @@ stories:
     steps:
       - intent: inquire_highest_salary_companies
       - action: action_inquire_highest_salary_companies
+
+  - story: ask programmer definition
+    steps:
+      - intent: idefine_information_programmer
+      - action: utter_define_information_programmer  
+
+  - story: ask definition of business intelligence analysis
+    steps:
+      - intent: define_information_business_analysis
+      - action: utter_define_information_business_analysis
+
+  - story: ask definition of ux design information
+    steps:
+      - intent: define_information_ux_designer
+      - action: utter_define_information_ux_designer
+
+  - story: ask definition of information software design
+    steps:
+      - intent: define_information_software_design
+      - action: utter_define_information_software_design
+
+  - story: ask definition of project manager
+    steps:
+      - intent: define_information_project_manager
+      - action: utter_define_information_project_manager
+
+  - story: ask definition of it system administrator
+    steps:
+      - intent: define_information_it_system_administrator
+      - action: utter_define_information_it_system_administrator
+
+  - story: ask definition of information tester
+    steps:
+      - intent: define_information_tester
+      - action: utter_define_information_tester
+  
+  - story: ask definition of information qa
+    steps:
+      - intent: define_information_qa
+      - action: utter_define_information_qa
+
+  - story: ask definition of information qc
+    steps:
+      - intent: define_information_qc
+      - action: utter_define_information_qc
+
+  - story: ask definition of information data engineer
+    steps:
+      - intent: define_information_data_engineer
+      - action: utter_define_information_data_engineer
+
+  - story: ask definition of information product manager
+    steps:
+      - intent: define_information_product_manager
+      - action: utter_define_information_product_manager
+
+  - story: ask write job application email
+    steps:
+      - intent: write_job_application_email
+      - action: utter_write_job_application_email
+
+  - story: ask introduce yourself interview
+    steps:
+      - intent: introduce_yourself_in_interview
+      - action: utter_introduce_yourself_in_interview
+
+  - story: ask common interview questions
+    steps:
+      - intent: common_interview_questions
+      - action: utter_common_interview_questions
+
+  - story: ask disappearing jobs in future
+    steps:
+      - intent: disappearing_jobs_in_future
+      - action: utter_disappearing_jobs_in_future
+
+  - story: ask flutter developer demand
+    steps:
+      - intent: flutter_developer_demand
+      - action: utter_flutter_developer_demand
+
+  - story: ask react developer demand
+    steps:
+      - intent: react_developer_demand
+      - action: utter_react_developer_demand
+
+  - story: ask java developer demand
+    steps:
+      - intent: java_developer_demand
+      - action: utter_java_developer_demand
+
+  - story: ask python developer demand
+    steps:
+      - intent: python_developer_demand
+      - action: utter_python_developer_demand
+      
+  - story: ask nodejs developer demand
+    steps:
+      - intent: nodejs_developer_demand
+      - action: utter_nodejs_developer_demand
+            
+  - story: ask csharp developer demand
+    steps:
+      - intent: csharp_developer_demand
+      - action: utter_csharp_developer_demand
+                  
+  - story: ask cpp developer demand
+    steps:
+      - intent: cpp_developer_demand
+      - action: utter_cpp_developer_demand
+                        
+  - story: ask interview preparation
+    steps:
+      - intent: interview_preparation
+      - action: utter_interview_preparation
+                              
+  - story: ask create impressive cv
+    steps:
+      - intent: create_impressive_cv
+      - action: utter_create_impressive_cv
+                                  
+  - story: ask interview questions preparation
+    steps:
+      - intent: interview_questions_preparation
+      - action: utter_interview_questions_preparation
+                                        
+  - story: ask research company_before interview
+    steps:
+      - intent: research_company_before_interview
+      - action: utter_research_company_before_interview
+                                              
+  - story: ask interview questions to understand job and environment
+    steps:
+      - intent: interview_questions_to_understand_job_and_environment
+      - action: utter_interview_questions_to_understand_job_and_environment
+                                                    
+  - story: ask popular technologies da nang
+    steps:
+      - intent: popular_technologies_da_nang
+      - action: utter_popular_technologies_da_nang
+                                                          
+  - story: ask current technology trends
+    steps:
+      - intent: current_technology_trends
+      - action: utter_current_technology_trends
+                                                                
+  - story: ask frontend developer roadmap
+    steps:
+      - intent: frontend_developer_roadmap
+      - action: utter_frontend_developer_roadmap
+                                                             
+  - story: ask backend developer roadmap
+    steps:
+      - intent: backend_developer_roadmap
+      - action: utter_backend_developer_roadmap
+                                                                   
+  - story: ask fullstack developer roadmap
+    steps:
+      - intent: fullstack_developer_roadmap
+      - action: utter_fullstack_developer_roadmap
+                                                                         
+  - story: ask fullstack developer roadmap
+    steps:
+      - intent: fullstack_developer_roadmap
+      - action: utter_fullstack_developer_roadmap

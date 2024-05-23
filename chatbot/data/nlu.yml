@@ -224,3 +224,359 @@ nlu:
       - Công ty công nghệ thông tin nào trả lương rất cao?
       - Có các công ty phần mềm nào có mức lương cao không?
       - Những công ty công nghệ cao nào có mức lương cao nhất?
+
+  - intent: define_information_programmer
+    examples: |
+      - Lập trình viên là gì?
+      - cho tôi những thông tin về lập trình viên.
+      - Cho tôi những mô tả về lập trình viên.
+      - lập trình viên làm những gì?
+      - khái niệm về lập trình viên?
+      - LTV là gì?
+      - Tổng quan về LTV.
+      - tôi muốn biết về LTV
+      - tôi muốn biết LTV làm gì?
+  
+  - intent: define_information_business_analysis
+    examples: |
+      - Phân tích nghiệp vụ là gì?
+      - Cho tôi thông tin về phân tích nghiệp vụ.
+      - Phân tích nghiệp vụ làm những gì?
+      - Khái niệm về phân tích nghiệp vụ?
+      - BA là gì?
+      - Tổng quan về BA.
+      - Tôi muốn biết về BA.
+      - Tôi muốn biết BA làm gì.
+
+  - intent: define_information_ux_designer
+    examples: |
+      - UX designer là gì?
+      - Cho tôi thông tin về UX designer.
+      - Công việc của UX designer là gì?
+      - Khái niệm về UX designer?
+      - UX là gì?
+      - Tổng quan về UX designer.
+      - Tôi muốn biết về UX designer.
+      - UX designer làm gì?
+
+  - intent: define_information_software_design
+    examples: |
+      - Thiết kế phần mềm là gì?
+      - Cho tôi thông tin về thiết kế phần mềm.
+      - Công việc của một nhà thiết kế phần mềm là gì?
+      - Khái niệm về thiết kế phần mềm?
+      - Thiết kế phần mềm là gì và nó làm những gì?
+      - Tổng quan về thiết kế phần mềm.
+      - Tôi muốn biết về thiết kế phần mềm.
+      - Thiết kế phần mềm bao gồm những gì?
+
+  - intent: define_information_project_manager
+    examples: |
+      - Quản lý dự án là gì?
+      - Cho tôi thông tin về quản lý dự án.
+      - Công việc của một quản lý dự án là gì?
+      - Khái niệm về quản lý dự án?
+      - Quản lý dự án làm những gì?
+      - Tổng quan về quản lý dự án.
+      - Tôi muốn biết về quản lý dự án.
+      - Quản lý dự án bao gồm những gì?
+
+  - intent: define_information_it_system_administrator
+    examples: |
+      - Quản trị hệ thống IT là gì?
+      - Cho tôi thông tin về quản trị hệ thống IT.
+      - Công việc của một quản trị hệ thống IT là gì?
+      - Khái niệm về quản trị hệ thống IT?
+      - Quản trị hệ thống IT làm những gì?
+      - Tổng quan về quản trị hệ thống IT.
+      - Tôi muốn biết về quản trị hệ thống IT.
+      - Quản trị hệ thống IT bao gồm những gì?
+
+  - intent: define_information_tester
+    examples: |
+      - Tester là gì?
+      - Cho tôi thông tin về tester.
+      - Công việc của một tester là gì?
+      - Khái niệm về tester?
+      - Tester làm những gì?
+      - Tổng quan về tester.
+      - Tôi muốn biết về tester.
+      - Tester bao gồm những gì?
+
+  - intent: define_information_qa
+    examples: |
+      - QA là gì?
+      - Cho tôi thông tin về Quality Assurance.
+      - Công việc của một QA là gì?
+      - Khái niệm về Quality Assurance?
+      - QA làm những gì?
+      - Tổng quan về QA.
+      - Tôi muốn biết về QA.
+      - QA bao gồm những gì?
+
+  - intent: define_information_qc
+    examples: |
+      - QC là gì?
+      - Cho tôi thông tin về Quality Control.
+      - Công việc của một QC là gì?
+      - Khái niệm về Quality Control?
+      - QC làm những gì?
+      - Tổng quan về QC.
+      - Tôi muốn biết về QC.
+      - QC bao gồm những gì?
+
+  - intent: define_information_data_engineer
+    examples: |
+      - Data Engineer là gì?
+      - Cho tôi thông tin về Data Engineer.
+      - Công việc của một Data Engineer là gì?
+      - Khái niệm về Data Engineer?
+      - Data Engineer làm những gì?
+      - Tổng quan về Data Engineer.
+      - Tôi muốn biết về Data Engineer.
+      - Data Engineer bao gồm những gì?
+
+  - intent: define_information_product_manager
+    examples: |
+      - Product Manager là gì?
+      - Cho tôi thông tin về Product Manager.
+      - Công việc của một Product Manager là gì?
+      - Khái niệm về Product Manager?
+      - Product Manager làm những gì?
+      - Tổng quan về Product Manager.
+      - Tôi muốn biết về Product Manager.
+      - Product Manager bao gồm những gì?
+
+  - intent: write_job_application_email
+    examples: |
+      - Cách viết email xin việc chuẩn
+      - Làm thế nào để viết email xin việc đúng chuẩn?
+      - Mẫu email xin việc chuẩn
+      - Viết email xin việc như thế nào?
+      - Hướng dẫn viết email xin việc
+      - Tôi cần viết email xin việc như thế nào?
+      - Email xin việc cần những gì?
+      - Làm sao để viết email xin việc?
+
+  - intent: introduce_yourself_in_interview
+    examples: |
+      - Hướng dẫn cách giới thiệu bản thân khi phỏng vấn
+      - Làm sao để giới thiệu bản thân trong buổi phỏng vấn?
+      - Tôi nên nói gì khi giới thiệu bản thân lúc phỏng vấn?
+      - Cách giới thiệu bản thân khi đi phỏng vấn?
+      - Mẫu giới thiệu bản thân trong buổi phỏng vấn
+      - Giới thiệu bản thân như thế nào để gây ấn tượng khi phỏng vấn?
+      - Những điều cần nói khi giới thiệu bản thân lúc phỏng vấn?
+
+  - intent: common_interview_questions
+    examples: |
+      - Những câu hỏi phỏng vấn thường gặp là gì?
+      - Các câu hỏi phổ biến trong buổi phỏng vấn?
+      - Những câu hỏi nào thường được hỏi khi phỏng vấn?
+      - Tôi cần chuẩn bị câu hỏi gì cho buổi phỏng vấn?
+      - Câu hỏi phỏng vấn thường gặp?
+      - Tôi sẽ được hỏi gì khi phỏng vấn?
+      - Các câu hỏi phỏng vấn phổ biến là gì?
+      - Những câu hỏi phỏng vấn phổ biến?
+
+  - intent: disappearing_jobs_in_future
+    examples: |
+      - Những ngành nghề nào sẽ biến mất trong tương lai?
+      - Các công việc nào có nguy cơ biến mất trong tương lai?
+      - Ngành nghề nào sẽ không còn tồn tại trong tương lai?
+      - Những công việc nào sẽ bị thay thế bởi công nghệ?
+      - Ngành nghề nào sẽ bị loại bỏ trong vài năm tới?
+      - Công việc nào có thể biến mất do sự phát triển của AI và tự động hóa?
+      - Các ngành nghề nào sẽ bị công nghệ thay thế?
+
+  - intent: flutter_developer_demand
+    examples: |
+      - Tỷ lệ lập trình viên Flutter như thế nào?
+      - Nhu cầu tuyển dụng lập trình viên Flutter hiện nay ra sao?
+      - Có nhiều công ty cần lập trình viên Flutter không?
+      - Tỷ lệ lập trình viên Flutter so với các nền tảng khác?
+      - Thị trường việc làm cho lập trình viên Flutter như thế nào?
+      - Lập trình viên Flutter có được nhiều công ty tìm kiếm không?
+      - Nhu cầu của thị trường về lập trình viên Flutter?
+
+  - intent: react_developer_demand
+    examples: |
+      - Tỷ lệ lập trình viên React như thế nào?
+      - Nhu cầu tuyển dụng lập trình viên React hiện nay ra sao?
+      - Có nhiều công ty cần lập trình viên React không?
+      - Tỷ lệ lập trình viên React so với các nền tảng khác?
+      - Thị trường việc làm cho lập trình viên React như thế nào?
+      - Lập trình viên React có được nhiều công ty tìm kiếm không?
+      - Nhu cầu của thị trường về lập trình viên React?
+
+  - intent: java_developer_demand
+    examples: |
+      - Tỷ lệ lập trình viên Java như thế nào?
+      - Nhu cầu tuyển dụng lập trình viên Java hiện nay ra sao?
+      - Có nhiều công ty cần lập trình viên Java không?
+      - Tỷ lệ lập trình viên Java so với các ngôn ngữ khác?
+      - Thị trường việc làm cho lập trình viên Java như thế nào?
+      - Lập trình viên Java có được nhiều công ty tìm kiếm không?
+      - Nhu cầu của thị trường về lập trình viên Java?
+
+  - intent: python_developer_demand
+    examples: |
+      - Tỷ lệ lập trình viên Python như thế nào?
+      - Nhu cầu tuyển dụng lập trình viên Python hiện nay ra sao?
+      - Có nhiều công ty cần lập trình viên Python không?
+      - Tỷ lệ lập trình viên Python so với các ngôn ngữ khác?
+      - Thị trường việc làm cho lập trình viên Python như thế nào?
+      - Lập trình viên Python có được nhiều công ty tìm kiếm không?
+      - Nhu cầu của thị trường về lập trình viên Python?
+
+  - intent: nodejs_developer_demand
+    examples: |
+      - Tỷ lệ lập trình viên Node.js như thế nào?
+      - Nhu cầu tuyển dụng lập trình viên Node.js hiện nay ra sao?
+      - Có nhiều công ty cần lập trình viên Node.js không?
+      - Tỷ lệ lập trình viên Node.js so với các ngôn ngữ khác?
+      - Thị trường việc làm cho lập trình viên Node.js như thế nào?
+      - Lập trình viên Node.js có được nhiều công ty tìm kiếm không?
+      - Nhu cầu của thị trường về lập trình viên Node.js?
+
+  - intent: csharp_developer_demand
+    examples: |
+      - Tỷ lệ lập trình viên C# như thế nào?
+      - Nhu cầu tuyển dụng lập trình viên C# hiện nay ra sao?
+      - Có nhiều công ty cần lập trình viên C# không?
+      - Tỷ lệ lập trình viên C# so với các ngôn ngữ khác?
+      - Thị trường việc làm cho lập trình viên C# như thế nào?
+      - Lập trình viên C# có được nhiều công ty tìm kiếm không?
+      - Nhu cầu của thị trường về lập trình viên C#
+
+  - intent: cpp_developer_demand
+    examples: |
+      - Tỷ lệ lập trình viên C++ như thế nào?
+      - Nhu cầu tuyển dụng lập trình viên C++ hiện nay ra sao?
+      - Có nhiều công ty cần lập trình viên C++ không?
+      - Tỷ lệ lập trình viên C++ so với các ngôn ngữ khác?
+      - Thị trường việc làm cho lập trình viên C++ như thế nào?
+      - Lập trình viên C++ có được nhiều công ty tìm kiếm không?
+      - Nhu cầu của thị trường về lập trình viên C++?
+
+  - intent: interview_preparation
+    examples: |
+      - Nên chuẩn bị gì trước khi đi phỏng vấn?
+      - Tôi cần làm gì trước khi đi phỏng vấn?
+      - Chuẩn bị những gì cho buổi phỏng vấn?
+      - Trước khi phỏng vấn, tôi nên làm gì?
+      - Cần chuẩn bị gì khi phỏng vấn?
+      - Mình phải chuẩn bị những gì trước buổi phỏng vấn?
+      - Tôi nên chuẩn bị gì cho cuộc phỏng vấn sắp tới?
+      - Trước khi đi phỏng vấn cần làm gì?
+      - Những điều cần chuẩn bị trước buổi phỏng vấn?
+
+  - intent: create_impressive_cv
+    examples: |
+      - Làm thế nào để tạo một CV ấn tượng?
+      - Tôi nên làm gì để CV của mình nổi bật?
+      - Mẹo để làm CV ấn tượng?
+      - Làm sao để có một CV thu hút nhà tuyển dụng?
+      - Cách viết CV ấn tượng?
+      - CV của tôi cần có những gì để nổi bật?
+      - Hướng dẫn tạo CV ấn tượng
+      - Cách tạo CV tốt nhất?
+      - Tôi muốn làm CV ấn tượng, phải làm sao?
+
+  - intent: interview_questions_preparation
+    examples: |
+      - Cần phải chuẩn bị những câu hỏi nào cho cuộc phỏng vấn?
+      - Tôi nên hỏi gì khi đi phỏng vấn?
+      - Những câu hỏi nên hỏi nhà tuyển dụng trong buổi phỏng vấn?
+      - Hỏi gì khi phỏng vấn?
+      - Tôi cần chuẩn bị câu hỏi gì cho cuộc phỏng vấn?
+      - Nên đặt câu hỏi nào khi phỏng vấn?
+      - Những câu hỏi quan trọng khi đi phỏng vấn?
+      - Cần hỏi nhà tuyển dụng những gì?
+      - Tôi nên hỏi nhà tuyển dụng câu gì?
+
+  - intent: research_company_before_interview
+    examples: |
+      - Làm thế nào để tìm hiểu về một công ty trước khi phỏng vấn?
+      - Tôi nên làm gì để tìm hiểu về công ty trước buổi phỏng vấn?
+      - Cách tìm hiểu về công ty trước khi phỏng vấn?
+      - Nên xem xét thông tin gì về công ty trước khi đi phỏng vấn?
+      - Làm sao để nghiên cứu về công ty trước khi phỏng vấn?
+      - Tìm hiểu về công ty như thế nào trước buổi phỏng vấn?
+      - Cần xem những thông tin gì về công ty trước khi phỏng vấn?
+      - Tôi nên tìm hiểu gì về công ty trước khi đi phỏng vấn?
+
+  - intent: interview_questions_to_understand_job_and_environment
+    examples: |
+      - Có những câu hỏi nào tôi nên đặt trong cuộc phỏng vấn để hiểu vị trí công việc và môi trường làm việc?
+      - Tôi nên hỏi gì để hiểu rõ hơn về vị trí công việc?
+      - Nên hỏi nhà tuyển dụng những gì để biết thêm về môi trường làm việc?
+      - Cần hỏi những câu hỏi gì trong buổi phỏng vấn để hiểu rõ công việc?
+      - Tôi nên đặt câu hỏi gì để biết về môi trường làm việc?
+      - Những câu hỏi để hiểu thêm về vị trí ứng tuyển và môi trường làm việc?
+      - Hỏi gì để tìm hiểu về công việc và môi trường làm việc?
+
+  - intent: popular_technologies_da_nang
+    examples: |
+      - Các công nghệ đang phổ biến ở Đà Nẵng.
+      - Công nghệ nào đang thịnh hành ở Đà Nẵng?
+      - Cho tôi biết các công nghệ mới nhất tại Đà Nẵng.
+      - Những công nghệ nào được sử dụng nhiều ở Đà Nẵng?
+      - Các xu hướng công nghệ ở Đà Nẵng hiện nay là gì?
+      - Đà Nẵng đang sử dụng những công nghệ gì?
+      - Công nghệ phổ biến nhất tại Đà Nẵng là gì?
+      - Các công nghệ hàng đầu ở Đà Nẵng hiện nay là gì?
+      - Ngành CNTT ở Đà Nẵng sử dụng những công nghệ nào?
+      - Công nghệ nào được áp dụng nhiều nhất tại Đà Nẵng?
+
+  - intent: current_technology_trends
+    examples: |
+      - Xu hướng công nghệ hiện nay.
+      - Các xu hướng công nghệ mới nhất là gì?
+      - Công nghệ nào đang là xu hướng?
+      - Cho tôi biết về các xu hướng công nghệ hiện nay.
+      - Những xu hướng công nghệ mới hiện nay là gì?
+      - Các xu hướng công nghệ phổ biến hiện nay.
+      - Công nghệ nào đang thịnh hành?
+      - Xu hướng công nghệ năm nay là gì?
+      - Xu hướng phát triển công nghệ hiện tại.
+      - Những xu hướng công nghệ hàng đầu hiện nay.
+
+  - intent: frontend_developer_roadmap
+    examples: |
+      - Lộ trình để trở thành frontend chuyên sâu.
+      - Làm thế nào để trở thành một frontend developer chuyên sâu?
+      - Tôi cần lộ trình học để trở thành một chuyên gia frontend.
+      - Các bước để trở thành một frontend developer chuyên sâu là gì?
+      - Làm sao để học frontend chuyên sâu?
+      - Hướng dẫn lộ trình học frontend chi tiết.
+      - Lộ trình học frontend developer chuyên sâu như thế nào?
+      - Các kỹ năng cần có để trở thành frontend chuyên sâu là gì?
+      - Học gì để trở thành frontend chuyên sâu?
+      - Các bước để trở thành một chuyên gia frontend.
+
+  - intent: backend_developer_roadmap
+    examples: |
+      - Lộ trình để trở thành backend developer.
+      - Làm thế nào để trở thành một backend developer?
+      - Tôi cần lộ trình học để trở thành một chuyên gia backend.
+      - Các bước để trở thành một backend developer là gì?
+      - Làm sao để học backend?
+      - Hướng dẫn lộ trình học backend chi tiết.
+      - Lộ trình học backend developer như thế nào?
+      - Các kỹ năng cần có để trở thành backend developer là gì?
+      - Học gì để trở thành backend developer?
+      - Các bước để trở thành một chuyên gia backend.
+
+  - intent: fullstack_developer_roadmap
+    examples: |
+      - Lộ trình để trở thành fullstack developer.
+      - Làm thế nào để trở thành một fullstack developer?
+      - Tôi cần lộ trình học để trở thành một chuyên gia fullstack.
+      - Các bước để trở thành một fullstack developer là gì?
+      - Làm sao để học fullstack?
+      - Hướng dẫn lộ trình học fullstack chi tiết.
+      - Lộ trình học fullstack developer như thế nào?
+      - Các kỹ năng cần có để trở thành fullstack developer là gì?
+      - Học gì để trở thành fullstack developer?
+      - Các bước để trở thành một chuyên gia fullstack.
