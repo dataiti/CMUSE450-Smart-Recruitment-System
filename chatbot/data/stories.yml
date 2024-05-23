@@ -98,7 +98,7 @@ stories:
 
   - story: ask programmer definition
     steps:
-      - intent: idefine_information_programmer
+      - intent: define_information_programmer
       - action: utter_define_information_programmer  
 
   - story: ask definition of business intelligence analysis
@@ -256,7 +256,3 @@ stories:
       - intent: fullstack_developer_roadmap
       - action: utter_fullstack_developer_roadmap
                                                                          
-  - story: ask fullstack developer roadmap
-    steps:
-      - intent: fullstack_developer_roadmap
-      - action: utter_fullstack_developer_roadmap

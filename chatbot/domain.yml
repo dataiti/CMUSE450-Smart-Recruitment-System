@@ -53,6 +53,7 @@ intents:
   - current_technology_trends
   - frontend_developer_roadmap
   - backend_developer_roadmap
+  - fullstack_developer_roadmap
 
 entities:
   - cust_name
@@ -509,7 +510,6 @@ responses:
           Dưới đây là một số câu hỏi phỏng vấn thường gặp mà bạn có thể chuẩn bị trước:
           1. Giới thiệu về bản thân:
           - Mẹo: Tóm tắt ngắn gọn về học vấn, kinh nghiệm làm việc và kỹ năng nổi bật của bạn.
-
           2. Tại sao bạn muốn làm việc tại công ty chúng tôi?
           - "Tại sao bạn chọn công ty chúng tôi?"
           - Mẹo: Tìm hiểu kỹ về công ty và nêu rõ lý do tại sao bạn phù hợp với văn hóa và mục tiêu của công ty.
