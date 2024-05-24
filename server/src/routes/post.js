@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   postById,
+  getPost,
   getPosts,
   createPost,
   deletePost,
@@ -12,6 +13,7 @@ const { uploadCloud } = require("../configs/cloudinaryConfig");
 
 const router = express.Router();
 
+router.get("/get-post-detail/:postId", getPost);
 router.get("/get-posts", getPosts);
 router.post("/create-post", uploadCloud.array("images"), createPost);
 router.put("/update-post/:postId", uploadCloud.array("images"), updatePost);

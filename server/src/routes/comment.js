@@ -11,10 +11,10 @@ const { postById } = require("../controllers/post");
 
 const router = express.Router();
 
-router.get("/get-comments-by-post/:commentId", getCommentsByPost);
+router.get("/get-comments-by-post/:postId", getCommentsByPost);
 router.post("/create-comment/:postId", createComment);
 router.post("/reply-comment/:postId/:commentId", replyToComment);
-router.put("/update-comment/:postId/:commentId", createComment);
+// router.put("/update-comment/:postId/:commentId", createComment);
 router.delete("/delete-comment/:postId/:commentId", deleteComment);
 
 router.param("commentId", commentById);

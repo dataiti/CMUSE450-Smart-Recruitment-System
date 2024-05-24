@@ -10,26 +10,9 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Employer",
     },
-    title: {
-      type: String,
-      required: true,
-    },
     content: {
       type: String,
       required: true,
-    },
-    hashtag: {
-      type: Array,
-      default: [],
-    },
-    link: {
-      type: String,
-    },
-    pdfFile: {
-      type: String,
-    },
-    pdfName: {
-      type: String,
     },
     imagesId: [
       {
