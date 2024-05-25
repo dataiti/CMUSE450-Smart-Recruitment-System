@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
 
 const Post = require("../models/post");
+const Job = require("../models/job");
 
 const postById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -168,7 +169,20 @@ const updatePost = asyncHandler(async (req, res) => {
   });
 });
 
-const getListPostForEmployer = asyncHandler(async (req, res) => {});
+const getListPostForEmployer = asyncHandler(async (req, res) => {
+  const posts = await Post.find({ employerId: req.employer._id }).populate(
+    "employerId",
+    "companyLogo comanyName companyEmail"
+  );
+
+  if (!posts) throw new Error("list post is not found");
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list post for employer sucessfully",
+    data: posts,
+  });
+});
 
 const toggleLikePost = asyncHandler(async (req, res) => {
   const { userId } = req.body;

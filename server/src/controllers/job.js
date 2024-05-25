@@ -210,6 +210,7 @@ const getListSearchJobs = asyncHandler(async (req, res) => {
       .filter((q) => q)
       .join("|");
   const limit = query.limit > 0 ? Number(query.limit) : 8;
+  const currentDate = new Date();
 
   const filterArgs = {
     $or: [
@@ -220,6 +221,7 @@ const getListSearchJobs = asyncHandler(async (req, res) => {
     isHiring: true,
     status: "active",
     isLocked: false,
+    applicationDeadline: { $gte: currentDate },
   };
 
   const countJobs = await Job.countDocuments(filterArgs);
@@ -270,6 +272,8 @@ const getListJobsByKeyword = asyncHandler(async (req, res) => {
   const salaryTo =
     query.salaryTo && query.salaryTo > 0 ? Number(query.salaryTo) : -1;
 
+  const currentDate = new Date();
+
   const filterArgs = {
     $or: [
       { recruitmentCampaignName: { $regex: regex, $options: "i" } },
@@ -282,6 +286,7 @@ const getListJobsByKeyword = asyncHandler(async (req, res) => {
     isHiring: true,
     status: "active",
     isLocked: false,
+    applicationDeadline: { $gte: currentDate },
   };
 
   if (industryArr !== -1) filterArgs.industry = { $in: industryArr };
@@ -332,7 +337,7 @@ const getListJobs = asyncHandler(async (req, res) => {
     .split(" ")
     .filter((q) => q)
     .join("|");
-  const sortBy = query.sortBy || "-_id";
+  const sortBy = query.sortBy || "-createdAt";
   const orderBy = ["asc", "desc"].includes(query.orderBy)
     ? query.orderBy
     : "asc";
@@ -427,7 +432,7 @@ const getListJobs = asyncHandler(async (req, res) => {
     listJobs = listJobs.slice(skip, skip + limit);
   } else {
     listJobs = await Job.find(filterArgs)
-      .sort({ [sortBy]: orderBy, _id: -1 })
+      .sort({ [sortBy]: orderBy, _id: 1 })
       .skip(skip)
       .limit(limit)
       .populate("workRegion")
