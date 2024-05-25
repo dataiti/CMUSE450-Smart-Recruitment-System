@@ -9,16 +9,18 @@ import { TypographyCustom } from "../shares";
 import { icons } from "../../utils/icons";
 import { LineChart } from "../charts";
 
-const Message = ({ message, onClickRecommentQuestion }) => {
+const Message = ({ sender, message, onClickRecommentQuestion }) => {
   const { user } = useSelector(authSelect);
 
   return (
     <div
       className={`flex w-full   ${
-        user?._id !== message?.senderId?._id ? "justify-start " : "justify-end "
+        user?._id !== message?.senderId?._id || sender === "bot"
+          ? "justify-start "
+          : "justify-end "
       }`}
     >
-      {user?._id !== message?.senderId?._id ? (
+      {user?._id !== message?.senderId?._id || sender === "bot" ? (
         <div className="flex gap-1 w-full">
           <Avatar
             src={images.chatbotavatar}
@@ -29,7 +31,7 @@ const Message = ({ message, onClickRecommentQuestion }) => {
             <div className="group flex items-center gap-1 ">
               <Typography
                 className={`whitespace-pre-line text-sm max-w-[80%] font-semibold p-3 rounded-bl-xl rounded-br-xl ${
-                  user?._id !== message?.senderId?._id
+                  user?._id !== message?.senderId?._id || sender === "bot"
                     ? "bg-white text-blue-gray-800 rounded-tl-sm rounded-tr-xl"
                     : "bg-blue-gray-800 text-white rounded-tr-sm rounded-tl-xl"
                 }`}
@@ -75,19 +77,15 @@ const Message = ({ message, onClickRecommentQuestion }) => {
                   <img src={message?.image} alt="" className=" object-cover" />
                 </div>
               )}
-              {message?.charts && (
+              {message?.charts?.length > 0 && (
                 <div className="flex flex-col gap-1 ">
-                  {message?.charts?.map((chart) => {
-                    return (
-                      <div className="p-2 rounded-md bg-white">
-                        <LineChart data={chart} className="text-black" />
-                      </div>
-                    );
-                  })}
+                  <div className="p-2 rounded-md bg-white">
+                    <LineChart data={message?.charts} className="text-black" />
+                  </div>
                 </div>
               )}
               {message?.jobs && (
-                <div className="max-w-[80%] flex flex-col gap-1">
+                <div className="max-w-[100%] flex flex-col gap-1">
                   {message?.jobs?.map((job) => {
                     return (
                       <Link
@@ -98,22 +96,27 @@ const Message = ({ message, onClickRecommentQuestion }) => {
                         <img
                           src={job?.companyLogo}
                           alt=""
-                          className="h-20 w-20 flex-none bg-blue-gray-200 rounded-md"
+                          className="h-20 w-20 flex-none bg-blue-gray-200 rounded-md border border-blue-gray-200"
                         />
                         <div className="flex flex-col gap-1">
                           <TypographyCustom text={job?.recruitmentTitle} />
-                          <ul className="flex items-center gap-1 flex-wrap">
-                            {job?.skills?.slice(0, 6)?.map((skill, index) => {
-                              return (
-                                <li
-                                  key={index}
-                                  className="text-xs px-2 py-1 group group-hover:bg-white bg-indigo-50 text-indigo-500 rounded-full"
-                                >
-                                  {skill}
-                                </li>
-                              );
-                            })}
-                          </ul>
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs px-2 py-1 group group-hover:bg-white bg-red-50 text-red-500 rounded-full">
+                              {job?.level}
+                            </span>
+                            <ul className="flex items-center gap-1 flex-wrap">
+                              {job?.skills?.slice(0, 6)?.map((skill, index) => {
+                                return (
+                                  <li
+                                    key={index}
+                                    className="text-xs px-2 py-1 group group-hover:bg-white bg-indigo-50 text-indigo-500 rounded-full"
+                                  >
+                                    {skill}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
                         </div>
                       </Link>
                     );
@@ -121,7 +124,7 @@ const Message = ({ message, onClickRecommentQuestion }) => {
                 </div>
               )}
               {message?.buttons && (
-                <div className="flex flex-col gap-1 justify-items-start">
+                <div className="flex flex-col gap-1 justify-items-start mt-1">
                   {message?.buttons.map((buttonItem, index) => (
                     <div key={index}>
                       {buttonItem?.url ? (
@@ -135,7 +138,7 @@ const Message = ({ message, onClickRecommentQuestion }) => {
                           </span>
                           <TypographyCustom
                             text={buttonItem?.url}
-                            className="text-xs text-light-green-600"
+                            className="text-xs text-light-green-600 name"
                           />
                         </Link>
                       ) : (

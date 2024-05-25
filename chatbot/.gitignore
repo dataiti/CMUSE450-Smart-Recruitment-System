@@ -1,2 +1,2 @@
 # Ignore Rasa cache
-chatbot/.rasa/cache/
+/.rasa

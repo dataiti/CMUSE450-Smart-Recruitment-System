@@ -27,9 +27,14 @@ const commentById = asyncHandler(async (req, res, next, id) => {
 });
 
 const getCommentsByPost = asyncHandler(async (req, res) => {
-  const comments = await Comment.find({ post: req.post._id }).populate(
-    "userId replies"
+  const comments = await Comment.find({ postId: req.params.postId }).populate(
+    "userId",
+    "firstName lastName avatar"
   );
+
+  for (let comment of comments) {
+    await populateReplies(comment);
+  }
 
   return res.status(200).json({
     success: true,

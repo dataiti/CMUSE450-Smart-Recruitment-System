@@ -69,7 +69,7 @@ const Header = () => {
       userId: user?._id,
       keyword: searchDobouceValue || "",
     },
-    { refetchOnMountOrArgChange: true }
+    { skip: !user?._id, refetchOnMountOrArgChange: true }
   );
 
   const [deleteSearch] = useDeleteSearchMutation();

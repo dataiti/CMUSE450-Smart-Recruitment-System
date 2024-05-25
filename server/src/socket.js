@@ -170,6 +170,8 @@ const socket = async (socket, io) => {
 
       if (!user || !employer) return;
 
+      console.log(employer.followerIds);
+
       if (employer.followerIds.includes(userId)) return;
 
       employer.followerIds.push(userId);
@@ -193,6 +195,8 @@ const socket = async (socket, io) => {
 
       if (!user || !employer) return;
 
+      console.log(employer.followerIds);
+
       if (!employer.followerIds.includes(userId)) return;
 
       employer.followerIds = employer.followerIds.filter(
@@ -200,7 +204,7 @@ const socket = async (socket, io) => {
       );
       await employer.save();
 
-      user.employersFollowing = user.followingIds.filter(
+      user.followingIds = user.followingIds.filter(
         (employer) => employer.toString() !== employerId.toString()
       );
       await user.save();

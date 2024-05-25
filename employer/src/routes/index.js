@@ -15,7 +15,6 @@ import {
   RecruitProcessPage,
   MySchedulePage,
   SearchCandidatePage,
-  ForumPage,
 } from "../pages";
 import { ProtectedRoutes } from "../components/shares";
 import ListResumes from "../pages/resume/ListResumes";
@@ -98,10 +97,6 @@ const routers = [
           {
             path: "/search-candidate",
             element: <SearchCandidatePage />,
-          },
-          {
-            path: "/forum",
-            element: <ForumPage />,
           },
         ],
       },

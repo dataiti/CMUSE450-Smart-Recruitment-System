@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
 
 const Post = require("../models/post");
+const Job = require("../models/job");
 
 const postById = asyncHandler(async (req, res, next, id) => {
   const isValidId = mongoose.Types.ObjectId.isValid(id);
@@ -14,7 +15,9 @@ const postById = asyncHandler(async (req, res, next, id) => {
     });
   }
 
-  const post = await Post.findById(id);
+  const post = await Post.findById(id)
+    .populate("userId", "avatar firstName lastName email")
+    .populate("employerId", "companyLogo companyName companyIndustry email");
 
   if (!post)
     return res.status(400).json({
@@ -26,6 +29,14 @@ const postById = asyncHandler(async (req, res, next, id) => {
   next();
 });
 
+const getPost = asyncHandler(async (req, res) => {
+  return res.status(200).json({
+    sucess: true,
+    message: "Get post detail is successfully",
+    data: req.post,
+  });
+});
+
 const getPosts = asyncHandler(async (req, res) => {
   const { query } = req;
   const search = query.search ? query.search : "";
@@ -34,7 +45,7 @@ const getPosts = asyncHandler(async (req, res) => {
     .filter((q) => q)
     .join("|");
 
-  const limit = query.limit > 0 ? Number(query.limit) : 12;
+  const limit = query.limit > 0 ? Number(query.limit) : 10;
 
   const twoDaysAgo = new Date();
   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
@@ -47,10 +58,11 @@ const getPosts = asyncHandler(async (req, res) => {
     createdAt: { $gte: twoDaysAgo },
   };
 
-  if (search) filterArgs.search = { $in: hashtag };
-
   const posts = await Post.find(filterArgs)
     .limit(limit)
+    .sort({ createdAt: -1 })
+    .populate("userId", "avatar firstName lastName email")
+    .populate("employerId", "companyLogo companyName companyIndustry email")
     .populate("likes", "avatar firstName lastName")
     .populate("comments");
 
@@ -62,17 +74,21 @@ const getPosts = asyncHandler(async (req, res) => {
 });
 
 const createPost = asyncHandler(async (req, res) => {
-  const { userId, title, content, hashtag } = req.body;
+  const { userId, employerId, content } = req.body;
+
+  if (!req.files || !Array.isArray(req.files)) {
+    return res.status(400).json({ error: "No files were uploaded." });
+  }
+
   const images = req.files.map((item) => item.path);
   const imagesId = req.files.map((item) => item.filename);
 
-  if (!userId || !title || !content) throw new Error("All field are required");
+  if (!content) throw new Error("All field are required");
 
   const newPost = new Post({
     userId,
-    title,
+    employerId,
     content,
-    hashtag,
     images,
     imagesId,
   });
@@ -99,9 +115,11 @@ const deletePost = asyncHandler(async (req, res) => {
 
   if (!deletePost) throw new Error("Delete post is fail");
 
-  images.forEach(async (image) => {
-    await cloudinary.uploader.destroy(image);
-  });
+  if (req.post.images) {
+    req.post.images.forEach(async (image) => {
+      await cloudinary.uploader.destroy(image);
+    });
+  }
 
   return res.status(200).json({
     success: true,
@@ -140,12 +158,29 @@ const updatePost = asyncHandler(async (req, res) => {
       },
     },
     { new: true }
-  );
+  )
+    .populate("userId", "avatar firstName lastName email")
+    .populate("employerId", "companyLogo companyName companyIndustry email");
 
   return res.status(200).json({
     success: true,
     message: "Update post is successfully",
     data: updatePost,
+  });
+});
+
+const getListPostForEmployer = asyncHandler(async (req, res) => {
+  const posts = await Post.find({ employerId: req.employer._id }).populate(
+    "employerId",
+    "companyLogo comanyName companyEmail"
+  );
+
+  if (!posts) throw new Error("list post is not found");
+
+  return res.status(200).json({
+    success: true,
+    message: "Get list post for employer sucessfully",
+    data: posts,
   });
 });
 
@@ -173,9 +208,11 @@ const toggleLikePost = asyncHandler(async (req, res) => {
 
 module.exports = {
   postById,
+  getPost,
   getPosts,
   createPost,
   deletePost,
   updatePost,
   toggleLikePost,
+  getListPostForEmployer,
 };

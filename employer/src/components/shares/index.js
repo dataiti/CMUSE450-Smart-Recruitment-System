@@ -23,6 +23,7 @@ import EvaluateSuitableCandidate from "./EvaluateSuitableCandidate";
 import SkillTags from "./SkillTags";
 import ZoomMeeting from "./ZoomMeeting";
 import BoxChat from "./BoxChat";
+import CarouselCustom from "./CarouselCustom";
 
 export {
   ButtonCustom,
@@ -50,4 +51,5 @@ export {
   SkillTags,
   ZoomMeeting,
   BoxChat,
+  CarouselCustom,
 };

@@ -30,11 +30,6 @@ export const menuItems = [
     icon: <icons.BsMessenger size={20} />,
   },
   {
-    to: "/forum",
-    label: "Diễn đàn",
-    icon: <icons.MdImagesearchRoller size={20} />,
-  },
-  {
     to: "/my-schedule",
     label: "Lịch trình",
     icon: <icons.BsCalendar3 size={20} />,
@@ -149,30 +144,15 @@ export const jobPositionOptions = [
   { id: 1, value: "Front-end Developer" },
   { id: 2, value: "Back-end Developer" },
   { id: 3, value: "Full-stack Developer" },
-  { id: 4, value: "Mobile App Developer" },
   { id: 5, value: "Game Developer" },
   { id: 6, value: "UI/UX Designer" },
-  { id: 7, value: "Graphic Designer" },
-  { id: 8, value: "Web Designer" },
-  { id: 9, value: "System Administrator" },
-  { id: 10, value: "Network Administrator" },
-  { id: 11, value: "Database Administrator (DBA)" },
-  { id: 12, value: "Security Analyst" },
   { id: 14, value: "Project Manager" },
   { id: 15, value: "Scrum Master" },
-  { id: 16, value: "Product Owner" },
   { id: 17, value: "Data Analyst" },
-  { id: 18, value: "Data Scientist" },
-  { id: 19, value: "Software Engineer" },
-  { id: 20, value: "Quality Assurance (QA) Engineer" },
   { id: 21, value: "Tester" },
-  { id: 22, value: "IT Infrastructure Manager" },
-  { id: 23, value: "Cloud Architect" },
   { id: 24, value: "DevOps Engineer" },
   { id: 25, value: "Systems Analyst" },
   { id: 26, value: "Business Analyst" },
-  { id: 27, value: "Data Manager" },
-  { id: 28, value: "Database Developer" },
   { id: 29, value: "iOS Developer" },
   { id: 30, value: "Android Developer" },
   { id: 31, value: "Khác" },
@@ -180,18 +160,19 @@ export const jobPositionOptions = [
 
 export const companyIndustryOptions = [
   { id: 1, value: "Phát triển phần mềm" },
-  { id: 2, value: "An ninh mạng" },
-  { id: 3, value: "Quản trị hệ thống" },
-  { id: 4, value: "Thiết kế giao diện người dùng" },
-  { id: 5, value: "Học máy và Trí tuệ nhân tạo" },
-  { id: 6, value: "Quản lý dự án phần mềm" },
-  { id: 7, value: "Lập trình di động" },
+  { id: 2, value: "Gia công phần mềm" },
+  { id: 3, value: "Trí tuệ nhân tạo (AI)" },
+  { id: 4, value: "Blockchain" },
+  { id: 5, value: "Dịch vụ đám mây (Cloud)" },
+  { id: 6, value: "Internet of Things (IoT)" },
+  { id: 7, value: "Tư vấn công nghệ" },
+  { id: 8, value: "Khác" },
 ];
 
 export const jobTypeOptions = [
   { id: 1, value: "Toàn thời gian" },
   { id: 2, value: "Bán thời gian" },
-  { id: 3, value: "Thực tập" },
+  { id: 3, value: "Từ xa" },
 ];
 
 export const currencyTypeOptions = [
@@ -207,14 +188,13 @@ export const salaryTypeOptions = [
 ];
 
 export const levelOptions = [
-  { id: 1, value: "Nhân viên" },
-  { id: 2, value: "Trưởng nhóm" },
-  { id: 3, value: "Trưởng / Phó phòng" },
-  { id: 4, value: "Quản lý / Giám sát" },
-  { id: 5, value: "Trưởng chi nhánh" },
-  { id: 6, value: "Phó giám đốc" },
-  { id: 7, value: "Giám đốc" },
-  { id: 8, value: "Thực tập sinh" },
+  { id: 1, value: "Internship" },
+  { id: 2, value: "Fresher" },
+  { id: 3, value: "Junior" },
+  { id: 4, value: "Middle" },
+  { id: 5, value: "Senior" },
+  { id: 6, value: "Manager" },
+  { id: 7, value: "Khác" },
 ];
 
 export const tableHeadJob = [

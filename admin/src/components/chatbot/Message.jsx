@@ -10,13 +10,13 @@ import { TypographyCustom } from "../shares";
 import { Link } from "react-router-dom";
 import LineChart from "../charts/LineChart";
 
-const Message = ({ message, onClickRecommentQuestion }) => {
+const Message = ({ sender, message, onClickRecommentQuestion }) => {
   const { user } = useSelector(authSelect);
 
   return (
     <div
       className={`flex w-full  ${
-        user?._id !== message?.senderId?._id ? "justify-start " : "justify-end "
+        user?._id !== message?.senderId?._id ? "justify-start " : "justify-end"
       }`}
     >
       {user?._id !== message?.senderId?._id ? (
@@ -24,17 +24,17 @@ const Message = ({ message, onClickRecommentQuestion }) => {
           <Avatar
             src={
               message?.senderId === "bot"
-                ? images.chatbotavatar
+                ? images?.chatbotavatar
                 : message?.senderId?.avatar
             }
             alt=""
             className="h-10 w-10"
           />
-          <div className="flex flex-col gap-2 max-w-[70%]">
+          <div className="flex flex-col gap-2 max-w-[80%]">
             <div>
               <Typography
                 className={`whitespace-pre-line text-sm font-semibold p-3 rounded-bl-xl rounded-br-xl ${
-                  user?._id !== message?.senderId?._id
+                  user?._id !== message?.senderId?._id || sender === "bot"
                     ? "bg-white text-blue-gray-400 rounded-tl-sm rounded-tr-xl"
                     : "bg-blue-gray-800 text-white rounded-tr-sm rounded-tl-xl"
                 }`}
@@ -45,7 +45,7 @@ const Message = ({ message, onClickRecommentQuestion }) => {
             <div className="max-w-[70%]">
               {message?.buttons && (
                 <div className="flex flex-col gap-1 justify-items-start">
-                  {message?.buttons.map((buttonItem, index) => (
+                  {message?.buttons?.map((buttonItem, index) => (
                     <div key={index}>
                       <button
                         className="border hover:border-blue-500 flex items-center gap-2 bg-gray-50 px-4 py-3 rounded-full cursor-pointer text-sm text-blue-gray-600 hover:bg-blue-50 transition-all"
@@ -69,8 +69,8 @@ const Message = ({ message, onClickRecommentQuestion }) => {
               )}
               {message?.employers && (
                 <div className="grid grid-cols-3 gap-1">
-                  {message?.employers.map((employer, index) => (
-                    <Link
+                  {message?.employers?.map((employer, index) => (
+                    <div
                       key={index}
                       to={`/company-profile/${employer?._id}`}
                       className="text-blue-gray-600 border hover:border-blue-500  hover:bg-blue-50 transition-all flex items-center gap-1 p-2 rounded-md bg-white"
@@ -86,7 +86,7 @@ const Message = ({ message, onClickRecommentQuestion }) => {
                           className="name"
                         />
                       </div>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               )}
@@ -95,22 +95,18 @@ const Message = ({ message, onClickRecommentQuestion }) => {
                   <img src={message?.image} alt="" className=" object-cover" />
                 </div>
               )}
-              {message?.charts && (
+              {message?.charts?.length > 0 && (
                 <div className="flex flex-col gap-1 ">
-                  {message?.charts?.map((chart) => {
-                    return (
-                      <div className="p-2 rounded-md bg-white">
-                        <LineChart data={chart} className="text-black" />
-                      </div>
-                    );
-                  })}
+                  <div className="p-2 rounded-md bg-white">
+                    <LineChart data={message?.charts} className="text-black" />
+                  </div>
                 </div>
               )}
               {message?.jobs && (
                 <div className="max-w-[80%] flex flex-col gap-1">
                   {message?.jobs?.map((job) => {
                     return (
-                      <Link
+                      <div
                         to={`/job-detail/${job?._id}`}
                         key={job?.recruitmentTitle}
                         className="group cursor-pointer hover:bg-blue-50 border hover:border-blue-500 transition-all flex items-center gap-4 p-2 rounded-md bg-white"
@@ -135,7 +131,7 @@ const Message = ({ message, onClickRecommentQuestion }) => {
                             })}
                           </ul>
                         </div>
-                      </Link>
+                      </div>
                     );
                   })}
                 </div>
@@ -174,8 +170,8 @@ const Message = ({ message, onClickRecommentQuestion }) => {
             )}
             {message?.employers && (
               <div className="grid grid-cols-3 gap-1">
-                {message?.employers.map((employer, index) => (
-                  <Link
+                {message?.employers?.map((employer, index) => (
+                  <div
                     key={index}
                     to={`/company-profile/${employer?._id}`}
                     className="text-blue-gray-600 border hover:border-blue-500  hover:bg-blue-50 transition-all flex items-center gap-1 p-2 rounded-md bg-white"
@@ -191,7 +187,7 @@ const Message = ({ message, onClickRecommentQuestion }) => {
                         className="name"
                       />
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             )}
@@ -200,15 +196,11 @@ const Message = ({ message, onClickRecommentQuestion }) => {
                 <img src={message?.image} alt="" className=" object-cover" />
               </div>
             )}
-            {message?.charts && (
+            {message?.charts?.length > 0 && (
               <div className="flex flex-col gap-1 ">
-                {message?.charts?.map((chart) => {
-                  return (
-                    <div className="p-2 rounded-md bg-white">
-                      <LineChart data={chart} className="text-black" />
-                    </div>
-                  );
-                })}
+                <div className="p-2 rounded-md bg-white">
+                  <LineChart data={message?.charts} className="text-black" />
+                </div>
               </div>
             )}
             {message?.jobs && (

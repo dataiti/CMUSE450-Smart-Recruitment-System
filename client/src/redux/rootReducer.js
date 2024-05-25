@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "./features/slices/authSlice";
 import jobReducer from "./features/slices/jobSlice";
 import messageReducer from "./features/slices/messageSlice";
+import postReducer from "./features/slices/postSlice";
 import { rootApi } from "../configs/rootApi";
 
 const rootPersistConfig = {
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   job: jobReducer,
   message: messageReducer,
+  post: postReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

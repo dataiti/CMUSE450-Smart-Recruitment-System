@@ -1,217 +1,137 @@
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
+from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from pymongo import MongoClient
-import json
 from datetime import datetime
-import requests
-from pymongo.collection import Collection
-from pymongo.errors import ServerSelectionTimeoutError
-from bson.json_util import dumps
-import re
 
-class ActionGetAllUsers(Action):
+# Thông tin kết nối MongoDB
+mongo_url = "mongodb+srv://nguyendat16111210:8SZuXNP8TzhjtGgt@cluster0.pj4bngd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+db_name = "test"
+
+# Kết nối đến MongoDB
+client = MongoClient(mongo_url)
+db = client[db_name]
+
+class ActionSearchJobBySkill(Action):
     def name(self) -> Text:
-        return "action_get_all_users"
+        return "action_search_job_by_skill"
 
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        # Thông tin kết nối MongoDB
-        mongo_url = "mongodb+srv://nguyendat16111210:8SZuXNP8TzhjtGgt@cluster0.pj4bngd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-        db_name = "test"
-
-        # Kết nối đến MongoDB
-        client = MongoClient(mongo_url)
-        db = client[db_name]
-
-        # Truy vấn tất cả documents trong collection "user"
-        cursor = db['users'].find()
-
-        # Gửi thông tin tới người dùng
-        user_data = "\n".join([f"{index + 1}. {document}" for index, document in enumerate(cursor)])
-        dispatcher.utter_message(text=f"Here is the list of all users:\n{user_data}")
-
-        return []
-
-class ActionFindJobAtCompany(Action):
-    def name(self) -> Text:
-        return "action_find_job_at_company"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
+    def run(self, dispatcher: CollectingDispatcher, 
+            tracker: Tracker, 
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        company_entity = next(tracker.get_latest_entity_values("company"), None)
-
-        api_url = f"http://localhost:5000/api/v1/job/get-list-jobs?companyName={company_entity}"
-
         try:
-            response = requests.get(api_url)
+            skill = tracker.get_slot('skill')
+            level = tracker.get_slot('level')
 
-            if response.status_code == 200:
-                data = response.json()
+            print(level)
+            print(skill)
 
-                json_message = {
-                    "response_type": "job_list",
-                    "entities": company_entity,
-                    "jobs": data,
-                }
-                dispatcher.utter_message(json_message=json_message)
-            else:
-                dispatcher.utter_message(text="API trả về mã lỗi không thành công")
-        except Exception as e:
-            dispatcher.utter_message(text="Có lỗi xảy ra khi gọi API")
-
-        return []
-
-
-class ActionListCompanyInSystem(Action):
-    def name(self) -> Text:
-        return "action_list_company_in_system"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        try:
-            mongo_url = "mongodb+srv://nguyendat16111210:8SZuXNP8TzhjtGgt@cluster0.pj4bngd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-            db_name = "test"
-
-            client = MongoClient(mongo_url)
-            db = client[db_name]
-
-            Employer: Collection = db['employers'] 
-
-            employers = Employer.find({}, {"companyName": 1, "companyLogo": 1, "_id": 1})
-
-            company_list = []
-            for company in employers:
-                company_info = {
-                    "_id": str(company["_id"]),
-                    "companyName": company["companyName"],
-                    "companyLogo": company["companyLogo"]
-                }
-                company_list.append(company_info)
+            if skill is None:
+                dispatcher.utter_message(text="Vui lòng cung cấp kỹ năng cần tìm.")
+                return []
             
-            payload = {
-                "type": "employer_list",
-                "text": "Danh sách các công ty đăng ký hoạt động trên hệ thống:",
-                "employers": company_list
+            skill_lower = skill.lower()
+            Job = db['jobs']
+
+            current_date = datetime.now()
+            query = {
+                "$and": [
+                    {"$or": [
+                        {"recruitmentTitle": {"$regex": skill_lower, "$options": "i"}},
+                        {"skills": {"$in": [skill]}}
+                    ]},
+                    {"applicationDeadline": {"$gte": current_date}},
+                    {"isHiring": True},
+                    {"status": "active"},
+                ]
             }
 
-            dispatcher.utter_message(json_message=payload)
+            if level:
+                query["$and"].append({"level": {"$regex": level, "$options": "i"}})
 
-        except Exception as e:
-            error_message = {"recipient_id": "bot", "text": f"Có lỗi xảy ra khi truy vấn dữ liệu: {str(e)}"}
-            dispatcher.utter_message(json_message=error_message)
-
-        finally:
-            client.close()
-
-        return []
-    
-class ActionRecruitmentTrendInSystem(Action):
-    def name(self) -> Text:
-        return "action_recruitment_trend_in_system"
-
-    def shorten_id(self, id):
-        switcher = {
-            "Back-end Developer": "BE",
-            "Front-end Developer": "FE",
-            "DevOps Engineer": "DevOps",
-            "Full-stack Developer": "Full-stack",
-            "UI/UX Designer": "UI/UX",
-            "Mobile App Developer": "Mobile",
-            "Android Developer": "Android",
-            "Mobile Developer (Native App/React Native)": "Mobile",
-            "AI Engineer": "AI"
-        }
-        return switcher.get(id, id) 
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        try:
-            mongo_url = "mongodb+srv://nguyendat16111210:8SZuXNP8TzhjtGgt@cluster0.pj4bngd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-            db_name = "test"
-
-            client = MongoClient(mongo_url)
-            db = client[db_name]
-            job_collection = db['jobs']
-
-            pipeline = [
-                {"$unwind": "$skills"},
-                {"$group": {"_id": "$skills", "value": {"$sum": 1}}},
-                {"$sort": {"value": -1}},
-                {"$limit": 7}
-            ]
-
-            skillsTrends = list(job_collection.aggregate(pipeline))
-
-            for trend in skillsTrends:
-                trend["_id"] = self.shorten_id(trend["_id"])
-
-            pipeline = [
-                {"$unwind": "$jobPosition"},
-                {"$group": {"_id": "$jobPosition", "value": {"$sum": 1}}},
-                {"$sort": {"value": -1}},
-                {"$limit": 7}
-            ]
-
-            jobPositionsTrends = list(job_collection.aggregate(pipeline))
-
-            for trend in jobPositionsTrends:
-                trend["_id"] = self.shorten_id(trend["_id"])
-
-            payload = {
-                "text": "Theo dữ liệu được thống kê trên hệ thống, xu hướng các công nghệ và theo vị trí trên hệ thống như sau: ",
-                "charts": [skillsTrends, jobPositionsTrends]
-            }
-
-            dispatcher.utter_message(json_message=payload)
-
-        except Exception as e:
-            error_message = {"recipient_id": "bot", "text": f"Có lỗi xảy ra khi truy vấn dữ liệu: {str(e)}"}
-            dispatcher.utter_message(json_message=error_message)
-
-        finally:
-            client.close()
-
-        return []
-
-class ActionSearchJob(Action):
-    def name(self) -> Text:
-        return "action_search_job"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        try:
-            mongo_url = "mongodb+srv://nguyendat16111210:8SZuXNP8TzhjtGgt@cluster0.pj4bngd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-            client = MongoClient(mongo_url, serverSelectionTimeoutMS=5000)
-            db = client.test
-            job_collection = db.jobs 
-
-            job_type = next(tracker.get_latest_entity_values("job_type"), None)
-            skill = next(tracker.get_latest_entity_values("skill"), None)
-
-            job_type_regex = re.compile(f".*{job_type}.*", re.IGNORECASE) if job_type else None
-            skill_regex = re.compile(f".*{skill}.*", re.IGNORECASE) if skill else None
-
-            title_options = {}
-            if job_type_regex:
-                title_options['$regex'] = job_type_regex
-            if skill_regex:
-                title_options['$regex'] = skill_regex
-
-            query = {}
-            if title_options:
-                query['recruitmentTitle'] = title_options
-
-            result = job_collection.find(query)
+            jobs = Job.find(query)
 
             jobsResult = []
-            for doc in result:
-                title = {
+            for doc in jobs:
+                job_info = {
+                    "_id": str(doc.get("_id")),
+                    "recruitmentTitle": doc.get("recruitmentTitle"),
+                    "skills": doc.get("skills"),
+                    "level": doc.get("level"),
+                    "companyLogo": None
+                }
+
+                employer_id = doc.get("employerId")
+                if employer_id:
+                    employer_doc = db.employers.find_one({"_id": employer_id})
+                    if employer_doc:
+                        job_info["companyLogo"] = employer_doc.get("companyLogo")
+
+                jobsResult.append(job_info)
+            
+            payload = {
+                "text": f"Có {len(jobsResult)} công việc yêu cầu kỹ năng {skill}: ",
+                "jobs": jobsResult
+            }
+
+            dispatcher.utter_message(json_message=payload)
+            
+            return [SlotSet("level", None)]
+
+        except Exception as e:
+            dispatcher.utter_message(text="Xin lỗi! tôi không tìm thấy gì !")
+
+        finally:
+            client.close()
+
+        return []
+
+class ActionSearchJobByLocation(Action):
+    def name(self) -> Text:
+        return "action_job_search_by_location"
+
+    def run(self, dispatcher: CollectingDispatcher, 
+            tracker: Tracker, 
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        try:
+            location = tracker.get_slot('location')
+
+            print(location)
+
+            if not location:
+                dispatcher.utter_message(text="Bạn muốn tìm việc ở đâu ?")
+                return []
+            
+            current_date = datetime.now()
+
+            Job = db['jobs']
+            jobs = Job.aggregate([
+                {
+                    "$lookup": {
+                        "from": "addresses",
+                        "localField": "workRegion",
+                        "foreignField": "_id",
+                        "as": "address_info"
+                    }
+                },
+                {
+                    "$unwind": "$address_info"
+                },
+                {
+                    "$match": {
+                        "address_info.province": {"$regex": location, "$options": "i"},
+                        "applicationDeadline": {"$gte": current_date},
+                        "isHiring": True,
+                        "status": "active"
+                    }
+                }
+            ])
+
+            jobsResult = []
+            for doc in jobs:
+                job_info = {
+                    "_id": str(doc.get("_id")),
                     "recruitmentTitle": doc.get("recruitmentTitle"),
                     "skills": doc.get("skills"),
                     "companyLogo": None
@@ -221,160 +141,321 @@ class ActionSearchJob(Action):
                 if employer_id:
                     employer_doc = db.employers.find_one({"_id": employer_id})
                     if employer_doc:
-                        title["companyLogo"] = employer_doc.get("companyLogo")
+                        job_info["companyLogo"] = employer_doc.get("companyLogo")
 
-                jobsResult.append(title)
+                jobsResult.append(job_info)
             
             payload = {
-                "text": "Theo dữ liệu được thống kê trên hệ thống, xu hướng các công nghệ và theo vị trí trên hệ thống như sau: ",
+                "text": f"Có {len(jobsResult)} công việc tại {location} dành cho bạn: ",
                 "jobs": jobsResult
             }
 
             dispatcher.utter_message(json_message=payload)
 
+            return [SlotSet("location", None)]
+
+        except Exception as e:
+            dispatcher.utter_message(text="Xin lỗi! Tôi không tìm thấy gì !")
+
+        finally:
+            client.close()
+
+        return []
+    
+class ActionInquireCompaniesByEmployeeCount(Action):
+    def name(self) -> Text:
+        return "action_inquire_companies_by_employee_count"
+
+    def run(self, dispatcher: CollectingDispatcher, 
+            tracker: Tracker, 
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        try:
+
+            employee_count = tracker.get_slot('employee_count')
+
+            print(employee_count)
+
+            if not employee_count:
+                dispatcher.utter_message(text="Bạn muốn tìm doanh nghiệp với số lượng nhân viên là bao nhiêu?")
+                return []
             
+            employee_count = int(employee_count)
 
-        except ServerSelectionTimeoutError:
-            dispatcher.utter_message(text="Không thể kết nối đến cơ sở dữ liệu")
+            companySize = {
+                "extra_small": "10 - 24 nhân viên",
+                "small": "25 - 99 nhân viên",
+                "medium": "100 - 499 nhân viên",
+                "base": "500 - 1000 nhân viên",
+                "large": "1000+ nhân viên",
+                "extra_large": "3000+ nhân viên",
+                "big": "5000+ nhân viên",
+            }
 
-        except Exception as e:
-            error_message = f"Có lỗi xảy ra khi truy vấn dữ liệu: {str(e)}"
-            dispatcher.utter_message(text=error_message)
-
-        finally:
-            client.close()
-
-        return []
-    
-class ActionInquireCompaniesByTechStack(Action):
-    def name(self) -> Text:
-        return "action_inquire_companies_by_tech_stack"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        try:
-            mongo_url = "mongodb+srv://nguyendat16111210:8SZuXNP8TzhjtGgt@cluster0.pj4bngd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-            client = MongoClient(mongo_url)
-            db = client.test
-            job_collection = db.jobs
-
-            tech_stack = next(tracker.get_latest_entity_values("tech_stack"), None)
-
-            if tech_stack:
-                regex_pattern = f".*{re.escape(tech_stack)}.*"
-                jobs = job_collection.find({"skills": {"$regex": regex_pattern, "$options": "i"}})
-
-                companies = set()  
-                for job in jobs:
-                    employer_id = job.get("employerId")
-                    if employer_id:
-                        employer = db.employers.find_one({"_id": employer_id})
-                        if employer:
-                            companies.add(employer_id) 
-
-                unique_companies = []
-                for company_id in companies:
-                    employer = db.employers.find_one({"_id": company_id})
-                    if employer:
-                        unique_companies.append({
-                            "companyName": employer.get("companyName"),
-                            "companyIndustry": employer.get("companyIndustry"),
-                            "companyLogo": employer.get("companyLogo"),
-                            "websiteUrl": employer.get("websiteUrl")
-                        })
-
-                if unique_companies:
-                    payload = {
-                        "text": f"Các công ty liên quan đến kỹ năng {tech_stack} là:",
-                        "employers": unique_companies
-                    }
-                    dispatcher.utter_message(json_message=payload)
-                else:
-                    dispatcher.utter_message(text="Không tìm thấy công ty nào phù hợp với kỹ năng này.")
-
+            if employee_count >= 0 and employee_count < 25:
+                employee_size = companySize["extra_small"]
+            elif employee_count >= 25 and employee_count < 100:
+                employee_size = companySize["small"]
+            elif employee_count >= 100 and employee_count < 500:
+                employee_size = companySize["medium"]
+            elif employee_count >= 500 and employee_count < 1000:
+                employee_size = companySize["base"]
+            elif employee_count >= 1000 and employee_count < 3000:
+                employee_size = companySize["large"]
+            elif employee_count >= 3000 and employee_count < 5000:
+                employee_size = companySize["extra_large"]
+            elif employee_count >= 5000:
+                employee_size = companySize["big"]
             else:
-                dispatcher.utter_message(text="Không tìm thấy kỹ năng nào trong câu của bạn.")
+                employee_size = None
+            
+            if not employee_size:
+                dispatcher.utter_message(text="Bạn muốn tìm công ty với quy mô nhân viên là bao nhiêu nhỉ ?")
+                return []
 
-        except ServerSelectionTimeoutError:
-            dispatcher.utter_message(text="Không thể kết nối đến cơ sở dữ liệu")
+            Employer = db['employers']
+            companies = Employer.find({"companySize": employee_size})
 
-        except Exception as e:
-            error_message = f"Có lỗi xảy ra khi truy vấn dữ liệu: {str(e)}"
-            dispatcher.utter_message(text=error_message)
+            unique_companies = []
+            for company in companies:
+                unique_companies.append({
+                    "companyName": company.get("companyName"),
+                    "companyIndustry": company.get("companyIndustry"),
+                    "companyLogo": company.get("companyLogo"),
+                    "websiteUrl": company.get("websiteUrl")
+                })
 
-        finally:
-            client.close()
-
-        return []
-    
-class ActionInquirePopularCompanies(Action):
-    def name(self) -> Text:
-        return "action_inquire_popular_companies"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        try:
-            # Kết nối đến MongoDB
-            mongo_url = "mongodb+srv://nguyendat16111210:8SZuXNP8TzhjtGgt@cluster0.pj4bngd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-            client = MongoClient(mongo_url)
-            db = client.test
-            job_collection = db.jobs
-
-            # Dictionary để lưu số lượng ứng tuyển của từng công ty
-            company_applications_count = {}
-
-            # Lấy danh sách các công việc
-            jobs = job_collection.find()
-
-            # Duyệt qua từng công việc để đếm số lượng ứng viên
-            for job in jobs:
-                employer_id = job.get("employerId")
-                if employer_id:
-                    # Lấy số lượng ứng viên đã ứng tuyển (độ dài của appliedIds)
-                    applications_count = len(job.get("appliedIds", []))
-
-                    # Cập nhật số lượng ứng tuyển cho từng công ty
-                    if employer_id in company_applications_count:
-                        company_applications_count[employer_id] += applications_count
-                    else:
-                        company_applications_count[employer_id] = applications_count
-
-            # Sắp xếp các công ty theo số lượng ứng viên giảm dần
-            popular_companies = sorted(company_applications_count.items(), key=lambda x: x[1], reverse=True)
-
-            # Chọn các công ty có số lượng ứng viên nhiều nhất (ví dụ: lấy top 5 công ty)
-            top_popular_companies = popular_companies[:5]
-
-            if top_popular_companies:
-                # Chuẩn bị payload để trả về cho người dùng
-                companies_info = []
-                for company_id, applications_count in top_popular_companies:
-                    employer = db.employers.find_one({"_id": company_id})
-                    if employer and applications_count > 0:
-                        companies_info.append({
-                            "companyName": employer.get("companyName"),
-                            "companyIndustry": employer.get("companyIndustry"),
-                            "companyLogo": employer.get("companyLogo"),
-                            "websiteUrl": employer.get("websiteUrl"),
-                            "applicationsCount": applications_count
-                        })
-
+            if unique_companies:
                 payload = {
-                    "text": "Các công ty có số lượng ứng viên nhiều nhất là:",
-                    "employers": companies_info
+                    "text": f"Các công ty có số lượng nhân viên {employee_count} là:",
+                    "employers": unique_companies
                 }
                 dispatcher.utter_message(json_message=payload)
             else:
-                dispatcher.utter_message(text="Không tìm thấy thông tin công ty phổ biến.")
-
-        except ServerSelectionTimeoutError:
-            dispatcher.utter_message(text="Không thể kết nối đến cơ sở dữ liệu")
+                dispatcher.utter_message(text=f"Không tìm thấy công ty nào có số lượng nhân viên {employee_count}.")
 
         except Exception as e:
-            error_message = f"Có lỗi xảy ra khi truy vấn dữ liệu: {str(e)}"
-            dispatcher.utter_message(text=error_message)
+            dispatcher.utter_message(text="Xin lỗi! Tôi không tìm thấy gì !")
+
+        finally:
+            client.close()
+
+        return []
+    
+class ActionSearchJobByExperienceYear(Action):
+    def name(self) -> Text:
+        return "action_search_jobs_by_experience"
+
+    def run(self, dispatcher: CollectingDispatcher, 
+            tracker: Tracker, 
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        try:
+
+            experience_year = tracker.get_slot('experience_year')
+
+            if experience_year is None:
+                dispatcher.utter_message(text="Vui lòng cung cấp số năm kinh nghiệm.")
+                return []
+            
+            print(experience_year)
+
+            experience_year = int(experience_year)
+
+            if(experience_year == 0): 
+                experience_year = 0.5
+
+            current_date = datetime.now()
+
+            Job = db['jobs']
+            jobs = Job.find({
+                "experience": {"$lte": experience_year},
+                "applicationDeadline": {"$gte": current_date},
+                "isHiring": True,
+                "status": "active"
+            })
+
+            jobsResult = []
+            for doc in jobs:
+                job_info = {
+                    "_id": str(doc.get("_id")),
+                    "recruitmentTitle": doc.get("recruitmentTitle"),
+                    "skills": doc.get("skills"),
+                    "companyLogo": None
+                }
+
+                employer_id = doc.get("employerId")
+                if employer_id:
+                    employer_doc = db.employers.find_one({"_id": employer_id})
+                    if employer_doc:
+                        job_info["companyLogo"] = employer_doc.get("companyLogo")
+
+                jobsResult.append(job_info)
+            
+            payload = {
+                "text": f"Có {len(jobsResult)} công việc dành cho {experience_year} năm kinh nghiệm: ",
+                "jobs": jobsResult
+            }
+
+            dispatcher.utter_message(json_message=payload)
+
+        except Exception as e:
+            dispatcher.utter_message(text="Xin lỗi! Tôi không tìm thấy gì !")
+
+        finally:
+            client.close()
+
+        return []
+    
+class ActionSearchJobByPosition(Action):
+    def name(self) -> Text:
+        return "action_search_job_by_position"
+
+    def run(self, dispatcher: CollectingDispatcher, 
+            tracker: Tracker, 
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        try:
+
+            position_entiry = next(tracker.get_latest_entity_values("job_type"), None)
+            position = tracker.get_slot('position')
+
+            print(position)
+
+            if position is None:
+                dispatcher.utter_message(text="Bạn muốn tìm việc ở vị trí nào ?")
+                return []
+            
+            current_date = datetime.now()
+
+            Job = db['jobs']
+            jobs = Job.find({
+                "jobPosition": {"$regex": position, "$options": "i"},
+                "applicationDeadline": {"$gte": current_date},
+                "isHiring": True,
+                "status": "active"
+            })
+
+            jobsResult = []
+            for doc in jobs:
+                job_info = {
+                    "_id": str(doc.get("_id")),
+                    "recruitmentTitle": doc.get("recruitmentTitle"),
+                    "skills": doc.get("skills"),
+                    "companyLogo": None
+                }
+
+                employer_id = doc.get("employerId")
+                if employer_id:
+                    employer_doc = db.employers.find_one({"_id": employer_id})
+                    if employer_doc:
+                        job_info["companyLogo"] = employer_doc.get("companyLogo")
+
+                jobsResult.append(job_info)
+            
+            payload = {
+                "text": f"Có {len(jobsResult)} công việc dành cho vị trí {position}: ",
+                "jobs": jobsResult
+            }
+
+            dispatcher.utter_message(json_message=payload)
+
+        except Exception as e:
+            dispatcher.utter_message(text="Xin lỗi! Tôi không tìm thấy gì !")
+
+        finally:
+            client.close()
+
+        return []
+    
+class ActionSearchJobBySalary(Action):
+    def name(self) -> Text:
+        return "action_search_job_by_salary"
+
+    def run(self, dispatcher: CollectingDispatcher, 
+            tracker: Tracker, 
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        try:
+
+            salary = tracker.get_slot('salary')
+
+            print(salary)
+
+        except Exception as e:
+            dispatcher.utter_message(text="Xin lỗi! Tôi không tìm thấy gì !")
+
+        finally:
+            client.close()
+
+        return []
+    
+class ActionRecuitmentTrend(Action):
+    def name(self) -> Text:
+        return "action_recruitment_trend"
+    
+    def shorten_id(self, id):
+        switcher = {
+            "Back-end Developer": "BE",
+            "Front-end Developer": "FE",
+            "DevOps Engineer": "DevOps",
+            "Full-stack Developer": "Fullstack",
+            "UI/UX Designer": "UI/UX",
+            "Mobile App Developer": "Mobile",
+            "Android Developer": "Android",
+            "Mobile Developer (Native App/React Native)": "Mobile",
+            "AI Engineer": "AI"
+        }
+        return switcher.get(id, id) 
+
+    def run(self, dispatcher: CollectingDispatcher, 
+            tracker: Tracker, 
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        try:
+
+            trendAspect = tracker.get_slot('trendAspect')
+            trendType = tracker.get_slot('trendType')
+
+            if trendAspect in ["công", "nghệ", "công nghệ"]:
+                trendAspect = "skills"
+            
+            if trendType in ["thế"]:
+                trendType = "market"
+
+            print(trendAspect)
+            print(trendType)
+
+            if not trendAspect:
+                trendAspect = 'skills'
+
+            if not trendType:
+                trendType = 'system'
+
+            if trendType == 'market':
+                dispatcher.utter_message(template="utter_market_trend_by_skill")
+                return []
+            
+            else: 
+                Job = db['jobs']
+
+                pipeline = [
+                    {"$unwind": f"${trendAspect}"},
+                    {"$group": {"_id": f"${trendAspect}", "value": {"$sum": 1}}},
+                    {"$sort": {"value": -1}},
+                    {"$limit": 7}
+                ]
+
+                recruitmentTrendChart = list(Job.aggregate(pipeline))
+
+                for trend in recruitmentTrendChart:
+                    trend["_id"] = self.shorten_id(trend["_id"])
+
+
+                payload = {
+                    "text": "Theo dữ liệu được thống kê trên hệ thống, xu hướng các công nghệ và theo vị trí trên hệ thống như sau: ",
+                    "charts": recruitmentTrendChart
+                }
+
+                dispatcher.utter_message(json_message=payload)
+
+        except Exception as e:
+            dispatcher.utter_message(text="Xin lỗi! Tôi không tìm thấy gì !")
 
         finally:
             client.close()

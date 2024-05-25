@@ -86,8 +86,6 @@ const MessagePage = () => {
   const sendMessage = async () => {
     if (!inputMesssageValue) return;
 
-    setInputMessageValue("");
-
     try {
       if (socket) {
         socket.emit("text_message", {
@@ -99,20 +97,23 @@ const MessagePage = () => {
           messageId: currentConversation?._id,
         });
       }
+      setInputMessageValue("");
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleClickSendMessage = async () => {
+  const handleClickSendMessage = () => {
     sendMessage();
   };
 
-  const handleEnterMessage = async (e) => {
+  const handleEnterMessage = (e) => {
     if (e.key === "Enter") {
       sendMessage();
     }
   };
+
+  console.log(inputMesssageValue);
 
   return (
     <div className="w-full flex">
@@ -184,7 +185,8 @@ const MessagePage = () => {
                 values={inputMesssageValue}
                 onChange={(e) => setInputMessageValue(e.target.value)}
                 onKeyDown={handleEnterMessage}
-                className="!bg-blue-gray-100/70"
+                className="bg-transparent"
+                color="blue"
               />
               <div
                 className={`fixed z-10 ${openPicker ? "inline" : "hidden"}`}

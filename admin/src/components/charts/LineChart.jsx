@@ -12,11 +12,11 @@ const LineChart = ({ data = [], className = "", type = "week" }) => {
       : 0.1;
 
   const chartData = {
-    labels: data.map((item) => item?._id || ""),
+    labels: data?.map((item) => item?._id || ""),
     datasets: [
       {
         label: `Biểu đồ cột biểu hiện số lượng ${type}`,
-        data: data.map((item) => item?.value || 0),
+        data: data?.map((item) => item?.value || 0),
         backgroundColor: ["#0f172a"],
         barPercentage: barPercentage,
       },

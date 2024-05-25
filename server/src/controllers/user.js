@@ -213,7 +213,8 @@ const getListUserForAdmin = asyncHandler(async (req, res) => {
 
 const getListFollowings = asyncHandler(async (req, res) => {
   const listFollowings = await User.findOne({ _id: req.user._id }).populate(
-    "followingIds"
+    "followingIds",
+    "companyLogo companyName websiteUrl"
   );
 
   return res.status(200).json({

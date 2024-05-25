@@ -67,7 +67,7 @@ const CategoryBar = ({
             Xoá bộ lọc
           </Button>
         </div>
-        <SelectCustom label="Tỉnh / Thành phố" options={provincesValue} />
+        {/* <SelectCustom label="Tỉnh / Thành phố" options={provincesValue} /> */}
       </div>
       <List className="p-2 text-sm">
         {categoriesBarItems.map((item) => {

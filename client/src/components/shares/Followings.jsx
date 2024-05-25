@@ -8,32 +8,36 @@ import { Avatar, Typography } from "@material-tailwind/react";
 const Followings = () => {
   const { user } = useSelector(authSelect);
 
-  const { data: listFollowingsData } = useGetListFollowingsQuery({
-    userId: user?._id,
-  });
+  const { data: listFollowingsData } = useGetListFollowingsQuery(
+    {
+      userId: user?._id,
+    },
+    { skip: !user?._id }
+  );
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      <Typography className="text-lg text-blue-500 font-bold">
-        Danh sách công ty đang theo dõi
+    <div className="w-full flex flex-col gap-1 p-4 bg-white rounded-md">
+      <Typography className="text-center text-lg text-blue-800 font-bold uppercase">
+        Đang theo dõi
       </Typography>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4 bg-blue-gray-50 rounded-md p-4">
         {listFollowingsData?.data?.map((following) => {
           return (
             <Link
-              to={`/company/${following?._id}`}
+              to={`/company-profile/${following?._id}`}
               className="flex items-center gap-2"
+              key={following?._id}
             >
               <Avatar
                 src={following?.companyLogo}
                 alt=""
-                className="rounded-full bg-blue-gray-200 p-2 h-14 w-14"
+                className="rounded-full bg-blue-gray-200 p-1 h-12 w-12"
               />
               <div className="flex flex-col gap-1">
-                <Typography className="font-bold">
+                <Typography className="text-blue-gray-700 text-sm font-bold hover:text-blue-600 name">
                   {following?.companyName}
                 </Typography>
-                <Typography className="text-sm text-gray-500 font-semibold">
+                <Typography className="text-xs text-gray-500 font-semibold name">
                   {following?.websiteUrl}
                 </Typography>
               </div>

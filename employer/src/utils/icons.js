@@ -2,6 +2,8 @@ import {
   IoMdSend,
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
+  IoMdHeartEmpty,
+  IoMdHeart,
 } from "react-icons/io";
 import { PiBellRingingFill, PiChartDonutFill } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
@@ -61,10 +63,14 @@ import {
   AiFillDollarCircle,
   AiFillClockCircle,
   AiFillCloseCircle,
+  AiOutlineComment,
 } from "react-icons/ai";
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
 
 const icons = {
+  IoMdHeartEmpty,
+  IoMdHeart,
+  AiOutlineComment,
   IoClose,
   IoRemove,
   BsArrowsFullscreen,

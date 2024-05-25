@@ -67,7 +67,8 @@ const ListConversation = ({
                         : "font-semibold text-gray-700"
                     }`}
                   >
-                    {timeAgo(new Date(conversation?.lastMessage?.createdAt))}
+                    {conversation?.lastMessage?.createdAt &&
+                      timeAgo(new Date(conversation?.lastMessage?.createdAt))}
                   </span>
                 </div>
                 <TypographyCustom

@@ -18,18 +18,11 @@ import { useEffect } from "react";
 import { socket } from "../../socket";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelect } from "../../redux/features/slices/authSlice";
-import {
-  messageSelect,
-  setCurrentConversation,
-  setListConversations,
-} from "../../redux/features/slices/messageSlice";
 import { images } from "../../assets/images";
 import { useRef } from "react";
 import { useScrollBottom } from "../../hooks";
 
 const MessagePage = () => {
-  const dispatch = useDispatch();
-
   const { user } = useSelector(authSelect);
 
   const [openPicker, setOpenPicker] = useState(false);
@@ -85,8 +78,6 @@ const MessagePage = () => {
   const handleClickEmoji = () => {};
 
   const sendMessage = async () => {
-    setInputMessageValue("");
-
     if (!inputMesssageValue) return;
 
     try {
@@ -106,10 +97,14 @@ const MessagePage = () => {
   };
 
   const handleClickSendMessage = async () => {
+    setInputMessageValue("");
+
     sendMessage();
   };
 
   const handleEnterMessage = async (e) => {
+    setInputMessageValue("");
+
     if (e.key === "Enter") {
       sendMessage();
     }
@@ -117,7 +112,7 @@ const MessagePage = () => {
 
   return (
     <div className="w-full flex">
-      <div className="!w-[460px] h-screen bg-blue-gray-800">
+      <div className="!w-[460px] h-screen bg-blue-gray-50 border-r border-blue-gray-200">
         <ListConversations
           conversations={conversations}
           selectedConversation={selectedConversation}
@@ -127,17 +122,17 @@ const MessagePage = () => {
       <div className="h-screen w-full">
         {currentConversation ? (
           <>
-            <div className="h-[70px] bg-blue-gray-900 flex items-center justify-between gap-3 px-4">
+            <div className="h-[70px] bg-blue-gray-50 flex items-center justify-between gap-3 px-4 border-b border-blue-gray-200">
               <div className="flex items-center gap-2">
                 <Avatar
                   src={currentConversation?.employerId?.companyLogo}
-                  className="h-12 w-12 p-1 bg-blue-gray-100"
+                  className="h-12 w-12 p-1 bg-blue-gray-200"
                 />
                 <div className="flex flex-col">
-                  <Typography className="text-base font-bold text-white">
+                  <Typography className="text-base font-bold text-blue-gray-700">
                     {currentConversation?.employerId?.companyName}
                   </Typography>
-                  <Typography className="text-sm text-gray-400 italic">
+                  <Typography className="text-sm text-gray-600 italic">
                     {currentConversation?.employerId?.companyEmail}
                   </Typography>
                 </div>
@@ -169,7 +164,7 @@ const MessagePage = () => {
                 }
               })}
             </div>
-            <div className="h-[70px] flex items-center gap-2 justify-center px-8 pr-20 bg-blue-gray-900">
+            <div className="h-[70px] flex items-center gap-2 justify-center px-8 pr-20 bg-blue-gray-50 border-t border-blue-gray-200">
               <Input
                 label="Nhập tin nhắn"
                 icon={
@@ -184,8 +179,9 @@ const MessagePage = () => {
                 values={inputMesssageValue}
                 onChange={(e) => setInputMessageValue(e.target.value)}
                 onKeyDown={handleEnterMessage}
-                className="!bg-blue-gray-700 placeholder:text-white text-white font-bold"
+                className="bg-transparent placeholder:text-gray-600 text-gray-600 font-bold"
                 spellCheck={false}
+                color="blue"
               />
               <div
                 className={`fixed z-10 ${openPicker ? "inline" : "hidden"}`}
@@ -212,7 +208,7 @@ const MessagePage = () => {
             <img
               src={images.startchat}
               alt=""
-              className="h-[300px] w-[300px] object-cover"
+              className="w-full object-cover"
             />
           </div>
         )}
