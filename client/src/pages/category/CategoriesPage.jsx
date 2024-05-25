@@ -31,8 +31,8 @@ const CategoriesPage = () => {
   const [typeJobFilter, setTypeJobFilter] = useState([]);
   const [levelFilter, setLevelFilter] = useState([]);
   const [experienceFilter, setExperienceFilter] = useState([]);
-  const [sortBy, setSortBy] = useState("");
-  const [orderBy, setOrderBy] = useState("");
+  const [sortBy, setSortBy] = useState("createdAt");
+  const [orderBy, setOrderBy] = useState("desc");
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
@@ -65,7 +65,7 @@ const CategoriesPage = () => {
       salaryTo,
       candidateId: user?.candidateId?._id || "",
     },
-    { skip: !user && !user?.candidateId?._id, refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true }
   );
 
   // Cuộn đến đầu trang khi component được render

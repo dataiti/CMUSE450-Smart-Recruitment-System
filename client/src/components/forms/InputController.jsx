@@ -31,6 +31,7 @@ const InputController = ({
                 labelProps={{
                   className: "w-full",
                 }}
+                color="blue"
               />
               {!!error && (
                 <Typography

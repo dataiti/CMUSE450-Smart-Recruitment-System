@@ -2,7 +2,7 @@ import { Carousel } from "@material-tailwind/react";
 import { icons } from "../../utils/icons";
 import IconButtonCustom from "./IconButtonCustom";
 
-const CarouselCustom = ({ images = [], isNaviagtion = true }) => {
+const CarouselCustom = ({ images = [] }) => {
   return (
     <Carousel
       className="rounded-md"
@@ -10,11 +10,7 @@ const CarouselCustom = ({ images = [], isNaviagtion = true }) => {
       loop={true}
       transition={{ type: "tween", duration: 0.3 }}
       navigation={({ setActiveIndex, activeIndex, length }) => (
-        <div
-          className={`${
-            !isNaviagtion && "hidden"
-          } absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2`}
-        >
+        <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
           {new Array(length).fill("").map((_, i) => (
             <span
               key={i}
@@ -32,9 +28,7 @@ const CarouselCustom = ({ images = [], isNaviagtion = true }) => {
           color="white"
           size="lg"
           onClick={handlePrev}
-          className={`${
-            images.length <= 1 && "hidden"
-          } !absolute top-2/4 left-4 -translate-y-2/4`}
+          className="!absolute top-2/4 left-4 -translate-y-2/4"
         >
           <icons.IoIosArrowDropleftCircle size={24} />
         </IconButtonCustom>
@@ -45,9 +39,7 @@ const CarouselCustom = ({ images = [], isNaviagtion = true }) => {
           color="white"
           size="lg"
           onClick={handleNext}
-          className={`${
-            images.length <= 1 && "hidden"
-          } !absolute top-2/4 right-4 -translate-y-2/4`}
+          className="!absolute top-2/4 !right-4 -translate-y-2/4"
         >
           <icons.IoIosArrowDroprightCircle size={24} />
         </IconButtonCustom>

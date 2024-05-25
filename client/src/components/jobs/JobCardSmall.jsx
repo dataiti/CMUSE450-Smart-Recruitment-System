@@ -44,7 +44,7 @@ const JobCardSmall = ({ jobItem, setOpenDrawer, handleViewJobDetail }) => {
                 <img
                   src={jobItem?.employerId?.companyLogo}
                   alt={jobItem?.recruitmentTitle}
-                  className="border border-gray-400 h-16 w-16 flex-none object-contain rounded-xl bg-blue-gray-800"
+                  className="border-gray-400 h-16 w-16 p-1 flex-none object-contain rounded-xl bg-white border"
                 />
                 <div className="flex flex-col">
                   <Typography className="text-lg font-extrabold px-2 text-teal-900 name">

@@ -348,14 +348,14 @@ const JobDetailPage = () => {
                 <img
                   src={jobDetailData?.data?.employerId?.companyLogo}
                   alt={jobDetailData?.data?.employerId?.companyName}
-                  className="w-14 h-14 flex-none rounded-lg bg-blue-gray-500 object-contain"
+                  className="h-14 w-14 p-1 bg-white !rounded-md border flex-none"
                 />
               </Link>
               <div className="flex flex-col ">
                 <div className="flex items-center gap-2 ">
                   <Link
                     to={`/company-profile/${jobDetailData?.data?.employerId?._id}`}
-                    className="uppercase font-bold text-light-blue-600"
+                    className="uppercase font-bold text-light-blue-600 name"
                   >
                     {jobDetailData?.data?.employerId?.companyName}
                   </Link>

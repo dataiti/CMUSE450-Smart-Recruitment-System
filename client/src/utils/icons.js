@@ -3,6 +3,8 @@ import {
   IoIosArrowDroprightCircle,
   IoIosArrowDropleftCircle,
   IoMdEyeOff,
+  IoMdHeartEmpty,
+  IoMdHeart,
 } from "react-icons/io";
 import { PiBellRingingFill, PiChartDonutFill } from "react-icons/pi";
 import { FcGoogle } from "react-icons/fc";
@@ -29,6 +31,7 @@ import {
   IoMicSharp,
   IoAttach,
   IoLinkOutline,
+  IoChatbubbleEllipsesOutline,
 } from "react-icons/io5";
 import {
   MdFontDownload,
@@ -38,6 +41,7 @@ import {
   MdPhoneInTalk,
   MdColorLens,
   MdAccessTimeFilled,
+  MdDeleteForever,
 } from "react-icons/md";
 import {
   BsFillImageFill,
@@ -93,6 +97,7 @@ import {
   AiFillDollarCircle,
   AiFillClockCircle,
   AiFillCloseCircle,
+  AiOutlineComment,
 } from "react-icons/ai";
 
 import { HiOutlineVideoCamera, HiHome, HiDocumentText } from "react-icons/hi2";
@@ -105,6 +110,11 @@ import { ImTable2 } from "react-icons/im";
 import { TbExternalLink } from "react-icons/tb";
 
 const icons = {
+  MdDeleteForever,
+  IoChatbubbleEllipsesOutline,
+  IoMdHeartEmpty,
+  IoMdHeart,
+  AiOutlineComment,
   IoLinkOutline,
   IoMicSharp,
   IoAttach,

@@ -178,20 +178,7 @@ const Iconic = ({ color }) => {
         <Modal open={open} handleOpen={setOpen} size="lg">
           <div className="p-5 rounded-md">
             <Typography>Thêm thành phần mới</Typography>
-            <div className="grid grid-cols-4 gap-5">
-              <button
-                className="flex flex-col justify-center p-2 rounded-md items-center gap-2 bg-blue-gray-50 hover:bg-blue-gray-100 transition-all h-32"
-                onClick={() => {
-                  typeAdd === "above"
-                    ? addAbove({ type: "contact" })
-                    : addBelow({ type: "contact" });
-                }}
-              >
-                <icons.FaUserAlt size={30} />
-                <Typography className="text-sm font-bold">
-                  Thông tin liên hệ
-                </Typography>
-              </button>
+            <div className="grid grid-cols-3 gap-5">
               <button
                 className="flex flex-col justify-center p-2 rounded-md items-center gap-2 bg-blue-gray-50 hover:bg-blue-gray-100 transition-all h-32"
                 onClick={() => {
@@ -251,10 +238,6 @@ const Iconic = ({ color }) => {
                 <Typography className="text-sm font-bold">
                   Giải thưởng
                 </Typography>
-              </button>
-              <button className="flex flex-col justify-center p-2 rounded-md items-center gap-2 bg-blue-gray-50 hover:bg-blue-gray-100 transition-all h-32">
-                <icons.FaUserAlt size={30} />
-                <Typography className="text-sm font-bold">Tuỳ chọn</Typography>
               </button>
             </div>
           </div>

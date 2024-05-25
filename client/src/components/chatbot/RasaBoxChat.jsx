@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Avatar, Typography } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 
@@ -11,18 +11,22 @@ import { socket } from "../../socket";
 import { Message } from "../../components/chatbot";
 
 const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
-  const { user } = useSelector(authSelect);
+  const { user, isLoggedIn } = useSelector(authSelect);
 
   const [inputMessage, setInputMessage] = useState("");
   const [currentConversation, setCurrentConversation] = useState({});
   const [isIncreaseSize, setIsIncreaseSize] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isAppearMesage, setIsAppearMesage] = useState(true);
-  // const [limit, setLimit] = useState(30);
-
+  const [conversationNotLogin, setConversationNotLogin] = useState([]);
   const scrollContainerRef = useRef(null);
 
-  // Xử lý tự cuộn xuống dưới cùng khi có tin nhắn mới
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setCurrentConversation({});
+    }
+  }, [isLoggedIn]);
+
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop =
@@ -30,127 +34,145 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
     }
   }, [currentConversation, isLoading, isIncreaseSize]);
 
-  // Xử lý tải cuộc trò chuyện khi component được tải lần đầu
   useEffect(() => {
-    if (socket) {
-      socket.on("conversation_started_with_chatbot", ({ success, data }) => {
-        try {
-          if (success) {
-            setCurrentConversation(data);
-          } else {
-            console.error("Failed to start conversation:", data);
-          }
-        } catch (error) {
-          console.error(error);
+    if (socket && isLoggedIn) {
+      const handleConversationStarted = ({ success, data }) => {
+        if (success) {
+          setCurrentConversation(data);
+        } else {
+          console.error("Failed to start conversation:", data);
         }
-      });
+      };
 
-      // Gửi sự kiện bắt đầu đoạn chat
+      const handleQuestionSent = ({ success, data }) => {
+        if (success) {
+          setCurrentConversation((prev) => ({
+            ...prev,
+            messageIds: [...prev.messageIds, data],
+          }));
+          setInputMessage("");
+        } else {
+          console.error("Failed to send question:", data);
+        }
+      };
+
+      socket.on("conversation_started_with_chatbot", handleConversationStarted);
+      socket.on("question_sent_to_rasa_chatbot", handleQuestionSent);
+
       socket.emit("start_conversation_with_rasa_chatbot", {
         from: user?._id,
         to: process.env.REACT_APP_ADMIN_ID,
-        // limit,
       });
 
-      // Lắng nghe sự kiện nhận được câu hỏi từ Rasa Chatbot
-      socket.on("question_sent_to_rasa_chatbot", ({ success, data }) => {
-        try {
-          if (success) {
-            setCurrentConversation((prev) => {
-              return {
-                ...prev,
-                messageIds: [...prev.messageIds, data],
-              };
-            });
-            setInputMessage("");
-          } else {
-            console.error("Failed to start conversation:", data);
-          }
-        } catch (error) {
-          console.error(error);
+      return () => {
+        socket.off(
+          "conversation_started_with_chatbot",
+          handleConversationStarted
+        );
+        socket.off("question_sent_to_rasa_chatbot", handleQuestionSent);
+      };
+    }
+  }, [user, isLoggedIn]);
+
+  const sendMessage = useCallback(
+    async ({ message }) => {
+      try {
+        setIsLoading(true);
+        if (isLoggedIn) {
+          socket.emit("send_question_rasa_chatbot", {
+            from: user?._id,
+            to: process.env.REACT_APP_ADMIN_ID,
+            message,
+            conversationId: currentConversation?._id,
+          });
+        } else {
+          setConversationNotLogin((prev) => [
+            ...prev,
+            { sender: "user", message: { message } },
+          ]);
         }
-      });
-    }
 
-    return () => {
-      socket.off("conversation_started_with_chatbot");
-      socket.off("question_sent_to_rasa_chatbot");
-    };
-  }, [user]);
-
-  // Hàm xử lý gửi một message đến chabot
-  const sendMessage = async ({ message }) => {
-    try {
-      setIsLoading(true);
-      socket?.emit("send_question_rasa_chatbot", {
-        from: user?._id,
-        to: process.env.REACT_APP_ADMIN_ID,
-        message,
-        conversationId: currentConversation?._id,
-      });
-
-      // Gọi request đến rasa server
-      const response = await sendQuestionApi({
-        data: { sender: "Dat", message },
-      });
-
-      // Nếu có rasa phản hồi thì tiến hành gửi socket lưu vào DB
-      if (response) {
-        socket?.emit("send_question_rasa_chatbot", {
-          from: process.env.REACT_APP_ADMIN_ID,
-          to: user?._id,
-          conversationId: currentConversation?._id,
-          message: response[0]?.text || response[0]?.custom?.text,
-          buttons: response[0]?.buttons,
-          employers: response[0]?.custom?.employers,
-          image: response[1]?.image,
-          charts: response[0]?.custom?.charts,
-          jobs: response[0]?.custom?.jobs,
+        const response = await sendQuestionApi({
+          data: { sender: "Dat", message },
         });
-        setIsLoading(false);
-        setIsAppearMesage(false);
-      }
-    } catch (error) {
-      setIsLoading(true);
-    }
-  };
 
-  // Hàm xử lý gửi message
-  const handleSendMessage = async () => {
+        if (response) {
+          if (isLoggedIn) {
+            socket.emit("send_question_rasa_chatbot", {
+              from: process.env.REACT_APP_ADMIN_ID,
+              to: user?._id,
+              conversationId: currentConversation?._id,
+              message: response[0]?.text || response[0]?.custom?.text,
+              buttons: response[0]?.buttons,
+              employers: response[0]?.custom?.employers,
+              image: response[1]?.image,
+              charts: response[0]?.custom?.charts,
+              jobs: response[0]?.custom?.jobs,
+            });
+          } else {
+            setConversationNotLogin((prev) => [
+              ...prev,
+              {
+                sender: "bot",
+                message: {
+                  message: response[0]?.text || response[0]?.custom?.text,
+                  buttons: response[0]?.buttons,
+                  employers: response[0]?.custom?.employers,
+                  image: response[1]?.image,
+                  charts: response[0]?.custom?.charts,
+                  jobs: response[0]?.custom?.jobs,
+                },
+              },
+            ]);
+          }
+          setIsLoading(false);
+          setIsAppearMesage(false);
+        }
+      } catch (error) {
+        console.error("Error sending message:", error);
+        setIsLoading(false);
+      }
+    },
+    [currentConversation, isLoggedIn, user]
+  );
+
+  const handleSendMessage = useCallback(() => {
     setIsAppearMesage(true);
     if (!inputMessage) return;
 
     setInputMessage("");
-
     sendMessage({ message: inputMessage });
-  };
-  // Hàm xử lý gửi message khi nhấn phím Enter
-  const handleEnterMessage = async (e) => {
-    setIsAppearMesage(true);
-    if (e.key === "Enter") {
-      if (!inputMessage) return;
+  }, [inputMessage, sendMessage]);
 
-      setInputMessage("");
-      sendMessage({ message: inputMessage });
-    }
-  };
+  const handleEnterMessage = useCallback(
+    (e) => {
+      setIsAppearMesage(true);
+      if (e.key === "Enter") {
+        if (!inputMessage) return;
 
-  // Hàm toggle kích thước hôp chat
-  const handleIncreaseSize = () => {
+        setInputMessage("");
+        sendMessage({ message: inputMessage });
+      }
+    },
+    [inputMessage, sendMessage]
+  );
+
+  const handleIncreaseSize = useCallback(() => {
     setIsIncreaseSize((prev) => !prev);
-  };
+  }, []);
 
-  // Hàm xử lý tắt hộp chat
-  const handleCloseBoxChat = () => {
+  const handleCloseBoxChat = useCallback(() => {
     setIsBoxChatBubble(true);
     setIsBoxChatOpen(false);
-  };
+  }, []);
 
-  const handleClickButtonsMessage = ({ message }) => {
-    if (!message) return;
-
-    sendMessage({ message });
-  };
+  const handleClickButtonsMessage = useCallback(
+    ({ message }) => {
+      if (!message) return;
+      sendMessage({ message });
+    },
+    [sendMessage]
+  );
 
   return (
     <div
@@ -195,19 +217,31 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
         } transition-all flex flex-col gap-2 w-full overflow-y-auto p-3 bg-gradient-to-r from-[#cbd5e1] to-[#f1f5f9]`}
         ref={scrollContainerRef}
       >
-        {currentConversation &&
-          currentConversation.messageIds &&
-          currentConversation.messageIds.length > 0 &&
-          currentConversation.messageIds.map((message) => {
-            return (
-              <Message
-                message={message}
-                key={message?._id}
-                onClickRecommentQuestion={handleClickButtonsMessage}
-                isLoading={isLoading}
-              />
-            );
-          })}
+        {isLoggedIn &&
+        currentConversation &&
+        currentConversation.messageIds &&
+        currentConversation.messageIds.length > 0
+          ? currentConversation.messageIds.map((message) => {
+              return (
+                <Message
+                  message={message}
+                  key={message?._id}
+                  onClickRecommentQuestion={handleClickButtonsMessage}
+                  isLoading={isLoading}
+                />
+              );
+            })
+          : conversationNotLogin.map((message, index) => {
+              return (
+                <Message
+                  sender={message?.sender}
+                  message={message?.message}
+                  key={index}
+                  onClickRecommentQuestion={handleClickButtonsMessage}
+                  isLoading={isLoading}
+                />
+              );
+            })}
         {isLoading && (
           <div className="flex gap-2 w-full">
             <Avatar
@@ -222,24 +256,13 @@ const RasaBoxChat = ({ setIsBoxChatOpen, setIsBoxChatBubble }) => {
         )}
       </div>
       <div className="h-[60px] p-2 flex items-center gap-2 bg-white">
-        <div className="flex items-center gap-2 ">
-          <label
-            className="text-blue-500 active:text-blue-700 cursor-pointer"
-            htmlFor="attachCV"
-          >
-            <icons.IoAttach size={24} />
-          </label>
-          <input id="attachCV" type="file" hidden />
-          <button className="text-blue-500 active:text-blue-700">
-            <icons.IoMicSharp size={24} />
-          </button>
-        </div>
         <input
           className="outline-none border-none flex-1 bg-blue-gray-100 rounded-full p-[10px] px-4 placeholder:text-gray-600 text-sm font-bold"
           placeholder="Nhập tin nhắn"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
           onKeyDown={handleEnterMessage}
+          spellCheck={false}
         />
         <IconButtonCustom className="rounded-md" onClick={handleSendMessage}>
           <icons.IoSendSharp />

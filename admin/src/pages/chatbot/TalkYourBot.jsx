@@ -25,24 +25,28 @@ const TalkYourBot = () => {
     setCurrentConversation((prevConversation) => [
       ...prevConversation,
       {
-        senderId: "test",
-        message,
+        sender: "user",
+        message: message,
       },
     ]);
 
     try {
       const response = await sendQuestionApi({
-        data: { sender: "bot", message },
+        data: { sender: "user", message },
       });
 
       if (response) {
         setCurrentConversation((prevConversation) => [
           ...prevConversation,
           {
-            senderId: response[0]?.recipient_id,
-            message: response[0]?.text || response[0]?.custom?.text,
-            buttons: response[0]?.buttons,
-            employers: response[0]?.custom?.employers,
+            sender: "bot",
+            message: {
+              message: response[0]?.text || response[0]?.custom?.text,
+              buttons: response[0]?.buttons,
+              employers: response[0]?.custom?.employers,
+              charts: response[0]?.custom?.charts,
+              jobs: response[0]?.custom?.jobs,
+            },
           },
         ]);
       }
@@ -88,7 +92,8 @@ const TalkYourBot = () => {
           currentConversation.map((message) => {
             return (
               <Message
-                message={message}
+                sender={message?.sender}
+                message={message?.message}
                 key={message?._id}
                 onClickRecommentQuestion={handleClickButtonsMessage}
               />

@@ -14,7 +14,6 @@ import PaymentPage from "./payment/PaymentPage";
 import RecruitProcessPage from "./resume/RecruitProcessPage";
 import MySchedulePage from "./schedule/MySchedulePage";
 import SearchCandidatePage from "./candidate/SearchCandidatePage";
-import ForumPage from "./forum/ForumPage";
 
 export {
   LoginPage,
@@ -33,5 +32,4 @@ export {
   MySchedulePage,
   JobDetail,
   SearchCandidatePage,
-  ForumPage,
 };

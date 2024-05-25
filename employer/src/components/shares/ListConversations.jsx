@@ -27,7 +27,7 @@ const ListConversations = ({
               key={conversation?.id}
               className={`flex items-center gap-3 p-3  transition-all rounded-md cursor-pointer ${
                 conversation?._id === selectedConversation?._id
-                  ? "bg-cyan-900"
+                  ? "bg-blue-gray-200"
                   : "bg-blue-gray-50 hover:bg-blue-gray-100"
               }`}
               onClick={() => handleSelectedConversation({ conversation })}

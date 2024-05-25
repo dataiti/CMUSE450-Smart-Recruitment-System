@@ -17,6 +17,12 @@ export const sexOptions = [
 
 export const sidebarChatbotItems = [
   {
+    id: 0,
+    path: "/",
+    title: "Dashboard",
+    icon: <icons.IoChatbubbleOutline size={20} />,
+  },
+  {
     id: 1,
     path: "/rasa/talk-to-your-bot",
     title: "Trò chuyện với bot của bạn",
@@ -27,18 +33,6 @@ export const sidebarChatbotItems = [
     path: "/rasa/conversations",
     title: "Cuộc hội thoại",
     icon: <icons.IoChatbubblesOutline size={20} />,
-  },
-  {
-    id: 3,
-    path: "/rasa/nlu-inbox",
-    title: "NLU Inbox",
-    icon: <icons.BsInbox size={20} />,
-  },
-  {
-    id: 4,
-    path: "/rasa/model",
-    title: "Model",
-    icon: <icons.RiDashboard3Fill size={20} />,
   },
   {
     id: 5,
@@ -104,12 +98,6 @@ export const sidebarItems = [
     path: "/employer-management",
     title: "Quản lý nhà tuyển dụng",
     icon: <icons.IoBriefcase size={20} />,
-  },
-  {
-    id: 6,
-    path: "/transaction-management",
-    title: "Quản lý giao dịch",
-    icon: <icons.MdPayment size={24} />,
   },
   {
     id: 7,

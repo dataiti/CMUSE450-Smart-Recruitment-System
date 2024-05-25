@@ -30,16 +30,24 @@ const routers = [
         path: "/categories-job",
         element: <CategoriesPage />,
       },
-      {
-        path: "/forum",
-        element: <ForumPage />,
-      },
+
       {
         path: "/job-detail/:jobId",
         element: <JobDetailPage />,
       },
     ],
   },
+  {
+    path: "/",
+    element: <MainLayout isFooter={false} />,
+    children: [
+      {
+        path: "/forum",
+        element: <ForumPage />,
+      },
+    ],
+  },
+
   {
     path: "/",
     element: <MainLayout />,
